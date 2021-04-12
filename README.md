@@ -1,0 +1,2 @@
+# HicadStockControlSystem
+Inventory System
