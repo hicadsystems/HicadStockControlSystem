@@ -11,7 +11,7 @@
     <stock-button
       id="menuInventory"
       is-full-width
-      @button:click="goToRoute('/inventory')"
+      @button:click="goToRoute('/newsystem')"
     >
       Systems
     </stock-button>

@@ -50,9 +50,8 @@
         <template v-slot:footer>
              <solar-button 
             type="button"
-            @button:click="save"
-            aria-label="save new customer">
-                Save Customer
+            aria-label="save new system">
+                Save System
             </solar-button>
 
             <solar-button 
@@ -81,9 +80,7 @@ export default class NewSystemModal extends Vue{
         this.$emit('close');
     }
 
-    save(){
-        this.$emit('save:customer', this.customer);
-    }
+   
 }
 </script>
 

@@ -7,7 +7,7 @@
   <solar-button 
   id="menuInventory"
   is-full-width
-  @button:click="goToRoute('/inventory')">
+  @button:click="goToRoute('/')">
     Inventory
   </solar-button>
   </div>
