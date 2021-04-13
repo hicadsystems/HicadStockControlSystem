@@ -67,15 +67,15 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import SolarButton from '@/components/SolarButton.vue';
-import SolarModal from '@/components/modals/SolarModal.vue';
+import StockButton from '@/components/StockButton.vue';
+import StockControlModal from '@/components/modals/StockControlModal.vue';
 
 @Component({
     name: 'NewSystemNameModal',
-    components: { SolarButton, SolarModal}
+    components: { StockButton, StockControlModal}
 })
 
-export default class NewSystemNameModal extends Vue{
+export default class NewSystemModal extends Vue{
 
     close(){
         this.$emit('close');
