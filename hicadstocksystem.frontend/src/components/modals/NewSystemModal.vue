@@ -1,5 +1,5 @@
 <template>
-    <solar-modal>
+    <stock-control-modal>
         <template v-slot:header>
             Systems
         </template>
@@ -48,20 +48,20 @@
             </ul>
         </template>
         <template v-slot:footer>
-             <solar-button 
+             <stock-button 
             type="button"
             aria-label="save new system">
                 Save System
-            </solar-button>
+            </stock-button>
 
-            <solar-button 
+            <stock-button 
             type="button"
             @button:click="close"
             aria-label="Close modal">
                 Close
-            </solar-button>
+            </stock-button>
         </template>
-    </solar-modal>
+    </stock-control-modal>
 </template>
 
 <script lang="ts">

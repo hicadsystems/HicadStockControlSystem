@@ -1,14 +1,14 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import NewSystem from "@/views/NewSystem.vue";
+import System from "@/views/System.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/newsystem',
-    name: 'newsystem',
-    component: NewSystem
+    path: '/system',
+    name: 'system',
+    component: System
   }
 ];
 

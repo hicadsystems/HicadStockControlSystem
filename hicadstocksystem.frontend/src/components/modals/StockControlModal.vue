@@ -48,7 +48,8 @@ export default class StockControlModal extends Vue{
 @import "@/scss/global.scss";
 
 .modal-backdrop{
-    position: fixed;
+    position: absolute;
+    margin-top: 5%;
     top: 0;
     bottom: 0;
     left: 0;

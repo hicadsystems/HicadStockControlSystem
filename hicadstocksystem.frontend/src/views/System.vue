@@ -30,11 +30,11 @@ import {Component, Vue} from 'vue-property-decorator';
 import StockButton from '@/components/StockButton.vue';
 import NewSystemModal from '@/components/modals/NewSystemModal.vue';
 @Component({
-  name: "NewSystem",
+  name: "System",
   components: {StockButton, NewSystemModal}
 })
 
-export default class NewSystem extends Vue {
+export default class System extends Vue {
   isNewSystemModalVisible: boolean = false;
 
   closeModals() {
