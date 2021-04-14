@@ -7,43 +7,39 @@
             <ul class="newCustomer">
                 <li>
                     <label for="firstName">Company Code</label>
-                    <input type="text" id="firstName"/>
+                    <input type="text" id="firstName" v-model="stkSystem.companyCode"/>
                 </li>
                 <li>
                     <label for="lastName">Company Name</label>
-                    <input type="text" id="lastName"/>
+                    <input type="text" id="lastName" v-model="stkSystem.companyName"/>
                 </li>
                 <li>
                     <label for="addressLine1">Company Address</label>
-                    <input type="text" id="addressLine1"/>
+                    <input type="text" id="addressLine1" v-model="stkSystem.companyAddress"/>
                 </li>
                 <li>
                     <label for="addressLine2">Telephone No.</label>
-                    <input type="text" id="addressLine1"/>
+                    <input type="text" id="addressLine1" v-model="stkSystem.phone"/>
                 </li>
                 <li>
                     <label for="city">Email</label>
-                    <input type="text" id="city"/>
+                    <input type="text" id="city" v-model="stkSystem.email"/>
                 </li>
                 <li>
                     <label for="state">State</label>
-                    <input type="text" id="state"/>
+                    <input type="text" id="state" v-model="stkSystem.state"/>
                 </li>
                 <li>
                     <label for="postalCode">Town/City</label>
-                    <input type="text" id="postalCode"/>
-                </li>
-                <li>
-                    <label for="country">Installation Date</label>
-                    <input type="text" id="country"/>
+                    <input type="text" id="postalCode" v-model="stkSystem.town_city"/>
                 </li>
                 <li>
                     <label for="country">Serial Number</label>
-                    <input type="text" id="country"/>
+                    <input type="text" id="country" v-model="stkSystem.serialnumber"/>
                 </li>
                 <li>
                     <label for="country">Stock GL Code</label>
-                    <input type="text" id="country"/>
+                    <input type="text" id="country" v-model="stkSystem.gLCode"/>
                 </li>
             </ul>
         </template>
@@ -67,6 +63,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import StockButton from '@/components/StockButton.vue';
+import { ISktSystem } from "@/types/ISktSystem";
 import StockControlModal from '@/components/modals/StockControlModal.vue';
 
 @Component({
@@ -75,9 +72,27 @@ import StockControlModal from '@/components/modals/StockControlModal.vue';
 })
 
 export default class NewSystemModal extends Vue{
+stkSystem: ISktSystem={
+    companyCode: "",
+    companyName: "",
+    companyAddress: "",
+    phone: "",
+    email: "",
+    state: "",
+    town_city: "",
+    serialnumber: "",
+    gLCode: ""
 
+
+
+
+}
     close(){
         this.$emit('close');
+    }
+
+     save(){
+        this.$emit('save:stkSystem', this.stkSystem);
     }
 
    

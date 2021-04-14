@@ -10,7 +10,7 @@ export default class SystemService{
         return result.data
     }
 
-    public async addCustomer(newSktSystem: ISktSystem): Promise<ISktSystem>{
+    public async addSktSystem(newSktSystem: ISktSystem): Promise<ISktSystem>{
         let result: any =  await axios.post(`${this.url}/st_stksystem/`, newSktSystem);
         return result.data;
     };

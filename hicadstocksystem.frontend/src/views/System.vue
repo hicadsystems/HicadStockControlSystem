@@ -29,6 +29,7 @@
     </table>
     <new-system-modal 
     v-if="isNewSystemModalVisible" 
+    @save:stkSystem="saveNewstkSystem"
     @close="closeModals" />
   </div>
 </template>
@@ -57,6 +58,12 @@ export default class System extends Vue {
 
   showNewSystemModal() {
     this.isNewSystemModalVisible = true;
+  }
+
+  async saveNewstkSystem(newstkSystem: ISktSystem) {
+    await systemService.addSktSystem(newstkSystem);
+    this.isNewSystemModalVisible = false;
+    await this.fetchData();
   }
 
     async fetchData(){
