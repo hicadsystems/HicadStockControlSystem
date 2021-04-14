@@ -27,7 +27,9 @@
         </td>
       </tr>
     </table>
-    <new-system-modal v-if="isNewSystemModalVisible" @close="closeModals" />
+    <new-system-modal 
+    v-if="isNewSystemModalVisible" 
+    @close="closeModals" />
   </div>
 </template>
 
