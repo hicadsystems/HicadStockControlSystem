@@ -14,8 +14,7 @@
         <th>Company Code</th>
         <th>Company Name</th>
         <th>Company Address</th>
-        <th>Telephone No.</th>
-        <th>Email</th>
+        <th>Actions</th>
       </tr>
     </table>
     <new-system-modal
@@ -26,9 +25,9 @@
      <action-button>
         Edit
       </action-button>
-      <action-button>
+      <delete-button class="color-btn">
         delete 
-      </action-button>
+      </delete-button>
     </div>
 
     
@@ -39,10 +38,11 @@
 import {Component, Vue} from 'vue-property-decorator';
 import StockButton from '@/components/StockButton.vue';
 import ActionButton from '@/components/ActionButton.vue';
+import DeleteButton from '@/components/DeleteButton.vue';
 import NewSystemModal from '@/components/modals/NewSystemModal.vue';
 @Component({
   name: "System",
-  components: {StockButton, NewSystemModal, ActionButton}
+  components: {StockButton, NewSystemModal, ActionButton, DeleteButton}
 })
 
 export default class System extends Vue {
@@ -94,4 +94,5 @@ export default class System extends Vue {
     float: right;
     align-items: right;
 }
+
 </style>

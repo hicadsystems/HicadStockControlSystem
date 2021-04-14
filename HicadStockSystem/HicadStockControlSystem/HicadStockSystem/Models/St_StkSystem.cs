@@ -19,6 +19,8 @@ namespace HicadStockSystem.Models
         public DateTime InstallDate { get; set; } = DateTime.Now;
         public string SerialNumber { get; set; }
         public string GLCode { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime? UpdatedOn { get; set; }
         //public int ProcessYear { get; set; }
         //public int ProcessMonth { get; set; }
         //public string Expense_code { get; set; }

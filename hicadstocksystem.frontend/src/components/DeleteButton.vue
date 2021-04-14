@@ -17,10 +17,10 @@ import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 
 @Component({
-    name: 'ActionButton',
+    name: 'DeleteButton',
     components: {}
 })
-export default class ActionButton extends Vue{
+export default class DeleteButton extends Vue{
     @Prop({required: false, type: String})
     link?: string;
 
@@ -41,7 +41,7 @@ export default class ActionButton extends Vue{
 @import "@/scss/global.scss";
 
 .action-button{
-    background: lighten($solar-blue, 10%);
+    background: lighten($solar-red, 10%);
     color: white;
     padding: 0.2rem 0.01rem 0.05rem 0.01rem;
     transition: background-color 0.5s;
@@ -55,12 +55,12 @@ export default class ActionButton extends Vue{
     border-radius: 3px;
 
     &:hover{
-    background: lighten($solar-blue, 20%);
+    background: lighten($solar-red, 20%);
     transition: background-color 0.5s;
 }
 
 &:disabled{
-    background: lighten($solar-blue, 15%);
+    background: lighten($solar-red, 15%);
     border-bottom: 2px solid lighten($solar-blue, 20%);
 }
 
