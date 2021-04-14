@@ -22,16 +22,27 @@
       v-if="isNewSystemModalVisible"
       @close="closeModals"
     />
+<div class="btn-actions">
+     <action-button>
+        Edit
+      </action-button>
+      <action-button>
+        delete 
+      </action-button>
+    </div>
+
+    
   </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import StockButton from '@/components/StockButton.vue';
+import ActionButton from '@/components/ActionButton.vue';
 import NewSystemModal from '@/components/modals/NewSystemModal.vue';
 @Component({
   name: "System",
-  components: {StockButton, NewSystemModal}
+  components: {StockButton, NewSystemModal, ActionButton}
 })
 
 export default class System extends Vue {
@@ -75,5 +86,12 @@ export default class System extends Vue {
   font-weight: bold;
   font-size: 1.2rem;
   color: $solar-red;
+}
+
+.btn-actions{
+    display: flex;
+    margin-bottom: 0.8rem;
+    float: right;
+    align-items: right;
 }
 </style>
