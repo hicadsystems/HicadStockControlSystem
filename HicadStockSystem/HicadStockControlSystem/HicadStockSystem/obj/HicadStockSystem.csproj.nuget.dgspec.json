@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {}
+    "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {}
   },
   "projects": {
-    "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {
+    "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
+        "projectUniqueName": "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
         "projectName": "HicadStockSystem",
-        "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
-        "packagesPath": "C:\\Users\\HICADB\\.nuget\\packages\\",
-        "outputPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\obj\\",
+        "projectPath": "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
+        "packagesPath": "C:\\Users\\fregene thomas\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\HICADB\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\fregene thomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -65,12 +65,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.10, 3.1.10]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -79,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200-preview.20601.7\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
         }
       }
     }

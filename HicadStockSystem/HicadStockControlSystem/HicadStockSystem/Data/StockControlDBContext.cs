@@ -16,6 +16,7 @@ namespace HicadStockSystem.Data
         DbSet<GroupMenu> GroupMenus { get; set; }
         DbSet<RoleMenu> RoleMenus { get; set; }
         DbSet<Menu> Menus { get; set; }
-        DbSet<SystemEntity> Systems { get; set; }
+        public DbSet<St_StkSystem> St_StkSystems { get; set; }
+
     }
 }
