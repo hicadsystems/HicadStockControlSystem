@@ -71,5 +71,17 @@ namespace HicadStockSystem.Controllers
             return Ok(validSktSystem);
         }
 
+       [HttpDelete("{coycode}")]
+       public async Task<IActionResult> DeleteStkSystem(string coycode)
+        {
+            var validStkSystem = await _dbContext.St_StkSystems.Where(c => (c.CompanyCode).Equals(coycode)).FirstOrDefaultAsync();
+
+            if (validStkSystem == null)
+                return BadRequest();
+            _dbContext.Remove(validStkSystem);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(validStkSystem);
+        }
     }
 }
