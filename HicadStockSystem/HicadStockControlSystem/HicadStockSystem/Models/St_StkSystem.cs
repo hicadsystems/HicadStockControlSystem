@@ -16,7 +16,7 @@ namespace HicadStockSystem.Models
         public string Email { get; set; }
         public string State { get; set; }
         public string Town_City { get; set; }
-        public DateTime InstallDate { get; set; }
+        public DateTime InstallDate { get; set; } = DateTime.Now;
         public string SerialNumber { get; set; }
         public string GLCode { get; set; }
         //public int ProcessYear { get; set; }

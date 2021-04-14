@@ -1,4 +1,5 @@
 ﻿using HicadStockSystem.Data;
+using HicadStockSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,6 +25,20 @@ namespace HicadStockSystem.Controllers
         {
             var stkSystem = await _dbContext.St_StkSystems.ToListAsync();
             return Ok(stkSystem);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSktSystem([FromBody] St_StkSystem stkSystem)
+        {
+            if (ModelState.IsValid)
+            {
+                await _dbContext.AddAsync(stkSystem);
+                await _dbContext.SaveChangesAsync();
+
+                return CreatedAtAction("GetStkSystem", new { stkSystem.CompanyName, stkSystem.CompanyCode }, stkSystem);
+            }
+
+            return BadRequest();
         }
     }
 }
