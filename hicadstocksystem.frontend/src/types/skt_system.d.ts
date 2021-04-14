@@ -1,4 +1,4 @@
-export interface ISystem{
+export interface ISktSystem{
     companyCode: string,
     companyName: string,
     companyAddress: string,
