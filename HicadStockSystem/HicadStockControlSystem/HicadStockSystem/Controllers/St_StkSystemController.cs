@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Controllers
 {
-    [Route("api/[controller]")] //api/st_stksystem
+    [Route("api/st_stksystem")] //api/st_stksystem
     [ApiController()]
     public class St_StkSystemController : ControllerBase
     {
@@ -38,7 +38,38 @@ namespace HicadStockSystem.Controllers
                 return CreatedAtAction("GetStkSystem", new { stkSystem.CompanyName, stkSystem.CompanyCode }, stkSystem);
             }
 
-            return BadRequest();
+            return new JsonResult("Something went wrong. Please try again") { StatusCode = 500 };
         }
+
+        [HttpGet("{coycode}")]
+        public async Task<IActionResult> GetSystem(string coycode)
+        {
+            var sktSystem = await _dbContext.St_StkSystems.FirstOrDefaultAsync(s => s.CompanyCode == coycode);
+            if (sktSystem==null)
+                return NotFound();
+            return Ok(sktSystem);
+        }
+
+        [HttpPut("{coycode}")]
+        public async Task<IActionResult> UpdateSktSystem(string coycode, St_StkSystem stkSystem)
+        {
+            var validSktSystem = await _dbContext.St_StkSystems.Where(s => (s.CompanyCode).Equals(coycode)).FirstOrDefaultAsync();
+
+            if (validSktSystem == null)
+                return NotFound();
+
+            validSktSystem.CompanyName = stkSystem.CompanyName;
+            validSktSystem.CompanyAddress = stkSystem.CompanyAddress;
+            validSktSystem.Town_City = stkSystem.Town_City;
+            validSktSystem.State = stkSystem.State;
+            validSktSystem.Phone = stkSystem.Phone;
+            validSktSystem.Email = stkSystem.Email;
+            validSktSystem.SerialNumber = stkSystem.SerialNumber;
+            validSktSystem.GLCode = stkSystem.GLCode;
+
+            _dbContext.SaveChanges();
+            return Ok(validSktSystem);
+        }
+
     }
 }
