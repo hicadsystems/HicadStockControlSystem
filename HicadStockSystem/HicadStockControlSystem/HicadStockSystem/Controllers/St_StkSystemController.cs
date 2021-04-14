@@ -66,7 +66,7 @@ namespace HicadStockSystem.Controllers
             validSktSystem.Email = stkSystem.Email;
             validSktSystem.SerialNumber = stkSystem.SerialNumber;
             validSktSystem.GLCode = stkSystem.GLCode;
-            validSktSystem.UpdatedOn = stkSystem.UpdatedOn;
+            validSktSystem.UpdatedOn = stkSystem.UpdatedOn = DateTime.Now;
 
             _dbContext.SaveChanges();
             return Ok(validSktSystem);

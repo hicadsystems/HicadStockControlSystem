@@ -11,41 +11,42 @@
 
     <table id="SystemTable" class="table">
       <tr>
-        <th>Company Code</th>
         <th>Company Name</th>
         <th>Company Address</th>
-        <th>Actions</th>
+        <th>State</th>
+      </tr>
+      <tr v-for="stkSystem in stkSystems" :key="stkSystem.companyCode">
+        <td>
+          {{ stkSystem.companyName }}
+        </td>
+        <td>
+          {{ stkSystem.state }}
+        </td>
+        <td>
+          {{ stkSystem.companyAddress }}
+        </td>
       </tr>
     </table>
-    <new-system-modal
-      v-if="isNewSystemModalVisible"
-      @close="closeModals"
-    />
-<div class="btn-actions">
-     <action-button>
-        Edit
-      </action-button>
-      <delete-button class="color-btn">
-        delete 
-      </delete-button>
-    </div>
-
-    
+    <new-system-modal v-if="isNewSystemModalVisible" @close="closeModals" />
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import StockButton from '@/components/StockButton.vue';
-import ActionButton from '@/components/ActionButton.vue';
-import DeleteButton from '@/components/DeleteButton.vue';
-import NewSystemModal from '@/components/modals/NewSystemModal.vue';
+import { Component, Vue } from "vue-property-decorator";
+import { ISktSystem } from "@/types/ISktSystem";
+import StockButton from "@/components/StockButton.vue";
+import SystemService from "@/services/system-service";
+import ActionButton from "@/components/ActionButton.vue";
+import DeleteButton from "@/components/DeleteButton.vue";
+import NewSystemModal from "@/components/modals/NewSystemModal.vue";
+
+const systemService = new SystemService();
 @Component({
   name: "System",
-  components: {StockButton, NewSystemModal, ActionButton, DeleteButton}
+  components: { StockButton, NewSystemModal, ActionButton, DeleteButton },
 })
-
 export default class System extends Vue {
+  stkSystems: ISktSystem[] = [];
   isNewSystemModalVisible: boolean = false;
 
   closeModals() {
@@ -55,7 +56,15 @@ export default class System extends Vue {
   showNewSystemModal() {
     this.isNewSystemModalVisible = true;
   }
-  
+
+    async fetchData(){
+        let res = await systemService.getStkSystem();
+        this.stkSystems = res;
+    }
+
+   async created(){
+        await this.fetchData();
+    }
 }
 </script>
 
@@ -88,11 +97,10 @@ export default class System extends Vue {
   color: $solar-red;
 }
 
-.btn-actions{
-    display: flex;
-    margin-bottom: 0.8rem;
-    float: right;
-    align-items: right;
+.btn-actions {
+  display: flex;
+  margin-bottom: 0.8rem;
+  float: right;
+  align-items: right;
 }
-
 </style>

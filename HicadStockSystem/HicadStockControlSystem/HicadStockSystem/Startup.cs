@@ -30,7 +30,15 @@ namespace HicadStockSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
+            //    .AddNewtonsoftJson(options =>
+            //{
+            //    options.SerializerSettings.ContractResolver = new DefaultContractResolver
+            //    {
+            //        NamingStrategy = new CamelCaseNamingStrategy()
+            //    };
+            //});
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -55,6 +63,13 @@ namespace HicadStockSystem
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(builder =>
+           builder
+           .WithOrigins("http://localhost:8080", "http://localhost:8081")
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials()
+           );
 
             app.UseAuthorization();
 
