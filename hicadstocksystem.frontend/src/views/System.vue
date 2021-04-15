@@ -14,6 +14,7 @@
         <th>Company Name</th>
         <th>Company Address</th>
         <th>State</th>
+        <th>Actions</th>
       </tr>
       <tr v-for="stkSystem in stkSystems" :key="stkSystem.companyCode">
         <td>
@@ -22,10 +23,14 @@
           </router-link>
         </td>
         <td>
-          {{ stkSystem.state }}
+          {{ stkSystem.companyAddress }}
         </td>
         <td>
-          {{ stkSystem.companyAddress }}
+          {{ stkSystem.state }}
+        </td>
+         <td>
+            <i class="lni lni-pencil"></i>
+            delete
         </td>
       </tr>
     </table>
