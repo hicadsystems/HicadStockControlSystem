@@ -46,6 +46,7 @@
         <template v-slot:footer>
              <stock-button 
             type="button"
+            @button:click="save"
             aria-label="save new system">
                 Save System
             </stock-button>
@@ -82,10 +83,6 @@ stkSystem: ISktSystem={
     town_city: "",
     serialnumber: "",
     gLCode: ""
-
-
-
-
 }
     close(){
         this.$emit('close');

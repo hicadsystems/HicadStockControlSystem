@@ -17,7 +17,9 @@
       </tr>
       <tr v-for="stkSystem in stkSystems" :key="stkSystem.companyCode">
         <td>
+          <router-link to="/system">
           {{ stkSystem.companyName }}
+          </router-link>
         </td>
         <td>
           {{ stkSystem.state }}
@@ -30,7 +32,7 @@
     <new-system-modal 
     v-if="isNewSystemModalVisible" 
     @save:stkSystem="saveNewstkSystem"
-    @close="closeModals" />
+    @close="closeModal" />
   </div>
 </template>
 
@@ -52,7 +54,7 @@ export default class System extends Vue {
   stkSystems: ISktSystem[] = [];
   isNewSystemModalVisible: boolean = false;
 
-  closeModals() {
+  closeModal() {
     this.isNewSystemModalVisible = false;
   }
 
