@@ -14,4 +14,11 @@ export default class SystemService{
         let result: any =  await axios.post(`${this.url}/st_stksystem/`, newSktSystem);
         return result.data;
     };
+
+    async updateSystem(companyCode: string){
+        let result = await axios.put(
+            `${this.url}/st_stksystem/${companyCode}`
+        );
+        return result.data;
+    }
 }

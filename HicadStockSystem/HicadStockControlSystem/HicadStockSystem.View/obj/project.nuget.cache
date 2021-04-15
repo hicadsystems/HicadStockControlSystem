@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "0hB6OeswacV3SnzrfbYMdWgmzbxzdTakbpKD5+dHIPjgkN5Nt1rJuL+p2rIf55/nNtETxOkoGwuGfwqJ7nHAhg==",
+  "success": true,
+  "projectFilePath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.View\\HicadStockSystem.View.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\HICADB\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
+  ],
+  "logs": []
+}
