@@ -18,17 +18,18 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StkSystem
         public string State { get; set; }
         public string Town_City { get; set; }
         [Column(TypeName = "smalldatetime")]
-        public DateTime InstallDate { get; }
-        public string SerialNumber { get; }
-        public string GLCode { get; }
-        public int ProcessYear { get; }
-        public int ProcessMonth { get; }
-        public string ExpenseCode { get; }
-        public string WriteoffLoc { get; }
-        public string CreditorsCode { get; }
-        public string BusLine { get; }
+        public DateTime InstallDate { get; set; }
+        public string SerialNumber { get; set; }
+        public string GLCode { get; set; }
+        public int ProcessYear { get; set; }
+        public int ProcessMonth { get; set; }
+        public string ExpenseCode { get; set; }
+        public string WriteoffLoc { get; set; }
+        public string CreditorsCode { get; set; }
+        public string BusLine { get; set; }
         public string HoldDays { get; set; }
         public string ApprovedDay { get; set; }
+        public DateTime CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
     }
 }

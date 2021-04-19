@@ -42,6 +42,7 @@ namespace HicadStockSystem.Controllers
             if (ModelState.IsValid)
             {
                 var st_stkSytem = _mapper.Map<CreateSt_StkSystemVM, St_StkSystem>(stkSystemVM);
+                st_stkSytem.CreatedOn = DateTime.UtcNow;
                 await _systemRepo.CreateAsync(st_stkSytem);
                 await _uow.CompleteAsync();
                 return CreatedAtAction("GetStkSystem", new { st_stkSytem.CompanyName, st_stkSytem.CompanyCode }, st_stkSytem);
@@ -60,23 +61,24 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateSktSystem([FromBody] St_StkSystem stkSystem)
+        public async Task<IActionResult> UpdateSktSystem([FromBody] UpdateSt_StkSystemVM stkSystemVM)
         {
-            var validSktSystem = _systemRepo.GetByCompanyCode(stkSystem.CompanyCode);
+            var validSktSystem = _systemRepo.GetByCompanyCode(stkSystemVM.CompanyCode);
 
             if (validSktSystem == null)
                 return NotFound();
-            
 
-            validSktSystem.CompanyName = stkSystem.CompanyName;
-            validSktSystem.CompanyAddress = stkSystem.CompanyAddress;
-            validSktSystem.Town_City = stkSystem.Town_City;
-            validSktSystem.State = stkSystem.State;
-            validSktSystem.Phone = stkSystem.Phone;
-            validSktSystem.Email = stkSystem.Email;
-            validSktSystem.SerialNumber = stkSystem.SerialNumber;
-            validSktSystem.GLCode = stkSystem.GLCode;
-            validSktSystem.UpdatedOn = stkSystem.UpdatedOn = DateTime.Now;
+            _mapper.Map<UpdateSt_StkSystemVM, St_StkSystem>(stkSystemVM, validSktSystem);
+            stkSystemVM.UpdatedOn = DateTime.UtcNow;
+            //validSktSystem.CompanyName = stkSystem.CompanyName;
+            //validSktSystem.CompanyAddress = stkSystem.CompanyAddress;
+            //validSktSystem.Town_City = stkSystem.Town_City;
+            //validSktSystem.State = stkSystem.State;
+            //validSktSystem.Phone = stkSystem.Phone;
+            //validSktSystem.Email = stkSystem.Email;
+            //validSktSystem.SerialNumber = stkSystem.SerialNumber;
+            //validSktSystem.GLCode = stkSystem.GLCode;
+            //validSktSystem.UpdatedOn = stkSystem.UpdatedOn = DateTime.Now;
 
             await _systemRepo.UpdateAsync(validSktSystem);
             return Ok(validSktSystem);
