@@ -50,10 +50,10 @@ namespace HicadStockSystem.Controllers
             return Ok(sktSystem);
         }
 
-        [HttpPut("{coycode}")]
-        public async Task<IActionResult> UpdateSktSystem(string coycode, St_StkSystem stkSystem)
+        [HttpPut]
+        public async Task<IActionResult> UpdateSktSystem([FromBody] St_StkSystem stkSystem)
         {
-            var validSktSystem = await _dbContext.St_StkSystems.Where(s => (s.CompanyCode).Equals(coycode)).FirstOrDefaultAsync();
+            var validSktSystem = await _dbContext.St_StkSystems.Where(s => (s.CompanyCode).Equals(stkSystem.CompanyCode)).FirstOrDefaultAsync();
 
             if (validSktSystem == null)
                 return NotFound();

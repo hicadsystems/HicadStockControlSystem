@@ -4,14 +4,16 @@ using HicadStockSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HicadStockSystem.Migrations
 {
     [DbContext(typeof(StockControlDBContext))]
-    partial class StockControlDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210416164333_NewProperties")]
+    partial class NewProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
