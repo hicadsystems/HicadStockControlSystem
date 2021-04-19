@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Core
 {
-    interface ISt_SktSystem
+    public interface IUnitOfWork
     {
+        Task CompleteAsync();
     }
 }

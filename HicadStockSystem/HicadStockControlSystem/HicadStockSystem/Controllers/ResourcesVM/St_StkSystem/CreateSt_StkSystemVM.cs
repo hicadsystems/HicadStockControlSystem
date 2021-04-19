@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HicadStockSystem.Models
+namespace HicadStockSystem.Controllers.ResourcesVM.St_StkSystem
 {
-    public class St_StkSystem
+    public class CreateSt_StkSystemVM
     {
-        [Key]
+       [Key]
         public string CompanyCode { get; set; }
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
@@ -18,7 +18,7 @@ namespace HicadStockSystem.Models
         public string State { get; set; }
         public string Town_City { get; set; }
         [Column(TypeName = "smalldatetime")]
-        public DateTime InstallDate { get; set; } = DateTime.Now;
+        public DateTime InstallDate { get; set; }
         public string SerialNumber { get; set; }
         public string GLCode { get; set; }
         public int ProcessYear { get; set; }
@@ -30,9 +30,5 @@ namespace HicadStockSystem.Models
         public string HoldDays { get; set; }
         public string ApprovedDay { get; set; }
         public DateTime CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-        
-
-
     }
 }

@@ -18,7 +18,7 @@
                          <td>{{status.companyCode }}</td>
                          <td>{{status.companyName }}</td>
                          <td>{{status.companyAddress }}</td>
-                         <td>{{status.companyType}}</td>
+                         <td>{{status.email}}</td>
                         <td>
                         <button type="button" class="btn btn-submit btn-primary" @click="processRetrieve(status)">Edit</button>
                         <button type="button" class="btn btn-submit btn-primary" @click="processDelete(status.companyCode)">Delete</button>
@@ -51,14 +51,14 @@ export default {
     },
     mounted () {
         this.getAllCompany();
-        this.processDelete();
      },
      methods: {
         processRetrieve : function (Status) {
+           // alert(Status)
             this.$store.state.objectToUpdate = Status;
          },
          processDelete: function (companyCode) {
-             alert(companyCode);
+             //alert(companyCode);
              axios.delete(`/api/st_stksystem/${companyCode}`)
                  .then(response => {
                      if (response.data.responseCode == '200') {

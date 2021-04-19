@@ -2158,7 +2158,7 @@ __webpack_require__.r(__webpack_exports__);
         state: "",
         city: "",
         // datepicker
-        installDate: "",
+        installDate: new Date(),
         serialNumber: "",
         processYear: "",
         processMonth: "",
@@ -2192,9 +2192,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     checkForm: function checkForm(e) {
-      if (this.postBody.companyCode && this.postBody.companyName && this.postBody.companyAddress && this.postBody.phone && this.postBody.email && this.postBody.state && this.postBody.city && this.postBody.installDate && this.postBody.processYear && this.postBody.processMonth && this.postBody.expenseCode && this.postBody.writeoffLoc && this.postBody.creditorsCode && this.postBody.businessLine && this.postBody.holdDays && this.postBody.approvedDay) {
+      if (this.postBody.companyCode) {
         e.preventDefault();
         this.canProcess = false;
+        alert(this.postBody.companyCode, "i am here");
         this.postPost();
       } else {
         this.errors = [];
@@ -2216,7 +2217,7 @@ __webpack_require__.r(__webpack_exports__);
             _this.postBody.phone = "";
             _this.postBody.email = "";
             _this.postBody.city = "";
-            _this.postBody.installDate = "";
+            _this.postBody.installDate = new Date();
             _this.postBody.processYear = "";
             _this.postBody.processMonth = "";
             _this.postBody.expenseCode = "";
@@ -2233,7 +2234,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.submitorUpdate == "Update") {
-        alert(this.postBody.companyCode);
+        alert("Raedy to Update");
         axios.put("/api/st_stksystem/", this.postBody).then(function (response) {
           _this.responseMessage = response.data.responseDescription;
           _this.canProcess = true;
@@ -2284,7 +2285,22 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   }
-});
+}); //  &&
+// this.postBody.companyName &&
+// this.postBody.companyAddress &&
+// this.postBody.phone &&
+// this.postBody.email &&
+// this.postBody.state &&
+// this.postBody.city &&
+// this.postBody.installDate &&
+// this.postBody.processYear &&
+// this.postBody.processMonth &&
+// this.postBody.expenseCode &&
+// this.postBody.writeoffLoc &&
+// this.postBody.creditorsCode &&
+// this.postBody.businessLine &&
+// this.postBody.holdDays &&
+// this.postBody.approvedDay
 
 /***/ }),
 
@@ -2349,16 +2365,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getAllCompany();
-    this.processDelete();
   },
   methods: {
     processRetrieve: function processRetrieve(Status) {
+      // alert(Status)
       this.$store.state.objectToUpdate = Status;
     },
     processDelete: function processDelete(companyCode) {
       var _this = this;
 
-      alert(companyCode);
+      //alert(companyCode);
       axios["delete"]("/api/st_stksystem/".concat(companyCode)).then(function (response) {
         if (response.data.responseCode == '200') {
           alert("company successfully deleted");
@@ -3416,7 +3432,7 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(status.companyAddress))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(status.companyType))]),
+              _c("td", [_vm._v(_vm._s(status.email))]),
               _vm._v(" "),
               _c("td", [
                 _c(

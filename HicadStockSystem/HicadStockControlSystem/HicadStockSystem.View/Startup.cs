@@ -1,4 +1,8 @@
+using HicadStockSystem.Core;
 using HicadStockSystem.Data;
+using HicadStockSystem.Mapping;
+using HicadStockSystem.Persistence;
+using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +32,15 @@ namespace HicadStockSystem.View
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddControllers();
-            //    .AddNewtonsoftJson(options =>
-            //{
-            //    options.SerializerSettings.ContractResolver = new DefaultContractResolver
-            //    {
-            //        NamingStrategy = new CamelCaseNamingStrategy()
-            //    };
-            //});
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                };
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -44,6 +50,12 @@ namespace HicadStockSystem.View
             services.AddDbContext<StockControlDBContext>(options =>
              options.UseSqlServer(
                  Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddMvc();
             services.AddSession();

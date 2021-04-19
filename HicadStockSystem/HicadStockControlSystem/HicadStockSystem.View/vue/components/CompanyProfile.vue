@@ -201,7 +201,7 @@ export default {
         state: "",
         city: "",
         // datepicker
-        installDate: "",
+        installDate: new Date(),
         serialNumber: "",
         processYear: "",
         processMonth: "",
@@ -238,26 +238,11 @@ export default {
   },
   methods: {
     checkForm: function(e) {
-      if (
-        this.postBody.companyCode &&
-        this.postBody.companyName &&
-        this.postBody.companyAddress &&
-        this.postBody.phone &&
-        this.postBody.email &&
-        this.postBody.state &&
-        this.postBody.city &&
-        this.postBody.installDate &&
-        this.postBody.processYear &&
-        this.postBody.processMonth &&
-        this.postBody.expenseCode &&
-        this.postBody.writeoffLoc &&
-        this.postBody.creditorsCode &&
-        this.postBody.businessLine &&
-        this.postBody.holdDays &&
-        this.postBody.approvedDay
-      ) {
+      if (this.postBody.companyCode) 
+      {
         e.preventDefault();
         this.canProcess = false;
+        alert(this.postBody.companyCode,"i am here")
         this.postPost();
       } else {
         this.errors = [];
@@ -278,7 +263,7 @@ export default {
               this.postBody.phone = "";
               this.postBody.email = "";
               this.postBody.city = "";
-              this.postBody.installDate = "";
+              this.postBody.installDate = new Date();
               this.postBody.processYear = "";
               this.postBody.processMonth = "";
               this.postBody.expenseCode = "";
@@ -295,7 +280,7 @@ export default {
           });
       }
       if (this.submitorUpdate == "Update") {
-        alert(this.postBody.companyCode);
+        alert("Raedy to Update");
         axios
           .put(`/api/st_stksystem/`, this.postBody)
           .then((response) => {
@@ -348,4 +333,20 @@ export default {
     },
   },
 };
+  //  &&
+        // this.postBody.companyName &&
+        // this.postBody.companyAddress &&
+        // this.postBody.phone &&
+        // this.postBody.email &&
+        // this.postBody.state &&
+        // this.postBody.city &&
+        // this.postBody.installDate &&
+        // this.postBody.processYear &&
+        // this.postBody.processMonth &&
+        // this.postBody.expenseCode &&
+        // this.postBody.writeoffLoc &&
+        // this.postBody.creditorsCode &&
+        // this.postBody.businessLine &&
+        // this.postBody.holdDays &&
+        // this.postBody.approvedDay
 </script>

@@ -1,4 +1,8 @@
+using HicadStockSystem.Core;
 using HicadStockSystem.Data;
+using HicadStockSystem.Models;
+using HicadStockSystem.Persistence;
+using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +15,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HicadStockSystem.Mapping;
 
 namespace HicadStockSystem
 {
@@ -31,20 +38,28 @@ namespace HicadStockSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddControllers();
-            //    .AddNewtonsoftJson(options =>
-            //{
-            //    options.SerializerSettings.ContractResolver = new DefaultContractResolver
-            //    {
-            //        NamingStrategy = new CamelCaseNamingStrategy()
-            //    };
-            //});
+            services.AddControllers()
+                                .AddNewtonsoftJson(options =>
+                                {
+                                    options.SerializerSettings.ContractResolver = new DefaultContractResolver
+                                    {
+                                        NamingStrategy = new CamelCaseNamingStrategy()
+                                    };
+                                }); 
+
+            services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddAutoMapper(typeof(MappingProfile));
+
             services.AddDbContext<StockControlDBContext>(options =>
              options.UseSqlServer(
                  Configuration.GetConnectionString("DefaultConnection")));
