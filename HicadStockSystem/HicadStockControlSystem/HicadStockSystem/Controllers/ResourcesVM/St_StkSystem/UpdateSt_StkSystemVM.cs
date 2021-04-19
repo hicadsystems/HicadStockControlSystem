@@ -29,7 +29,6 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StkSystem
         public string BusLine { get; set; }
         public string HoldDays { get; set; }
         public string ApprovedDay { get; set; }
-        public DateTime CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
     }
 }
