@@ -19,6 +19,206 @@ namespace HicadStockSystem.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("HicadStockSystem.Core.Models.StateList", b =>
+                {
+                    b.Property<byte>("Id")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("StateName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StateLists");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = (byte)1,
+                            StateName = "Abia"
+                        },
+                        new
+                        {
+                            Id = (byte)2,
+                            StateName = "Adamawa"
+                        },
+                        new
+                        {
+                            Id = (byte)3,
+                            StateName = "Akwa Ibom"
+                        },
+                        new
+                        {
+                            Id = (byte)4,
+                            StateName = "Anambra"
+                        },
+                        new
+                        {
+                            Id = (byte)5,
+                            StateName = "Bauchi"
+                        },
+                        new
+                        {
+                            Id = (byte)6,
+                            StateName = "Bayelsa"
+                        },
+                        new
+                        {
+                            Id = (byte)7,
+                            StateName = "Benue"
+                        },
+                        new
+                        {
+                            Id = (byte)8,
+                            StateName = "Borno"
+                        },
+                        new
+                        {
+                            Id = (byte)9,
+                            StateName = "Cross River"
+                        },
+                        new
+                        {
+                            Id = (byte)10,
+                            StateName = "Delta"
+                        },
+                        new
+                        {
+                            Id = (byte)11,
+                            StateName = "Ebonyi"
+                        },
+                        new
+                        {
+                            Id = (byte)12,
+                            StateName = "Edo"
+                        },
+                        new
+                        {
+                            Id = (byte)13,
+                            StateName = "Ekiti"
+                        },
+                        new
+                        {
+                            Id = (byte)14,
+                            StateName = "Enugu"
+                        },
+                        new
+                        {
+                            Id = (byte)15,
+                            StateName = "FCT - Abuja"
+                        },
+                        new
+                        {
+                            Id = (byte)16,
+                            StateName = "Gombe"
+                        },
+                        new
+                        {
+                            Id = (byte)17,
+                            StateName = "Imo"
+                        },
+                        new
+                        {
+                            Id = (byte)18,
+                            StateName = "Jigawa"
+                        },
+                        new
+                        {
+                            Id = (byte)19,
+                            StateName = "Kaduna"
+                        },
+                        new
+                        {
+                            Id = (byte)20,
+                            StateName = "Kano"
+                        },
+                        new
+                        {
+                            Id = (byte)21,
+                            StateName = "Katsina"
+                        },
+                        new
+                        {
+                            Id = (byte)22,
+                            StateName = "Kebbi"
+                        },
+                        new
+                        {
+                            Id = (byte)23,
+                            StateName = "Kogi"
+                        },
+                        new
+                        {
+                            Id = (byte)24,
+                            StateName = "Kwara"
+                        },
+                        new
+                        {
+                            Id = (byte)25,
+                            StateName = "Lagos"
+                        },
+                        new
+                        {
+                            Id = (byte)26,
+                            StateName = "Nasarawa"
+                        },
+                        new
+                        {
+                            Id = (byte)27,
+                            StateName = "Niger"
+                        },
+                        new
+                        {
+                            Id = (byte)28,
+                            StateName = "Ogun"
+                        },
+                        new
+                        {
+                            Id = (byte)29,
+                            StateName = "Ondo"
+                        },
+                        new
+                        {
+                            Id = (byte)30,
+                            StateName = "Osun"
+                        },
+                        new
+                        {
+                            Id = (byte)31,
+                            StateName = "Oyo"
+                        },
+                        new
+                        {
+                            Id = (byte)32,
+                            StateName = "Plateau"
+                        },
+                        new
+                        {
+                            Id = (byte)33,
+                            StateName = "Rivers"
+                        },
+                        new
+                        {
+                            Id = (byte)34,
+                            StateName = "Sokoto"
+                        },
+                        new
+                        {
+                            Id = (byte)35,
+                            StateName = "Taraba"
+                        },
+                        new
+                        {
+                            Id = (byte)36,
+                            StateName = "Yobe"
+                        },
+                        new
+                        {
+                            Id = (byte)37,
+                            StateName = "Zamfara"
+                        });
+                });
+
             modelBuilder.Entity("HicadStockSystem.Models.GroupMenu", b =>
                 {
                     b.Property<int>("Id")
@@ -158,7 +358,7 @@ namespace HicadStockSystem.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreditorsCode")
@@ -177,7 +377,7 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("InstallDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("smalldatetime");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
@@ -191,8 +391,8 @@ namespace HicadStockSystem.Migrations
                     b.Property<string>("SerialNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte>("StateListId")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Town_City")
                         .HasColumnType("nvarchar(max)");
@@ -204,6 +404,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CompanyCode");
+
+                    b.HasIndex("StateListId");
 
                     b.ToTable("St_StkSystems");
                 });
@@ -274,7 +476,7 @@ namespace HicadStockSystem.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("User_name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -448,6 +650,17 @@ namespace HicadStockSystem.Migrations
                     b.Navigation("Menu");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("HicadStockSystem.Models.St_StkSystem", b =>
+                {
+                    b.HasOne("HicadStockSystem.Core.Models.StateList", "StateList")
+                        .WithMany()
+                        .HasForeignKey("StateListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StateList");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

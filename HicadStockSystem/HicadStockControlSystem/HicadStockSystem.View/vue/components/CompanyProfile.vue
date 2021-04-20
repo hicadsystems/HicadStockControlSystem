@@ -54,12 +54,20 @@
               />
             </div>
             <div class="col-6">
-              <input
-                class="form-control"
-                name="state "
-                v-model="postBody.state"
+              <select class="form-control"
+                v-model="postBody.stateName"
+                name="stateName"
                 placeholder="state"
-              />
+                required
+              >
+                <option
+                  v-for="state in stateList"
+                  v-bind:value="state.stateName"
+                  v-bind:key="state.id"
+                >
+                  {{ state.stateName }}
+                </option>
+              </select>
             </div>
           </div>
           <br />
@@ -192,13 +200,14 @@ export default {
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
+      stateList:null,
       postBody: {
         companyCode: "",
         companyName: "",
         companyAddress: "",
         phone: "",
         email: "",
-        state: "",
+        stateName: "",
         city: "",
         // datepicker
         installDate: new Date(),
@@ -214,6 +223,12 @@ export default {
       },
     };
   },
+  mounted(){
+    axios.get(`/api/st_stksystem/getstates`)
+           .then(response=>{
+               this.stateList= response.data
+           })
+  },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
       (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),
@@ -221,7 +236,7 @@ export default {
         (this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress),
         (this.postBody.phone = this.$store.state.objectToUpdate.phone);
         (this.postBody.email = this.$store.state.objectToUpdate.email);
-        (this.postBody.state = this.$store.state.objectToUpdate.state);
+        (this.postBody.stateName = this.$store.state.objectToUpdate.stateName);
         (this.postBody.city = this.$store.state.objectToUpdate.city);
         (this.postBody.installDate = this.$store.state.objectToUpdate.installDate);
         (this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber);
@@ -238,7 +253,7 @@ export default {
   },
   methods: {
     checkForm: function(e) {
-      if (this.postBody.companyCode) 
+      if (this.postBody.companyCode)
       {
         e.preventDefault();
         this.canProcess = false;
@@ -262,6 +277,7 @@ export default {
               this.postBody.companyAddress = "";
               this.postBody.phone = "";
               this.postBody.email = "";
+              this.postBody.stateName = "";
               this.postBody.city = "";
               this.postBody.installDate = new Date();
               this.postBody.processYear = "";
@@ -272,7 +288,7 @@ export default {
               this.postBody.businessLine = "";
               this.postBody.holdDays = "";
               this.postBody.approvedDay = "";
-              this.$store.state.objectToUpdate = "create";
+              this.$store.stateName.objectToUpdate = "create";
             }
           })
           .catch((e) => {
@@ -293,6 +309,7 @@ export default {
               this.postBody.companyAddress = "";
               this.postBody.phone = "";
               this.postBody.email = "";
+              this.postBody.stateName = "";
               this.postBody.city = "";
               this.postBody.installDate = "";
               this.postBody.processYear = "";
@@ -310,7 +327,7 @@ export default {
             this.errors.push(e);
           });
       }
-    },
+    }
   },
   computed: {
     setter() {
@@ -321,6 +338,7 @@ export default {
         this.postBody.companyAddress = objecttoedit.companyAddress;
         this.postBody.companyType = objecttoedit.phone;
         this.postBody.companyType = objecttoedit.email;
+        this.postBody.companyType = objecttoedit.stateName;
         this.postBody.companyType = objecttoedit.city;
         this.postBody.companyType = objecttoedit.installDate;
         this.postBody.companyType = objecttoedit.processYear;
@@ -330,8 +348,7 @@ export default {
         this.postBody.companyType = objecttoedit.holdDays;
         this.postBody.companyType = objecttoedit.approvedDay;
       }
-    },
+    }
   },
 };
-  
 </script>

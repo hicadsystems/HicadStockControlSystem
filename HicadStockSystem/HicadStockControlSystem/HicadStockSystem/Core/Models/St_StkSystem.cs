@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HicadStockSystem.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,8 @@ namespace HicadStockSystem.Models
         public string CompanyAddress { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public string State { get; set; }
+        public StateList StateList { get; set; }
+        public byte StateListId { get; set; }
         public string Town_City { get; set; }
         [Column(TypeName = "smalldatetime")]
         public DateTime InstallDate { get; set; }

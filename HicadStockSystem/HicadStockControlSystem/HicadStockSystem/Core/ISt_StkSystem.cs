@@ -1,4 +1,5 @@
-﻿using HicadStockSystem.Models;
+﻿using HicadStockSystem.Core.Models;
+using HicadStockSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace HicadStockSystem.Repository.IRepository
         Task UpdateAsync(string compcode);
         Task Delete(string compcode);
         IEnumerable<St_StkSystem> GetAll();
+        IEnumerable<StateList> GetAllState();
     }
 }

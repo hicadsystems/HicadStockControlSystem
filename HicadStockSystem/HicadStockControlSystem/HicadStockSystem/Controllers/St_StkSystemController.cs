@@ -6,6 +6,7 @@ using HicadStockSystem.Models;
 using HicadStockSystem.Persistence;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace HicadStockSystem.Controllers
         [HttpGet]
         public  IActionResult GetStkSystem()
         {
+            _systemRepo.GetAllState();
             var stkSystem = _systemRepo.GetAll();
             return Ok(stkSystem);
         }
@@ -43,6 +45,7 @@ namespace HicadStockSystem.Controllers
             {
                 var st_stkSytem = _mapper.Map<CreateSt_StkSystemVM, St_StkSystem>(stkSystemVM);
                 st_stkSytem.CreatedOn = DateTime.UtcNow;
+                st_stkSytem.InstallDate = DateTime.UtcNow;
                 await _systemRepo.CreateAsync(st_stkSytem);
                 await _uow.CompleteAsync();
                 return CreatedAtAction("GetStkSystem", new { st_stkSytem.CompanyName, st_stkSytem.CompanyCode }, st_stkSytem);
@@ -95,6 +98,14 @@ namespace HicadStockSystem.Controllers
             await _uow.CompleteAsync();
 
             return Ok(validStkSystem);
+        }
+
+        [HttpGet]
+        [Route("getstates")]
+        public IActionResult GetStates()
+        {
+            var states = _systemRepo.GetAllState();
+            return Ok(states);
         }
     }
 }

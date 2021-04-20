@@ -2138,6 +2138,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2149,13 +2157,14 @@ __webpack_require__.r(__webpack_exports__);
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
+      stateList: null,
       postBody: {
         companyCode: "",
         companyName: "",
         companyAddress: "",
         phone: "",
         email: "",
-        state: "",
+        stateName: "",
         city: "",
         // datepicker
         installDate: new Date(),
@@ -2171,11 +2180,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("/api/st_stksystem/getstates").then(function (response) {
+      _this.stateList = response.data;
+    });
+  },
   watch: {
     "$store.state.objectToUpdate": function $storeStateObjectToUpdate(newVal, oldVal) {
       this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode, this.postBody.companyName = this.$store.state.objectToUpdate.companyName, this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress, this.postBody.phone = this.$store.state.objectToUpdate.phone;
       this.postBody.email = this.$store.state.objectToUpdate.email;
-      this.postBody.state = this.$store.state.objectToUpdate.state;
+      this.postBody.stateName = this.$store.state.objectToUpdate.stateName;
       this.postBody.city = this.$store.state.objectToUpdate.city;
       this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
       this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
@@ -2203,63 +2219,65 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     postPost: function postPost() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.submitorUpdate == "Submit") {
         axios.post("/api/st_stksystem/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
+          _this2.responseMessage = response.data.responseDescription;
+          _this2.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            _this.postBody.companyCode = "";
-            _this.postBody.companyName = "";
-            _this.postBody.companyAddress = "";
-            _this.postBody.phone = "";
-            _this.postBody.email = "";
-            _this.postBody.city = "";
-            _this.postBody.installDate = new Date();
-            _this.postBody.processYear = "";
-            _this.postBody.processMonth = "";
-            _this.postBody.expenseCode = "";
-            _this.postBody.writeoffLoc = "";
-            _this.postBody.creditorsCode = "";
-            _this.postBody.businessLine = "";
-            _this.postBody.holdDays = "";
-            _this.postBody.approvedDay = "";
-            _this.$store.state.objectToUpdate = "create";
+            _this2.postBody.companyCode = "";
+            _this2.postBody.companyName = "";
+            _this2.postBody.companyAddress = "";
+            _this2.postBody.phone = "";
+            _this2.postBody.email = "";
+            _this2.postBody.stateName = "";
+            _this2.postBody.city = "";
+            _this2.postBody.installDate = new Date();
+            _this2.postBody.processYear = "";
+            _this2.postBody.processMonth = "";
+            _this2.postBody.expenseCode = "";
+            _this2.postBody.writeoffLoc = "";
+            _this2.postBody.creditorsCode = "";
+            _this2.postBody.businessLine = "";
+            _this2.postBody.holdDays = "";
+            _this2.postBody.approvedDay = "";
+            _this2.$store.stateName.objectToUpdate = "create";
           }
         })["catch"](function (e) {
-          _this.errors.push(e);
+          _this2.errors.push(e);
         });
       }
 
       if (this.submitorUpdate == "Update") {
         alert("Raedy to Update");
         axios.put("/api/st_stksystem/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
+          _this2.responseMessage = response.data.responseDescription;
+          _this2.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            _this.submitorUpdate = "Submit";
-            _this.postBody.companyCode = "";
-            _this.postBody.companyName = "";
-            _this.postBody.companyAddress = "";
-            _this.postBody.phone = "";
-            _this.postBody.email = "";
-            _this.postBody.city = "";
-            _this.postBody.installDate = "";
-            _this.postBody.processYear = "";
-            _this.postBody.processMonth = "";
-            _this.postBody.expenseCode = "";
-            _this.postBody.writeoffLoc = "";
-            _this.postBody.creditorsCode = "";
-            _this.postBody.businessLine = "";
-            _this.postBody.holdDays = "";
-            _this.postBody.approvedDay = "";
-            _this.$store.state.objectToUpdate = "update";
+            _this2.submitorUpdate = "Submit";
+            _this2.postBody.companyCode = "";
+            _this2.postBody.companyName = "";
+            _this2.postBody.companyAddress = "";
+            _this2.postBody.phone = "";
+            _this2.postBody.email = "";
+            _this2.postBody.stateName = "";
+            _this2.postBody.city = "";
+            _this2.postBody.installDate = "";
+            _this2.postBody.processYear = "";
+            _this2.postBody.processMonth = "";
+            _this2.postBody.expenseCode = "";
+            _this2.postBody.writeoffLoc = "";
+            _this2.postBody.creditorsCode = "";
+            _this2.postBody.businessLine = "";
+            _this2.postBody.holdDays = "";
+            _this2.postBody.approvedDay = "";
+            _this2.$store.state.objectToUpdate = "update";
           }
         })["catch"](function (e) {
-          _this.errors.push(e);
+          _this2.errors.push(e);
         });
       }
     }
@@ -2274,6 +2292,7 @@ __webpack_require__.r(__webpack_exports__);
         this.postBody.companyAddress = objecttoedit.companyAddress;
         this.postBody.companyType = objecttoedit.phone;
         this.postBody.companyType = objecttoedit.email;
+        this.postBody.companyType = objecttoedit.stateName;
         this.postBody.companyType = objecttoedit.city;
         this.postBody.companyType = objecttoedit.installDate;
         this.postBody.companyType = objecttoedit.processYear;
@@ -3041,27 +3060,58 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-6" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.postBody.state,
-                    expression: "postBody.state"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { name: "state ", placeholder: "state" },
-                domProps: { value: _vm.postBody.state },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.postBody.stateName,
+                      expression: "postBody.stateName"
                     }
-                    _vm.$set(_vm.postBody, "state", $event.target.value)
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    name: "stateName",
+                    placeholder: "state",
+                    required: ""
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.postBody,
+                        "stateName",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
                   }
-                }
-              })
+                },
+                _vm._l(_vm.stateList, function(state) {
+                  return _c(
+                    "option",
+                    { key: state.id, domProps: { value: state.stateName } },
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(state.stateName) +
+                          "\n              "
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
             ])
           ]),
           _vm._v(" "),

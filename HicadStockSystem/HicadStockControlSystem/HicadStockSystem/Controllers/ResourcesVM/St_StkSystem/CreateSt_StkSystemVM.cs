@@ -15,7 +15,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StkSystem
         public string CompanyAddress { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public string State { get; set; }
+        public byte StateListId { get; set; }
         public string Town_City { get; set; }
         [Column(TypeName = "smalldatetime")]
         public DateTime InstallDate { get; set; }

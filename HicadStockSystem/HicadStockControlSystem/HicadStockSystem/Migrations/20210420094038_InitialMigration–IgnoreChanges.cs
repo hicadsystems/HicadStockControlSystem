@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HicadStockSystem.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class InitialMigrationIgnoreChanges : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,7 +33,7 @@ namespace HicadStockSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    //Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    User_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Datecreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -70,6 +70,18 @@ namespace HicadStockSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GroupMenus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StateLists",
+                columns: table => new
+                {
+                    Id = table.Column<byte>(type: "tinyint", nullable: false),
+                    StateName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StateLists", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,6 +232,42 @@ namespace HicadStockSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "St_StkSystems",
+                columns: table => new
+                {
+                    CompanyCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StateListId = table.Column<byte>(type: "tinyint", nullable: false),
+                    Town_City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InstallDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GLCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProcessYear = table.Column<int>(type: "int", nullable: false),
+                    ProcessMonth = table.Column<int>(type: "int", nullable: false),
+                    ExpenseCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WriteoffLoc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreditorsCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BusLine = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HoldDays = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApprovedDay = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_St_StkSystems", x => x.CompanyCode);
+                    table.ForeignKey(
+                        name: "FK_St_StkSystems_StateLists_StateListId",
+                        column: x => x.StateListId,
+                        principalTable: "StateLists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleMenus",
                 columns: table => new
                 {
@@ -245,6 +293,50 @@ namespace HicadStockSystem.Migrations
                         principalTable: "Menus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "StateLists",
+                columns: new[] { "Id", "StateName" },
+                values: new object[,]
+                {
+                    { (byte)1, "Abia" },
+                    { (byte)21, "Katsina" },
+                    { (byte)22, "Kebbi" },
+                    { (byte)23, "Kogi" },
+                    { (byte)24, "Kwara" },
+                    { (byte)25, "Lagos" },
+                    { (byte)26, "Nasarawa" },
+                    { (byte)27, "Niger" },
+                    { (byte)28, "Ogun" },
+                    { (byte)29, "Ondo" },
+                    { (byte)30, "Osun" },
+                    { (byte)31, "Oyo" },
+                    { (byte)32, "Plateau" },
+                    { (byte)33, "Rivers" },
+                    { (byte)34, "Sokoto" },
+                    { (byte)35, "Taraba" },
+                    { (byte)20, "Kano" },
+                    { (byte)36, "Yobe" },
+                    { (byte)19, "Kaduna" },
+                    { (byte)17, "Imo" },
+                    { (byte)2, "Adamawa" },
+                    { (byte)3, "Akwa Ibom" },
+                    { (byte)4, "Anambra" },
+                    { (byte)5, "Bauchi" },
+                    { (byte)6, "Bayelsa" },
+                    { (byte)7, "Benue" },
+                    { (byte)8, "Borno" },
+                    { (byte)9, "Cross River" },
+                    { (byte)10, "Delta" },
+                    { (byte)11, "Ebonyi" },
+                    { (byte)12, "Edo" },
+                    { (byte)13, "Ekiti" },
+                    { (byte)14, "Enugu" },
+                    { (byte)15, "FCT - Abuja" },
+                    { (byte)16, "Gombe" },
+                    { (byte)18, "Jigawa" },
+                    { (byte)37, "Zamfara" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -310,6 +402,11 @@ namespace HicadStockSystem.Migrations
                 name: "IX_RoleMenus_RoleId",
                 table: "RoleMenus",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_St_StkSystems_StateListId",
+                table: "St_StkSystems",
+                column: "StateListId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -333,6 +430,9 @@ namespace HicadStockSystem.Migrations
                 name: "RoleMenus");
 
             migrationBuilder.DropTable(
+                name: "St_StkSystems");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
@@ -340,6 +440,9 @@ namespace HicadStockSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Menus");
+
+            migrationBuilder.DropTable(
+                name: "StateLists");
 
             migrationBuilder.DropTable(
                 name: "GroupMenus");

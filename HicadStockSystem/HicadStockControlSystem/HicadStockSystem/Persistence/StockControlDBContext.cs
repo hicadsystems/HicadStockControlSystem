@@ -22,6 +22,7 @@ namespace HicadStockSystem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             //many to many
             modelBuilder.Entity<StateList>().HasData(
             new StateList { Id = 1, StateName= "Abia" },

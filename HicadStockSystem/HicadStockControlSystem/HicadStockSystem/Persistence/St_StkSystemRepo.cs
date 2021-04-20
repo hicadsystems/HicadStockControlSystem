@@ -1,4 +1,5 @@
-﻿using HicadStockSystem.Data;
+﻿using HicadStockSystem.Core.Models;
+using HicadStockSystem.Data;
 using HicadStockSystem.Models;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,9 @@ namespace HicadStockSystem.Persistence
 
         public IEnumerable<St_StkSystem> GetAll()
         {
-            return _dbContext.St_StkSystems.AsNoTracking().OrderBy(sys => sys.CompanyName);
+            return _dbContext.St_StkSystems.AsNoTracking()
+                .Include(sys=>sys.StateList)
+                .OrderBy(sys => sys.CompanyName);
 
         }
 
@@ -53,6 +56,10 @@ namespace HicadStockSystem.Persistence
             await _dbContext.SaveChangesAsync();
         }
 
-        
+        public IEnumerable<StateList> GetAllState()
+        {
+            return _dbContext.StateLists.AsNoTracking()
+                .OrderBy(sys => sys.StateName);
+        }
     }
 }
