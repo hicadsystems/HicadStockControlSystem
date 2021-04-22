@@ -27,6 +27,7 @@ namespace HicadStockSystem.Core.Models
         [StringLength(20)]
         public string Units { get; set; }
         [StringLength(24)]
+        //cross reference
         public string XRef { get; set; }
         [StringLength(10)]
         public string Supplier1 { get; set; }
@@ -41,6 +42,7 @@ namespace HicadStockSystem.Core.Models
         [StringLength(10)]
         public string Supplier6 { get; set; }
         [StringLength(30)]
+        //class description
         public string Class { get; set; }
         [StringLength(2)]
         public string BusLine { get; set; }

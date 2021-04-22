@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HicadStockSystem.Migrations
 {
     [DbContext(typeof(StockControlDBContext))]
-    [Migration("20210421150544_AllTable")]
-    partial class AllTable
+    [Migration("20210422121145_AllTables")]
+    partial class AllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -606,6 +606,49 @@ namespace HicadStockSystem.Migrations
                     b.HasKey("ItemCode");
 
                     b.ToTable("st_stockmaster");
+                });
+
+            modelBuilder.Entity("HicadStockSystem.Core.Models.St_Supplier", b =>
+                {
+                    b.Property<string>("SupplierCode")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Contact")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<int?>("Sup_Last_Num")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Sup_Start_Date")
+                        .HasColumnType("smalldatetime");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SupplierCode");
+
+                    b.ToTable("st_supplier");
                 });
 
             modelBuilder.Entity("HicadStockSystem.Core.Models.StateList", b =>

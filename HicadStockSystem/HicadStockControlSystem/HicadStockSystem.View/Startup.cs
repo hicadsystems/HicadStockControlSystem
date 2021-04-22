@@ -1,4 +1,5 @@
 using HicadStockSystem.Core;
+using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
 using HicadStockSystem.Mapping;
 using HicadStockSystem.Persistence;
@@ -51,7 +52,10 @@ namespace HicadStockSystem.View
              options.UseSqlServer(
                  Configuration.GetConnectionString("DefaultConnection")));
 
+            //Entities and there Interfaces
             services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();
+            services.AddScoped<ISt_StockMaster, St_StockMasterRepo>();
+            services.AddScoped<ISt_StockClass, St_StockClassRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

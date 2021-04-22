@@ -11,8 +11,8 @@ namespace HicadStockSystem.Core
         Task CreateAsync(St_StockMaster stockMaster);
         St_StockMaster GetStockByItemCode(string itemCode);
         Task UpdateAsync(St_StockMaster stockMaster);
-        Task Delete(string itemCode);
-        IEnumerable<St_StockMaster> GetAll();
+        Task Delete(string stockMaster);
+        IEnumerable<St_StockMaster> GetAllStockMaster();
 
     }
 }

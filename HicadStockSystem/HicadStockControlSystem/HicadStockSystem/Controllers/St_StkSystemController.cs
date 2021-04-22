@@ -33,7 +33,7 @@ namespace HicadStockSystem.Controllers
         [HttpGet]
         public  IActionResult GetStkSystem()
         {
-            _systemRepo.GetAllState();
+            //_systemRepo.GetAllState();
             var stkSystem = _systemRepo.GetAll();
             return Ok(stkSystem);
         }
@@ -73,16 +73,7 @@ namespace HicadStockSystem.Controllers
 
             _mapper.Map<UpdateSt_StkSystemVM, St_StkSystem>(stkSystemVM, validSktSystem);
             stkSystemVM.UpdatedOn = DateTime.UtcNow;
-            //validSktSystem.CompanyName = stkSystem.CompanyName;
-            //validSktSystem.CompanyAddress = stkSystem.CompanyAddress;
-            //validSktSystem.Town_City = stkSystem.Town_City;
-            //validSktSystem.State = stkSystem.State;
-            //validSktSystem.Phone = stkSystem.Phone;
-            //validSktSystem.Email = stkSystem.Email;
-            //validSktSystem.SerialNumber = stkSystem.SerialNumber;
-            //validSktSystem.GLCode = stkSystem.GLCode;
-            //validSktSystem.UpdatedOn = stkSystem.UpdatedOn = DateTime.Now;
-
+           
             await _systemRepo.UpdateAsync(validSktSystem);
             return Ok(validSktSystem);
         }

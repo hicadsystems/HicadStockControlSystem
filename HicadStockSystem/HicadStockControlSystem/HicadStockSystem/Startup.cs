@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HicadStockSystem.Mapping;
+using HicadStockSystem.Core.Models;
 
 namespace HicadStockSystem
 {
@@ -46,8 +47,10 @@ namespace HicadStockSystem
                                         NamingStrategy = new CamelCaseNamingStrategy()
                                     };
                                 }); 
-
+            //Entities and there Interfaces
             services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();
+            services.AddScoped<ISt_StockMaster, St_StockMasterRepo>();
+            services.AddScoped<ISt_StockClass, St_StockClassRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

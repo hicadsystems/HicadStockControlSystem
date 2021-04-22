@@ -61,6 +61,7 @@ namespace HicadStockSystem.Data
                 h.DocType,
             });
 
+
             base.OnModelCreating(modelBuilder);
             //many to many
             modelBuilder.Entity<StateList>().HasData(
