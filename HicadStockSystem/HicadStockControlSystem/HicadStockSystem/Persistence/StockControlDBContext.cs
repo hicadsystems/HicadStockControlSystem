@@ -19,13 +19,52 @@ namespace HicadStockSystem.Data
         DbSet<Menu> Menus { get; set; }
         public DbSet<St_StkSystem> St_StkSystems { get; set; }
         public DbSet<StateList>  StateLists { get; set; }
+        public DbSet<St_StockMaster> St_StockMasters { get; set; }
+        public DbSet<St_StockClass> St_StockClasses { get; set; }
+        public DbSet<St_StkJournal> St_StkJournals { get; set; }
+        public DbSet<St_Requisition> St_Requisitions { get; set; }
+        public DbSet<St_RecordTable> St_RecordTables { get; set; }
+        public DbSet<St_ItemMaster> St_ItemMasters { get; set; }
+        public DbSet<St_BuyerGuide> St_BuyerGuides { get; set; }
+        public DbSet<St_CostCentre> St_CostCentres { get; set; }
+        public DbSet<St_History> St_Histories { get; set; }
+        public DbSet<St_BusinessLine> St_BusinessLines { get; set; }
+        public DbSet<Ac_CostCentre> Ac_CostCentres { get; set; }
+        public DbSet<Ac_BusinessLine> Ac_BusinessLines { get; set; }
+        public DbSet<St_Supplier> St_Suppliers { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<St_StkJournal>().HasKey(j => new
+            {
+                j.Stk_Company,
+                j.Stk_Branch,
+                j.Stk_Year,
+                j.Stk_Month,
+                j.Stk_Location,
+                j.Stk_Type,
+                j.Stk_Account
+            });
+
+            modelBuilder.Entity<St_Requisition>().HasKey(r => new
+            {
+                r.RequisitionNo,
+                r.Itemcode
+            });
+
+            modelBuilder.Entity<St_History>().HasKey(h => new
+            {
+                h.ItemCode,
+                h.DocNo,
+                h.DocType,
+            });
+
             base.OnModelCreating(modelBuilder);
             //many to many
             modelBuilder.Entity<StateList>().HasData(
-            new StateList { Id = 1, StateName= "Abia" },
+            new StateList { Id = 1, StateName = "Abia" },
             new StateList { Id = 2, StateName = "Adamawa" },
             new StateList { Id = 3, StateName = "Akwa Ibom" },
             new StateList { Id = 4, StateName = "Anambra" },
@@ -63,9 +102,21 @@ namespace HicadStockSystem.Data
             new StateList { Id = 36, StateName = "Yobe" },
             new StateList { Id = 37, StateName = "Zamfara" });
 
+            modelBuilder.Entity<St_StkJournal>().Property(u => u.Stk_Debit).HasColumnType("money");
+            modelBuilder.Entity<St_StkJournal>().Property(u => u.Stk_Credit).HasColumnType("money");
+            modelBuilder.Entity<St_StockMaster>().Property(u => u.StockPrice).HasColumnType("money");
+            modelBuilder.Entity<St_Requisition>().Property(r => r.Price).HasColumnType("real");
+            modelBuilder.Entity<St_Requisition>().Property(r => r.SupplyQty).HasColumnType("real");
+            modelBuilder.Entity<St_IssueRequisition>().Property(i => i.Quantity).HasColumnType("real");
+            modelBuilder.Entity<St_IssueRequisition>().Property(i => i.SupplyQty).HasColumnType("real");
+            modelBuilder.Entity<St_IssueApprove>().Property(ia => ia.Quantity).HasColumnType("real");
+            modelBuilder.Entity<St_IssueApprove>().Property(ia => ia.ApprovedQty).HasColumnType("real");
+            modelBuilder.Entity<St_History>().Property(h => h.Price).HasColumnType("money");
+            modelBuilder.Entity<St_Supplier>().Property(s => s.Sup_Start_Date).HasColumnType("smalldatetime");
+
         }
 
     }
 
-  
+
 }
