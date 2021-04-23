@@ -29,25 +29,33 @@ namespace HicadStockSystem.Persistence
             await _uow.CompleteAsync();
         }
 
-        public IEnumerable<St_StockMaster> GetAllStockMaster()
+        public IEnumerable<St_StockMaster> GetAll()
         {
-            return _dbContext.St_StockMasters.AsNoTracking().OrderBy(sm => sm.ItemCode);
+            return  _dbContext.St_StockMasters.AsNoTracking().OrderBy(sm=>sm.ItemCode);
         }
 
-        public St_StockMaster GetStockByItemCode(string itemCode)
+        public St_StockMaster GetByItemCode(string itemCode)
         {
-            return _dbContext.St_StockMasters.FirstOrDefault();
+            return _dbContext.St_StockMasters.Where(sm => sm.ItemCode == itemCode).FirstOrDefault();
         }
 
-        public async Task  UpdateAsync(St_StockMaster stockMaster)
+        public async Task UpdateAsync(St_StockMaster stockMaster)
         {
-            _dbContext.St_StockMasters.Update(stockMaster);
+            _dbContext.Update(stockMaster);
             await _uow.CompleteAsync();
         }
-        public async Task Delete(string stockMaster)
+
+        public async Task UpdateAsync(string itemCode)
         {
-            var stockMasterIndb = GetStockByItemCode(stockMaster);
-            _dbContext.Remove(stockMasterIndb);
+            var stockMasterInDb = GetByItemCode(itemCode);
+            _dbContext.Update(stockMasterInDb);
+            await _uow.CompleteAsync();
+        }
+
+        public async Task Delete(string itemCode)
+        {
+            var stockMasterInDb = GetByItemCode(itemCode);
+            _dbContext.Remove(stockMasterInDb);
             await _uow.CompleteAsync();
         }
     }

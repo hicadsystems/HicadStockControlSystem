@@ -2,6 +2,7 @@
 using HicadStockSystem.Controllers.ResourcesVM;
 using HicadStockSystem.Controllers.ResourcesVM.St_StkSystem;
 using HicadStockSystem.Controllers.ResourcesVM.St_StockClass;
+using HicadStockSystem.Controllers.ResourcesVM.St_StockMaster;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Models;
 using System;
@@ -26,6 +27,9 @@ namespace HicadStockSystem.Mapping
                 //.ForMember(sc=>sc.SktClass, opt=>opt.MapFrom(cvm=>cvm.SktClass))
                 //.ForMember(sc=>sc.CreatedOn, opt=>opt.MapFrom(cvm=>cvm.CreatedOn));
             CreateMap<UpdateStockClassVM, St_StockClass>();
+
+            CreateMap<CreateStockMasterVM, St_StockMaster>().ReverseMap();
+            CreateMap<UpdateStockMasterVM, St_StockMaster>().ReverseMap();
         }
     }
 }

@@ -72,7 +72,7 @@ namespace HicadStockSystem.Controllers
                 return NotFound();
 
             _mapper.Map<UpdateSt_StkSystemVM, St_StkSystem>(stkSystemVM, validSktSystem);
-            stkSystemVM.UpdatedOn = DateTime.UtcNow;
+            validSktSystem.UpdatedOn = DateTime.UtcNow;
            
             await _systemRepo.UpdateAsync(validSktSystem);
             return Ok(validSktSystem);

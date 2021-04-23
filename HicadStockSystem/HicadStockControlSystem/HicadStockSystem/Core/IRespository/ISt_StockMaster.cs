@@ -9,10 +9,10 @@ namespace HicadStockSystem.Core
     public interface ISt_StockMaster
     {
         Task CreateAsync(St_StockMaster stockMaster);
-        St_StockMaster GetStockByItemCode(string itemCode);
+        St_StockMaster GetByItemCode(string itemCode);
         Task UpdateAsync(St_StockMaster stockMaster);
-        Task Delete(string stockMaster);
-        IEnumerable<St_StockMaster> GetAllStockMaster();
-
+        Task UpdateAsync(string itemCode);
+        Task Delete(string itemCode);
+        IEnumerable<St_StockMaster> GetAll();
     }
 }

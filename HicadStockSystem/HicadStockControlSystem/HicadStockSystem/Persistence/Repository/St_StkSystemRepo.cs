@@ -38,7 +38,6 @@ namespace HicadStockSystem.Persistence
 
         public async Task UpdateAsync(St_StkSystem stkSystem)
         {
-            
             _dbContext.Update(stkSystem);
             await _dbContext.SaveChangesAsync();
         }

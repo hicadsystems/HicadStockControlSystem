@@ -9,7 +9,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StkSystem
 {
     public class CreateSt_StkSystemVM
     {
-       [Key]
+        [Key]
         [StringLength(10)]
         public string CompanyCode { get; set; }
         [Required]

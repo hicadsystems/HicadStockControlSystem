@@ -1,4 +1,6 @@
-﻿using HicadStockSystem.Core;
+﻿using AutoMapper;
+using HicadStockSystem.Controllers.ResourcesVM.St_StockMaster;
+using HicadStockSystem.Core;
 using HicadStockSystem.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,55 +15,76 @@ namespace HicadStockSystem.Controllers
     public class St_StockMasterController : ControllerBase
     {
         private readonly ISt_StockMaster _stockMaster;
+        private readonly IMapper _mapper;
 
-        public St_StockMasterController(ISt_StockMaster stockMaster)
+        public St_StockMasterController(ISt_StockMaster stockMaster, IMapper mapper)
         {
             _stockMaster = stockMaster;
+            _mapper = mapper;
         }
+       
         [HttpGet]
-        public IActionResult GetStockMaster()
+        public IActionResult GetAllStockMaster()
+        
         {
-            var stockMaster = _stockMaster.GetAllStockMaster();
+
+            var stockMaster = _stockMaster.GetAll();
             return Ok(stockMaster);
         }
 
         [HttpPost]
-        public IActionResult CreateStockMaster([FromBody] St_StockMaster stockMaster)
+        public async Task<IActionResult> CreateStockMaster([FromBody]CreateStockMasterVM stockMaster)
         {
             if (ModelState.IsValid)
             {
-                stockMaster.CreatedOn = DateTime.UtcNow;
-                 _stockMaster.CreateAsync(stockMaster);
+                var newStockMaster = _mapper.Map<CreateStockMasterVM, St_StockMaster>(stockMaster);
+                newStockMaster.CreatedOn = DateTime.UtcNow;
+                await _stockMaster.CreateAsync(newStockMaster);
 
-                return Ok(stockMaster);
+                return CreatedAtAction("GetAllStockMaster", new { newStockMaster.ItemCode}, newStockMaster);
             }
 
-            return BadRequest();
+            return BadRequest("Something went wrong please try again");
         }
 
-        [HttpPut("{stockMaster}")]
-        public IActionResult UpdateStockMaster([FromBody]St_StockMaster stockMaster)
+        [HttpGet("{itemCode}")]
+        public IActionResult GetByItemCode(string itemCode)
         {
-            var stockMasterInDb = _stockMaster.GetStockByItemCode(stockMaster.ItemCode);
+            var stockMasterInDb = _stockMaster.GetByItemCode(itemCode);
+
+            if (stockMasterInDb==null)
+                return NotFound("Item does not exist");
+
+            return Ok(stockMasterInDb);
+
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateStockMaster([FromBody]UpdateStockMasterVM stockMaster)
+        {
+            var stockMasterInDb = _stockMaster.GetByItemCode(stockMaster.ItemCode);
 
             if (stockMasterInDb == null)
-                return NotFound();
+                return NotFound("Item does not exist");
 
-            stockMasterInDb.UpdatedOn = DateTime.UtcNow; 
-            _stockMaster.UpdateAsync(stockMasterInDb);
+            _mapper.Map(stockMaster, stockMasterInDb);
 
-            return Ok();
+            stockMasterInDb.UpdatedOn = DateTime.UtcNow;
+
+            await _stockMaster.UpdateAsync(stockMasterInDb);
+
+            return Ok(stockMasterInDb);
         }
 
         [HttpDelete("{itemCode}")]
-        public IActionResult DeleteStockMaster(string itemCode)
+        public async Task<IActionResult> DeleteStockMaster(string itemCode)
         {
-            var stockMasterInDb = _stockMaster.GetStockByItemCode(itemCode);
+            var stockMasterInDb = _stockMaster.GetByItemCode(itemCode);
 
             if (stockMasterInDb == null)
-                return NotFound();
+                return NotFound("Item does not exist");
 
-            _stockMaster.Delete(itemCode);
+            await _stockMaster.Delete(itemCode);
 
             return Ok(stockMasterInDb);
         }
