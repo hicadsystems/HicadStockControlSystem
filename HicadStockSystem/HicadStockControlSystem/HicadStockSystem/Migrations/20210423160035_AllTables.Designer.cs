@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HicadStockSystem.Migrations
 {
     [DbContext(typeof(StockControlDBContext))]
-    [Migration("20210422121145_AllTables")]
+    [Migration("20210423160035_AllTables")]
     partial class AllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,7 +118,7 @@ namespace HicadStockSystem.Migrations
 
                     b.HasKey("BusinessLine");
 
-                    b.ToTable("  st_businessline");
+                    b.ToTable("st_businessline");
                 });
 
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_BuyerGuide", b =>

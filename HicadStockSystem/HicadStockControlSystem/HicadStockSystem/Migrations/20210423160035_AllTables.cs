@@ -24,24 +24,6 @@ namespace HicadStockSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "  st_businessline",
-                columns: table => new
-                {
-                    BusinessLine = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
-                    BusinessDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
-                    Business_Year = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
-                    Business_Month = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
-                    Cashier_Ac = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_  st_businessline", x => x.BusinessLine);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ac_businessline",
                 columns: table => new
                 {
@@ -121,6 +103,24 @@ namespace HicadStockSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GroupMenus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "st_businessline",
+                columns: table => new
+                {
+                    BusinessLine = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    BusinessDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
+                    Business_Year = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
+                    Business_Month = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
+                    Cashier_Ac = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_st_businessline", x => x.BusinessLine);
                 });
 
             migrationBuilder.CreateTable(
@@ -711,9 +711,6 @@ namespace HicadStockSystem.Migrations
                 name: "  ac_costcentre");
 
             migrationBuilder.DropTable(
-                name: "  st_businessline");
-
-            migrationBuilder.DropTable(
                 name: "ac_businessline");
 
             migrationBuilder.DropTable(
@@ -733,6 +730,9 @@ namespace HicadStockSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "RoleMenus");
+
+            migrationBuilder.DropTable(
+                name: "st_businessline");
 
             migrationBuilder.DropTable(
                 name: "st_buyerguide");

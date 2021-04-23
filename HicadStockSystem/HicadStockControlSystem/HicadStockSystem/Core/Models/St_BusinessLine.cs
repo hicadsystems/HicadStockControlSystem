@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace HicadStockSystem.Core.Models
 {
   
-    [Table("  st_businessline")]
+    [Table("st_businessline")]
     public class St_BusinessLine
     {
         [Key]

@@ -116,7 +116,7 @@ namespace HicadStockSystem.Migrations
 
                     b.HasKey("BusinessLine");
 
-                    b.ToTable("  st_businessline");
+                    b.ToTable("st_businessline");
                 });
 
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_BuyerGuide", b =>
