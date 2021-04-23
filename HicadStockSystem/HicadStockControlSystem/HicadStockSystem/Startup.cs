@@ -23,6 +23,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using HicadStockSystem.Mapping;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.IRespository;
+using HicadStockSystem.Persistence.Repository;
 
 namespace HicadStockSystem
 {
@@ -51,6 +53,7 @@ namespace HicadStockSystem
             services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();
             services.AddScoped<ISt_StockMaster, St_StockMasterRepo>();
             services.AddScoped<ISt_StockClass, St_StockClassRepo>();
+            services.AddScoped<ISt_BusinessLine, St_BusinessLineRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

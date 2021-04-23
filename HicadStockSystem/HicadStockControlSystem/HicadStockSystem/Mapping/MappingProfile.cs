@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HicadStockSystem.Controllers.ResourcesVM;
+using HicadStockSystem.Controllers.ResourcesVM.St_BusinessLine;
 using HicadStockSystem.Controllers.ResourcesVM.St_StkSystem;
 using HicadStockSystem.Controllers.ResourcesVM.St_StockClass;
 using HicadStockSystem.Controllers.ResourcesVM.St_StockMaster;
@@ -25,6 +26,10 @@ namespace HicadStockSystem.Mapping
 
             CreateMap<CreateStockMasterVM, St_StockMaster>().ReverseMap();
             CreateMap<UpdateStockMasterVM, St_StockMaster>().ReverseMap();
+
+            CreateMap<CreateBusinessLineVM, St_BusinessLine>().ReverseMap();
+            CreateMap<UpdateBusinessLineVM, St_BusinessLine>().ReverseMap();
+
         }
     }
 }

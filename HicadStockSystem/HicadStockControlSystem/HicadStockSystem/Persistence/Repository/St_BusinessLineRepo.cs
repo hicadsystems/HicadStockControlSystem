@@ -22,13 +22,36 @@ namespace HicadStockSystem.Persistence.Repository
             _dbContext = dbContext;
             _uow = uow;
         }
+
         public async Task CreateAsync(St_BusinessLine busLine)
         {
             await _dbContext.St_BusinessLines.AddAsync(busLine);
 
             await _uow.CompleteAsync();
+        }
 
+        public IEnumerable<St_BusinessLine> GetAll()
+        {
+            return _dbContext.St_BusinessLines.AsNoTracking().OrderBy(bl => bl.BusinessLine);
+        }
 
+        public St_BusinessLine GetByBusLine(string busLine)
+        {
+            return _dbContext.St_BusinessLines.Where(bl => bl.BusinessLine == busLine).FirstOrDefault();
+        }
+
+        public async Task UpdateAsync(St_BusinessLine busLine)
+        {
+            _dbContext.Update(busLine);
+            await _uow.CompleteAsync();
+
+        }
+
+        public async Task UpdateAsync(string busLine)
+        {
+            var busLineInDb = GetByBusLine(busLine);
+            _dbContext.Update(busLineInDb);
+            await _uow.CompleteAsync();
         }
 
         public async Task Delete(string busLine)
@@ -38,29 +61,5 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public IEnumerable<St_BusinessLine> GetAllBusLine()
-        {
-            return _dbContext.St_BusinessLines.AsNoTracking().OrderBy(bl => bl.BusinessLine);
-
-        }
-
-        public St_BusinessLine GetByBusLine(string busLine)
-        {
-            return _dbContext.St_BusinessLines.Where(bl => bl.BusinessLine == busLine).FirstOrDefault();
-
-        }
-
-        public async Task UpdateAsync(string busLine)
-        {
-            var busLineInDb = GetByBusLine(busLine);
-            _dbContext.St_BusinessLines.Update(busLineInDb);
-            await _uow.CompleteAsync();
-        }
-
-        public async Task UpdateAsync(St_BusinessLine busLine)
-        {
-            _dbContext.Update(busLine);
-            await _uow.CompleteAsync();
-        }
     }
 }
