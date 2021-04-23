@@ -16,17 +16,12 @@ namespace HicadStockSystem.Mapping
     {
         public MappingProfile()
         {
-            //Domain To API Resource
-            CreateMap<St_StkSystem, CreateSt_StkSystemVM>();
-
-            //API Resource To Domain
+            //API Resource To Domain and Domain To API Resource(Two way mapping)
             CreateMap<CreateSt_StkSystemVM, St_StkSystem>();
             CreateMap<UpdateSt_StkSystemVM, St_StkSystem>();
 
-            CreateMap<CreateStockClassVM, St_StockClass>();
-                //.ForMember(sc=>sc.SktClass, opt=>opt.MapFrom(cvm=>cvm.SktClass))
-                //.ForMember(sc=>sc.CreatedOn, opt=>opt.MapFrom(cvm=>cvm.CreatedOn));
-            CreateMap<UpdateStockClassVM, St_StockClass>();
+            CreateMap<CreateStockClassVM, St_StockClass>().ReverseMap();
+            CreateMap<UpdateStockClassVM, St_StockClass>().ReverseMap();
 
             CreateMap<CreateStockMasterVM, St_StockMaster>().ReverseMap();
             CreateMap<UpdateStockMasterVM, St_StockMaster>().ReverseMap();

@@ -20,37 +20,31 @@ namespace HicadStockSystem.Persistence
             _uow = uow;
         }
 
-        public IEnumerable<St_StockClass> GetAllStkClass()
-        {
-            return _dbContext.St_StockClasses.AsNoTracking().OrderBy(c => c.SktClass);
-        }
-
         public async Task CreateAsync(St_StockClass stockClass)
         {
             await _dbContext.St_StockClasses.AddAsync(stockClass);
             await _uow.CompleteAsync();
         }
 
-
-        //public async Task UpdateAsync(St_StockClass stockClass)
-        //{
-        //    _dbContext.St_StockClasses.Update(stockClass);
-        //    await _uow.CompleteAsync();
-        //}
-
-        public St_StockClass GetClassById(string classId)
+        public IEnumerable<St_StockClass> GetAll()
         {
-            return _dbContext.St_StockClasses.Where(c => c.SktClass == classId).FirstOrDefault();
-
+            return _dbContext.St_StockClasses
+                .AsNoTracking()
+                .OrderBy(sc => sc.SktClass);
         }
 
-        
-        public async Task Delete(string stockClass)
+        public St_StockClass GetById(string classId)
         {
-            var stockClassInDb = GetClassById(stockClass);
+            return _dbContext.St_StockClasses
+                .Where(sc => sc.SktClass == classId)
+                .FirstOrDefault();
+        }
+
+        public async Task DeleteAsync(string classId)
+        {
+            var stockClassInDb = GetById(classId);
             _dbContext.Remove(stockClassInDb);
             await _uow.CompleteAsync();
         }
-       
     }
 }

@@ -27,78 +27,52 @@ namespace HicadStockSystem.Controllers
         }
 
         
-        [HttpGet]
-        public IActionResult GetSTKClass()
+       [HttpGet]
+       public IActionResult GetAllStockClass()
         {
-            var stkclass = _stockClass.GetAllStkClass();
-            return Ok(stkclass);
+            var stockClass = _stockClass.GetAll();
+
+            return Ok(stockClass);
         }
 
         [HttpPost]
-        public IActionResult CreateStockClass([FromBody] CreateStockClassVM classVM)
+        public async Task<IActionResult> CreateStockClas([FromBody]CreateStockClassVM stockClassVM)
         {
-            if (ModelState.IsValid )
+            if (ModelState.IsValid)
             {
-                //var classAlreadyExist = _stockClass.GetClassById(classVM.SktClass);
-                var stockClass = _mapper.Map<CreateStockClassVM, St_StockClass>(classVM);
-                //if (classAlreadyExist.Equals(stockClass.SktClass))
-                //{
-                //    return Content("Class Already Exist");
-                //}
+                var newStockClass = _mapper.Map<CreateStockClassVM, St_StockClass>(stockClassVM);
 
-                stockClass.CreatedOn = DateTime.UtcNow;
+                newStockClass.CreatedOn = DateTime.Now;
 
-                _stockClass.CreateAsync(stockClass);
+                await _stockClass.CreateAsync(newStockClass);
 
-                return CreatedAtAction("GetSTKClass", new { stockClass.SktClass }, stockClass);
+                return Ok(newStockClass);
             }
 
             return new JsonResult("Something went wrong. Please try again") { StatusCode = 500 };
         }
 
-        /// <summary>
-        /// could be redundant
-        /// </summary>
-        /// <param name="classId"></param>
-        /// <returns></returns>
         [HttpGet("{classId}")]
         public IActionResult GetStockClassById(string classId)
         {
-            var stockClass = _stockClass.GetClassById(classId);
+            var stockClassInDb = _stockClass.GetById(classId);
+            if (stockClassInDb == null)
+                return NotFound("Stock Class does not exist");
 
-            if (stockClass==null)
-                return NotFound();
-
-            return Ok(stockClass);
+            return Ok(stockClassInDb);
         }
-        /// <summary>
-        /// Can't update the entity since it only column is a primary key
-        /// </summary>
-        /// <param name="classId"></param>
-        /// <returns></returns>
-        //[HttpPut]
-        //public IActionResult UpdateStockClass(UpdateStockClassVM classVM)
-        //{
-        //    var stockClass = _stockClass.GetClassById(classVM.SktClass);
 
-        //    if (stockClass == null)
-        //        return BadRequest();
-
-        //    _mapper.Map<UpdateStockClassVM, St_StockClass>(classVM, stockClass);
-        //    classVM.UpdatedOn = DateTime.UtcNow;
-
-        //    return Ok(stockClass);
-        //}
         [HttpDelete("{classId}")]
-        public IActionResult DeleteStockClass(string classId)
+        public async Task<IActionResult> DeleteStockClass(string classId) 
         {
-            var validStockClass = _stockClass.GetClassById(classId);
+            var stockClassInDb = _stockClass.GetById(classId);
+            if (stockClassInDb == null)
+                return NotFound("Stock Class does not exist");
+            await _stockClass.DeleteAsync(classId);
 
-            if (validStockClass==null)
-                return NotFound();
-
-            _stockClass.Delete(classId);
-            return Ok(validStockClass);
+            return Ok(classId);
         }
+
+        
     }
 }
