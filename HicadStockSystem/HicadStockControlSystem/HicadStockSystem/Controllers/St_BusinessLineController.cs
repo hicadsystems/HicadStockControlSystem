@@ -64,7 +64,10 @@ namespace HicadStockSystem.Controllers
             if (buslineInDb == null)
                 return NotFound("Sorry, Business Line you entered does not exist");
 
+            _mapper.Map(busLine, buslineInDb);
+
             buslineInDb.UpdatedOn = DateTime.Now;
+
             await _busLine.UpdateAsync(buslineInDb);
 
             return Ok(buslineInDb);
