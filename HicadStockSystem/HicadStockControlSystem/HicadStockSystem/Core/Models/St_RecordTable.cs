@@ -13,7 +13,7 @@ namespace HicadStockSystem.Core.Models
         [Key]
         [StringLength(10)]
         public string Code { get; set; }
-        public int RequsitionNo { get; set; }
+        public int? RequsitionNo { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
 

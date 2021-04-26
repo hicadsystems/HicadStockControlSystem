@@ -56,6 +56,8 @@ namespace HicadStockSystem
             services.AddScoped<ISt_BusinessLine, St_BusinessLineRepo>();
             services.AddScoped<ISt_Requisition, St_RequisitionRepo>();
             services.AddScoped<ISt_StkJournal, St_StkJournalRepo>();
+            services.AddScoped<ISt_Supplier, St_SupplierRepo>();
+            services.AddScoped<ISt_RecordTable, St_RecordTableRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

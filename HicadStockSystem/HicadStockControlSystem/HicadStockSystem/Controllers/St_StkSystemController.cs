@@ -44,8 +44,8 @@ namespace HicadStockSystem.Controllers
             if (ModelState.IsValid)
             {
                 var st_stkSytem = _mapper.Map<CreateSt_StkSystemVM, St_StkSystem>(stkSystemVM);
-                st_stkSytem.CreatedOn = DateTime.UtcNow;
-                st_stkSytem.InstallDate = DateTime.UtcNow;
+                st_stkSytem.CreatedOn = DateTime.Now;
+                st_stkSytem.InstallDate = DateTime.Now;
                 await _systemRepo.CreateAsync(st_stkSytem);
                 await _uow.CompleteAsync();
                 return CreatedAtAction("GetStkSystem", new { st_stkSytem.CompanyName, st_stkSytem.CompanyCode }, st_stkSytem);
@@ -72,7 +72,7 @@ namespace HicadStockSystem.Controllers
                 return NotFound();
 
             _mapper.Map<UpdateSt_StkSystemVM, St_StkSystem>(stkSystemVM, validSktSystem);
-            validSktSystem.UpdatedOn = DateTime.UtcNow;
+            validSktSystem.UpdatedOn = DateTime.Now;
            
             await _systemRepo.UpdateAsync(validSktSystem);
             return Ok(validSktSystem);

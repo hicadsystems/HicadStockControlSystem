@@ -38,7 +38,7 @@ namespace HicadStockSystem.Controllers
             if (ModelState.IsValid)
             {
                 var newStockMaster = _mapper.Map<CreateStockMasterVM, St_StockMaster>(stockMaster);
-                newStockMaster.CreatedOn = DateTime.UtcNow;
+                newStockMaster.CreatedOn = DateTime.Now;
                 await _stockMaster.CreateAsync(newStockMaster);
 
                 return CreatedAtAction("GetAllStockMaster", new { newStockMaster.ItemCode}, newStockMaster);
@@ -69,7 +69,7 @@ namespace HicadStockSystem.Controllers
 
             _mapper.Map(stockMaster, stockMasterInDb);
 
-            stockMasterInDb.UpdatedOn = DateTime.UtcNow;
+            stockMasterInDb.UpdatedOn = DateTime.Now;
 
             await _stockMaster.UpdateAsync(stockMasterInDb);
 
