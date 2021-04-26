@@ -32,6 +32,7 @@ namespace HicadStockSystem.Data
         public DbSet<Ac_CostCentre> Ac_CostCentres { get; set; }
         public DbSet<Ac_BusinessLine> Ac_BusinessLines { get; set; }
         public DbSet<St_Supplier> St_Suppliers { get; set; }
+        public DbSet<St_IssueRequisition> St_IssueRequisitions { get; set; }
 
 
 
