@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using HicadStockSystem.Controllers.ResourcesVM;
+using HicadStockSystem.Controllers.ResourcesVM.Ac_BusinessLine;
+using HicadStockSystem.Controllers.ResourcesVM.Ac_CostCentre;
 using HicadStockSystem.Controllers.ResourcesVM.St_BusinessLine;
 using HicadStockSystem.Controllers.ResourcesVM.St_BuyerGuide;
 using HicadStockSystem.Controllers.ResourcesVM.St_CostCentre;
@@ -69,6 +71,13 @@ namespace HicadStockSystem.Mapping
 
             CreateMap<CreateSt_CostCentreVM, St_CostCentre>();
             CreateMap<UpdateSt_CostCentreVM, St_CostCentre>();
+
+            CreateMap<CreateAc_BusinessLineVM, Ac_BusinessLine>();
+            CreateMap<UpdateAc_BusinessLineVM, Ac_BusinessLine>();
+
+
+            CreateMap<CreateAc_CostCentreVM, Ac_CostCentre>();
+            CreateMap<UpdateAc_CostCentreVM, Ac_CostCentre>();
         }
     }
 }

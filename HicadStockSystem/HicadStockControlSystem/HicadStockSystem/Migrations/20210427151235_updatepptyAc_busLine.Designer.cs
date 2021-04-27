@@ -4,14 +4,16 @@ using HicadStockSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HicadStockSystem.Migrations
 {
     [DbContext(typeof(StockControlDBContext))]
-    partial class StockControlDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210427151235_updatepptyAc_busLine")]
+    partial class updatepptyAc_busLine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +84,7 @@ namespace HicadStockSystem.Migrations
 
                     b.HasKey("UnitCode");
 
-                    b.ToTable("ac_costcentre");
+                    b.ToTable("  ac_costcentre");
                 });
 
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_BusinessLine", b =>

@@ -65,6 +65,9 @@ namespace HicadStockSystem
             services.AddScoped<ISt_CostCentre, St_CostCentreRepo>();
             services.AddScoped<ISt_BuyerGuide, St_BuyerGuideRepo>();
 
+            services.AddScoped<IAc_BusinessLine, Ac_BusinessLineRepo>();
+            services.AddScoped<IAc_CostCentre, Ac_CostCentreRepo>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.Configure<CookiePolicyOptions>(options =>

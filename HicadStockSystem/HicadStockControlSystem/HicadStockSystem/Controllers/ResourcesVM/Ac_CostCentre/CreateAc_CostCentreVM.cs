@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HicadStockSystem.Core.Models
+namespace HicadStockSystem.Controllers.ResourcesVM.Ac_CostCentre
 {
-    [Table("ac_costcentre")]
-    public class Ac_CostCentre
+    public class CreateAc_CostCentreVM
     {
-        [Key]
-        [StringLength(6)]
+        [Required]
+        [StringLength(3)]
         public string UnitCode { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
         public string UnitDesc { get; set; }
-        [StringLength(4)]
+        [StringLength(2)]
         public string UnitDiv { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
         public string UnitDivDesc { get; set; }
         public DateTime? DateCreated { get; set; }
-        public DateTime? UpdatedOn { get; set; }
+        //public DateTime? UpdatedOn { get; set; }
     }
 }

@@ -1,32 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HicadStockSystem.Core.Models
+namespace HicadStockSystem.Controllers.ResourcesVM.Ac_BusinessLine
 {
-    [Table("ac_businessline")]
-    public class Ac_BusinessLine
+    public class CreateAc_BusinessLineVM
     {
-        [Key]
-        [StringLength(4)]
+        [Required]
+        [StringLength(2)]
         public string BusinessLine { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
         public string BusinessDesc { get; set; }
-        [StringLength(12)]
+        [StringLength(6)]
         public string Status { get; set; }
-        [StringLength(8)]
+        [StringLength(4)]
         public string Business_Year { get; set; }
         [StringLength(2)]
         public string Business_Month { get; set; }
-        [StringLength(30)]
+        [StringLength(15)]
         public string Cashier_Ac { get; set; }
         public DateTime? DateCreated { get; set; }
-
-        public DateTime? UpdatedOn { get; set; }
-
-
+        //public DateTime? UpdatedOn { get; set; }
     }
 }
