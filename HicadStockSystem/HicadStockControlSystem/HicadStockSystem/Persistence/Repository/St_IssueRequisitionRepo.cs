@@ -2,6 +2,7 @@
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,27 +28,32 @@ namespace HicadStockSystem.Persistence.Repository
 
         public IEnumerable<St_IssueRequisition> GetAll()
         {
-            throw new NotImplementedException();
+            return _dbContext.St_IssueRequisitions.AsNoTracking().OrderBy(ir=>ir.ItemCode);
         }
 
         public St_IssueRequisition GetByCode(string itemCode)
         {
-            throw new NotImplementedException();
+            return _dbContext.St_IssueRequisitions.Where(ir => ir.ItemCode == itemCode).FirstOrDefault();
         }
 
-        public Task UpdateAsync(St_IssueRequisition issueRequisition)
+        public async Task UpdateAsync(St_IssueRequisition issueRequisition)
         {
-            throw new NotImplementedException();
+            _dbContext.Update(issueRequisition);
+            await _uow.CompleteAsync();
         }
 
-        public Task UpdateAsync(string itemCode)
+        public async Task UpdateAsync(string itemCode)
         {
-            throw new NotImplementedException();
+            var issueReqInDb = GetByCode(itemCode);
+            _dbContext.Update(issueReqInDb);
+            await _uow.CompleteAsync();
         }
 
-        public Task DeleteAsync(string code)
+        public async Task DeleteAsync(string itemCode)
         {
-            throw new NotImplementedException();
+            var issueReqInDb = GetByCode(itemCode);
+            _dbContext.Remove(issueReqInDb);
+            await _uow.CompleteAsync();
         }
     }
 }

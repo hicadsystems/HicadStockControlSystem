@@ -1,34 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HicadStockSystem.Core.Models
+namespace HicadStockSystem.Controllers.ResourcesVM.St_IssueApprove
 {
-    [Table("st_history")]
-    public class St_History
+    public class UpdateSt_HistoryVM
     {
         //composite key
-        [StringLength(40)]
+        [Required]
+        [StringLength(20)]
         public string ItemCode { get; set; }
-        [StringLength(24)]
+        [Required]
+        [StringLength(12)]
         public string DocNo { get; set; }
-        [StringLength(4)]
+        [Required]
+        [StringLength(2)]
         public string DocType { get; set; }
         public DateTime? DocDate { get; set; }
-        [StringLength(12)]
+        [StringLength(6)]
         public string Period { get; set; }
         public int Quantity { get; set; }
         public decimal? Price { get; set; }
         [StringLength(10)]
         public string Supplier { get; set; }
-        [StringLength(8)]
+        [StringLength(4)]
         public string Location { get; set; }
-        [StringLength(40)]
+        [StringLength(20)]
         public string UserId { get; set; }
-        public DateTime? DateCreated { get; set; }
+        //public DateTime? DateCreated { get; set; }
         public DateTime? UpdatedOn { get; set; }
     }
 }

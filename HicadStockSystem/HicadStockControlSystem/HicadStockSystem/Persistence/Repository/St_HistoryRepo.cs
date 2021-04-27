@@ -10,48 +10,50 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence.Repository
 {
-    public class St_ItemMasterRepo : ISt_ItemMaster
+    public class St_HistoryRepo : ISt_History
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
 
-        public St_ItemMasterRepo(StockControlDBContext dbContext, IUnitOfWork uow)
+        public St_HistoryRepo(StockControlDBContext dbContext, IUnitOfWork uow)
         {
             _dbContext = dbContext;
             _uow = uow;
         }
-        public async Task CreateAsync(St_ItemMaster itemMaster)
+        public async Task CreateAsync(St_History history)
         {
-            await _dbContext.St_ItemMasters.AddAsync(itemMaster);
+
+            await _dbContext.St_Histories.AddAsync(history);
             await _uow.CompleteAsync();
         }
 
-        public IEnumerable<St_ItemMaster> GetAll()
+        public IEnumerable<St_History> GetAll()
         {
-            return _dbContext.St_ItemMasters.AsNoTracking().OrderBy(ir => ir.ItemCode);
+            return _dbContext.St_Histories.AsNoTracking().OrderBy(h => h.ItemCode);
         }
 
-        public St_ItemMaster GetByCode(string itemCode)
+        public St_History GetByCode(string itemCode)
         {
-            return _dbContext.St_ItemMasters.Where(im => im.ItemCode == itemCode).FirstOrDefault();
+            return _dbContext.St_Histories.Where(h => h.ItemCode == itemCode).FirstOrDefault();
         }
 
-        public async Task UpdateAsync(St_ItemMaster itemMaster)
+        public async Task UpdateAsync(St_History history)
         {
-            _dbContext.Update(itemMaster);
+            _dbContext.Update(history);
             await _uow.CompleteAsync();
         }
 
         public async Task UpdateAsync(string itemCode)
         {
-            var itemMasterInDb = GetByCode(itemCode);
-            _dbContext.Update(itemMasterInDb);
+            var historyInDb = GetByCode(itemCode);
+            _dbContext.Update(historyInDb);
             await _uow.CompleteAsync();
         }
+
         public async Task DeleteAsync(string itemCode)
         {
-            var itemMasterInDb = GetByCode(itemCode);
-            _dbContext.Remove(itemMasterInDb);
+            var historyInDb = GetByCode(itemCode);
+            _dbContext.Remove(historyInDb);
             await _uow.CompleteAsync();
         }
     }

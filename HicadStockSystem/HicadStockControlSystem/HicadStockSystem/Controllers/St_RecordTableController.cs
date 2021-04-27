@@ -65,6 +65,7 @@ namespace HicadStockSystem.Controllers
             if (recordTableInDb == null)
                 return NotFound();
 
+            _mapper.Map(recordVM, recordTableInDb);
             recordTableInDb.UpdatedOn = DateTime.Now;
             await _recordTable.UpdateAsync(recordTableInDb);
 
