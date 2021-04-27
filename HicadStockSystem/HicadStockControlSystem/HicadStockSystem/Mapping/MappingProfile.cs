@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using HicadStockSystem.Controllers.ResourcesVM;
 using HicadStockSystem.Controllers.ResourcesVM.St_BusinessLine;
+using HicadStockSystem.Controllers.ResourcesVM.St_BuyerGuide;
+using HicadStockSystem.Controllers.ResourcesVM.St_CostCentre;
 using HicadStockSystem.Controllers.ResourcesVM.St_History;
 using HicadStockSystem.Controllers.ResourcesVM.St_IssueApprove;
 using HicadStockSystem.Controllers.ResourcesVM.St_IssueRequisition;
@@ -61,6 +63,12 @@ namespace HicadStockSystem.Mapping
 
             CreateMap<CreateSt_IssueApproveVM, St_IssueApprove>();
             CreateMap<UpdateSt_IssueApproveVM, St_IssueApprove>();
+
+            CreateMap<CreateSt_BuyerGuideVM, St_BuyerGuide>();
+            CreateMap<UpdateSt_BuyerGuideVM, St_BuyerGuide>();
+
+            CreateMap<CreateSt_CostCentreVM, St_CostCentre>();
+            CreateMap<UpdateSt_CostCentreVM, St_CostCentre>();
         }
     }
 }

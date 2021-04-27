@@ -62,6 +62,8 @@ namespace HicadStockSystem
             services.AddScoped<ISt_IssueRequisition, St_IssueRequisitionRepo>();
             services.AddScoped<ISt_IssueApprove, St_IssueApproveRepo>();
             services.AddScoped<ISt_History, St_HistoryRepo>();
+            services.AddScoped<ISt_CostCentre, St_CostCentreRepo>();
+            services.AddScoped<ISt_BuyerGuide, St_BuyerGuideRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
