@@ -223,12 +223,12 @@ export default {
       },
     };
   },
-  mounted(){
-    axios.get(`/api/st_stksystem/getstates`)
-           .then(response=>{
-               this.stateList= response.data
-           })
-  },
+  // mounted(){
+  //   axios.get(`/api/st_stksystem/getstates`)
+  //          .then(response=>{
+  //              this.stateList= response.data
+  //          })
+  // },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
       (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),

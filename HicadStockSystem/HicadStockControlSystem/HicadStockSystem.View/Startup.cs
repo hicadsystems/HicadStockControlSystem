@@ -1,8 +1,10 @@
 using HicadStockSystem.Core;
+using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
 using HicadStockSystem.Mapping;
 using HicadStockSystem.Persistence;
+using HicadStockSystem.Persistence.Repository;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,6 +58,22 @@ namespace HicadStockSystem.View
             services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();
             services.AddScoped<ISt_StockMaster, St_StockMasterRepo>();
             services.AddScoped<ISt_StockClass, St_StockClassRepo>();
+            services.AddScoped<ISt_BusinessLine, St_BusinessLineRepo>();
+            services.AddScoped<ISt_Requisition, St_RequisitionRepo>();
+            services.AddScoped<ISt_StkJournal, St_StkJournalRepo>();
+            services.AddScoped<ISt_Supplier, St_SupplierRepo>();
+            services.AddScoped<ISt_RecordTable, St_RecordTableRepo>();
+            services.AddScoped<ISt_ItemMaster, St_ItemMasterRepo>();
+            services.AddScoped<ISt_IssueRequisition, St_IssueRequisitionRepo>();
+            services.AddScoped<ISt_IssueApprove, St_IssueApproveRepo>();
+            services.AddScoped<ISt_History, St_HistoryRepo>();
+            services.AddScoped<ISt_CostCentre, St_CostCentreRepo>();
+            services.AddScoped<ISt_BuyerGuide, St_BuyerGuideRepo>();
+
+            services.AddScoped<IAc_BusinessLine, Ac_BusinessLineRepo>();
+            services.AddScoped<IAc_CostCentre, Ac_CostCentreRepo>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

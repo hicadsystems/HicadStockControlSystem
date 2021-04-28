@@ -5,22 +5,23 @@
        <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                 <th>Company Code</th>
-                 <th>Company name</th>
-                 <th>Company Address</th>
-                 <th>Company Email</th>
+                 <th>Supplier Code</th>
+                 <th>Supplier name</th>
+                 <th>Supplier Address</th>
+                 <th>Phone Number</th>
+                 <th></th>
                 </tr>
             </thead>
              <tbody>  
                     <tr v-for="(status,index) in statusList" :key="index" >
                        
-                         <td>{{status.companyCode }}</td>
-                         <td>{{status.companyName }}</td>
-                         <td>{{status.companyAddress }}</td>
-                         <td>{{status.email}}</td>
+                         <td>{{status.supplierCode }}</td>
+                         <td>{{status.name }}</td>
+                         <td>{{status.address }}</td>
+                         <td>{{status.phone}}</td>
                         <td>
                         <button type="button" class="btn btn-submit btn-primary" @click="processRetrieve(status)">Edit</button>
-                        <button type="button" class="btn btn-submit btn-primary" @click="processDelete(status.companyCode)">Delete</button>
+                        <button type="button" class="btn btn-submit btn-primary" @click="processDelete(status.supplierCode)">Delete</button>
                         </td>
                         
                     </tr>                      
@@ -44,34 +45,34 @@ export default {
         },
     watch:{
          '$store.state.objectToUpdate':function (newVal, oldVal) {
-            this.getAllCompany();
+            this.getAllSuppliers();
             this.processDelete();
         }
     },
     mounted () {
-        this.getAllCompany();
+        this.getAllSuppliers();
      },
      methods: {
         processRetrieve : function (Status) {
            // alert(Status)
             this.$store.state.objectToUpdate = Status;
          },
-         processDelete: function (companyCode) {
+         processDelete: function (supplierCode) {
              //alert(companyCode);
-             axios.delete(`/api/st_stksystem/${companyCode}`)
+             axios.delete(`/api/supplier${supplierCode}`)
                  .then(response => {
                      if (response.data.responseCode == '200') {
-                         alert("company successfully deleted");
-                         this.getAllCompany();
+                         alert("Supplier successfully deleted");
+                         this.getAllSuppliers();
                      }
                  }).catch(e => {
                             this.errors.push(e)
                         });
 
          },
-         getAllCompany: function () {
+         getAllSuppliers: function () {
              axios
-            .get('/api/st_stksystem/')
+            .get('/api/supplier')
             .then(response => (this.statusList = response.data))
          }
     }

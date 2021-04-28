@@ -54,5 +54,15 @@ namespace HicadStockSystem.Persistence.Repository
             _dbContext.Remove(itemMasterInDb);
             await _uow.CompleteAsync();
         }
+
+        public IEnumerable<string> GetStockClass()
+        {
+            return _dbContext.St_StockClasses.Select(sc => sc.SktClass).ToList();
+        }
+
+        public IEnumerable<St_BusinessLine> GetBusinessLine()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

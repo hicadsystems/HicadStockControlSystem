@@ -82,5 +82,14 @@ namespace HicadStockSystem.Controllers
             return Ok(itemMasterInDb);
         }
 
+        [HttpGet]
+        [Route("getstockclass")]
+        public IActionResult GetStockClass()
+        {
+            var stockClass = _itemMaster.GetStockClass();
+
+            return Ok(stockClass);
+        }
+
     }
 }

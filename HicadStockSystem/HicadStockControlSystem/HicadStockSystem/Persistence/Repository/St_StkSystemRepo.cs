@@ -60,5 +60,10 @@ namespace HicadStockSystem.Persistence
             return _dbContext.StateLists.AsNoTracking()
                 .OrderBy(sys => sys.StateName);
         }
+
+        public IEnumerable<St_BusinessLine> GetAllBusinessLine()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
