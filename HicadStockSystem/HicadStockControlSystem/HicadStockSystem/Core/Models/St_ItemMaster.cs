@@ -11,35 +11,42 @@ namespace HicadStockSystem.Core.Models
     public class St_ItemMaster
     {
         [Key]
-        [StringLength(12)]
+        [StringLength(6)]
+        //uniquely identify items in store
         public string ItemCode { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
+        //further decribe item code
         public string ItemDesc { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
+        //session where items are located in the store
         public string StoreLoc { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
+        //racks in a session that holds the items
         public string Storerack { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
+        //bin in a session that holds the item
         public string Storebin { get; set; }
-
+        //min reached qty before new order is placed 
         public int ReOrderLevel { get; set; }
+        //qty to be consumed before new order arrives
         public int ReOrderQty { get; set; }
-        [StringLength(20)]
+        [StringLength(10)]
+        //e.g pieces, cartons
         public string Units { get; set; }
-        [StringLength(24)]
+        [StringLength(12)]
         //cross reference
         public string XRef { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
         public string Supplier1 { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
         public string Supplier2 { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
         public string Supplier3 { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
         public string Supplier4 { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
         public string Supplier5 { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
         public string Supplier6 { get; set; }
         [StringLength(30)]
         //class description

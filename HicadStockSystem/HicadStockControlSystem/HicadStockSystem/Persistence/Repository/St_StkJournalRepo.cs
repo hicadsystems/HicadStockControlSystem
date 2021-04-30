@@ -29,9 +29,9 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
         
-        public IEnumerable<St_StkJournal> GetAll()
+        public async Task<IEnumerable<St_StkJournal>> GetAll()
         {
-            return _dbContext.St_StkJournals.AsNoTracking().OrderBy(sj => sj.Stk_Company);
+            return await _dbContext.St_StkJournals.ToListAsync();
         }
 
         public St_StkJournal GetByCompany(string coy)

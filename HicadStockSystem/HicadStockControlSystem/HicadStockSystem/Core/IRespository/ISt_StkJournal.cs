@@ -17,7 +17,7 @@ namespace HicadStockSystem.Core.IRespository
         //St_StkJournal GetByAccount(string acct);
         Task UpdateAsync(St_StkJournal stkJournal);
         Task UpdateAsync(string comp);
-        IEnumerable<St_StkJournal> GetAll();
+        Task<IEnumerable<St_StkJournal>> GetAll();
         Task DeleteAsync(string coy);
 
     }

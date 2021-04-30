@@ -12,7 +12,7 @@ namespace HicadStockSystem.Core.IRespository
         St_CostCentre GetByItemCode(string code);
         Task UpdateAsync(string code);
         Task UpdateAsync(St_CostCentre costCentre);
-        IEnumerable<St_CostCentre> GetAll();
+        Task<IEnumerable<St_CostCentre>> GetAll();
         Task DeleteAsync(string code);
 
     }

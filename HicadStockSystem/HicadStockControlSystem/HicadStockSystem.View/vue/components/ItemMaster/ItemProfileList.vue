@@ -15,14 +15,14 @@
              <tbody>  
                     <tr v-for="(status,index) in statusList" :key="index" >
                        
-                         <td>{{status.companyCode }}</td>
-                         <td>{{status.companyName }}</td>
-                         <td>{{status.companyAddress }}</td>
-                         <td>{{status.email}}</td>
+                         <td>{{status.itemCode }}</td>
+                         <td>{{status.itemDesc }}</td>
+                         <td>{{status.storeLoc }}</td>
+                         <td>{{status.storerack}}</td>
 
                         <td>
                         <button type="button" class="btn btn-submit btn-primary" @click="processRetrieve(status)">Edit</button>
-                        <button type="button" class="btn btn-submit btn-primary" @click="processDelete(status.companyCode)">Delete</button>
+                        <button type="button" class="btn btn-submit btn-primary" @click="processDelete(status.itemCode)">Delete</button>
                         </td>
                         
                     </tr>                      
@@ -46,35 +46,35 @@ export default {
         },
     watch:{
          '$store.state.objectToUpdate':function (newVal, oldVal) {
-            this.getAllCompany();
+            this.getAllStockItems();
             this.processDelete();
             // this.processRetrieve();
         }
     },
     mounted () {
-        this.getAllCompany();
+        this.getAllStockItems();
      },
      methods: {
         processRetrieve : function (Status) {
            // alert(Status)
             this.$store.state.objectToUpdate = Status;
          },
-         processDelete: function (companyCode) {
+         processDelete: function (itemCode) {
              //alert(companyCode);
-             axios.delete(`/api/st_stksystem/${companyCode}`)
+             axios.delete(`/api/itemmaster/${itemCode}`)
                  .then(response => {
                      if (response.data.responseCode == '200') {
                          alert("company successfully deleted");
-                         this.getAllCompany();
+                         this.getAllStockItems();
                      }
                  }).catch(e => {
                             this.errors.push(e)
                         });
 
          },
-         getAllCompany: function () {
+         getAllStockItems   : function () {
              axios
-            .get('/api/st_stksystem/')
+            .get('/api/itemmaster/')
             .then(response => (this.statusList = response.data))
          }
     }

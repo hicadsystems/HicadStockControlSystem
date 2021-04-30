@@ -24,9 +24,9 @@ namespace HicadStockSystem.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult GetAllCostCenter()
+        public async Task<IActionResult> GetAllCostCenter()
         {
-            var costCenter = _costCentre.GetAll();
+            var costCenter = await _costCentre.GetAll();
             return Ok(costCenter);
         }
 

@@ -24,9 +24,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllRequistion()
+        public async Task<IActionResult> GetAllRequistion()
         {
-            var requisition = _requisition.GetAll();
+            var requisition = await _requisition.GetAll();
             return Ok(requisition);
         } 
 

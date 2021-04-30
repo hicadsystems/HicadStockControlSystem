@@ -29,9 +29,9 @@ namespace HicadStockSystem.Persistence
             await _uow.CompleteAsync();
         }
 
-        public IEnumerable<St_StockMaster> GetAll()
+        public async Task<IEnumerable<St_StockMaster>> GetAll()
         {
-            return  _dbContext.St_StockMasters.AsNoTracking().OrderBy(sm=>sm.ItemCode);
+            return await _dbContext.St_StockMasters.ToListAsync();
         }
 
         public St_StockMaster GetByItemCode(string itemCode)

@@ -14,8 +14,8 @@ namespace HicadStockSystem.Repository.IRepository
         Task UpdateAsync(St_StkSystem stkSystem);
         Task UpdateAsync(string compcode);
         Task Delete(string compcode);
-        IEnumerable<St_StkSystem> GetAll();
-        IEnumerable<StateList> GetAllState();
+        Task<IEnumerable<St_StkSystem>> GetAll();
+        Task<IEnumerable<StateList>> GetAllState();
 
         IEnumerable<St_BusinessLine> GetAllBusinessLine();
     }

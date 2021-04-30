@@ -24,9 +24,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllBuyerGuide()
+        public async Task<IActionResult> GetAllBuyerGuide()
         {
-            var buyerGuide = _buyerGuide.GetAll();
+            var buyerGuide = await _buyerGuide.GetAll();
             return Ok(buyerGuide);
         }
 

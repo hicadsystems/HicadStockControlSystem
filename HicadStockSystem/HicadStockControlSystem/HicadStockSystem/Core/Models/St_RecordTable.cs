@@ -11,7 +11,7 @@ namespace HicadStockSystem.Core.Models
     public class St_RecordTable
     {
         [Key]
-        [StringLength(10)]
+        [StringLength(5)]
         public string Code { get; set; }
         public int? RequsitionNo { get; set; }
         public DateTime? CreatedOn { get; set; }

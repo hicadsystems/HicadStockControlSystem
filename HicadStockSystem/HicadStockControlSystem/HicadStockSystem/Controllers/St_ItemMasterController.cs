@@ -23,9 +23,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllItemMaster()
+        public async Task<IActionResult> GetAllItemMaster()
         {
-            var itemMaster = _itemMaster.GetAll();
+            var itemMaster = await _itemMaster.GetAll();
             return Ok(itemMaster);
         }
 
@@ -84,12 +84,20 @@ namespace HicadStockSystem.Controllers
 
         [HttpGet]
         [Route("getstockclass")]
-        public IActionResult GetStockClass()
+        public async Task<IActionResult> GetStockClass()
         {
-            var stockClass = _itemMaster.GetStockClass();
+            var stockClass = await _itemMaster.GetStockClass();
 
             return Ok(stockClass);
         }
 
+        [HttpGet]
+        [Route("getbusinessline")]
+        public async Task<IActionResult> GetBusinessLine()
+        {
+            var busLine = await _itemMaster.GetBusinessLine();
+
+            return Ok(busLine);
+        }
     }
 }

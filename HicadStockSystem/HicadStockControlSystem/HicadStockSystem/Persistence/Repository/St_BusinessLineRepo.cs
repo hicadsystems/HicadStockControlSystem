@@ -30,9 +30,9 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public IEnumerable<St_BusinessLine> GetAll()
+        public async Task<IEnumerable<St_BusinessLine>> GetAll()
         {
-            return _dbContext.St_BusinessLines.AsNoTracking().OrderBy(bl => bl.BusinessLine);
+            return await _dbContext.St_BusinessLines.ToListAsync(); 
         }
 
         public St_BusinessLine GetByBusLine(string busLine)

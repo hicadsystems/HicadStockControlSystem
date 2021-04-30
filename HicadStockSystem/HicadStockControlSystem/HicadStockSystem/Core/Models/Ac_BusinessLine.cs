@@ -11,17 +11,17 @@ namespace HicadStockSystem.Core.Models
     public class Ac_BusinessLine
     {
         [Key]
-        [StringLength(4)]
+        [StringLength(2)]
         public string BusinessLine { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
         public string BusinessDesc { get; set; }
-        [StringLength(12)]
+        [StringLength(6)]
         public string Status { get; set; }
-        [StringLength(8)]
+        [StringLength(4)]
         public string Business_Year { get; set; }
         [StringLength(2)]
         public string Business_Month { get; set; }
-        [StringLength(30)]
+        [StringLength(15)]
         public string Cashier_Ac { get; set; }
         public DateTime? DateCreated { get; set; }
 

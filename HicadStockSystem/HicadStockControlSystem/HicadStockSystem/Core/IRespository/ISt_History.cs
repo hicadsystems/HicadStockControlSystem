@@ -12,7 +12,7 @@ namespace HicadStockSystem.Core.IRespository
         St_History GetByCode(string itemCode);
         Task UpdateAsync(St_History issueApprove);
         Task UpdateAsync(string itemCode);
-        IEnumerable<St_History> GetAll();
+        Task<IEnumerable<St_History>> GetAll();
         Task DeleteAsync(string itemCode);
     }
 }

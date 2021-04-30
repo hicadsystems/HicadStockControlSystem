@@ -28,10 +28,9 @@ namespace HicadStockSystem.Controllers
 
         
        [HttpGet]
-       public IActionResult GetAllStockClass()
+       public async Task<IActionResult> GetAllStockClass()
         {
-            var stockClass = _stockClass.GetAll();
-
+            var stockClass = await _stockClass.GetAll();
             return Ok(stockClass);
         }
 

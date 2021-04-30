@@ -23,9 +23,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllIssueReq()
+        public async Task<IActionResult> GetAllIssueReq()
         {
-            var IssueReq = _IssueReq.GetAll();
+            var IssueReq = await _IssueReq.GetAll();
             return Ok(IssueReq);
         }
 

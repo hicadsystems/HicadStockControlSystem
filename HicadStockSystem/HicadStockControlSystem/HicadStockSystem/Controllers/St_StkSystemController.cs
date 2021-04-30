@@ -31,10 +31,10 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public  IActionResult GetStkSystem()
+        public async Task<IActionResult> GetStkSystem()
         {
             //_systemRepo.GetAllState();
-            var stkSystem = _systemRepo.GetAll();
+            var stkSystem = await _systemRepo.GetAll();
             return Ok(stkSystem);
         }
 
@@ -93,9 +93,9 @@ namespace HicadStockSystem.Controllers
 
         [HttpGet]
         [Route("getstates")]
-        public IActionResult GetStates()
+        public async Task<IActionResult> GetStates()
         {
-            var states = _systemRepo.GetAllState();
+            var states = await _systemRepo.GetAllState();
             return Ok(states);
         }
     }

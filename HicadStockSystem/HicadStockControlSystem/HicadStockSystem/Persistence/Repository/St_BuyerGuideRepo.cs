@@ -26,9 +26,9 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public IEnumerable<St_BuyerGuide> GetAll()
+        public async Task<IEnumerable<St_BuyerGuide>> GetAll()
         {
-            return _dbcontext.St_BuyerGuides.AsNoTracking().OrderBy(bg => bg.ItemCode);
+            return await _dbcontext.St_BuyerGuides.ToListAsync();
         }
 
         public St_BuyerGuide GetByItemCode(string code)

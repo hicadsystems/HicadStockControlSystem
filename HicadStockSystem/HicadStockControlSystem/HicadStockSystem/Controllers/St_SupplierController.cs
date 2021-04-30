@@ -24,9 +24,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllSuppliers()
+        public async Task<IActionResult> GetAllSuppliers()
         {
-            var suppliers = _supplier.GetAll();
+            var suppliers = await _supplier.GetAll();
             return Ok(suppliers);
         }
 
@@ -64,6 +64,7 @@ namespace HicadStockSystem.Controllers
             if (supplierInDb == null)
                 return NotFound();
 
+            _mapper.Map(supplierVM, supplierInDb);
             supplierInDb.UpdatedOn = DateTime.Now;
             await _supplier.UpdateAsync(supplierInDb);
 

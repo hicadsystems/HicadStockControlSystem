@@ -12,7 +12,7 @@ namespace HicadStockSystem.Core.IRespository
         St_BuyerGuide GetByItemCode(string code);
         Task UpdateAsync(St_BuyerGuide buyerGuide);
         Task UpdateAsync(string code);
-        IEnumerable<St_BuyerGuide> GetAll();
+        Task<IEnumerable<St_BuyerGuide>> GetAll();
         Task DeleteAsync(string code);
     }
 }

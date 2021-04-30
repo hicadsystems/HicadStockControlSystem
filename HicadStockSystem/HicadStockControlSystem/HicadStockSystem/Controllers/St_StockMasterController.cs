@@ -24,11 +24,11 @@ namespace HicadStockSystem.Controllers
         }
        
         [HttpGet]
-        public IActionResult GetAllStockMaster()
+        public async Task<IActionResult> GetAllStockMaster()
         
         {
 
-            var stockMaster = _stockMaster.GetAll();
+            var stockMaster = await _stockMaster.GetAll();
             return Ok(stockMaster);
         }
 

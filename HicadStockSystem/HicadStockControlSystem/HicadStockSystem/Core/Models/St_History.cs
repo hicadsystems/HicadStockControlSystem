@@ -11,22 +11,22 @@ namespace HicadStockSystem.Core.Models
     public class St_History
     {
         //composite key
-        [StringLength(40)]
+        [StringLength(20)]
         public string ItemCode { get; set; }
-        [StringLength(24)]
+        [StringLength(12)]
         public string DocNo { get; set; }
-        [StringLength(4)]
+        [StringLength(2)]
         public string DocType { get; set; }
         public DateTime? DocDate { get; set; }
-        [StringLength(12)]
+        [StringLength(6)]
         public string Period { get; set; }
         public int Quantity { get; set; }
         public decimal? Price { get; set; }
-        [StringLength(10)]
+        [StringLength(5)]
         public string Supplier { get; set; }
-        [StringLength(8)]
+        [StringLength(4)]
         public string Location { get; set; }
-        [StringLength(40)]
+        [StringLength(20)]
         public string UserId { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? UpdatedOn { get; set; }

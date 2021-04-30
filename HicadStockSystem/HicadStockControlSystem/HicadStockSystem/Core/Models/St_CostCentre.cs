@@ -11,13 +11,13 @@ namespace HicadStockSystem.Core.Models
     public class St_CostCentre
     {
         [Key]
-        [StringLength(6)]
+        [StringLength(3)]
         public string UnitCode { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
         public string UnitDesc { get; set; }
-        [StringLength(4)]
+        [StringLength(2)]
         public string UnitDiv { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
         public string UnitDivDesc { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? UpdatedOn { get; set; }

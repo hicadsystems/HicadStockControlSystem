@@ -28,9 +28,9 @@ namespace HicadStockSystem.Persistence.Repository
 
      
 
-        public IEnumerable<St_RecordTable> GetAll()
+        public async Task<IEnumerable<St_RecordTable>> GetAll()
         {
-            return _dbContext.St_RecordTables.AsNoTracking().OrderBy(rt => rt.Code);
+            return await _dbContext.St_RecordTables.ToListAsync();
         }
 
         public St_RecordTable GetByCode(string code)

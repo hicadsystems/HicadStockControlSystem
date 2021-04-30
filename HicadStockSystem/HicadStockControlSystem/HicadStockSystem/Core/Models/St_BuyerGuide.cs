@@ -11,31 +11,31 @@ namespace HicadStockSystem.Core.Models
     public class St_BuyerGuide
     {
         [Key]
-        [StringLength(24)]
+        [StringLength(12)]
         public string ItemCode { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
         public string ItemDesc { get; set; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string Supplier1 { get; set; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string Supplier2 { get; set; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string Supplier3 { get; set; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string Supplier4 { get; set; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string Supplier5 { get; set; }
-        [StringLength(20)]
+        [StringLength(10)]
         public string Code1 { get; set; }
-        [StringLength(20)]
+        [StringLength(10)]
         public string Code2 { get; set; }
-        [StringLength(20)]
+        [StringLength(10)]
         public string Code3 { get; set; }
-        [StringLength(20)]
+        [StringLength(10)]
         public string Code4 { get; set; }
-        [StringLength(20)]
+        [StringLength(10)]
         public string Code5 { get; set; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string CompanyName { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? UpdatedOn { get; set; }

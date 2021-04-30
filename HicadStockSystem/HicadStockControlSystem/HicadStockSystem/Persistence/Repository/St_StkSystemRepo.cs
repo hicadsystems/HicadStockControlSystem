@@ -23,11 +23,9 @@ namespace HicadStockSystem.Persistence
             await _dbContext.St_StkSystems.AddAsync(stkSystem);
         }
 
-        public IEnumerable<St_StkSystem> GetAll()
+        public async Task<IEnumerable<St_StkSystem>> GetAll()
         {
-            return _dbContext.St_StkSystems.AsNoTracking()
-                .Include(sys=>sys.StateList)
-                .OrderBy(sys => sys.CompanyName);
+            return await _dbContext.St_StkSystems.ToListAsync();
 
         }
 
@@ -55,10 +53,9 @@ namespace HicadStockSystem.Persistence
             await _dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<StateList> GetAllState()
+        public async Task<IEnumerable<StateList>> GetAllState()
         {
-            return _dbContext.StateLists.AsNoTracking()
-                .OrderBy(sys => sys.StateName);
+            return await _dbContext.StateLists.ToListAsync();
         }
 
         public IEnumerable<St_BusinessLine> GetAllBusinessLine()

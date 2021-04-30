@@ -13,6 +13,6 @@ namespace HicadStockSystem.Core.IRespository
         Task UpdateAsync(St_BusinessLine busLine);
         Task UpdateAsync(string busLine);
         Task Delete(string busLine);
-        IEnumerable<St_BusinessLine> GetAll();
+        Task<IEnumerable<St_BusinessLine>> GetAll();
     }
 }

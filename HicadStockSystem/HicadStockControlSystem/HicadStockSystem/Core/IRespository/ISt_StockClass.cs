@@ -8,7 +8,7 @@ namespace HicadStockSystem.Core.Models
     public interface ISt_StockClass
     {
         Task CreateAsync(St_StockClass stockClass);
-        IEnumerable<St_StockClass> GetAll();
+        Task<IEnumerable<St_StockClass>> GetAll();
         St_StockClass GetById(string classId);
         Task DeleteAsync(string classId);
 

@@ -26,9 +26,9 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public IEnumerable<St_ItemMaster> GetAll()
+        public async Task<IEnumerable<St_ItemMaster>> GetAll()
         {
-            return _dbContext.St_ItemMasters.AsNoTracking().OrderBy(ir => ir.ItemCode);
+            return await _dbContext.St_ItemMasters.ToListAsync();
         }
 
         public St_ItemMaster GetByCode(string itemCode)
@@ -55,14 +55,14 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public IEnumerable<string> GetStockClass()
+        public async Task<IEnumerable<string>> GetStockClass()
         {
-            return _dbContext.St_StockClasses.Select(sc => sc.SktClass).ToList();
+            return await _dbContext.St_StockClasses.Select(sc => sc.SktClass).ToListAsync();
         }
 
-        public IEnumerable<St_BusinessLine> GetBusinessLine()
+        public async Task<IEnumerable<string>> GetBusinessLine()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Ac_BusinessLines.Select(sc => sc.BusinessLine).ToListAsync();
         }
     }
 }

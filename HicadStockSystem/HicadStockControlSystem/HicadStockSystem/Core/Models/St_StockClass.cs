@@ -12,7 +12,7 @@ namespace HicadStockSystem.Core.Models
     public class St_StockClass
     {
         [Key]
-        [StringLength(30)]
+        [StringLength(15)]
         public string SktClass { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }

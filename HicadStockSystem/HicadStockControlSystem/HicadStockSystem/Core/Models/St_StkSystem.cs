@@ -12,34 +12,34 @@ namespace HicadStockSystem.Models
     public class St_StkSystem
     {
         [Key]
-        [StringLength(20)]
+        [StringLength(10)]
         public string CompanyCode { get; set; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string CompanyName { get; set; }
-        [StringLength(120)]
-        public string CompanyAddress { get; set; }
-        [StringLength(20)]
-        public string Phone { get; set; }
         [StringLength(60)]
+        public string CompanyAddress { get; set; }
+        [StringLength(10)]
+        public string Phone { get; set; }
+        [StringLength(30)]
         public string Email { get; set; }
-        public StateList StateList { get; set; }
+        public StateList State { get; set; }
         public byte StateListId { get; set; }
-        [StringLength(80)]
+        [StringLength(40)]
         public string Town_City { get; set; }
         [Column(TypeName = "smalldatetime")]
         public DateTime InstallDate { get; set; }
-        [StringLength(60)]
-        public string SerialNumber { get; set; }
         [StringLength(30)]
+        public string SerialNumber { get; set; }
+        [StringLength(15)]
         public string GLCode { get; set; }
         
         public int ProcessYear { get; set; }
         public int ProcessMonth { get; set; }
-        [StringLength(30)]
+        [StringLength(15)]
         public string ExpenseCode { get; set; }
-        [StringLength(30)]
+        [StringLength(15)]
         public string WriteoffLoc { get; set; }
-        [StringLength(30)]
+        [StringLength(15)]
         public string CreditorsCode { get; set; }
         [StringLength(2)]
         public string BusLine { get; set; }

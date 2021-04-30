@@ -24,9 +24,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllBusinessLine()
+        public async Task<IActionResult> GetAllBusinessLine()
         {
-            var busLine = _busLine.GetAll();
+            var busLine = await _busLine.GetAll();
 
             return Ok(busLine);
         }

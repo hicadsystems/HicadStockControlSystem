@@ -54,7 +54,8 @@
               />
             </div>
             <div class="col-6">
-              <select class="form-control"
+              <select
+                class="form-control"
                 v-model="postBody.stateName"
                 name="stateName"
                 placeholder="state"
@@ -80,7 +81,6 @@
                 placeholder="city"
               />
             </div>
-
             <div class="col-6">
               <datepicker
                 name="installDate "
@@ -89,6 +89,7 @@
               ></datepicker>
             </div>
           </div>
+
           <br />
           <div class="row">
             <div class="col-6">
@@ -102,14 +103,23 @@
             <div class="col-6">
               <input
                 class="form-control"
-                name="processYear "
-                v-model="postBody.processYear"
-                placeholder="Process Year"
+                name="glCode"
+                v-model="postBody.glCode"
+                placeholder="GL Code"
               />
             </div>
           </div>
           <br />
           <div class="row">
+            <div class="col-6">
+              <input
+                class="form-control"
+                name="processYear "
+                v-model="postBody.processYear"
+                placeholder="Process Year"
+              />
+            </div>
+
             <div class="col-6">
               <input
                 class="form-control"
@@ -118,6 +128,9 @@
                 placeholder="Process Month"
               />
             </div>
+          </div>
+          <br />
+          <div class="row">
             <div class="col-6">
               <input
                 class="form-control"
@@ -126,9 +139,6 @@
                 placeholder="Expense Code"
               />
             </div>
-          </div>
-          <br />
-          <div class="row">
             <div class="col-6">
               <input
                 class="form-control"
@@ -137,6 +147,9 @@
                 placeholder="Write off Location"
               />
             </div>
+          </div>
+          <br />
+          <div class="row">
             <div class="col-6">
               <input
                 class="form-control"
@@ -145,17 +158,18 @@
                 placeholder="Creditors Code"
               />
             </div>
-          </div>
-          <br />
-          <div class="row">
             <div class="col-6">
               <input
                 class="form-control"
                 name="busLine"
-                v-model="postBody.businessLine"
+                v-model="postBody.busLine"
                 placeholder="Business Line That Fund The Stocks"
               />
             </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-6"></div>
             <div class="col-3">
               <input
                 class="form-control"
@@ -189,10 +203,10 @@
   </div>
 </template>
 <script>
-import Datepicker from 'vuejs-datepicker';
+import Datepicker from "vuejs-datepicker";
 export default {
-     components: {
-    Datepicker
+  components: {
+    Datepicker,
   },
   data() {
     return {
@@ -200,7 +214,7 @@ export default {
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
-      stateList:null,
+      stateList: null,
       postBody: {
         companyCode: "",
         companyName: "",
@@ -211,53 +225,54 @@ export default {
         city: "",
         // datepicker
         installDate: new Date(),
+        glCode: "",
         serialNumber: "",
         processYear: "",
         processMonth: "",
         expenseCode: "",
         writeoffLoc: "",
         creditorsCode: "",
-        businessLine: "",
+        busLine: "",
         holdDays: "",
-        approvedDay: ""
+        approvedDay: "",
       },
     };
   },
-  // mounted(){
-  //   axios.get(`/api/st_stksystem/getstates`)
-  //          .then(response=>{
-  //              this.stateList= response.data
-  //          })
-  // },
+  mounted(){
+    axios.get(`/api/st_stksystem/getstates`)
+           .then(response=>{
+               this.stateList= response.data
+           })
+  },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
       (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),
         (this.postBody.companyName = this.$store.state.objectToUpdate.companyName),
         (this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress),
         (this.postBody.phone = this.$store.state.objectToUpdate.phone);
-        (this.postBody.email = this.$store.state.objectToUpdate.email);
-        (this.postBody.stateName = this.$store.state.objectToUpdate.stateName);
-        (this.postBody.city = this.$store.state.objectToUpdate.city);
-        (this.postBody.installDate = this.$store.state.objectToUpdate.installDate);
-        (this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber);
-        (this.postBody.processYear = this.$store.state.objectToUpdate.processYear);
-        (this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth);
-        (this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode);
-        (this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc);
-        (this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode);
-        (this.postBody.businessLine = this.$store.state.objectToUpdate.businessLine);
-        (this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays);
-        (this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay);
+      this.postBody.email = this.$store.state.objectToUpdate.email;
+      this.postBody.stateName = this.$store.state.objectToUpdate.stateName;
+      this.postBody.city = this.$store.state.objectToUpdate.city;
+      this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
+      this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
+      this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
+      this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
+      this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
+      this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
+      this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
+      this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
+      this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
+      this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
+      this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
       this.submitorUpdate = "Update";
     },
   },
   methods: {
     checkForm: function(e) {
-      if (this.postBody.companyCode)
-      {
+      if (this.postBody.companyCode) {
         e.preventDefault();
         this.canProcess = false;
-        alert(this.postBody.companyCode,"i am here")
+        alert(this.postBody.companyCode, "i am here");
         this.postPost();
       } else {
         this.errors = [];
@@ -280,12 +295,13 @@ export default {
               this.postBody.stateName = "";
               this.postBody.city = "";
               this.postBody.installDate = new Date();
+              this.postBody.glCode = "",
               this.postBody.processYear = "";
               this.postBody.processMonth = "";
               this.postBody.expenseCode = "";
               this.postBody.writeoffLoc = "";
               this.postBody.creditorsCode = "";
-              this.postBody.businessLine = "";
+              this.postBody.busLine = "";
               this.postBody.holdDays = "";
               this.postBody.approvedDay = "";
               this.$store.stateName.objectToUpdate = "create";
@@ -312,12 +328,13 @@ export default {
               this.postBody.stateName = "";
               this.postBody.city = "";
               this.postBody.installDate = "";
+              this.postBody.glCode = "";
               this.postBody.processYear = "";
               this.postBody.processMonth = "";
               this.postBody.expenseCode = "";
               this.postBody.writeoffLoc = "";
               this.postBody.creditorsCode = "";
-              this.postBody.businessLine = "";
+              this.postBody.busLine = "";
               this.postBody.holdDays = "";
               this.postBody.approvedDay = "";
               this.$store.state.objectToUpdate = "update";
@@ -327,7 +344,7 @@ export default {
             this.errors.push(e);
           });
       }
-    }
+    },
   },
   computed: {
     setter() {
@@ -336,19 +353,20 @@ export default {
         this.postBody.companyCode = objecttoedit.companyCode;
         this.postBody.companyName = objecttoedit.companyName;
         this.postBody.companyAddress = objecttoedit.companyAddress;
-        this.postBody.companyType = objecttoedit.phone;
-        this.postBody.companyType = objecttoedit.email;
-        this.postBody.companyType = objecttoedit.stateName;
-        this.postBody.companyType = objecttoedit.city;
-        this.postBody.companyType = objecttoedit.installDate;
-        this.postBody.companyType = objecttoedit.processYear;
-        this.postBody.companyType = objecttoedit.processMonth;
-        this.postBody.companyType = objecttoedit.expenseCode;
-        this.postBody.companyType = objecttoedit.businessLine;
-        this.postBody.companyType = objecttoedit.holdDays;
-        this.postBody.companyType = objecttoedit.approvedDay;
+        this.postBody.phone = objecttoedit.phone;
+        this.postBody.email = objecttoedit.email;
+        this.postBody.stateName = objecttoedit.stateName;
+        this.postBody.city = objecttoedit.city;
+        this.postBody.installDate = objecttoedit.installDate;
+        this.postBody.glCode = objecttoedit.glCode;
+        this.postBody.processYear = objecttoedit.processYear;
+        this.postBody.processMonth = objecttoedit.processMonth;
+        this.postBody.expenseCode = objecttoedit.expenseCode;
+        this.postBody.businessLine = objecttoedit.busLine;
+        this.postBody.holdDays = objecttoedit.holdDays;
+        this.postBody.approvedDay = objecttoedit.approvedDay;
       }
-    }
+    },
   },
 };
 </script>

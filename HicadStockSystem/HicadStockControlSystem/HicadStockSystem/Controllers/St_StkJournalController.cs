@@ -24,9 +24,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllJournal()
+        public async Task<IActionResult> GetAllJournal()
         {
-            var journal = _journal.GetAll();
+            var journal = await _journal.GetAll();
 
             return Ok(journal);
         }

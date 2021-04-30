@@ -25,9 +25,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllRecordTable()
+        public async Task<IActionResult> GetAllRecordTable()
         {
-            var recordTable = _recordTable.GetAll();
+            var recordTable = await _recordTable.GetAll();
             return Ok(recordTable);
         }
 
