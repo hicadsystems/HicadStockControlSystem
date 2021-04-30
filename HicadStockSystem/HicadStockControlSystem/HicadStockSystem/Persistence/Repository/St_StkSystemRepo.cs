@@ -1,6 +1,7 @@
 ﻿using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
 using HicadStockSystem.Models;
+using HicadStockSystem.Persistence.Repository;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,11 +11,12 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence
 {
-    public class St_StkSystemRepo : ISt_StkSystem
+    public class St_StkSystemRepo : RepositoryMasterRepo<St_StkSystem, string>, ISt_StkSystem
     {
         private readonly StockControlDBContext _dbContext;
 
         public St_StkSystemRepo(StockControlDBContext dbContext)
+            :base(dbContext)
         {
             _dbContext = dbContext;
         }
