@@ -1,8 +1,6 @@
 ﻿using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
-using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,51 +8,52 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence.Repository
 {
-    public class Ac_CostCentreRepo : RepositoryMasterRepo<Ac_CostCentre, string>, IAc_CostCentre
+    public class RepositoryMasterRepo<TEntity, TKey> : IRespositoryMaster<TEntity, TKey> where TEntity : class
     {
         private readonly StockControlDBContext _dbcontext;
         private readonly IUnitOfWork _uow;
 
-        public Ac_CostCentreRepo(StockControlDBContext dbcontext, IUnitOfWork uow)
-            : base(dbcontext, uow)
+        public RepositoryMasterRepo(StockControlDBContext dbcontext, IUnitOfWork uow)
         {
             _dbcontext = dbcontext;
             _uow = uow;
         }
-        public async Task CreateAsync(Ac_CostCentre costCentre)
+        public async Task CreateAsync(TEntity entity)
         {
-            await _dbcontext.Ac_CostCentres.AddAsync(costCentre);
+            await _dbcontext.Set<TEntity>().AddAsync(entity);
+            //await _dbcontext.Set<TEntity>.AddAsync(entity);
             await _uow.CompleteAsync();
         }
 
-        public async Task<IEnumerable<Ac_CostCentre>> GetAll()
+        public virtual IEnumerable<TEntity> GetAll()
         {
-            return await _dbcontext.Ac_CostCentres.ToListAsync();
+            return  _dbcontext.Set<TEntity>().AsEnumerable();
         }
 
-        public Ac_CostCentre GetByCode(string code)
+        public async virtual Task<TEntity> GetByCode(TKey code)
         {
-            return _dbcontext.Ac_CostCentres.Where(cc => cc.UnitCode == code).FirstOrDefault();
+            return await _dbcontext.Set<TEntity>().FindAsync(code);
         }
 
-        public async Task UpdateAsync(Ac_CostCentre costCentre)
+        public async Task UpdateAsync(TEntity entity)
         {
-            _dbcontext.Update(costCentre);
+            _dbcontext.Set<TEntity>().Update(entity);
             await _uow.CompleteAsync();
         }
 
-        public async Task UpdateAsync(string code)
+        public async Task UpdateAsync(TKey code)
         {
             var costCenterInDb = GetByCode(code);
             _dbcontext.Update(costCenterInDb);
             await _uow.CompleteAsync();
         }
 
-        public async Task DeleteAsync(string code)
+        public async Task DeleteAsync(TKey code)
         {
             var costCenterInDb = GetByCode(code);
             _dbcontext.Remove(costCenterInDb);
             await _uow.CompleteAsync();
         }
+       
     }
 }

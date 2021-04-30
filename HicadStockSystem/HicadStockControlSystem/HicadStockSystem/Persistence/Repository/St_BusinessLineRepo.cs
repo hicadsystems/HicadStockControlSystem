@@ -12,54 +12,59 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HicadStockSystem.Persistence.Repository
 {
-    public class St_BusinessLineRepo : ISt_BusinessLine
+    public class St_BusinessLineRepo : RepositoryMasterRepo<St_BusinessLine, string>, ISt_BusinessLine
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
 
         public St_BusinessLineRepo(StockControlDBContext dbContext, IUnitOfWork uow)
+           : base(dbContext, uow)
         {
             _dbContext = dbContext;
             _uow = uow;
         }
 
-        public async Task CreateAsync(St_BusinessLine busLine)
-        {
-            await _dbContext.St_BusinessLines.AddAsync(busLine);
+        //public async Task CreateAsync(St_BusinessLine busLine)
+        //{
+        //    await _dbContext.St_BusinessLines.AddAsync(busLine);
 
-            await _uow.CompleteAsync();
-        }
+        //    await _uow.CompleteAsync();
+        //}
 
-        public async Task<IEnumerable<St_BusinessLine>> GetAll()
-        {
-            return await _dbContext.St_BusinessLines.ToListAsync(); 
-        }
+        //public async Task<IEnumerable<St_BusinessLine>> GetAll()
+        //{
+        //    return await _dbContext.St_BusinessLines.ToListAsync(); 
+        //}
 
-        public St_BusinessLine GetByBusLine(string busLine)
+        public virtual St_BusinessLine GetByBusLine(string busLine)
         {
             return _dbContext.St_BusinessLines.Where(bl => bl.BusinessLine == busLine).FirstOrDefault();
         }
 
-        public async Task UpdateAsync(St_BusinessLine busLine)
-        {
-            _dbContext.Update(busLine);
-            await _uow.CompleteAsync();
+        //public async  Task UpdateAsync(St_BusinessLine busLine)
+        //{
+        //    _dbContext.Update(busLine);
+        //    await _uow.CompleteAsync();
 
-        }
+        //}
 
-        public async Task UpdateAsync(string busLine)
-        {
-            var busLineInDb = GetByBusLine(busLine);
-            _dbContext.Update(busLineInDb);
-            await _uow.CompleteAsync();
-        }
+        //public async Task UpdateAsync(string busLine)
+        //{
+        //    var busLineInDb = GetByBusLine(busLine);
+        //    _dbContext.Update(busLineInDb);
+        //    await _uow.CompleteAsync();
+        //}
 
-        public async Task Delete(string busLine)
-        {
-            var busLineInDb = GetByBusLine(busLine);
-            _dbContext.Remove(busLineInDb);
-            await _uow.CompleteAsync();
-        }
+        //public async Task DeleteAsync(string busLine)
+        //{
+        //    var busLineInDb = GetByBusLine(busLine);
+        //    _dbContext.Remove(busLineInDb);
+        //    await _uow.CompleteAsync();
+        //}
 
+        //public St_BusinessLine GetByCode(string TKey)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

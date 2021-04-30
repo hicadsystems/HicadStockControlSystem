@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Core.IRespository
 {
-    public interface IAc_BusinessLine
+    public interface IAc_BusinessLine : IRespositoryMaster<Ac_BusinessLine, string>
     {
-        Task CreateAsync(Ac_BusinessLine businessLine);
+        //Task CreateAsync(Ac_BusinessLine businessLine);
         Ac_BusinessLine GetByBusLine(string busLine);
-        Task UpdateAsync(Ac_BusinessLine businessLine);
-        Task UpdateAsync(string code);
+        //Task UpdateAsync(Ac_BusinessLine businessLine);
+        //Task UpdateAsync(string code);
         Task<IEnumerable<Ac_BusinessLine>> GetAll();
-        Task DeleteAsync(string busLine);
+        //Task DeleteAsync(string busLine);
     }
 }

@@ -9,7 +9,6 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_History
     public class CreateSt_HistoryVM
     {
         //composite key
-        [Required]
         [StringLength(20)]
         public string ItemCode { get; set; }
         [Required]

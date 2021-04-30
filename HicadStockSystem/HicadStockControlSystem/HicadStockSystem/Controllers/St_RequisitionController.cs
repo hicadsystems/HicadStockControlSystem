@@ -35,6 +35,7 @@ namespace HicadStockSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                requisitionVM.RequisitionNo = _requisition.RandomString(12);
                 var newRequisition = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
                 newRequisition.CreatedOn = DateTime.Now;
                

@@ -13,52 +13,53 @@ namespace HicadStockSystem.Persistence.Repository
 {
     [ApiController()]
     [Route("api/requisition")]
-    public class St_StkJournalRepo : ISt_StkJournal
+    public class St_StkJournalRepo : RepositoryMasterRepo<St_StkJournal, string>, ISt_StkJournal
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
 
         public St_StkJournalRepo(StockControlDBContext dbContext,IUnitOfWork uow)
+            :base(dbContext, uow)
         {
             _dbContext = dbContext;
             _uow = uow;
         }
-        public async Task CreateAsync(St_StkJournal stkJournal)
-        {
-            await _dbContext.St_StkJournals.AddAsync(stkJournal);
-            await _uow.CompleteAsync();
-        }
+        //public async Task CreateAsync(St_StkJournal stkJournal)
+        //{
+        //    await _dbContext.St_StkJournals.AddAsync(stkJournal);
+        //    await _uow.CompleteAsync();
+        //}
         
-        public async Task<IEnumerable<St_StkJournal>> GetAll()
-        {
-            return await _dbContext.St_StkJournals.ToListAsync();
-        }
+        //public async Task<IEnumerable<St_StkJournal>> GetAll()
+        //{
+        //    return await _dbContext.St_StkJournals.ToListAsync();
+        //}
 
         public St_StkJournal GetByCompany(string coy)
         {
             return _dbContext.St_StkJournals.Where(sj => sj.Stk_Company == coy).FirstOrDefault();
         }
 
-        public async Task UpdateAsync(St_StkJournal stkJournal)
-        {
-            _dbContext.Update(stkJournal);
-            await _uow.CompleteAsync();
+        //public async Task UpdateAsync(St_StkJournal stkJournal)
+        //{
+        //    _dbContext.Update(stkJournal);
+        //    await _uow.CompleteAsync();
 
-        }
+        //}
 
-        public async Task UpdateAsync(string coy)
-        {
-            var JournalInDb = GetByCompany(coy);
-            _dbContext.Update(JournalInDb);
-            await _uow.CompleteAsync();
-        }
+        //public async Task UpdateAsync(string coy)
+        //{
+        //    var JournalInDb = GetByCompany(coy);
+        //    _dbContext.Update(JournalInDb);
+        //    await _uow.CompleteAsync();
+        //}
 
-        public async Task DeleteAsync(string coy)
-        {
-            var JournalInDb = GetByCompany(coy);
-            _dbContext.Remove(JournalInDb);
-            await _uow.CompleteAsync();
-        }
+        //public async Task DeleteAsync(string coy)
+        //{
+        //    var JournalInDb = GetByCompany(coy);
+        //    _dbContext.Remove(JournalInDb);
+        //    await _uow.CompleteAsync();
+        //}
 
     }
 }

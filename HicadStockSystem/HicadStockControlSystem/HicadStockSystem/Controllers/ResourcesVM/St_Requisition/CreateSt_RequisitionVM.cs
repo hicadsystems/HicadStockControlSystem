@@ -8,7 +8,6 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_Requisition
 {
     public class CreateSt_RequisitionVM
     {
-        [Required]
         [StringLength(12)]
         public string RequisitionNo { get; set; }
         //key
