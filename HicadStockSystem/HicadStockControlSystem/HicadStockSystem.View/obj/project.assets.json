@@ -1504,6 +1504,7 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.1",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.5",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "3.0.0",
+          "Microsoft.EntityFrameworkCore": "5.0.5",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.5",
           "Newtonsoft.Json": "13.0.1"
         },
@@ -5647,19 +5648,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HICADB\\.nuget\\packages\\": {}
+    "C:\\Users\\fregene thomas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.View\\HicadStockSystem.View.csproj",
+      "projectUniqueName": "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.View\\HicadStockSystem.View.csproj",
       "projectName": "HicadStockSystem.View",
-      "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.View\\HicadStockSystem.View.csproj",
-      "packagesPath": "C:\\Users\\HICADB\\.nuget\\packages\\",
-      "outputPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.View\\obj\\",
+      "projectPath": "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.View\\HicadStockSystem.View.csproj",
+      "packagesPath": "C:\\Users\\fregene thomas\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.View\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\HICADB\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\fregene thomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5673,8 +5674,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {
-              "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj"
+            "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {
+              "projectPath": "C:\\Projects\\HicadProject\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj"
             }
           }
         }
@@ -5698,12 +5699,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[3.1.10, 3.1.10]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -5712,7 +5707,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200-preview.20601.7\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
