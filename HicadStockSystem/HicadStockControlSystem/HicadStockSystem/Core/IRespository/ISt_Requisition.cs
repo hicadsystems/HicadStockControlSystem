@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Core.IRespository
 {
-    public interface ISt_Requisition : IRespositoryMaster<St_Requisition, string>
+    public interface ISt_Requisition 
     {
-        //Task CreateAsync(St_Requisition requisition);
+        Task CreateAsync(St_Requisition requisition);
         St_Requisition GetByReqNo(string reqNo);
-        //Task UpdateAsync(St_Requisition requisition);
-        //Task UpdateAsync(string reqNo);
-        //Task<IEnumerable<St_Requisition>> GetAll();
-        //Task DeleteAsync(string reqNo);
-        //string  RandomString(int length);
+        Task UpdateAsync(St_Requisition requisition);
+        Task UpdateAsync(string reqNo);
+        Task<IEnumerable<St_Requisition>> GetAll();
+        Task DeleteAsync(string reqNo);
+        string RandomString(int length);
     }
 }

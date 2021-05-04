@@ -12,47 +12,46 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence
 {
-    public class St_StockMasterRepo : RepositoryMasterRepo<St_StockMaster, string>, ISt_StockMaster
+    public class St_StockMasterRepo :  ISt_StockMaster
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
 
         public St_StockMasterRepo(StockControlDBContext dbContext, IUnitOfWork uow)
-            :base(dbContext, uow)
         {
 
             _dbContext = dbContext;
             _uow = uow;
         }
 
-        //public async Task CreateAsync(St_StockMaster stockMaster)
-        //{
-        //    await _dbContext.St_StockMasters.AddAsync(stockMaster);
-        //    await _uow.CompleteAsync();
-        //}
+        public async Task CreateAsync(St_StockMaster stockMaster)
+        {
+            await _dbContext.St_StockMasters.AddAsync(stockMaster);
+            await _uow.CompleteAsync();
+        }
 
-        //public async Task<IEnumerable<St_StockMaster>> GetAll()
-        //{
-        //    return await _dbContext.St_StockMasters.ToListAsync();
-        //}
+        public async Task<IEnumerable<St_StockMaster>> GetAll()
+        {
+            return await _dbContext.St_StockMasters.ToListAsync();
+        }
 
         public St_StockMaster GetByItemCode(string itemCode)
         {
             return _dbContext.St_StockMasters.Where(sm => sm.ItemCode == itemCode).FirstOrDefault();
         }
 
-        //public async Task UpdateAsync(St_StockMaster stockMaster)
-        //{
-        //    _dbContext.Update(stockMaster);
-        //    await _uow.CompleteAsync();
-        //}
+        public async Task UpdateAsync(St_StockMaster stockMaster)
+        {
+            _dbContext.Update(stockMaster);
+            await _uow.CompleteAsync();
+        }
 
-        //public async Task UpdateAsync(string itemCode)
-        //{
-        //    var stockMasterInDb = GetByItemCode(itemCode);
-        //    _dbContext.Update(stockMasterInDb);
-        //    await _uow.CompleteAsync();
-        //}
+        public async Task UpdateAsync(string itemCode)
+        {
+            var stockMasterInDb = GetByItemCode(itemCode);
+            _dbContext.Update(stockMasterInDb);
+            await _uow.CompleteAsync();
+        }
 
         public async Task Delete(string itemCode)
         {

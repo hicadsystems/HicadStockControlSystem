@@ -11,7 +11,7 @@ namespace HicadStockSystem.Core.Models
     public class St_History
     {
         //composite key
-        [StringLength(20)]
+        [StringLength(6)]
         public string ItemCode { get; set; }
         [StringLength(12)]
         public string DocNo { get; set; }

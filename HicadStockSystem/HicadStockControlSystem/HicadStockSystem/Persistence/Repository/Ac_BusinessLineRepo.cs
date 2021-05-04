@@ -10,13 +10,12 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence.Repository
 {
-    public class Ac_BusinessLineRepo : RepositoryMasterRepo<Ac_BusinessLineRepo, string>,  IAc_BusinessLine
+    public class Ac_BusinessLineRepo :  IAc_BusinessLine
     {
         private readonly StockControlDBContext _dbcontext;
         private readonly IUnitOfWork _uow;
 
         public Ac_BusinessLineRepo(StockControlDBContext dbcontext, IUnitOfWork uow)
-            :base(dbcontext, uow)
         {
             _dbcontext = dbcontext;
             _uow = uow;
@@ -43,28 +42,18 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        IEnumerable<Ac_BusinessLine> IRespositoryMaster<Ac_BusinessLine, string>.GetAll()
+        public async Task UpdateAsync(string busLine)
         {
-            throw new NotImplementedException();
+            var busLineInDb = GetByBusLine(busLine);
+            _dbcontext.Update(busLineInDb);
+            await _uow.CompleteAsync();
         }
-
-        Task<Ac_BusinessLine> IRespositoryMaster<Ac_BusinessLine, string>.GetByCode(string key)
+        public async Task DeleteAsync(string busLine)
         {
-            throw new NotImplementedException();
+            var busLineInDb = GetByBusLine(busLine);
+            _dbcontext.Remove(busLineInDb);
+            await _uow.CompleteAsync();
         }
-
-        //public async Task UpdateAsync(string busLine)
-        //{
-        //    var busLineInDb = GetByBusLine(busLine);
-        //    _dbcontext.Update(busLineInDb);
-        //    await _uow.CompleteAsync();
-        //}
-        //public async Task DeleteAsync(string busLine)
-        //{
-        //    var busLineInDb = GetByBusLine(busLine);
-        //    _dbcontext.Remove(busLineInDb);
-        //    await _uow.CompleteAsync();
-        //}
 
     }
 }

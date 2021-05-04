@@ -80,7 +80,7 @@ namespace HicadStockSystem.Controllers
             if (buslineInDb == null)
                 return NotFound("Sorry, Business Line you entered does not exist");
 
-            await _busLine.Delete(busLine);
+            await _busLine.DeleteAsync(busLine);
 
             return Ok(buslineInDb);
         }

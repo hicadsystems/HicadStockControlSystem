@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Core.IRespository
 {
-    public interface ISt_History : IRespositoryMaster<St_History, string>
+    public interface ISt_History 
     {
-        //Task CreateAsync(St_History issueApprove);
-        //St_History GetByCode(string itemCode);
-        //Task UpdateAsync(St_History issueApprove);
-        //Task UpdateAsync(string itemCode);
-        //Task<IEnumerable<St_History>> GetAll();
-        //Task DeleteAsync(string itemCode);
+        Task CreateAsync(St_History issueApprove);
+        St_History GetByCode(string itemCode);
+        Task UpdateAsync(St_History issueApprove);
+        Task UpdateAsync(string itemCode);
+        Task<IEnumerable<St_History>> GetAll();
+        Task DeleteAsync(string itemCode);
     }
 }

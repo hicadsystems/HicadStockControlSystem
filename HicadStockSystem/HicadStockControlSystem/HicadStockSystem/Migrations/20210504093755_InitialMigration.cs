@@ -3,41 +3,42 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HicadStockSystem.Migrations
 {
-    public partial class AllTables : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "  ac_costcentre",
+                name: "ac_businessline",
                 columns: table => new
                 {
-                    UnitCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    UnitDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    UnitDiv = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
-                    UnitDivDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    BusinessLine = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    BusinessDesc = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
+                    Business_Year = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
+                    Business_Month = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
+                    Cashier_Ac = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_  ac_costcentre", x => x.UnitCode);
+                    table.PrimaryKey("PK_ac_businessline", x => x.BusinessLine);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ac_businessline",
+                name: "ac_costcentre",
                 columns: table => new
                 {
-                    BusinessLine = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
-                    BusinessDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
-                    Business_Year = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
-                    Business_Month = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
-                    Cashier_Ac = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UnitCode = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    UnitDesc = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    UnitDiv = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
+                    UnitDivDesc = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ac_businessline", x => x.BusinessLine);
+                    table.PrimaryKey("PK_ac_costcentre", x => x.UnitCode);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,12 +110,12 @@ namespace HicadStockSystem.Migrations
                 name: "st_businessline",
                 columns: table => new
                 {
-                    BusinessLine = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
-                    BusinessDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
-                    Business_Year = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
+                    BusinessLine = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    BusinessDesc = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
+                    Business_Year = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
                     Business_Month = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
-                    Cashier_Ac = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Cashier_Ac = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -127,19 +128,19 @@ namespace HicadStockSystem.Migrations
                 name: "st_buyerguide",
                 columns: table => new
                 {
-                    ItemCode = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
-                    ItemDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    Supplier1 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Supplier2 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Supplier3 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Supplier4 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Supplier5 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Code1 = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Code2 = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Code3 = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Code4 = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Code5 = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    CompanyName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ItemCode = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    ItemDesc = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    Supplier1 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Supplier2 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Supplier3 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Supplier4 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Supplier5 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Code1 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Code2 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Code3 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Code4 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Code5 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    CompanyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -152,10 +153,10 @@ namespace HicadStockSystem.Migrations
                 name: "st_costcentre",
                 columns: table => new
                 {
-                    UnitCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    UnitDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    UnitDiv = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
-                    UnitDivDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
+                    UnitCode = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    UnitDesc = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    UnitDiv = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
+                    UnitDivDesc = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -168,16 +169,16 @@ namespace HicadStockSystem.Migrations
                 name: "st_history",
                 columns: table => new
                 {
-                    ItemCode = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    DocNo = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
-                    DocType = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    DocNo = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    DocType = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     DocDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Period = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Period = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "money", nullable: true),
-                    Supplier = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    Supplier = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -190,9 +191,9 @@ namespace HicadStockSystem.Migrations
                 name: "st_issueapprove",
                 columns: table => new
                 {
-                    ItemCode = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    DocNo = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: true),
+                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    DocNo = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
                     Quantity = table.Column<float>(type: "real", nullable: true),
                     ApprovedQty = table.Column<float>(type: "real", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -207,9 +208,9 @@ namespace HicadStockSystem.Migrations
                 name: "st_issuereq",
                 columns: table => new
                 {
-                    ItemCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    DocNo = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: true),
+                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    DocNo = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
                     Quantity = table.Column<float>(type: "real", nullable: true),
                     SupplyQty = table.Column<float>(type: "real", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -224,21 +225,21 @@ namespace HicadStockSystem.Migrations
                 name: "st_itemmaster",
                 columns: table => new
                 {
-                    ItemCode = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
-                    ItemDesc = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    StoreLoc = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Storerack = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Storebin = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    ItemDesc = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    StoreLoc = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Storerack = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Storebin = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
                     ReOrderLevel = table.Column<int>(type: "int", nullable: false),
                     ReOrderQty = table.Column<int>(type: "int", nullable: false),
-                    Units = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    XRef = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: true),
-                    Supplier1 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Supplier2 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Supplier3 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Supplier4 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Supplier5 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Supplier6 = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Units = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    XRef = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
+                    Supplier1 = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Supplier2 = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Supplier3 = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Supplier4 = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Supplier5 = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Supplier6 = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
                     Class = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     BusLine = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -253,8 +254,8 @@ namespace HicadStockSystem.Migrations
                 name: "st_recordtable",
                 columns: table => new
                 {
-                    Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    RequsitionNo = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    RequsitionNo = table.Column<int>(type: "int", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -267,19 +268,19 @@ namespace HicadStockSystem.Migrations
                 name: "st_requisition",
                 columns: table => new
                 {
-                    RequisitionNo = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
-                    Itemcode = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    LocationCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    RequisitionNo = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    Itemcode = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LocationCode = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
                     Quantity = table.Column<float>(type: "real", nullable: true),
                     RequisitionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SupplyDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Unit = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<float>(type: "real", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     SupplyQty = table.Column<float>(type: "real", nullable: true),
-                    SupplyBy = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
-                    ApprovedBy = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    SupplyBy = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    ApprovedBy = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -292,18 +293,18 @@ namespace HicadStockSystem.Migrations
                 name: "st_stkjournal",
                 columns: table => new
                 {
-                    Stk_Company = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Stk_Branch = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    Stk_Company = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    Stk_Branch = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     Stk_Year = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
                     Stk_Month = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
-                    Stk_Location = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Stk_Type = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    Stk_Account = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Stk_Location = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    Stk_Type = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Stk_Account = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Stk_Debit = table.Column<decimal>(type: "money", nullable: true),
                     Stk_Credit = table.Column<decimal>(type: "money", nullable: true),
-                    Stk_Rem = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Stk_Update = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
-                    Stk_Period = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Stk_Rem = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Stk_Update = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
+                    Stk_Period = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -313,10 +314,40 @@ namespace HicadStockSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "st_stksystems",
+                columns: table => new
+                {
+                    CompanyCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CompanyAddress = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    State = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Town_City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InstallDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    SerialNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    GLCode = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    ProcessYear = table.Column<int>(type: "int", nullable: false),
+                    ProcessMonth = table.Column<int>(type: "int", nullable: false),
+                    ExpenseCode = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    WriteoffLoc = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    CreditorsCode = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    BusLine = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
+                    HoldDays = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
+                    ApprovedDay = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_st_stksystems", x => x.CompanyCode);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "st_stockclass",
                 columns: table => new
                 {
-                    SktClass = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    SktClass = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -329,8 +360,8 @@ namespace HicadStockSystem.Migrations
                 name: "st_stockmaster",
                 columns: table => new
                 {
-                    ItemCode = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     OpenBalance = table.Column<float>(type: "real", nullable: true),
                     Receipts = table.Column<float>(type: "real", nullable: true),
                     Issues = table.Column<float>(type: "real", nullable: true),
@@ -352,12 +383,12 @@ namespace HicadStockSystem.Migrations
                 name: "st_supplier",
                 columns: table => new
                 {
-                    SupplierCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Contact = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    SupplierCode = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    Contact = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     Sup_Last_Num = table.Column<int>(type: "int", nullable: true),
                     Sup_Start_Date = table.Column<DateTime>(type: "smalldatetime", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -528,42 +559,6 @@ namespace HicadStockSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "st_stksystems",
-                columns: table => new
-                {
-                    CompanyCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CompanyAddress = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    StateListId = table.Column<byte>(type: "tinyint", nullable: false),
-                    Town_City = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    InstallDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
-                    SerialNumber = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    GLCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    ProcessYear = table.Column<int>(type: "int", nullable: false),
-                    ProcessMonth = table.Column<int>(type: "int", nullable: false),
-                    ExpenseCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    WriteoffLoc = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    CreditorsCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    BusLine = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
-                    HoldDays = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
-                    ApprovedDay = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_st_stksystems", x => x.CompanyCode);
-                    table.ForeignKey(
-                        name: "FK_st_stksystems_StateLists_StateListId",
-                        column: x => x.StateListId,
-                        principalTable: "StateLists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RoleMenus",
                 columns: table => new
                 {
@@ -698,20 +693,15 @@ namespace HicadStockSystem.Migrations
                 name: "IX_RoleMenus_RoleId",
                 table: "RoleMenus",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_st_stksystems_StateListId",
-                table: "st_stksystems",
-                column: "StateListId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "  ac_costcentre");
+                name: "ac_businessline");
 
             migrationBuilder.DropTable(
-                name: "ac_businessline");
+                name: "ac_costcentre");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -774,6 +764,9 @@ namespace HicadStockSystem.Migrations
                 name: "st_supplier");
 
             migrationBuilder.DropTable(
+                name: "StateLists");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
@@ -781,9 +774,6 @@ namespace HicadStockSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Menus");
-
-            migrationBuilder.DropTable(
-                name: "StateLists");
 
             migrationBuilder.DropTable(
                 name: "GroupMenus");

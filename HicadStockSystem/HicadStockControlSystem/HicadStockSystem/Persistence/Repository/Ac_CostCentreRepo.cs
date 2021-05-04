@@ -10,13 +10,12 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence.Repository
 {
-    public class Ac_CostCentreRepo : RepositoryMasterRepo<Ac_CostCentre, string>, IAc_CostCentre
+    public class Ac_CostCentreRepo :  IAc_CostCentre
     {
         private readonly StockControlDBContext _dbcontext;
         private readonly IUnitOfWork _uow;
 
         public Ac_CostCentreRepo(StockControlDBContext dbcontext, IUnitOfWork uow)
-            : base(dbcontext, uow)
         {
             _dbcontext = dbcontext;
             _uow = uow;

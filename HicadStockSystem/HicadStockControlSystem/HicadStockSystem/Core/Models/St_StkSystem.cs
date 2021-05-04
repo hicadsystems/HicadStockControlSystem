@@ -22,9 +22,10 @@ namespace HicadStockSystem.Models
         public string Phone { get; set; }
         [StringLength(30)]
         public string Email { get; set; }
-        public StateList State { get; set; }
-        public byte StateListId { get; set; }
-        [StringLength(40)]
+        public string State { get; set; }
+        //public StateList State { get; set; }
+        //public byte StateListId { get; set; }
+        //[StringLength(40)]
         public string Town_City { get; set; }
         [Column(TypeName = "smalldatetime")]
         public DateTime InstallDate { get; set; }

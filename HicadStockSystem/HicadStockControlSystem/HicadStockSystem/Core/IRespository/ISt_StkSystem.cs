@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Repository.IRepository
 {
-    public interface ISt_StkSystem : IRespositoryMaster<St_StkSystem, string>
+    public interface ISt_StkSystem 
     {
-        //Task CreateAsync(St_StkSystem stkSystem);
+        Task CreateAsync(St_StkSystem stkSystem);
         St_StkSystem GetByCompanyCode(string compcode);
-        //Task UpdateAsync(St_StkSystem stkSystem);
-        //Task UpdateAsync(string compcode);
-        //Task Delete(string compcode);
-        //Task<IEnumerable<St_StkSystem>> GetAll();
+        Task UpdateAsync(St_StkSystem stkSystem);
+        Task UpdateAsync(string compcode);
+        Task Delete(string compcode);
+        Task<IEnumerable<St_StkSystem>> GetAll();
         Task<IEnumerable<StateList>> GetAllState();
 
         IEnumerable<St_BusinessLine> GetAllBusinessLine();
