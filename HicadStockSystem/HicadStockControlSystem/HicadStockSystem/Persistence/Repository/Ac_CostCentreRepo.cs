@@ -55,5 +55,6 @@ namespace HicadStockSystem.Persistence.Repository
             _dbcontext.Remove(costCenterInDb);
             await _uow.CompleteAsync();
         }
+      
     }
 }

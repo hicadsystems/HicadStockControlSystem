@@ -35,7 +35,12 @@ namespace HicadStockSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                requisitionVM.RequisitionNo = _requisition.RandomString(12);
+                if (requisitionVM.Itemcode !=null )
+                {
+                    //requisitionVM.Description = 
+                }
+                //requisitionVM.RequisitionNo = _requisition.RandomString(12);
+                //requisitionVM.Description = 
                 var newRequisition = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
                 newRequisition.CreatedOn = DateTime.Now;
                
@@ -81,6 +86,32 @@ namespace HicadStockSystem.Controllers
             await _requisition.DeleteAsync(reqNo);
 
             return Ok(requisitioInDb);
+        }
+
+        [HttpGet]
+        [Route("getcostcentre")]
+        public async Task<IActionResult> GetCostCentreCode()
+        {
+            var costcentre = await _requisition.GetCostCentre();
+
+            return Ok(costcentre);
+        }
+
+        [HttpGet]
+        [Route("getStockItems/{itemCode}")]
+        public async Task<IActionResult> GetStockItems(string itemCode)
+        {
+           var stockItem = await _requisition.StockItemViewModels(itemCode);
+            return Ok(stockItem);
+        }
+
+        [HttpGet]
+        [Route("getItemDesc")]
+        public async Task<IActionResult> GetItemDesc()
+        {
+            var itemCode = await _requisition.GetItemDesc();
+
+            return Ok(itemCode);
         }
     }
 }

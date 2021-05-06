@@ -11,7 +11,7 @@ namespace HicadStockSystem.Core.Models
     public class St_BuyerGuide
     {
         [Key]
-        [StringLength(12)]
+        [StringLength(6)]
         public string ItemCode { get; set; }
         [StringLength(40)]
         public string ItemDesc { get; set; }

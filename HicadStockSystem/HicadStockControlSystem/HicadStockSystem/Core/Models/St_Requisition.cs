@@ -14,14 +14,14 @@ namespace HicadStockSystem.Core.Models
         [StringLength(12)]
         public string RequisitionNo { get; set; }
         //key
-        [StringLength(12)]
+        [StringLength(6)]
         public string Itemcode { get; set; }
         [StringLength(50)]
         public string Description { get; set; }
         [StringLength(5)]
         public string LocationCode { get; set; }
         public float? Quantity { get; set; }
-        public DateTime? RequisitionDate { get; set; } /*= DateTime.Now.Date;*/
+        public DateTime? RequisitionDate { get; set; } = DateTime.Now.Date;
         public DateTime? SupplyDate { get; set; } /*= DateTime.Now.Date;*/
         public string Unit { get; set; }
         public decimal? Price { get; set; }

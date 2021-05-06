@@ -66,12 +66,56 @@ namespace HicadStockSystem.Persistence.Repository
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        //public static string RandomString(int length)
-        //{
-        //    Random random = new Random();
-        //    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@%$#*&><";
-        //    return new string(Enumerable.Repeat(chars, length)
-        //      .Select(s => s[random.Next(s.Length)]).ToArray());
-        //}
+        public async Task<IEnumerable<string>> GetCostCentre()
+        {
+            return await _dbContext.Ac_CostCentres.Select(cc=>cc.UnitCode).ToListAsync();
+        }
+
+        public async Task<ItemStockMasterViewModel> StockItemViewModels(string ItemCodes)
+        {
+            return await (from item in _dbContext.St_ItemMasters
+                          join stock in _dbContext.St_StockMasters on item.ItemDesc equals stock.Description
+                          where item.ItemDesc==ItemCodes 
+                          select new ItemStockMasterViewModel
+                          {
+                            ItemDescription = item.ItemDesc,
+                            unit=item.Units,
+                            currentBalance=stock.QtyInTransaction
+                          }).FirstOrDefaultAsync();
+        
+        }
+
+        //not completed yet
+        public Task GenerateRequisitionNo()
+        {
+            var dd = DateTime.Now.Year.ToString().Substring(0, 2);
+            var requisitionno = "T" + dd + "00000";
+            var gg = "";
+
+            var recordTable = _dbContext.St_RecordTables.Where(r=>r.Code=="CODE").FirstOrDefaultAsync();
+
+            if (recordTable != null)
+            {
+                gg = requisitionno + recordTable;
+            }
+            else
+            {
+                gg = requisitionno + 1;
+                
+                _dbContext.Update(recordTable);
+                _uow.CompleteAsync();
+            }
+            return recordTable;
+        }
+
+        public async Task<IEnumerable<string>> GetItemDesc()
+        {
+            return await _dbContext.St_ItemMasters.Select(c => c.ItemDesc).ToListAsync();
+        }
+
+        public St_ItemMaster GetDescription()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -125,8 +125,8 @@ namespace HicadStockSystem.Migrations
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_BuyerGuide", b =>
                 {
                     b.Property<string>("ItemCode")
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("Code1")
                         .HasMaxLength(10)
@@ -434,8 +434,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("Itemcode")
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("ApprovedBy")
                         .HasMaxLength(20)
