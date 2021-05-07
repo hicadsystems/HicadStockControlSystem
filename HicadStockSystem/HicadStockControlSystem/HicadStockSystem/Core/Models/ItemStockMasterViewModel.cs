@@ -7,10 +7,10 @@ namespace HicadStockSystem.Core.Models
 {
     public class ItemStockMasterViewModel
     {
-        public string ItemDescription { get; set; }
+        public string itemCode { get; set; }
         public string unit { get; set; }
         public float? currentBalance { get; set; }
-
+        public string ItemDesc { get; set; }
 
         //public  St_StockMaster StockMaster { get; set; }
         //public St_ItemMaster ItemMaster { get; set; }

@@ -2,6 +2,7 @@
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,13 @@ namespace HicadStockSystem.Persistence.Repository
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
+        private readonly ISt_RecordTable _recordTable;
 
-        public St_RequisitionRepo(StockControlDBContext dbContext, IUnitOfWork uow)
+        public St_RequisitionRepo(StockControlDBContext dbContext, IUnitOfWork uow, ISt_RecordTable recordTable)
         {
             _dbContext = dbContext;
             _uow = uow;
+            _recordTable = recordTable;
         }
         public async Task CreateAsync(St_Requisition requisition)
         {
@@ -58,64 +61,64 @@ namespace HicadStockSystem.Persistence.Repository
         }
 
 
-        public string RandomString(int length)
-        {
-            Random random = new Random();
-            const string chars = "0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+       
 
-        public async Task<IEnumerable<string>> GetCostCentre()
+        public async Task<IEnumerable<Ac_CostCentre>> GetCostCentre()
         {
-            return await _dbContext.Ac_CostCentres.Select(cc=>cc.UnitCode).ToListAsync();
+            return await _dbContext.Ac_CostCentres.ToListAsync();
         }
 
         public async Task<ItemStockMasterViewModel> StockItemViewModels(string ItemCodes)
         {
             return await (from item in _dbContext.St_ItemMasters
-                          join stock in _dbContext.St_StockMasters on item.ItemDesc equals stock.Description
-                          where item.ItemDesc==ItemCodes 
+                          join stock in _dbContext.St_StockMasters on item.ItemCode equals stock.ItemCode
+                          where item.ItemCode==ItemCodes 
                           select new ItemStockMasterViewModel
                           {
-                            ItemDescription = item.ItemDesc,
+                            itemCode=item.ItemCode,
                             unit=item.Units,
-                            currentBalance=stock.QtyInTransaction
+                            currentBalance=stock.QtyInTransaction,
+                            ItemDesc = item.ItemDesc
                           }).FirstOrDefaultAsync();
         
         }
 
-        //not completed yet
-        public Task GenerateRequisitionNo()
+        //generating requisitionNo.
+        public string GenerateRequisitionNo()
         {
-            var dd = DateTime.Now.Year.ToString().Substring(0, 2);
-            var requisitionno = "T" + dd + "00000";
-            var gg = "";
+            var dd = DateTime.Now.Year.ToString().Substring(2, 2);
+            var requisitionCode = "T" + dd + "00000";
+            int? requisitionno = 0;
+            var genCode = "";
 
-            var recordTable = _dbContext.St_RecordTables.Where(r=>r.Code=="CODE").FirstOrDefaultAsync();
+            var recordTable = _recordTable.GetByCode("CODE");
 
-            if (recordTable != null)
+            if (recordTable.Code == "CODE" && recordTable.RequsitionNo < 1)
             {
-                gg = requisitionno + recordTable;
+                var reqNo = recordTable.RequsitionNo = requisitionno+1;
+                genCode = requisitionCode + reqNo;
             }
-            else
+
+            else if(recordTable.Code == "CODE" && recordTable.RequsitionNo >= 1)
             {
-                gg = requisitionno + 1;
-                
-                _dbContext.Update(recordTable);
-                _uow.CompleteAsync();
+                requisitionno = recordTable.RequsitionNo;
+                var newReqNo = recordTable.RequsitionNo = requisitionno+1;
+                genCode = requisitionCode + newReqNo;
+                //_recordTable.UpdateAsync(recordTable);
             }
-            return recordTable;
+
+            return genCode;
         }
 
-        public async Task<IEnumerable<string>> GetItemDesc()
+        //incomplete
+        public async Task<IEnumerable<St_ItemMaster>> GetItemCode()
         {
-            return await _dbContext.St_ItemMasters.Select(c => c.ItemDesc).ToListAsync();
+            return await _dbContext.St_ItemMasters.ToListAsync();
         }
 
-        public St_ItemMaster GetDescription()
+        public string GetDescription(string itemCode)
         {
-            throw new NotImplementedException();
+            return _dbContext.St_ItemMasters.Where(c => c.ItemCode == itemCode).Select(c => c.ItemDesc).FirstOrDefault();
         }
     }
 }

@@ -4,19 +4,19 @@
     <table class="table table-striped table-bordered table-hover">
       <thead>
         <tr>
-          <th>Supplier Code</th>
-          <th>Supplier name</th>
-          <th>Supplier Address</th>
-          <th>Phone Number</th>
-          <th></th>
+          <th>Requisition Number</th>
+          <th>Item Code</th>
+          <th>Quantity</th>
+          <th>unit</th>
+          <th>Options</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(status, index) in statusList" :key="index">
-          <td>{{ status.supplierCode }}</td>
-          <td>{{ status.name }}</td>
-          <td>{{ status.address }}</td>
-          <td>{{ status.phone }}</td>
+          <td>{{ status.requisitionNo }}</td>
+          <td>{{ status.itemcode }}</td>
+          <td>{{ status.quantity }}</td>
+          <td>{{ status.unit }}</td>
           <td>
             <button
               type="button"
@@ -28,7 +28,7 @@
             <button
               type="button"
               class="btn btn-submit btn-primary"
-              @click="processDelete(status.supplierCode)"
+              @click="processDelete(status.requisitionNo)"
             >
               Delete
             </button>
@@ -53,12 +53,12 @@ export default {
   },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
-      this.getAllSuppliers();
+      // this.getAllSuppliers();
       this.processDelete();
     },
   },
   mounted() {
-    this.getAllSuppliers();
+    this.getAllRequisition();
   },
   methods: {
     processRetrieve: function(Status) {
@@ -66,10 +66,10 @@ export default {
       alert(Status)
       this.$store.state.objectToUpdate = Status;
     },
-    processDelete: function(supplierCode) {
+    processDelete: function(requisitionNo) {
       //alert(companyCode);
       axios
-        .delete(`/api/supplier/${supplierCode}`)
+        .delete(`/api/requisition/${requisitionNo}`)
         .then((response) => {
           if (response.data.responseCode == "200") {
             alert("Supplier successfully deleted");
@@ -80,9 +80,9 @@ export default {
           this.errors.push(e);
         });
     },
-    getAllSuppliers: function() {
+    getAllRequisition: function() {
       axios
-        .get('/api/supplier/')
+        .get('/api/requisition/')
         .then((response) => (this.statusList = response.data));
     },
   },

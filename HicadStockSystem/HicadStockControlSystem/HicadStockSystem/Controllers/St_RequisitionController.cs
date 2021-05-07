@@ -35,21 +35,33 @@ namespace HicadStockSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (requisitionVM.Itemcode !=null )
-                {
-                    //requisitionVM.Description = 
-                }
-                //requisitionVM.RequisitionNo = _requisition.RandomString(12);
-                //requisitionVM.Description = 
-                var newRequisition = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
-                newRequisition.CreatedOn = DateTime.Now;
-               
-                await _requisition.CreateAsync(newRequisition);
+                var reqNo = requisitionVM.RequisitionNo = _requisition.GenerateRequisitionNo();
 
-                return Ok(newRequisition);
+                var requisitionNumberInDb =_requisition.GetByReqNo(requisitionVM.RequisitionNo);
+
+                //check to avoid duplicate number
+                if (requisitionNumberInDb==null)
+                {
+                    requisitionVM.Description = _requisition.GetDescription(requisitionVM.Itemcode);
+
+                    //logged in user
+                    requisitionVM.UserId = "HICAD1";
+
+                    var newRequisition = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
+
+                    newRequisition.CreatedOn = DateTime.Now;
+
+                    newRequisition.RequisitionDate = DateTime.Now;
+
+                    await _requisition.CreateAsync(newRequisition);
+
+                    return Ok(newRequisition);
+                }
+                    
+                
             }
 
-            return BadRequest("Something went wrong, please try again.");
+            return BadRequest("Requisition already exist.. please try later"); 
         }
 
         [HttpGet("{reqNo}")]
@@ -67,7 +79,7 @@ namespace HicadStockSystem.Controllers
         {
             var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
             if (requisitioInDb == null)
-                return NotFound("Sorry, the record does not exist");
+                return BadRequest();
 
             _mapper.Map(requisitionVM, requisitioInDb);
             requisitioInDb.UpdatedOn = DateTime.Now;
@@ -81,7 +93,7 @@ namespace HicadStockSystem.Controllers
         {
             var requisitioInDb = _requisition.GetByReqNo(reqNo);
             if (requisitioInDb == null)
-                return NotFound("Sorry, the record does not exist");
+                return NotFound();
 
             await _requisition.DeleteAsync(reqNo);
 
@@ -106,10 +118,10 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet]
-        [Route("getItemDesc")]
-        public async Task<IActionResult> GetItemDesc()
+        [Route("getItemCode")]
+        public async Task<IActionResult> GetItemCode()
         {
-            var itemCode = await _requisition.GetItemDesc();
+            var itemCode = await _requisition.GetItemCode();
 
             return Ok(itemCode);
         }

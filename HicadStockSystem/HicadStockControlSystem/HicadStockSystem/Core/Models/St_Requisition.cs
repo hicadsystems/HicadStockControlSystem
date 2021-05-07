@@ -21,8 +21,8 @@ namespace HicadStockSystem.Core.Models
         [StringLength(5)]
         public string LocationCode { get; set; }
         public float? Quantity { get; set; }
-        public DateTime? RequisitionDate { get; set; } = DateTime.Now.Date;
-        public DateTime? SupplyDate { get; set; } /*= DateTime.Now.Date;*/
+        public DateTime? RequisitionDate { get; set; }
+        public DateTime? SupplyDate { get; set; } 
         public string Unit { get; set; }
         public decimal? Price { get; set; }
         [StringLength(20)]

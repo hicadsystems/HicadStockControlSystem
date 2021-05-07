@@ -14,13 +14,13 @@ namespace HicadStockSystem.Core.IRespository
         Task UpdateAsync(string reqNo);
         Task<IEnumerable<St_Requisition>> GetAll();
         Task DeleteAsync(string reqNo);
-        string RandomString(int length);
 
-        Task <IEnumerable<string>> GetCostCentre();
+        Task<IEnumerable<Ac_CostCentre>> GetCostCentre();
         Task<ItemStockMasterViewModel> StockItemViewModels(string ItemCodes);
 
-        Task<IEnumerable<string>> GetItemDesc();
-        St_ItemMaster GetDescription();
-        Task GenerateRequisitionNo();
+        Task<IEnumerable<St_ItemMaster>> GetItemCode();
+        
+        string GetDescription(string itemCode);
+        string GenerateRequisitionNo();
     }
 }
