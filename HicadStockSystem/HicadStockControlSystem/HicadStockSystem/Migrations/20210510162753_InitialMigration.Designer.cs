@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HicadStockSystem.Migrations
 {
     [DbContext(typeof(StockControlDBContext))]
-    [Migration("20210504104103_InitialMigration")]
+    [Migration("20210510162753_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,10 +270,6 @@ namespace HicadStockSystem.Migrations
 
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_IssueApprove", b =>
                 {
-                    b.Property<string>("ItemCode")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
                     b.Property<float?>("ApprovedQty")
                         .HasColumnType("real");
 
@@ -288,23 +284,21 @@ namespace HicadStockSystem.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
+                    b.Property<string>("ItemCode")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
                     b.Property<float?>("Quantity")
                         .HasColumnType("real");
 
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ItemCode");
-
                     b.ToTable("st_issueapprove");
                 });
 
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_IssueRequisition", b =>
                 {
-                    b.Property<string>("ItemCode")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -316,6 +310,10 @@ namespace HicadStockSystem.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
+                    b.Property<string>("ItemCode")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
                     b.Property<float?>("Quantity")
                         .HasColumnType("real");
 
@@ -324,8 +322,6 @@ namespace HicadStockSystem.Migrations
 
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime2");
-
-                    b.HasKey("ItemCode");
 
                     b.ToTable("st_issuereq");
                 });
@@ -435,7 +431,7 @@ namespace HicadStockSystem.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
-                    b.Property<string>("Itemcode")
+                    b.Property<string>("ItemCode")
                         .HasMaxLength(6)
                         .HasColumnType("nvarchar(6)");
 
@@ -483,7 +479,7 @@ namespace HicadStockSystem.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("RequisitionNo", "Itemcode");
+                    b.HasKey("RequisitionNo", "ItemCode");
 
                     b.ToTable("st_requisition");
                 });

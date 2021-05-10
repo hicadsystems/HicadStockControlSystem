@@ -10,8 +10,7 @@ namespace HicadStockSystem.Core.Models
     [Table("st_issuereq")]
     public class St_IssueRequisition
     {
-        [Key]
-        //remember to input stringLength at ViewModel api resource
+       
         [StringLength(6)]
         public string ItemCode { get; set; }
         [StringLength(25)]

@@ -82,5 +82,23 @@ namespace HicadStockSystem.Controllers
 
             return Ok(issueApproveInDb);
         }
+
+        [HttpGet]
+        [Route("GetRequisition")]
+        public async Task<IActionResult> GetRequisition()
+        {
+            var requisitions = await _issueApprove.GetRequisitions();
+            return Ok(requisitions);
+        }
+
+        [HttpGet]
+        [Route("RequisitionApproval/{itemCode}")]
+        public async Task<IActionResult> RequisitionApproval(string itemCode)
+        {
+            var approval = await _issueApprove.RequesitionApprovalVM(itemCode);
+
+            return Ok(approval);
+        }
     }
+
 }

@@ -1,4 +1,5 @@
 ﻿using HicadStockSystem.Core.Models;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,13 @@ namespace HicadStockSystem.Core.IRespository
         Task UpdateAsync(string itemCode);
         Task<IEnumerable<St_IssueApprove>> GetAll();
         Task DeleteAsync(string itemCode);
+
+        //Task<IEnumerable<St_Requisition>> GetRequisitionApproval();
+
+        Task<IssueRequesitionApprovalVM> RequesitionApprovalVM(string itemCode);
+
+        Ac_CostCentre GetDepartmentName(string locationCode);
+
+        Task<IEnumerable<St_Requisition>> GetRequisitions(); 
     }
 }

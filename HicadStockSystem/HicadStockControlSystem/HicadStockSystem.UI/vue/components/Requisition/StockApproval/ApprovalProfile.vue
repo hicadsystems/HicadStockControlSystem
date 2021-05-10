@@ -6,90 +6,114 @@
       <div class="p-5" id="vertical-form">
         <div class="preview">
           <div class="row">
-            <div class="col-6">
+            <div class="col-4">
               <select
                 class="form-control"
-                v-model="postBody.locationCode"
-                name="locationCode"
-                placeholder="department code"
+                v-model="postBody.itemCode"
+                name="requisitionNo"
+                placeholder="Requisition No."
                 required
+                @change="getRequisitionApproval"
               >
                 <option>
-                  --select department code--
+                  --select Requisition No.--
                 </option>
                 <option
-                  v-for="costcentre in DepartmentList"
-                  v-bind:value="costcentre"
-                  :key="costcentre"
+                  v-for="(requisition, index) in RequisitionList"
+                  v-bind:value="requisition.itemCode"
+                  v-bind:selected="index === 0"
                 >
-                  {{ costcentre }}
+                  {{ requisition.requisitionNo }}
                 </option>
               </select>
             </div>
           </div>
-         <br>
+          <br />
           <div class="row">
-          <div class="col-4">
-           <input
+            <div class="col-4">
+              <input
                 class="form-control"
-                name="qtyInTransaction "
-                 readonly="readonly"
-                v-model="postBody.qtyInTransaction"
-                placeholder="current bal"
+                name="requisitionBy "
+                readonly="readonly"
+                v-model="postBody.requisitionBy"
+                placeholder="Requisition By"
               />
-          </div>
-          <div class="col-4">
-           <input
+            </div>
+            <div class="col-4">
+              <input
                 class="form-control"
-                name="qtyInTransaction "
-                 readonly="readonly"
-                v-model="postBody.qtyInTransaction"
-                placeholder="current bal"
+                name="department "
+                readonly="readonly"
+                v-model="postBody.department"
+                placeholder="department"
               />
-          </div>
-          <div class="col-4">
-           <input
+            </div>
+            <div class="col-4">
+              <input
                 class="form-control"
-                name="qtyInTransaction "
-                 readonly="readonly"
-                v-model="postBody.qtyInTransaction"
-                placeholder="current bal"
+                name="dateAndTime "
+                readonly="readonly"
+                v-model="postBody.dateAndTime"
+                placeholder="Date And Time"
               />
+            </div>
           </div>
-          </div>
-          <br>
+          <br />
           <div class="row">
             <table class="table table-striped table-bordered table-hover">
               <thead>
                 <tr>
-                  <th>Requisition Number</th>
                   <th>Item Code</th>
-                  <th>Quantity</th>
-                  <th>unit</th>
+                  <th>Item Description</th>
+                  <th>Request</th>
+                  <th>Quantity Approved</th>
                   <th>Options</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(status, index) in statusList" :key="index">
-                  <td>{{ status.requisitionNo }}</td>
-                  <td>{{ status.itemcode }}</td>
-                  <td>{{ status.quantity }}</td>
-                  <td>{{ status.unit }}</td>
+                <tr>
+                  <td >
+                  <input
+                class="form-control"
+                name="itemCode "
+                readonly="readonly"
+                v-model="postBody.itemCode"
+                placeholder="item code"
+              />
+                  </td>
+                  <td >
+                  <input
+                class="form-control"
+                name="description "
+                readonly="readonly"
+                v-model="postBody.description"
+                placeholder="description"
+              />
+                  </td>
+                  <td >
+                      <input
+                class="form-control"
+                name="quantity"
+                readonly="readonly"
+                v-model="postBody.quantity"
+                placeholder="quantity"
+              />
+                  </td>
                   <td>
-                    <button
-                      type="button"
-                      class="btn btn-submit btn-primary"
-                      @click="processRetrieve(status)"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-submit btn-primary"
-                      @click="processDelete(status.requisitionNo)"
-                    >
-                      Delete
-                    </button>
+                    <input class="form-control" 
+                    v-model="postBody.approvedQty"
+                    name="approvedQty"/>
+                  </td>
+                  <td>
+                    <div v-if="canProcess" role="group">
+                      <button
+                        class="btn btn-submit btn-primary float-right"
+                        v-on:click="checkForm"
+                        type="submit"
+                      >
+                        {{ submitorUpdate }}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -97,15 +121,6 @@
           </div>
 
           <br />
-          <div v-if="canProcess" role="group">
-            <button
-              class="btn btn-submit btn-primary float-right"
-              v-on:click="checkForm"
-              type="submit"
-            >
-              {{ submitorUpdate }}
-            </button>
-          </div>
         </div>
       </div>
     </form>
@@ -123,29 +138,36 @@ export default {
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
-      DepartmentList: null,
-      ItemDescList: null,
-      StockItemsList: null,
+      RequisitionList: null,
+      ItemApprovalList: null,
       postBody: {
         locationCode: "",
+        requisitionNo: "",
+        requisitionBy: "",
+        department: "",
+        dateAndTime: "",
         itemCode: "",
-        qtyInTransaction: 0,
-        quantity: 0,
-        unit: "",
+        description: "",
+        quantity: "",
+        approvedQty: ""
       },
     };
   },
   mounted() {
-    this.getDepartment();
-    this.getItemCode();
+    this.getRequisition();
+    // this.getItemCode();
   },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
       (this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode),
         (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
-        (this.postBody.qtyInTransaction = this.$store.state.objectToUpdate.qtyInTransaction),
-        (this.postBody.quantity = this.$store.state.objectToUpdate.quantity);
-      this.postBody.unit = this.$store.state.objectToUpdate.unit;
+        (this.postBody.requisitionNo = this.$store.state.objectToUpdate.requisitionNo),
+        (this.postBody.requisitionBy = this.$store.state.objectToUpdate.requisitionBy),
+        (this.postBody.department = this.$store.state.objectToUpdate.department);
+      this.postBody.dateAndTime = this.$store.state.objectToUpdate.dateAndTime;
+      this.postBody.description = this.$store.state.objectToUpdate.description;
+      this.postBody.quantity = this.$store.state.objectToUpdate.quantity;
+      this.postBody.approvedQty = this.$store.state.objectToUpdate.approvedQty;
       this.submitorUpdate = "Update";
     },
   },
@@ -164,15 +186,15 @@ export default {
     postPost() {
       if (this.submitorUpdate == "Submit") {
         axios
-          .post(`/api/requisition/`, this.postBody)
+          .post(`/api/issueapprove/`, this.postBody)
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
-              this.postBody.locationCode = "";
               this.postBody.itemCode = "";
-              this.postBody.quantity = 0;
-              this.postBody.unit = "";
+              this.postBody.quantity = "";
+              this.postBody.description = "";
+              this.postBody.approvedQty = "";
               this.$store.stateName.objectToUpdate = "create";
             }
           })
@@ -183,16 +205,16 @@ export default {
       if (this.submitorUpdate == "Update") {
         alert("Ready to Update");
         axios
-          .put(`/api/requisition/`, this.postBody)
+          .put(`/api/issueapprove/`, this.postBody)
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
               this.submitorUpdate = "Submit";
-              this.postBody.locationCode = "";
               this.postBody.itemCode = "";
+              this.postBody.description = "";
               this.postBody.quantity = 0;
-              this.postBody.unit = "";
+              this.postBody.approvedQty = "";
               this.$store.state.objectToUpdate = "update";
             }
           })
@@ -201,25 +223,24 @@ export default {
           });
       }
     },
-    getDepartment() {
-      axios.get(`/api/requisition/getcostcentre`).then((response) => {
-        this.DepartmentList = response.data;
-      });
-    },
-    getStockItems() {
+    getRequisitionApproval() {
       // this.postBody.itemCode="1234"
       // alert(this.postBody.itemCode)
       axios
-        .get(`/api/requisition/getStockItems/${this.postBody.itemCode}`)
+        .get(`/api/issueapprove/RequisitionApproval/${this.postBody.itemCode}`)
         .then((response) => {
-          this.StockItemsList = response.data;
-          this.postBody.qtyInTransaction = response.data.currentBalance;
-          this.postBody.unit = response.data.unit;
+          this.ItemApprovalList = response.data;
+          this.postBody.requisitionBy = response.data.requisitionBy;
+          this.postBody.department = response.data.department;
+          this.postBody.dateAndTime = response.data.dateAndTime;
+          this.postBody.itemCode = response.data.itemCode;
+          this.postBody.description = response.data.itemDescription;
+          this.postBody.quantity = response.data.requested;
         });
     },
-    getItemCode() {
-      axios.get(`/api/requisition/getItemCode`).then((response) => {
-        this.ItemDescList = response.data;
+    getRequisition() {
+      axios.get(`/api/issueapprove/GetRequisition`).then((response) => {
+        this.RequisitionList = response.data;
       });
     },
   },

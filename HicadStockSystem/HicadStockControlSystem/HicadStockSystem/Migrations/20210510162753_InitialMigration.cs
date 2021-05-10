@@ -191,7 +191,7 @@ namespace HicadStockSystem.Migrations
                 name: "st_issueapprove",
                 columns: table => new
                 {
-                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     DocNo = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
                     Quantity = table.Column<float>(type: "real", nullable: true),
@@ -201,14 +201,13 @@ namespace HicadStockSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_st_issueapprove", x => x.ItemCode);
                 });
 
             migrationBuilder.CreateTable(
                 name: "st_issuereq",
                 columns: table => new
                 {
-                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     DocNo = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
                     Quantity = table.Column<float>(type: "real", nullable: true),
@@ -218,7 +217,6 @@ namespace HicadStockSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_st_issuereq", x => x.ItemCode);
                 });
 
             migrationBuilder.CreateTable(
@@ -269,7 +267,7 @@ namespace HicadStockSystem.Migrations
                 columns: table => new
                 {
                     RequisitionNo = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
-                    Itemcode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    ItemCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LocationCode = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
                     Quantity = table.Column<float>(type: "real", nullable: true),
@@ -286,7 +284,7 @@ namespace HicadStockSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_st_requisition", x => new { x.RequisitionNo, x.Itemcode });
+                    table.PrimaryKey("PK_st_requisition", x => new { x.RequisitionNo, x.ItemCode });
                 });
 
             migrationBuilder.CreateTable(

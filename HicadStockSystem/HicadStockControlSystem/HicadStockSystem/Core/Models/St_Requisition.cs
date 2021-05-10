@@ -15,7 +15,7 @@ namespace HicadStockSystem.Core.Models
         public string RequisitionNo { get; set; }
         //key
         [StringLength(6)]
-        public string Itemcode { get; set; }
+        public string ItemCode { get; set; }
         [StringLength(50)]
         public string Description { get; set; }
         [StringLength(5)]

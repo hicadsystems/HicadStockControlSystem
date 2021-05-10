@@ -18,7 +18,7 @@ namespace HicadStockSystem.Data
         DbSet<RoleMenu> RoleMenus { get; set; }
         DbSet<Menu> Menus { get; set; }
         public DbSet<St_StkSystem> St_StkSystems { get; set; }
-        public DbSet<StateList>  StateLists { get; set; }
+        public DbSet<StateList> StateLists { get; set; }
         public DbSet<St_StockMaster> St_StockMasters { get; set; }
         public DbSet<St_StockClass> St_StockClasses { get; set; }
         public DbSet<St_StkJournal> St_StkJournals { get; set; }
@@ -53,7 +53,7 @@ namespace HicadStockSystem.Data
             modelBuilder.Entity<St_Requisition>().HasKey(r => new
             {
                 r.RequisitionNo,
-                r.Itemcode
+                r.ItemCode
             });
 
             modelBuilder.Entity<St_History>().HasKey(h => new
@@ -116,6 +116,12 @@ namespace HicadStockSystem.Data
             modelBuilder.Entity<St_IssueApprove>().Property(ia => ia.ApprovedQty).HasColumnType("real");
             modelBuilder.Entity<St_History>().Property(h => h.Price).HasColumnType("money");
             modelBuilder.Entity<St_Supplier>().Property(s => s.Sup_Start_Date).HasColumnType("smalldatetime");
+
+            modelBuilder.Entity<St_IssueApprove>()
+            .HasNoKey();
+
+            modelBuilder.Entity<St_IssueRequisition>()
+            .HasNoKey();
 
         }
 
