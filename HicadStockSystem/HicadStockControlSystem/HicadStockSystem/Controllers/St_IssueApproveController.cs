@@ -35,6 +35,7 @@ namespace HicadStockSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var newIssueApprove = _mapper.Map<CreateSt_IssueApproveVM, St_IssueApprove>(issueApproveVM);
 
                 newIssueApprove.CreatedOn = DateTime.Now;

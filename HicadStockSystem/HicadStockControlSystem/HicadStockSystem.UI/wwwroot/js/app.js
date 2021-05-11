@@ -2648,6 +2648,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.canProcess = true;
 
           if (response.data.responseCode == "200") {
+            _this.postBody.requisitionNo = "";
             _this.postBody.itemCode = "";
             _this.postBody.quantity = "";
             _this.postBody.description = "";
@@ -2667,6 +2668,7 @@ __webpack_require__.r(__webpack_exports__);
 
           if (response.data.responseCode == "200") {
             _this.submitorUpdate = "Submit";
+            _this.postBody.requisitionNo = "";
             _this.postBody.itemCode = "";
             _this.postBody.description = "";
             _this.postBody.quantity = 0;
@@ -2688,6 +2690,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.postBody.requisitionBy = response.data.requisitionBy;
         _this2.postBody.department = response.data.department;
         _this2.postBody.dateAndTime = response.data.dateAndTime;
+        _this2.postBody.itemCode = response.data.requisitionNo;
         _this2.postBody.itemCode = response.data.itemCode;
         _this2.postBody.description = response.data.itemDescription;
         _this2.postBody.quantity = response.data.requested;
@@ -4990,9 +4993,10 @@ var render = function() {
                   directives: [
                     {
                       name: "model",
-                      rawName: "v-model",
+                      rawName: "v-model:itemCode",
                       value: _vm.postBody.itemCode,
-                      expression: "postBody.itemCode"
+                      expression: "postBody.itemCode",
+                      arg: "itemCode"
                     }
                   ],
                   staticClass: "form-control",
@@ -5661,7 +5665,7 @@ var render = function() {
             return _c("tr", { key: index }, [
               _c("td", [_vm._v(_vm._s(status.requisitionNo))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(status.itemcode))]),
+              _c("td", [_vm._v(_vm._s(status.description))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(status.quantity))]),
               _vm._v(" "),
@@ -5713,7 +5717,7 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Requisition Number")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Item Code")]),
+        _c("th", [_vm._v("Item Description")]),
         _vm._v(" "),
         _c("th", [_vm._v("Quantity")]),
         _vm._v(" "),

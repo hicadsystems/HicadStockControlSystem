@@ -86,14 +86,5 @@ namespace HicadStockSystem.Persistence.Repository
                           }).FirstOrDefaultAsync();
         }
 
-        public Ac_CostCentre GetDepartmentName(string locationCode)
-        {
-            return _dbContext.Ac_CostCentres.Where(c=>c.UnitCode==locationCode).Select(c => new Ac_CostCentre
-            {
-                UnitDesc = c.UnitDesc
-            }).FirstOrDefault();
-        }
-
-    
     }
 }

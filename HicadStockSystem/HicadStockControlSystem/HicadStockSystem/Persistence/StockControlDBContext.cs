@@ -117,12 +117,8 @@ namespace HicadStockSystem.Data
             modelBuilder.Entity<St_History>().Property(h => h.Price).HasColumnType("money");
             modelBuilder.Entity<St_Supplier>().Property(s => s.Sup_Start_Date).HasColumnType("smalldatetime");
 
-            modelBuilder.Entity<St_IssueApprove>()
-            .HasNoKey();
-
-            modelBuilder.Entity<St_IssueRequisition>()
-            .HasNoKey();
-
+            
+           
         }
 
     }

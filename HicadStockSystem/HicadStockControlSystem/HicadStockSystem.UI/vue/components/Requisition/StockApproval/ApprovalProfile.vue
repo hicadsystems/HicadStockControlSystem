@@ -9,7 +9,7 @@
             <div class="col-4">
               <select
                 class="form-control"
-                v-model="postBody.itemCode"
+                v-model:itemCode="postBody.itemCode"
                 name="requisitionNo"
                 placeholder="Requisition No."
                 required
@@ -191,6 +191,7 @@ export default {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
+              this.postBody.requisitionNo = "";
               this.postBody.itemCode = "";
               this.postBody.quantity = "";
               this.postBody.description = "";
@@ -211,6 +212,7 @@ export default {
             this.canProcess = true;
             if (response.data.responseCode == "200") {
               this.submitorUpdate = "Submit";
+              this.postBody.requisitionNo = "";
               this.postBody.itemCode = "";
               this.postBody.description = "";
               this.postBody.quantity = 0;
@@ -233,6 +235,7 @@ export default {
           this.postBody.requisitionBy = response.data.requisitionBy;
           this.postBody.department = response.data.department;
           this.postBody.dateAndTime = response.data.dateAndTime;
+          this.postBody.itemCode = response.data.requisitionNo;
           this.postBody.itemCode = response.data.itemCode;
           this.postBody.description = response.data.itemDescription;
           this.postBody.quantity = response.data.requested;

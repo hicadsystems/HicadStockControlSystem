@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +11,10 @@ namespace HicadStockSystem.Core.Models
     [Table("st_issuereq")]
     public class St_IssueRequisition
     {
-       
+        //[Key]
+        //[StringLength(12)]
+        public int Id { get; set; }
+
         [StringLength(6)]
         public string ItemCode { get; set; }
         [StringLength(25)]

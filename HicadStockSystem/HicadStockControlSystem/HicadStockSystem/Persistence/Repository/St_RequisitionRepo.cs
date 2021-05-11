@@ -120,5 +120,24 @@ namespace HicadStockSystem.Persistence.Repository
         {
             return _dbContext.St_ItemMasters.Where(c => c.ItemCode == itemCode).Select(c => c.ItemDesc).FirstOrDefault();
         }
+
+        public async Task<IssueRequesitionApprovalVM> RequesitionApprovalVM(string itemCode)
+        {
+            return await (from item in _dbContext.St_ItemMasters
+                          join requisition in _dbContext.St_Requisitions on item.ItemCode equals requisition.ItemCode
+                          join costCenter in _dbContext.Ac_CostCentres on requisition.LocationCode equals costCenter.UnitCode
+                          where item.ItemCode == itemCode
+                          select new IssueRequesitionApprovalVM
+                          {
+                              RequisitionNo = requisition.RequisitionNo,
+                              RequisitionBy = requisition.UserId,
+                              //Department = requisition.LocationCode,
+                              Department = costCenter.UnitDesc,
+                              DateAndTime = requisition.RequisitionDate.ToString(),
+                              ItemCode = item.ItemCode,
+                              ItemDescription = item.ItemDesc,
+                              Requested = requisition.Quantity
+                          }).FirstOrDefaultAsync();
+        }
     }
 }

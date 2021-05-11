@@ -125,5 +125,14 @@ namespace HicadStockSystem.Controllers
 
             return Ok(itemCode);
         }
+
+        [HttpGet]
+        [Route("RequisitionApproval/{itemCode}")]
+        public async Task<IActionResult> RequisitionApproval(string itemCode)
+        {
+            var approval = await _requisition.RequesitionApprovalVM(itemCode);
+
+            return Ok(approval);
+        }
     }
 }

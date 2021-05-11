@@ -5,7 +5,7 @@
       <thead>
         <tr>
           <th>Requisition Number</th>
-          <th>Item Code</th>
+          <th>Item Description</th>
           <th>Quantity</th>
           <th>unit</th>
           <th>Options</th>
@@ -14,7 +14,7 @@
       <tbody>
         <tr v-for="(status, index) in statusList" :key="index">
           <td>{{ status.requisitionNo }}</td>
-          <td>{{ status.itemcode }}</td>
+          <td>{{ status.description }}</td>
           <td>{{ status.quantity }}</td>
           <td>{{ status.unit }}</td>
           <td>
