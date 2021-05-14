@@ -28,19 +28,19 @@ namespace HicadStockSystem.Controllers
         {
             var requisition = await _requisition.GetAll();
             return Ok(requisition);
-        } 
+        }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRequisition([FromBody]CreateSt_RequisitionVM requisitionVM)
+        public async Task<IActionResult> CreateRequisition([FromBody] CreateSt_RequisitionVM requisitionVM)
         {
             if (ModelState.IsValid)
             {
                 var reqNo = requisitionVM.RequisitionNo = _requisition.GenerateRequisitionNo();
 
-                var requisitionNumberInDb =_requisition.GetByReqNo(requisitionVM.RequisitionNo);
+                var requisitionNumberInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
 
                 //check to avoid duplicate number
-                if (requisitionNumberInDb==null)
+                if (requisitionNumberInDb == null)
                 {
                     requisitionVM.Description = _requisition.GetDescription(requisitionVM.Itemcode);
 
@@ -57,11 +57,11 @@ namespace HicadStockSystem.Controllers
 
                     return Ok(newRequisition);
                 }
-                    
-                
+
+
             }
 
-            return BadRequest("Requisition already exist.. please try later"); 
+            return BadRequest("Requisition already exist.. please try later");
         }
 
         [HttpGet("{reqNo}")]
@@ -74,10 +74,10 @@ namespace HicadStockSystem.Controllers
             return Ok(requisitonInDb);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM)
+        [HttpPut("{itemCode}")]
+        public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM, string itemCode)
         {
-            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+            var requisitioInDb = _requisition.GetByItemcode(requisitionVM.Itemcode);
             if (requisitioInDb == null)
                 return BadRequest();
 

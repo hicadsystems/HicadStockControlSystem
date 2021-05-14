@@ -48,7 +48,7 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task UpdateAsync(string reqNo)
         {
-            var requisitionInDb = GetByReqNo(reqNo);
+            var requisitionInDb = GetByItemcode(reqNo);
             _dbContext.Update(requisitionInDb);
             await _uow.CompleteAsync();
         }
@@ -138,6 +138,11 @@ namespace HicadStockSystem.Persistence.Repository
                               ItemDescription = item.ItemDesc,
                               Requested = requisition.Quantity
                           }).FirstOrDefaultAsync();
+        }
+
+        public St_Requisition GetByItemcode(string itemCode)
+        {
+            return _dbContext.St_Requisitions.Where(sr => sr.ItemCode == itemCode).FirstOrDefault();
         }
     }
 }

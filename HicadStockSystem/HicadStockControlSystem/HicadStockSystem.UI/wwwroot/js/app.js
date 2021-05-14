@@ -2588,6 +2588,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2595,10 +2598,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      errors: null,
       responseMessage: "",
-      submitorUpdate: "Submit",
-      canProcess: true,
       RequisitionList: null,
       ItemApprovalList: null,
       postBody: {
@@ -2617,75 +2617,28 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.getRequisition(); // this.getItemCode();
   },
-  watch: {
-    "$store.state.objectToUpdate": function $storeStateObjectToUpdate(newVal, oldVal) {
-      this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode, this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode, this.postBody.requisitionNo = this.$store.state.objectToUpdate.requisitionNo, this.postBody.requisitionBy = this.$store.state.objectToUpdate.requisitionBy, this.postBody.department = this.$store.state.objectToUpdate.department;
-      this.postBody.dateAndTime = this.$store.state.objectToUpdate.dateAndTime;
-      this.postBody.description = this.$store.state.objectToUpdate.description;
-      this.postBody.quantity = this.$store.state.objectToUpdate.quantity;
-      this.postBody.approvedQty = this.$store.state.objectToUpdate.approvedQty;
-      this.submitorUpdate = "Update";
-    }
-  },
   methods: {
-    checkForm: function checkForm(e) {
-      if (this.postBody.itemCode) {
-        e.preventDefault();
-        this.canProcess = false;
-        alert(this.postBody.itemCode, "i am here");
-        this.postPost();
-      } else {
-        this.errors = [];
-        this.errors.push("Supply all the required field");
-      }
-    },
-    postPost: function postPost() {
+    ApproveRequisition: function ApproveRequisition(postBody) {
       var _this = this;
 
-      if (this.submitorUpdate == "Submit") {
-        axios.post("/api/issueapprove/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
+      alert(this.postBody.itemCode);
+      axios.put("/api/requisition/".concat(itemCode), this.postBody).then(function (response) {
+        _this.responseMessage = response.data.responseDescription;
 
-          if (response.data.responseCode == "200") {
-            _this.postBody.requisitionNo = "";
-            _this.postBody.itemCode = "";
-            _this.postBody.quantity = "";
-            _this.postBody.description = "";
-            _this.postBody.approvedQty = "";
-            _this.$store.stateName.objectToUpdate = "create";
-          }
-        })["catch"](function (e) {
-          _this.errors.push(e);
-        });
-      }
-
-      if (this.submitorUpdate == "Update") {
-        alert("Ready to Update");
-        axios.put("/api/issueapprove/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
-
-          if (response.data.responseCode == "200") {
-            _this.submitorUpdate = "Submit";
-            _this.postBody.requisitionNo = "";
-            _this.postBody.itemCode = "";
-            _this.postBody.description = "";
-            _this.postBody.quantity = 0;
-            _this.postBody.approvedQty = "";
-            _this.$store.state.objectToUpdate = "update";
-          }
-        })["catch"](function (e) {
-          _this.errors.push(e);
-        });
-      }
+        if (response.data.responseCode == "200") {
+          _this.postBody.itemCode = response.data.itemCode;
+          _this.postBody.quantity = response.data.quantity;
+        }
+      })["catch"](function (response) {
+        _this.errors.push(response);
+      });
     },
     getRequisitionApproval: function getRequisitionApproval() {
       var _this2 = this;
 
       // this.postBody.itemCode="1234"
       // alert(this.postBody.itemCode)
-      axios.get("/api/issueapprove/RequisitionApproval/".concat(this.postBody.itemCode)).then(function (response) {
+      axios.get("/api/requisition/RequisitionApproval/".concat(this.postBody.requisitionNo)).then(function (response) {
         _this2.ItemApprovalList = response.data;
         _this2.postBody.requisitionBy = response.data.requisitionBy;
         _this2.postBody.department = response.data.department;
@@ -2699,21 +2652,9 @@ __webpack_require__.r(__webpack_exports__);
     getRequisition: function getRequisition() {
       var _this3 = this;
 
-      axios.get("/api/issueapprove/GetRequisition").then(function (response) {
+      axios.get("/api/requisition/").then(function (response) {
         _this3.RequisitionList = response.data;
       });
-    }
-  },
-  computed: {
-    setter: function setter() {
-      var objecttoedit = this.$store.state.objectToUpdate;
-
-      if (objecttoedit.supplierCode) {
-        this.postBody.locationCode = objecttoedit.locationCode;
-        this.postBody.itemCode = objecttoedit.itemCode;
-        this.postBody.quantity = objecttoedit.quantity;
-        this.postBody.unit = objecttoedit.unit;
-      }
     }
   }
 });
@@ -4972,31 +4913,24 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.errors
-      ? _c("div", { staticClass: "has-error" }, [_vm._v(_vm._s([_vm.errors]))])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.responseMessage
-      ? _c("div", { staticClass: "has-error" }, [
-          _vm._v(_vm._s(_vm.responseMessage))
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("form", { attrs: { method: "post" }, on: { submit: _vm.checkForm } }, [
+    _c("form", [
       _c("div", { staticClass: "p-5", attrs: { id: "vertical-form" } }, [
         _c("div", { staticClass: "preview" }, [
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col-4" }, [
+              _c("label", { attrs: { for: "requisitionNo" } }, [
+                _vm._v("Requisition No.")
+              ]),
+              _vm._v(" "),
               _c(
                 "select",
                 {
                   directives: [
                     {
                       name: "model",
-                      rawName: "v-model:itemCode",
-                      value: _vm.postBody.itemCode,
-                      expression: "postBody.itemCode",
-                      arg: "itemCode"
+                      rawName: "v-model",
+                      value: _vm.postBody.requisitionNo,
+                      expression: "postBody.requisitionNo"
                     }
                   ],
                   staticClass: "form-control",
@@ -5018,7 +4952,7 @@ var render = function() {
                           })
                         _vm.$set(
                           _vm.postBody,
-                          "itemCode",
+                          "requisitionNo",
                           $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
@@ -5039,10 +4973,8 @@ var render = function() {
                     return _c(
                       "option",
                       {
-                        domProps: {
-                          value: requisition.itemCode,
-                          selected: index === 0
-                        }
+                        key: requisition.requisitionNo,
+                        domProps: { value: requisition.requisitionNo }
                       },
                       [
                         _vm._v(
@@ -5063,6 +4995,10 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col-4" }, [
+              _c("label", { attrs: { for: "requisitionBy" } }, [
+                _vm._v("Requisition By")
+              ]),
+              _vm._v(" "),
               _c("input", {
                 directives: [
                   {
@@ -5091,6 +5027,10 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-4" }, [
+              _c("label", { attrs: { for: "department" } }, [
+                _vm._v("Department")
+              ]),
+              _vm._v(" "),
               _c("input", {
                 directives: [
                   {
@@ -5119,6 +5059,12 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-4" }, [
+              _c(
+                "label",
+                { staticClass: "ml-0", attrs: { for: "dateAndTime" } },
+                [_vm._v("Date And Time")]
+              ),
+              _vm._v(" "),
               _c("input", {
                 directives: [
                   {
@@ -5283,26 +5229,25 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm.canProcess
-                        ? _c("div", { attrs: { role: "group" } }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-submit btn-primary float-right",
-                                attrs: { type: "submit" },
-                                on: { click: _vm.checkForm }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(_vm.submitorUpdate) +
-                                    "\n                    "
-                                )
-                              ]
+                      _c("div", { attrs: { role: "group" } }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-submit btn-primary float-right",
+                            on: {
+                              submit: function($event) {
+                                return _vm.ApproveRequisition(_vm.postBody)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                      Approve\n                    "
                             )
-                          ])
-                        : _vm._e()
+                          ]
+                        )
+                      ])
                     ])
                   ])
                 ])

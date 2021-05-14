@@ -10,6 +10,7 @@ namespace HicadStockSystem.Core.IRespository
     {
         Task CreateAsync(St_Requisition requisition);
         St_Requisition GetByReqNo(string reqNo);
+        St_Requisition GetByItemcode(string itemCode);
         Task UpdateAsync(St_Requisition requisition);
         Task UpdateAsync(string reqNo);
         Task<IEnumerable<St_Requisition>> GetAll();
