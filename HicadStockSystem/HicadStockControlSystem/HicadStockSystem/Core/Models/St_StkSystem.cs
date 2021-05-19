@@ -33,7 +33,6 @@ namespace HicadStockSystem.Models
         public string SerialNumber { get; set; }
         [StringLength(15)]
         public string GLCode { get; set; }
-        
         public int ProcessYear { get; set; }
         public int ProcessMonth { get; set; }
         [StringLength(15)]

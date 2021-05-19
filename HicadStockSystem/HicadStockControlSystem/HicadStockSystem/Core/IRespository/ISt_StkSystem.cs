@@ -17,7 +17,12 @@ namespace HicadStockSystem.Repository.IRepository
         Task Delete(string compcode);
         Task<IEnumerable<St_StkSystem>> GetAll();
         Task<IEnumerable<StateList>> GetAllState();
+        Task<IEnumerable<Ac_CostCentre>> GetCostCenter();
+        Task<IEnumerable<Ac_BusinessLine>> GetBusLine();
+        Task<IEnumerable<AccChart>> GetAccChart();
+        Task<IEnumerable<AccChart>> GetCreditorCode();
+        Task<IEnumerable<AccChart>> GetGLCode();
+        Task<IEnumerable<AccChart>> GetExpenseCode();
 
-        IEnumerable<St_BusinessLine> GetAllBusinessLine();
     }
 }

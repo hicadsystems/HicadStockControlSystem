@@ -9,6 +9,9 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_IssueApprove
     public class CreateSt_IssueApproveVM
     {
         [Required]
+        [StringLength(12)]
+        public string RequisitionNo { get; set; }
+        [Required]
         [StringLength(20)]
         public string ItemCode { get; set; }
         [StringLength(25)]

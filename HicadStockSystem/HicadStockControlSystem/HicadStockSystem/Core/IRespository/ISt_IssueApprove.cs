@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Core.IRespository
 {
-    public interface ISt_IssueApprove 
+    public interface ISt_IssueApprove
     {
         Task CreateAsync(St_IssueApprove issueApprove);
         St_IssueApprove GetByCode(string itemCode);
@@ -16,6 +16,7 @@ namespace HicadStockSystem.Core.IRespository
         Task<IEnumerable<St_IssueApprove>> GetAll();
         Task DeleteAsync(string itemCode);
         Task<IssueRequesitionApprovalVM> RequesitionApprovalVM(string itemCode);
-        Task<IEnumerable<St_Requisition>> GetRequisitions(); 
+        Task<IEnumerable<St_Requisition>> GetRequisitions();
+        string GenerateDocNo();
     }
 }

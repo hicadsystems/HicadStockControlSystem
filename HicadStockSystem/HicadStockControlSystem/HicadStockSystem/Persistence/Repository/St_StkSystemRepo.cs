@@ -59,9 +59,62 @@ namespace HicadStockSystem.Persistence
             return await _dbContext.StateLists.ToListAsync();
         }
 
-        public IEnumerable<St_BusinessLine> GetAllBusinessLine()
+        public async Task<IEnumerable<Ac_CostCentre>> GetCostCenter()
         {
-            throw new NotImplementedException();
+            return await (from location in _dbContext.Ac_CostCentres select 
+                          new Ac_CostCentre {
+                              UnitCode = location.UnitCode,
+                              UnitDesc = location.UnitDesc
+                          }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Ac_BusinessLine>> GetBusLine()
+        {
+            return await (from busline in _dbContext.Ac_BusinessLines select
+                          new Ac_BusinessLine { 
+                              BusinessLine = busline.BusinessLine,
+                              BusinessDesc = busline.BusinessDesc
+                          }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<AccChart>> GetAccChart()
+        {
+            return await (from accchart in _dbContext.AccCharts select
+                          new AccChart {
+                              AcctNumber = accchart.AcctNumber,
+                              Description = accchart.Description
+                          }).OrderBy(s=>s.Description).ToListAsync();
+        }
+
+        public async Task<IEnumerable<AccChart>> GetCreditorCode()
+        {
+            return await(from accchart in _dbContext.AccCharts
+                         select
+            new AccChart
+            {
+            AcctNumber = accchart.AcctNumber,
+            Description = accchart.Description
+            }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<AccChart>> GetGLCode()
+        {
+            return await(from accchart in _dbContext.AccCharts
+                         select
+            new AccChart
+            {
+            AcctNumber = accchart.AcctNumber,
+            Description = accchart.Description
+            }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<AccChart>> GetExpenseCode()
+        {
+             return await (from accchart in _dbContext.AccCharts select
+                          new AccChart {
+                              AcctNumber = accchart.AcctNumber,
+                              Description = accchart.Description
+                          }).ToListAsync();
         }
     }
 }

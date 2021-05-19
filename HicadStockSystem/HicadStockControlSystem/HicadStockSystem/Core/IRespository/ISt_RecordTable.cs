@@ -14,5 +14,6 @@ namespace HicadStockSystem.Core.IRespository
         Task UpdateAsync(string code);
         Task<IEnumerable<St_RecordTable>> GetAll();
         Task DeleteAsync(string code);
+        //St_RecordTable GetByDocCode(string code);
     }
 }

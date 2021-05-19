@@ -32,9 +32,9 @@ namespace HicadStockSystem.Core.Models
         public string SupplyBy { get; set; }
         [StringLength(20)]
         public string ApprovedBy { get; set; }
-
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
+        public bool IsApproved { get; set; }
 
     }
 }

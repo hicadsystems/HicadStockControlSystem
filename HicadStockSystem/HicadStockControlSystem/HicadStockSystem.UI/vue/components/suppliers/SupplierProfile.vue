@@ -6,7 +6,8 @@
       <div class="p-5" id="vertical-form">
         <div class="preview">
           <div class="row">
-            <div class="col-6">
+            <div class="col-3">
+            <label for="supplierCode" class="mb-1">Supplier Code</label>
               <input
                 class="form-control"
                 name="supplierCode"
@@ -14,7 +15,8 @@
                 placeholder="supplier code"
               />
             </div>
-            <div class="col-6">
+            <div class="col-6 offset-3">
+            <label for="name" class="mb-1">Supplier Name</label>
               <input
                 class="form-control"
                 name="name"
@@ -26,14 +28,16 @@
           <br />
           <div class="row">
             <div class="col-6">
+          <label for="address" class="mb-1">Supplier Address</label>
               <input
                 class="form-control"
-                name="supplier address"
+                name="address"
                 v-model="postBody.address"
-                placeholder="address"
+                placeholder="supplier address"
               />
             </div>
             <div class="col-6">
+            <label for="contact" class="mb-1">Contact Address</label>
               <input
                 class="form-control"
                 name="contact "
@@ -45,6 +49,7 @@
           <br />
           <div class="row">
             <div class="col-6">
+          <label for="email" class="mb-1">Email</label>
               <input
                 class="form-control"
                 name="email"
@@ -53,6 +58,7 @@
               />
             </div>
             <div class="col-6">
+            <label for="phone" class="mb-1">Phone No.</label>
               <input
                 class="form-control"
                 name="phone"

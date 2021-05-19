@@ -38,6 +38,10 @@ namespace HicadStockSystem.Persistence.Repository
             return _dbContext.St_RecordTables.Where(rt => rt.Code == code).FirstOrDefault();
         }
 
+        //public St_RecordTable GetByDocCode(string code)
+        //{
+        //    return _dbContext.St_RecordTables.Where(rt => rt.Code == code).FirstOrDefault();
+        //}
         public async Task UpdateAsync(St_RecordTable recordTable)
         {
             _dbContext.Update(recordTable);

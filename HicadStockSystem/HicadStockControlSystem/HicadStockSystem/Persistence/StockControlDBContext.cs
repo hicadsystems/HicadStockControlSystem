@@ -34,6 +34,7 @@ namespace HicadStockSystem.Data
         public DbSet<St_Supplier> St_Suppliers { get; set; }
         public DbSet<St_IssueRequisition> St_IssueRequisitions { get; set; }
         public DbSet<St_IssueApprove> St_IssueApproves { get; set; }
+        public DbSet<AccChart> AccCharts { get; set; }
 
 
 
@@ -63,6 +64,11 @@ namespace HicadStockSystem.Data
                 h.DocType,
             });
 
+            modelBuilder.Entity<St_IssueApprove>().HasKey(h => new
+            {
+                h.RequisitionNo,
+                h.DocNo,
+            });
 
             base.OnModelCreating(modelBuilder);
             //many to many

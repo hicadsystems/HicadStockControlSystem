@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
 using HicadStockSystem.Controllers.ResourcesVM.St_StkSystem;
 using HicadStockSystem.Core;
-using HicadStockSystem.Data;
 using HicadStockSystem.Models;
-using HicadStockSystem.Persistence;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HicadStockSystem.Controllers
@@ -97,6 +92,57 @@ namespace HicadStockSystem.Controllers
         {
             var states = await _systemRepo.GetAllState();
             return Ok(states);
+        }
+
+        [HttpGet]
+        [Route("GetWriteOffLoc")]
+        public async Task<IActionResult> GetWriteOffLoc()
+        {
+            var costcenter = await _systemRepo.GetCostCenter();
+            return Ok(costcenter);
+        }
+
+        [HttpGet]
+        [Route("GetAccChart")]
+        public async Task<IActionResult> GetAccChart()
+        {
+            var accChart = await _systemRepo.GetAccChart();
+            return Ok(accChart);
+        }
+
+
+        [HttpGet]
+        [Route("GetGLCode")]
+        public async Task<IActionResult> GetGLCode()
+        {
+            var accChart = await _systemRepo.GetGLCode();
+            return Ok(accChart);
+        }
+
+
+        [HttpGet]
+        [Route("GetCreditorCode")]
+        public async Task<IActionResult> GetCreditorCode()
+        {
+            var accChart = await _systemRepo.GetCreditorCode();
+            return Ok(accChart);
+        }
+
+
+        [HttpGet]
+        [Route("GetExpenseCode")]
+        public async Task<IActionResult> GetExpenseCode()
+        {
+            var accChart = await _systemRepo.GetExpenseCode();
+            return Ok(accChart);
+        }
+
+        [HttpGet]
+        [Route("GetBusinessLine")]
+        public async Task<IActionResult> GetBusinessLine()
+        {
+            var busLine = await _systemRepo.GetBusLine();
+            return Ok(busLine);
         }
     }
 }

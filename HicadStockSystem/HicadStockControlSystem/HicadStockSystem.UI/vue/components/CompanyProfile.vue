@@ -1,65 +1,67 @@
 <template>
   <div>
-    <div v-if="errors" class="has-error">{{ [errors] }}</div>
-    <div v-if="responseMessage" class="has-error">{{ responseMessage }}</div>
     <form @submit="checkForm" method="post">
-      <div class="p-5" id="vertical-form">
+      <div id="vertical-form">
         <div class="preview">
           <div class="row">
-            <div class="col-6">
+            <div class="col-3">
+              <label class="mb-1" for="companyCode">Company Code</label>
+              <br />
               <input
                 class="form-control"
                 name="companyCode"
                 v-model="postBody.companyCode"
-                placeholder="company code"
+                v-bind:class="{'is-invalid': missingCompanyCode}"
               />
+              <div class="invalid-feedback">
+                Please enter company code not more than 10 characters.
+              </div>
             </div>
-            <div class="col-6">
+            <div class="col-6 offset-3">
+              <label class="mb-1" for="companyName">Company Name</label>
+              <br />
               <input
                 class="form-control"
                 name="companyName "
                 v-model="postBody.companyName"
-                placeholder="company name"
               />
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-6">
+              <label class="mb-1" for="companyAddress">Company Address</label>
               <textarea
                 class="form-control"
-                name="companyAddress"
+                id="companyAddress"
                 v-model="postBody.companyAddress"
-                placeholder="company address"
+                rows="5"
               >
               </textarea>
             </div>
             <div class="col-6">
+              <label class="mb-1" for="companyTelephone"
+                >Telephone Number</label
+              >
               <input
                 class="form-control"
-                name="companyTelephone "
+                nameid="companyTelephone "
                 v-model="postBody.phone"
-                placeholder="telephone number"
               />
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-6">
-              <input
-                class="form-control"
-                name="email"
-                v-model="postBody.email"
-                placeholder="company email"
-              />
+              <label class="mb-1" for="email">Company Email</label>
+              <input class="form-control" id="email" v-model="postBody.email" />
             </div>
             <div class="col-6">
+              <label class="mb-1" for="stateName">State</label>
               <select
                 class="form-control"
+                id="stateName"
                 v-model="postBody.stateName"
-                name="stateName"
-                placeholder="state"
-                required
               >
                 <option
                   v-for="state in stateList"
@@ -74,117 +76,167 @@
           <br />
           <div class="row">
             <div class="col-6">
-              <input
-                class="form-control"
-                name="city"
-                v-model="postBody.city"
-                placeholder="city"
-              />
+              <label class="mb-1" for="city">City</label>
+              <input class="form-control" id="city" v-model="postBody.city" />
             </div>
             <div class="col-6">
-              <datepicker
-                name="installDate "
+              <label class="mb-1" for="city">Install Date</label>
+              <input
+                class="form-control"
+                type="date"
+                id="installDate "
                 v-model="postBody.installDate"
-                placeholder="Install Date"
-              ></datepicker>
+              />
             </div>
           </div>
 
           <br />
           <div class="row">
             <div class="col-6">
+              <label class="mb-1" for="city">Serial Number</label>
               <input
                 class="form-control"
-                name="serialNumber"
+                id="serialNumber"
                 v-model="postBody.serialNumber"
-                placeholder="Serial Number"
               />
             </div>
             <div class="col-6">
-              <input
-                class="form-control"
-                name="glCode"
-                v-model="postBody.glCode"
-                placeholder="GL Code"
-              />
+              <label class="mb-1" for="city">GL Code</label>
+              <select class="form-control" v-model="postBody.glCode" id="city">
+                <option
+                  v-for="gLCode in GLCodeList"
+                  v-bind:value="gLCode.acctNumber"
+                  v-bind:key="gLCode.acctNumber"
+                >
+                  {{ gLCode.description }}
+                </option>
+              </select>
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-6">
+              <label class="mb-1" for="processYear">Process Year</label>
               <input
                 class="form-control"
-                name="processYear "
+                id="processYear"
                 v-model="postBody.processYear"
-                placeholder="Process Year"
               />
             </div>
 
             <div class="col-6">
+              <label class="mb-1" for="processMonth">Process Month</label>
               <input
                 class="form-control"
-                name="processMonth"
+                id="processMonth"
                 v-model="postBody.processMonth"
-                placeholder="Process Month"
               />
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-6">
-              <input
+              <label class="mb-1" for="expenseCode">Expense Code</label>
+              <select
                 class="form-control"
-                name="expenseCode "
                 v-model="postBody.expenseCode"
-                placeholder="Expense Code"
-              />
+                id="expenseCode"
+              >
+                <option
+                  v-for="expCode in ExpenseCodeList"
+                  v-bind:value="expCode.acctNumber"
+                  v-bind:key="expCode.acctNumber"
+                >
+                  {{ expCode.description }}
+                </option>
+              </select>
             </div>
             <div class="col-6">
-              <input
+              <label class="mb-1" for="writeOffLoc">Write Off Location</label>
+              <select
                 class="form-control"
-                name="writeoffLoc"
                 v-model="postBody.writeoffLoc"
-                placeholder="Write off Location"
-              />
+                id="writeOffLoc"
+                required
+              >
+                <option
+                  v-for="writeOff in writeoffLocList"
+                  v-bind:value="writeOff.unitCode"
+                  v-bind:key="writeOff.unitCode"
+                >
+                  {{ writeOff.unitDesc }}
+                </option>
+              </select>
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-6">
-              <input
+              <label class="mb-1" for="creditorsCode">Creditors Code</label>
+              <select
                 class="form-control"
-                name="creditorsCode "
                 v-model="postBody.creditorsCode"
-                placeholder="Creditors Code"
-              />
+                id="creditorsCode"
+                required
+              >
+                <option
+                  v-for="crCode in CreditorCodeList"
+                  v-bind:value="crCode.acctNumber"
+                  v-bind:key="crCode.acctNumber"
+                >
+                  {{ crCode.description }}
+                </option>
+              </select>
             </div>
             <div class="col-6">
-              <input
+              <label class="mb-1" for="busLine"
+                >Business Line That Fund The Stocks</label
+              >
+              <select
                 class="form-control"
-                name="busLine"
                 v-model="postBody.busLine"
-                placeholder="Business Line That Fund The Stocks"
-              />
+                id="busLine"
+                required
+              >
+                <option
+                  v-for="businessLine in BusinessLineList"
+                  v-bind:value="businessLine.businessLine"
+                  v-bind:key="businessLine.businessLine"
+                >
+                  {{ businessLine.businessDesc }}
+                </option>
+              </select>
             </div>
           </div>
           <br />
           <div class="row">
-            <div class="col-6"></div>
             <div class="col-3">
+              <label for="busLine">Hold Un-Approved Request For</label>
+            </div>
+            <div class="col-1">
               <input
                 class="form-control"
                 name="holdDays "
                 v-model="postBody.holdDays"
-                placeholder="Hold Days"
+                placeholder="0"
               />
             </div>
-            <div class="col-3">
+            <div class="col-1 ml-0">
+              <label for="busLine">Days</label>
+            </div>
+            <div class="col-1">
+              <label for="busLine">Approved</label>
+            </div>
+            <div class="col-1">
               <input
                 class="form-control"
                 name="approvedDay "
                 v-model="postBody.approvedDay"
-                placeholder="Approved Day"
+                placeholder="0"
               />
+            </div>
+            <div class="col-1">
+              <label for="busLine">Days</label>
             </div>
           </div>
           <br />
@@ -208,6 +260,7 @@ export default {
   components: {
     Datepicker,
   },
+  
   data() {
     return {
       errors: null,
@@ -215,6 +268,14 @@ export default {
       submitorUpdate: "Submit",
       canProcess: true,
       stateList: null,
+      writeoffLocList: null,
+      BusinessLineList: null,
+      GLCodeList: null,
+      CreditorCodeList: null,
+      ExpenseCodeList: null,
+      isCrCode: false,
+      isGLCode:false,
+      isExpenseCode:false,
       postBody: {
         companyCode: "",
         companyName: "",
@@ -238,11 +299,16 @@ export default {
       },
     };
   },
-  mounted(){
-    axios.get(`/api/st_stksystem/getstates`)
-           .then(response=>{
-               this.stateList= response.data
-           })
+  attemptedSubmit: false,
+
+  mounted() {
+    this.getStates();
+    this.getWriteOffLoc();
+    this.getBusinessLine();
+    this.getAccChart();
+    // this.getCreditorCode();
+    // this.getExpenseCode();
+    // this.getGLCode();
   },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
@@ -268,15 +334,22 @@ export default {
     },
   },
   methods: {
+
     checkForm: function(e) {
-      if (this.postBody.companyCode) {
+      if(this.missingCompanyCode && this.missingCompanyName && this.missingCompanyAddress){
+           e.preventDefault();
+        }
+       else {
+
+        if (this.postBody.companyCode && this.postBody.companyName && this.postBody.companyAddress) {
         e.preventDefault();
         this.canProcess = false;
         alert(this.postBody.companyCode, "i am here");
         this.postPost();
-      } else {
-        this.errors = [];
-        this.errors.push("Supply all the required field");
+      }
+        //  e.preventDefault();
+        // this.errors = [];
+        // this.errors.push("Supply all the required field");
       }
     },
     postPost() {
@@ -295,8 +368,7 @@ export default {
               this.postBody.stateName = "";
               this.postBody.city = "";
               this.postBody.installDate = new Date();
-              this.postBody.glCode = "",
-              this.postBody.processYear = "";
+              (this.postBody.glCode = ""), (this.postBody.processYear = "");
               this.postBody.processMonth = "";
               this.postBody.expenseCode = "";
               this.postBody.writeoffLoc = "";
@@ -345,8 +417,50 @@ export default {
           });
       }
     },
+    //function for number check
+     isNumeric: function (n) {
+      return !isNaN(parseFloat(n)) && isFinite(n);
+    },
+
+    getStates() {
+      axios.get(`/api/st_stksystem/getstates`).then((response) => {
+        this.stateList = response.data;
+      });
+    },
+
+    getWriteOffLoc() {
+      axios.get(`/api/st_stksystem/GetWriteOffLoc`).then((response) => {
+        this.writeoffLocList = response.data;
+      });
+    },
+
+    getBusinessLine() {
+      axios.get(`/api/st_stksystem/GetBusinessLine`).then((response) => {
+        this.BusinessLineList = response.data;
+      });
+    },
+
+    getAccChart() {
+      axios.get(`/api/st_stksystem/GetAccChart`).then((response) => {
+        this.GLCodeList = response.data;
+        this.CreditorCodeList = response.data;
+        this.ExpenseCodeList = response.data;
+      });
+    },
   },
   computed: {
+    missingCompanyCode: function(){
+      return this.companyCode === "";
+    },
+
+    missingCompanyName: function(){
+      return this.companyName === "";
+    },
+
+    missingCompanyAddress: function(){
+      return this.companyAddress === "";
+    },
+
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
       if (objecttoedit.companyCode) {
@@ -362,7 +476,7 @@ export default {
         this.postBody.processYear = objecttoedit.processYear;
         this.postBody.processMonth = objecttoedit.processMonth;
         this.postBody.expenseCode = objecttoedit.expenseCode;
-        this.postBody.businessLine = objecttoedit.busLine;
+        // this.postBody.businessLine = objecttoedit.busLine;
         this.postBody.holdDays = objecttoedit.holdDays;
         this.postBody.approvedDay = objecttoedit.approvedDay;
       }

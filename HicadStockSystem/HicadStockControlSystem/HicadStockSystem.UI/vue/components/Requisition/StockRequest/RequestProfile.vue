@@ -7,11 +7,12 @@
         <div class="preview">
           <div class="row">
             <div class="col-6">
-               <select
+              <label for="locationCode" class="mb-1">Department</label>
+              <select
                 class="form-control"
                 v-model="postBody.locationCode"
                 name="locationCode"
-                placeholder="department code"
+                placeholder="department"
                 required
               >
                 <option>
@@ -20,23 +21,23 @@
                 <option
                   v-for="(costcentre, index) in DepartmentList"
                   v-bind:value="costcentre.unitCode"
-                   v-bind:selected="index===0"
+                  v-bind:selected="index === 0"
                 >
                   {{ costcentre.unitDesc }}
                 </option>
               </select>
             </div>
-            
           </div>
           <br />
           <div class="row">
             <div class="col-6">
-                <select
+              <label for="itemCode" class="mb-1">Item Description</label>
+              <select
                 class="form-control"
                 v-model="postBody.itemCode"
                 name="itemCode"
                 placeholder="item code"
-                 @change="getStockItems"
+                @change="getStockItems"
                 required
               >
                 <option>
@@ -45,19 +46,19 @@
                 <option
                   v-for="(item, index) in ItemList"
                   v-bind:value="item.itemCode"
-                  v-bind:selected="index===0"
+                  v-bind:selected="index === 0"
                 >
                   {{ item.itemDesc }}
                 </option>
-               
               </select>
             </div>
-
+            <div class="col-1"></div>
             <div class="col-2">
+              <label for="qtyInTransaction" class="mb-1">Current Balance</label>
               <input
                 class="form-control"
                 name="qtyInTransaction "
-                 readonly="readonly"
+                readonly="readonly"
                 v-model="postBody.qtyInTransaction"
                 placeholder="current bal"
               />
@@ -65,7 +66,9 @@
           </div>
           <br />
           <div class="row">
-            <div class="col-4">
+            <div class="col-4"></div>
+            <div class="col-2">
+              <label for="quantity" class="mb-1">Quantity Required</label>
               <input
                 class="form-control"
                 name="quantity"
@@ -73,8 +76,9 @@
                 placeholder="quantity"
               />
             </div>
-
-            <div class="col-4">
+            <div class="col-1"></div>
+            <div class="col-2">
+              <label for="unit" class="mb-1">unit</label>
               <input
                 class="form-control"
                 name="unit"
@@ -84,7 +88,6 @@
               />
             </div>
           </div>
-          
 
           <br />
           <div v-if="canProcess" role="group">
@@ -115,7 +118,7 @@ export default {
       canProcess: true,
       DepartmentList: null,
       ItemList: null,
-      StockItemsList:null,
+      StockItemsList: null,
       postBody: {
         locationCode: "",
         itemCode: "",
@@ -126,10 +129,10 @@ export default {
       },
     };
   },
-    mounted() {
-      this.getDepartment();
-      this.getItemCode();
-    },
+  mounted() {
+    this.getDepartment();
+    this.getItemCode();
+  },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
       (this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode),
@@ -138,7 +141,7 @@ export default {
         (this.postBody.qtyInTransaction = this.$store.state.objectToUpdate.qtyInTransaction),
         (this.postBody.quantity = this.$store.state.objectToUpdate.quantity);
       this.postBody.unit = this.$store.state.objectToUpdate.unit;
-         this.submitorUpdate = "Update";
+      this.submitorUpdate = "Update";
     },
   },
   methods: {
@@ -195,27 +198,28 @@ export default {
           });
       }
     },
-     getDepartment() {
+    getDepartment() {
       axios.get(`/api/requisition/getcostcentre`).then((response) => {
         this.DepartmentList = response.data;
       });
-      
     },
     //gets the unit, currentBal of item
     getStockItems() {
-        // this.postBody.itemCode="1234"
-        alert(this.postBody.itemCode)
-      axios.get(`/api/requisition/getStockItems/${this.postBody.itemCode}`).then((response) => {
-        this.StockItemsList = response.data;
-        this.postBody.qtyInTransaction=response.data.currentBalance
-        this.postBody.unit=response.data.unit
-      });
+      // this.postBody.itemCode="1234"
+      alert(this.postBody.itemCode);
+      axios
+        .get(`/api/requisition/getStockItems/${this.postBody.itemCode}`)
+        .then((response) => {
+          this.StockItemsList = response.data;
+          this.postBody.qtyInTransaction = response.data.currentBalance;
+          this.postBody.unit = response.data.unit;
+        });
     },
-    getItemCode(){
-        axios.get(`/api/requisition/getItemCode`).then((response) => {
+    getItemCode() {
+      axios.get(`/api/requisition/getItemCode`).then((response) => {
         this.ItemList = response.data;
       });
-    }
+    },
   },
   computed: {
     setter() {

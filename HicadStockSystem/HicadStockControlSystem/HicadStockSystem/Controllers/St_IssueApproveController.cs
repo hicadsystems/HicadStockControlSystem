@@ -17,7 +17,7 @@ namespace HicadStockSystem.Controllers
         private readonly ISt_IssueApprove _issueApprove;
         private readonly IMapper _mapper;
 
-        public  St_IssueApproveController(ISt_IssueApprove issueApprove, IMapper mapper)
+        public St_IssueApproveController(ISt_IssueApprove issueApprove, IMapper mapper)
         {
             _issueApprove = issueApprove;
             _mapper = mapper;
@@ -33,6 +33,7 @@ namespace HicadStockSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateIssueReq([FromBody] CreateSt_IssueApproveVM issueApproveVM)
         {
+            issueApproveVM.DocNo = _issueApprove.GenerateDocNo();
             if (ModelState.IsValid)
             {
 
@@ -49,9 +50,9 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpGet("{itemcode}")]
-        public IActionResult GetIssueReqByCode(string itemcode)
+        public IActionResult GetIssueReqByCode(string reqNo)
         {
-            var issueApproveInDb = _issueApprove.GetByCode(itemcode);
+            var issueApproveInDb = _issueApprove.GetByCode(reqNo);
             if (issueApproveInDb == null)
                 return NotFound();
 
@@ -73,13 +74,13 @@ namespace HicadStockSystem.Controllers
         }
 
         [HttpDelete("{itemcode}")]
-        public async Task<IActionResult> DeleteIssueReq(string itemcode)
+        public async Task<IActionResult> DeleteIssueReq(string reqNo)
         {
-            var issueApproveInDb = _issueApprove.GetByCode(itemcode);
+            var issueApproveInDb = _issueApprove.GetByCode(reqNo);
             if (issueApproveInDb == null)
                 return NotFound();
 
-            await _issueApprove.DeleteAsync(itemcode);
+            await _issueApprove.DeleteAsync(reqNo);
 
             return Ok(issueApproveInDb);
         }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence.Repository
 {
-    public class St_RequisitionRepo :  ISt_Requisition
+    public class St_RequisitionRepo : ISt_Requisition
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
@@ -61,7 +61,7 @@ namespace HicadStockSystem.Persistence.Repository
         }
 
 
-       
+
 
         public async Task<IEnumerable<Ac_CostCentre>> GetCostCentre()
         {
@@ -72,15 +72,15 @@ namespace HicadStockSystem.Persistence.Repository
         {
             return await (from item in _dbContext.St_ItemMasters
                           join stock in _dbContext.St_StockMasters on item.ItemCode equals stock.ItemCode
-                          where item.ItemCode==ItemCodes 
+                          where item.ItemCode == ItemCodes
                           select new ItemStockMasterViewModel
                           {
-                            itemCode=item.ItemCode,
-                            unit=item.Units,
-                            currentBalance=stock.QtyInTransaction,
-                            ItemDesc = item.ItemDesc
+                              itemCode = item.ItemCode,
+                              unit = item.Units,
+                              currentBalance = stock.QtyInTransaction,
+                              ItemDesc = item.ItemDesc
                           }).FirstOrDefaultAsync();
-        
+
         }
 
         //generating requisitionNo.
@@ -88,21 +88,21 @@ namespace HicadStockSystem.Persistence.Repository
         {
             var dd = DateTime.Now.Year.ToString().Substring(2, 2);
             var requisitionCode = "T" + dd + "00000";
-            int? requisitionno = 0;
+            int requisitionno = 0;
             var genCode = "";
 
             var recordTable = _recordTable.GetByCode("CODE");
 
             if (recordTable.Code == "CODE" && recordTable.RequsitionNo < 1)
             {
-                var reqNo = recordTable.RequsitionNo = requisitionno+1;
+                var reqNo = recordTable.RequsitionNo = requisitionno + 1;
                 genCode = requisitionCode + reqNo;
             }
 
-            else if(recordTable.Code == "CODE" && recordTable.RequsitionNo >= 1)
+            else if (recordTable.Code == "CODE" && recordTable.RequsitionNo >= 1)
             {
                 requisitionno = recordTable.RequsitionNo;
-                var newReqNo = recordTable.RequsitionNo = requisitionno+1;
+                var newReqNo = recordTable.RequsitionNo = requisitionno + 1;
                 genCode = requisitionCode + newReqNo;
                 //_recordTable.UpdateAsync(recordTable);
             }

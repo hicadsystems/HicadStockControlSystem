@@ -11,21 +11,26 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence.Repository
 {
-    public class St_IssueApproveRepo :  ISt_IssueApprove
+    public class St_IssueApproveRepo : ISt_IssueApprove
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
+        private readonly ISt_RecordTable _recordTable;
 
-        public St_IssueApproveRepo(StockControlDBContext dbContext, IUnitOfWork uow)
+        public St_IssueApproveRepo(StockControlDBContext dbContext, IUnitOfWork uow, ISt_RecordTable recordTable)
         {
             _dbContext = dbContext;
             _uow = uow;
+            _recordTable = recordTable;
         }
         public async Task CreateAsync(St_IssueApprove issueApprove)
         {
-            var requisitionUpdate = (from requisition in _dbContext.St_Requisitions where requisition.ItemCode == issueApprove.ItemCode select requisition).First();
+            var requisitionUpdate = (from requisition in _dbContext.St_Requisitions 
+                                     where requisition.RequisitionNo == issueApprove.RequisitionNo 
+                                     select requisition).First();
 
             requisitionUpdate.Quantity = (float)issueApprove.ApprovedQty;
+            requisitionUpdate.IsApproved = true;
             requisitionUpdate.ApprovedBy = "HICAD2";
 
             await _dbContext.St_IssueApproves.AddAsync(issueApprove);
@@ -37,9 +42,9 @@ namespace HicadStockSystem.Persistence.Repository
             return await _dbContext.St_IssueApproves.ToListAsync();
         }
 
-        public St_IssueApprove GetByCode(string itemCode)
+        public St_IssueApprove GetByCode(string reqNo)
         {
-            return _dbContext.St_IssueApproves.Where(ia => ia.ItemCode == itemCode).FirstOrDefault();
+            return _dbContext.St_IssueApproves.Where(ia => ia.RequisitionNo == reqNo).FirstOrDefault();
         }
 
         public async Task UpdateAsync(St_IssueApprove issueApprove)
@@ -55,24 +60,24 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public async Task DeleteAsync(string itemCode)
+        public async Task DeleteAsync(string reqNo)
         {
-            var issueApproveInDb = GetByCode(itemCode);
+            var issueApproveInDb = GetByCode(reqNo);
             _dbContext.Remove(issueApproveInDb);
             await _uow.CompleteAsync();
         }
 
         public async Task<IEnumerable<St_Requisition>> GetRequisitions()
         {
-            return await _dbContext.St_Requisitions.ToListAsync();
+            return await _dbContext.St_Requisitions.Where(c => c.IsApproved == false).ToListAsync();
         }
 
-        public async Task<IssueRequesitionApprovalVM> RequesitionApprovalVM(string itemCode)
+        public async Task<IssueRequesitionApprovalVM> RequesitionApprovalVM(string reqNo)
         {
-            return await (from item in _dbContext.St_ItemMasters
-                          join requisition in _dbContext.St_Requisitions on item.ItemCode equals requisition.ItemCode
+            return await (from requisition in _dbContext.St_Requisitions
+                          join item in _dbContext.St_ItemMasters on requisition.ItemCode equals item.ItemCode
                           join costCenter in _dbContext.Ac_CostCentres on requisition.LocationCode equals costCenter.UnitCode
-                          where item.ItemCode == itemCode
+                          where requisition.RequisitionNo == reqNo && requisition.IsApproved == false
                           select new IssueRequesitionApprovalVM
                           {
                               RequisitionNo = requisition.RequisitionNo,
@@ -86,5 +91,27 @@ namespace HicadStockSystem.Persistence.Repository
                           }).FirstOrDefaultAsync();
         }
 
+        public string GenerateDocNo()
+        {
+            var dd = DateTime.Now.Year.ToString().Substring(2, 2);
+            var docCode = "A" + dd + "00000";
+            int docNo = 0;
+            var genDocNo = "";
+
+            var recordTable = _recordTable.GetByCode("CODE");
+            if (recordTable.Code == "CODE" && recordTable.IssAppDocCode < 1)
+            {
+                var docCodeNo = recordTable.IssAppDocCode = docNo + 1;
+                genDocNo = docCode + docCodeNo;
+            }
+            else if (recordTable.Code == "CODE" && recordTable.IssAppDocCode >= 1)
+            {
+                docNo = recordTable.IssAppDocCode;
+                var newDocNoCode = recordTable.IssAppDocCode = docNo + 1;
+                genDocNo = docCode + newDocNoCode;
+            }
+
+            return genDocNo;
+        }
     }
 }

@@ -7,24 +7,27 @@
         <div class="preview">
           <div class="row">
             <div class="col-3">
+            <label for="itemCode" class="mb-1">Item Code</label>
               <input
                 class="form-control"
-                name="companyCode"
+                name="itemCode"
                 v-model="postBody.itemCode"
                 placeholder="Item Code"
               />
             </div>
 
             <div class="col-6">
+            <label for="itemDesc" class="mb-1">Item Description</label>
               <input
                 class="form-control"
-                name="companyName "
+                name="itemDesc "
                 v-model="postBody.itemDesc"
                 placeholder="Item Description"
               />
             </div>
 
             <div class="col-3">
+            <label for="class" class="mb-1">Class Description</label>
               <select
                 class="form-control"
                 v-model="postBody.class"
@@ -48,15 +51,17 @@
           <br />
           <div class="row">
             <div class="col-6">
+            <label for="Store" class="mb-1">Store Location</label>
               <input
                 class="form-control"
-                name="storeLoc "
+                name="Store "
                 v-model="postBody.storeLoc"
                 placeholder="Store Location"
               />
             </div>
 
             <div class="col-3">
+            <label for="storerack" class="mb-1">Store Rack</label>
               <input
                 class="form-control"
                 name="storerack "
@@ -66,6 +71,7 @@
             </div>
 
             <div class="col-3">
+            <label for="storebin" class="mb-1">Store Bin</label>
               <input
                 class="form-control"
                 name="storebin "
@@ -78,6 +84,7 @@
           <div class="row">
             <div class="col-6"></div>
             <div class="col-3">
+            <label for="reOrderLevel" class="mb-1">Reorder Level</label>
               <input
                 class="form-control"
                 name="reOrderLevel"
@@ -86,6 +93,7 @@
               />
             </div>
             <div class="col-3">
+            <label for="reOrderQty" class="mb-1">Reorder Quantity</label>
               <input
                 class="form-control"
                 name="reOrderQty"
@@ -97,6 +105,7 @@
           <br />
           <div class="row">
             <div class="col-2">
+            <label for="units" class="mb-1">Unit</label>
               <input
                 class="form-control"
                 name="units"
@@ -106,6 +115,7 @@
             </div>
 
             <div class="col-3">
+            <label for="xRef" class="mb-1">Cross Reference</label>
               <input
                 class="form-control"
                 name="xRef"
@@ -115,15 +125,17 @@
             </div>
 
             <div class="col-3">
+            <label for="partNo." class="mb-1">Part No.</label>
               <input
                 class="form-control"
-                name="xRef"
+                name="partNo."
                 v-model="postBody.xRef"
                 placeholder="Part No.(404)"
               />
             </div>
 
             <div class="col-4">
+            <label for="class" class="mb-1">Business Line</label>
               <select
                 class="form-control"
                 v-model="postBody.busLine"

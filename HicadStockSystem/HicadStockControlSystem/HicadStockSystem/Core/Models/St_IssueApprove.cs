@@ -11,11 +11,9 @@ namespace HicadStockSystem.Core.Models
     [Table("st_issueapprove")]
     public class St_IssueApprove
     {
-        //[Key]
-        //[StringLength(12)]
-
         //is approved property would be appropriate for duplicate check
-        public int Id { get; set; }
+        [StringLength(12)]
+        public string RequisitionNo { get; set; }
         [StringLength(6)]
         public string ItemCode { get; set; }
         [StringLength(25)]
