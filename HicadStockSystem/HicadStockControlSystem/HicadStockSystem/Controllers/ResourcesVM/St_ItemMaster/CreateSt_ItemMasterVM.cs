@@ -19,8 +19,8 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_ItemMaster
         [StringLength(5)]
         public string Storebin { get; set; }
 
-        public int ReOrderLevel { get; set; }
-        public int ReOrderQty { get; set; }
+        public int? ReOrderLevel { get; set; }
+        public int? ReOrderQty { get; set; }
         [StringLength(10)]
         public string Units { get; set; }
         [StringLength(12)]

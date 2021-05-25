@@ -1,95 +1,95 @@
 <template>
   <div>
-    <div v-if="errors" class="has-error">{{ [errors] }}</div>
-    <div v-if="responseMessage" class="has-error">{{ responseMessage }}</div>
-    <form @submit="checkForm" method="post">
+    <form @submit.prevent="checkForm" method="post">
       <div class="p-5" id="vertical-form">
         <div class="preview">
           <div class="row">
-            <div class="col-3">
-            <label for="supplierCode" class="mb-1">Doc Number</label>
-              <input
+            <div class="col-6">
+              <label for="supplier" class="mb-1">Supplier</label>
+              <select
                 class="form-control"
-                name="supplierCode"
-                v-model="postBody.docNo"
-                placeholder="Doc Number"
-              />
+                v-model="postBody.supplier"
+                name="supplier"
+                :class="{ 'is-invalid': !supplierIsValid && supplierblur}"
+                v-on:blur="supplierblur=true"
+              >
+                <option
+                  v-for="supplier in supplierList"
+                  v-bind:value="supplier.supplierCode"
+                  v-bind:key="supplier.supplierCode"
+                >
+                  {{ supplier.name }}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Please select supplier</span>
+              </div>
             </div>
-            <div class="col-3 offset-3">
-            <label for="name" class="mb-1">Date</label>
+            <div class="col-3">
+              <label for="docDate" class="mb-1">Date</label>
               <input
                 type="date"
                 class="form-control"
-                name="name"
+                name="docDate"
                 v-model="postBody.docDate"
-                placeholder="supplier name"
+                :class="{'is-invalid': !dateIsValid && dateblur}"
+                v-on:bind="dateblur=true"
               />
-            </div>
-            <div class="col-6 offset-3">
-            <label for="name" class="mb-1">Supplier</label>
-            <select
-                class="form-control"
-                v-model="postBody.supplier"
-                name="stateName"
-                placeholder="state"
-                required
-              >
-                <option
-                  v-for="businessLine in BusinessLineList"
-                  v-bind:value="businessLine.businessLine"
-                  v-bind:key="businessLine.businessLine"
-                >
-                  {{ businessLine.supplier }}
-                </option>
-              </select>
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-9">
-          <label for="address" class="mb-1">Stock Item</label>
-             <select
+              <label for="itemCode" class="mb-1">Stock Item</label>
+              <select
                 class="form-control"
                 v-model="postBody.itemCode"
-                name="stateName"
-                placeholder="state"
-                required
+                name="itemCode"
+                :class="{'is-invalid': !itemIsValid && codeblur}"
+                v-on:blur="codeblur=true"
               >
                 <option
-                  v-for="businessLine in BusinessLineList"
-                  v-bind:value="businessLine.businessLine"
-                  v-bind:key="businessLine.businessLine"
+                  v-for="item in itemList"
+                  v-bind:value="item.itemCode"
+                  v-bind:key="item.itemCode"
                 >
-                  {{ businessLine.businessDesc }}
+                  {{ item.itemDesc }}
                 </option>
               </select>
+              <div class="invalid-feedback">
+              <span class="text-danger h5">Please select Item</span>
+              </div>
             </div>
           </div>
           <br />
           <div class="row">
-          <div class="col-4"></div>
+            <div class="col-2"></div>
             <div class="col-3">
-          <label for="email" class="mb-1">Quantity</label>
+              <label for="quantity" class="mb-1">Quantity</label>
               <input
                 class="form-control"
-                name="email"
+                name="quantity"
                 v-model="postBody.quantity"
-                placeholder="email"
+                :class="{ 'is-invalid': !quantityIsValid }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Invalid Entry</span>
+              </div>
             </div>
             <div class="col-1"></div>
             <div class="col-3">
-            <label for="phone" class="mb-1">Price</label>
+              <label for="price" class="mb-1">Price</label>
               <input
                 class="form-control"
-                name="phone"
+                name="price"
                 v-model="postBody.price"
-                placeholder="phone number"
+                :class="{ 'is-invalid': !priceIsValid }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Invalid Entry</span>
+              </div>
             </div>
           </div>
-          
-
           <br />
           <div v-if="canProcess" role="group">
             <button
@@ -114,50 +114,48 @@ export default {
   data() {
     return {
       errors: null,
+      valid: false,
+      codeblur:false,
+      supplierblur:false,
+      dateblur:false,
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
-      stateList: null,
+      supplierList: null,
+      itemList: null,
       postBody: {
-        docNo: "",
-        name: "",
-        address: "",
-        email: "",
-        contact: "",
-        phone: "",
-        city: "",
-        sup_Last_Num: "",
-        sup_Last_Num: "",
+        itemCode: "",
+        docDate: "",
+        supplier: "",
+        price: "",
+        quantity: "",
       },
     };
   },
-  //   mounted() {
-  //     axios.get(`/api/st_stksystem/getstates`).then((response) => {
-  //       this.stateList = response.data;
-  //     });
-  //   },
+    mounted() {
+      this.getStockItem();
+      this.getSuppliers();
+    },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
-      (this.postBody.supplierCode = this.$store.state.objectToUpdate.supplierCode),
-        (this.postBody.name = this.$store.state.objectToUpdate.name),
-        (this.postBody.address = this.$store.state.objectToUpdate.address),
-        (this.postBody.email = this.$store.state.objectToUpdate.email);
-      this.postBody.address = this.$store.state.objectToUpdate.address;
-      this.postBody.contact = this.$store.state.objectToUpdate.contact;
-      this.postBody.phone = this.$store.state.objectToUpdate.phone;
-      this.postBody.sup_Last_Num = this.$store.state.objectToUpdate.installDate;
-      this.postBody.sup_Last_Num = this.$store.state.objectToUpdate.sup_Last_Num;
+      (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
+        (this.postBody.docDate = this.$store.state.objectToUpdate.docDate),
+        (this.postBody.supplier = this.$store.state.objectToUpdate.supplier),
+        (this.postBody.price = this.$store.state.objectToUpdate.price);
+      this.postBody.quantity = this.$store.state.objectToUpdate.quantity;
       this.submitorUpdate = "Update";
     },
   },
   methods: {
     checkForm: function(e) {
-      if (this.postBody.supplierCode) {
-        e.preventDefault();
+      this.validate();
+      if (this.valid) {
+        // e.preventDefault();
         this.canProcess = false;
-        alert(this.postBody.supplierCode, "i am here");
+        this.$alert("Submit Form", "Ok", "info");
         this.postPost();
       } else {
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
         this.errors.push("Supply all the required field");
       }
@@ -165,19 +163,16 @@ export default {
     postPost() {
       if (this.submitorUpdate == "Submit") {
         axios
-          .post(`/api/supplier/`, this.postBody)
+          .post(`/api/stockhistory/`, this.postBody)
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
-              this.postBody.supplierCode = "";
-              this.postBody.name = "";
-              this.postBody.address = "";
-              this.postBody.email = "";
-              this.postBody.contact = "";
-              this.postBody.phone = "";
-              this.postBody.sup_Last_Num = "";
-              this.postBody.sup_Last_Num = "";
+              this.postBody.itemCode = "";
+              this.postBody.docDate = "";
+              this.postBody.supplier = "";
+              this.postBody.price = "";
+              this.postBody.quantity = "";
               this.$store.stateName.objectToUpdate = "create";
             }
           })
@@ -188,20 +183,17 @@ export default {
       if (this.submitorUpdate == "Update") {
         alert("Ready to Update");
         axios
-          .put(`/api/supplier/`, this.postBody)
+          .put(`/api/stockhistory/`, this.postBody)
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
               this.submitorUpdate = "Submit";
-              this.postBody.supplierCode = "";
-              this.postBody.name = "";
-              this.postBody.address = "";
-              this.postBody.email = "";
-              this.postBody.contact = "";
-              this.postBody.phone = "";
-              this.postBody.sup_Last_Num = "";
-              this.postBody.sup_Last_Num = "";
+              this.postBody.itemCode = "";
+              this.postBody.docDate = "";
+              this.postBody.supplier = "";
+              this.postBody.price = "";
+              this.postBody.quantity = "";
               this.$store.state.objectToUpdate = "update";
             }
           })
@@ -210,13 +202,66 @@ export default {
           });
       }
     },
+
+    getStockItem(){
+      axios.get(`/api/itemmaster/`).then((response)=>{
+        this.itemList = response.data;
+      });
+    },
+
+    getSuppliers(){
+      axios.get(`/api/supplier/`).then((response)=>{
+        this.supplierList = response.data;
+      });
+    },
+
+    validate() {
+      this.codeblur=true;
+      this.supplierblur=true;
+      this.dateblur=true;
+      if (this.priceIsValid && this.itemIsValid && this.supplierIsValid) {
+        this.valid = true;
+      } else {
+        this.valid = false;
+        return;
+      }
+    },
   },
+
   computed: {
+    itemIsValid() {
+      return this.postBody.itemCode != "" && this.postBody.itemCode.length >= 1;
+    },
+
+    supplierIsValid() {
+      return this.postBody.supplier != "" && this.postBody.supplier.length >= 1;
+    },
+
+    priceIsValid() {
+      return (
+        this.postBody.price == "" ||
+        (this.postBody.price.length >= 1 && parseInt(this.postBody.price) >= 1)
+      );
+    },
+
+    dateIsValid() {
+      return (
+        this.postBody.docDate != "" 
+        // (this.postBody.price.length >= 1 && parseInt(this.postBody.price) >= 1)
+      );
+    },
+    quantityIsValid() {
+      return (
+        this.postBody.quantity == "" ||
+        (this.postBody.quantity.length >= 1 &&
+          parseInt(this.postBody.quantity) >= 1)
+      );
+    },
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
-      if (objecttoedit.supplierCode) {
-        this.postBody.supplierCode = objecttoedit.supplierCode;
-        this.postBody.name = objecttoedit.name;
+      if (objecttoedit.itemCode) {
+        this.postBody.itemCode = objecttoedit.itemCode;
+        this.postBody.docDate = objecttoedit.docDate;
         this.postBody.address = objecttoedit.address;
         this.postBody.email = objecttoedit.email;
         this.postBody.contact = objecttoedit.contact;

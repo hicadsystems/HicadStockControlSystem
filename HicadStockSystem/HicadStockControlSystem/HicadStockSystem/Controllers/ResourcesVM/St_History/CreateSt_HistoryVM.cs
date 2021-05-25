@@ -8,14 +8,12 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_History
 {
     public class CreateSt_HistoryVM
     {
-        //composite key
         [StringLength(20)]
         public string ItemCode { get; set; }
-        [Required]
         [StringLength(12)]
         public string DocNo { get; set; }
         [Required]
-        [StringLength(2)]
+        [StringLength(3)]
         public string DocType { get; set; }
         public DateTime? DocDate { get; set; }
         [StringLength(6)]

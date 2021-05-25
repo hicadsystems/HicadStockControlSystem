@@ -174,3 +174,4 @@ E:\ProjectsTom\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\
 E:\ProjectsTom\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\St_SupplierUI\GetAllSuppliers.cshtml.g.cs
 E:\ProjectsTom\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\St_RequisitionUI\GetAllRequisitionForApproval.cshtml.g.cs
 E:\ProjectsTom\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\St_HistoryUI\Index.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\StkClassUI\Index.cshtml.g.cs

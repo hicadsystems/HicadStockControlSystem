@@ -1,73 +1,126 @@
 <template>
   <div>
-    <div v-if="errors" class="has-error">{{ [errors] }}</div>
-    <div v-if="responseMessage" class="has-error">{{ responseMessage }}</div>
-    <form @submit="checkForm" method="post">
+    <form @submit.prevent="checkForm" method="post">
       <div class="p-5" id="vertical-form">
         <div class="preview">
           <div class="row">
             <div class="col-3">
-            <label for="supplierCode" class="mb-1">Supplier Code</label>
+              <label for="supplierCode" class="mb-1">Supplier Code</label>
               <input
                 class="form-control"
                 name="supplierCode"
                 v-model="postBody.supplierCode"
                 placeholder="supplier code"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !supplierCodeIsValid && codeblur,
+                }"
+                v-on:blur="codeblur = true"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5"
+                  >Please enter supplier code not more than 3 characters</span
+                >
+              </div>
             </div>
             <div class="col-6 offset-3">
-            <label for="name" class="mb-1">Supplier Name</label>
+              <label for="name" class="mb-1">Supplier Name</label>
               <input
                 class="form-control"
                 name="name"
                 v-model="postBody.name"
                 placeholder="supplier name"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !supplierNameIsValid && nameblur,
+                }"
+                v-on:blur="nameblur = true"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5"
+                  >Please enter supplier name not more than 50 characters</span
+                >
+              </div>
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-6">
-          <label for="address" class="mb-1">Supplier Address</label>
+              <label for="address" class="mb-1">Supplier Address</label>
               <input
                 class="form-control"
                 name="address"
                 v-model="postBody.address"
                 placeholder="supplier address"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !supplierAddressIsValid && addressblur,
+                }"
+                v-on:blur="addressblur = true"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5"
+                  >Please enter supplier address not more than 50
+                  characters</span
+                >
+              </div>
             </div>
             <div class="col-6">
-            <label for="contact" class="mb-1">Contact Address</label>
+              <label for="contact" class="mb-1">Contact Address</label>
               <input
                 class="form-control"
                 name="contact "
                 v-model="postBody.contact"
                 placeholder="contact address"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !supplierContactAddressIsValid,
+                }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5"
+                  >Please enter supplier address not more than 20
+                  characters</span
+                >
+              </div>
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-6">
-          <label for="email" class="mb-1">Email</label>
+              <label for="email" class="mb-1">Email</label>
               <input
                 class="form-control"
                 name="email"
                 v-model="postBody.email"
                 placeholder="email"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !EmailIsValid,
+                }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Invalid Email</span>
+              </div>
             </div>
             <div class="col-6">
-            <label for="phone" class="mb-1">Phone No.</label>
+              <label for="phone" class="mb-1">Phone No.</label>
               <input
                 class="form-control"
                 name="phone"
                 v-model="postBody.phone"
                 placeholder="phone number"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !PhoneNoIsvalid && phoneblur
+                }"
+                v-on:blur="phoneblur = true"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Phone number is required not more than 12 numbers</span>
+              </div>
             </div>
           </div>
-          
 
           <br />
           <div v-if="canProcess" role="group">
@@ -86,9 +139,11 @@
 </template>
 <script>
 import Datepicker from "vuejs-datepicker";
+import VueSimpleAlert from "vue-simple-alert";
 export default {
   components: {
     Datepicker,
+    VueSimpleAlert,
   },
   data() {
     return {
@@ -108,6 +163,11 @@ export default {
         sup_Last_Num: "",
         sup_Last_Num: "",
       },
+      valid: false,
+      codeblur: false,
+      nameblur: false,
+      addressblur: false,
+      phoneblur: false,
     };
   },
   //   mounted() {
@@ -131,12 +191,14 @@ export default {
   },
   methods: {
     checkForm: function(e) {
-      if (this.postBody.supplierCode) {
+      this.validate();
+      if (this.valid) {
         e.preventDefault();
         this.canProcess = false;
-        alert(this.postBody.supplierCode, "i am here");
         this.postPost();
+        this.$alert("Submit Form", "Ok", "info");
       } else {
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
         this.errors.push("Supply all the required field");
       }
@@ -189,8 +251,76 @@ export default {
           });
       }
     },
+    validate() {
+      this.codeblur = true;
+      this.nameblur = true;
+      this.addressblur = true;
+      this.phoneblur = true;
+      if (
+        this.supplierCodeIsValid &&
+        this.supplierNameIsValid &&
+        this.supplierAddressIsValid &&
+        this.supplierContactAddressIsValid &&
+        this.EmailIsValid &&
+        this.supplierNameIsValid &&
+        this.PhoneNoIsvalid
+      ) {
+        this.valid = true;
+      } else {
+        this.valid = false;
+        return;
+      }
+    },
   },
   computed: {
+    supplierCodeIsValid() {
+      return (
+        this.postBody.supplierCode != "" &&
+        this.postBody.supplierCode.length >= 1 &&
+        this.postBody.supplierCode.length <= 5
+      );
+    },
+
+    supplierNameIsValid() {
+      return (
+        this.postBody.name != "" &&
+        this.postBody.name.length >= 1 &&
+        this.postBody.name.length <= 50
+      );
+    },
+
+    supplierAddressIsValid() {
+      return (
+        this.postBody.address != "" &&
+        this.postBody.address.length >= 1 &&
+        this.postBody.name.length <= 50
+      );
+    },
+
+    supplierContactAddressIsValid() {
+      return (
+        this.postBody.contact == "" ||
+        (this.postBody.contact.length >= 1 &&
+          this.postBody.contact.length <= 20)
+      );
+    },
+
+    EmailIsValid() {
+      var re = /(.+)@(.+){2,}\.(.+){2,}/;
+      return (
+        this.postBody.email == "" || re.test(this.postBody.email.toLowerCase())
+      );
+    },
+
+    PhoneNoIsvalid() {
+      var phoneno = /^\(?([0-9]{4})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+      return (
+        this.postBody.phone != "" &&
+        this.postBody.phone.length >= 1 &&
+        this.postBody.phone.length <= 15
+        // this.postBody.phone.match(phoneno))
+      );
+    },
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
       if (objecttoedit.supplierCode) {

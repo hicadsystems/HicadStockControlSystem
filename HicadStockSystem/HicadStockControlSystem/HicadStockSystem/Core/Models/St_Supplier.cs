@@ -13,7 +13,7 @@ namespace HicadStockSystem.Core.Models
         [Key]
         [StringLength(3)]
         public string SupplierCode { get; set; }
-        [StringLength(5)]
+        [StringLength(50)]
         public string Name { get; set; }
         [StringLength(50)]
         public string Address { get; set; }

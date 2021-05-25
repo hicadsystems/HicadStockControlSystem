@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit="checkForm" method="post">
+    <form @submit.prevent="checkForm" method="post">
       <div id="vertical-form">
         <div class="preview">
           <div class="row">
@@ -11,10 +11,16 @@
                 class="form-control"
                 name="companyCode"
                 v-model="postBody.companyCode"
-                v-bind:class="{'is-invalid': missingCompanyCode}"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !companyCodeIsValid && codeblur,
+                }"
+                v-on:blur="codeblur = true"
               />
               <div class="invalid-feedback">
-                Please enter company code not more than 10 characters.
+                <span class="text-danger h5"
+                  >company code is required not more than 10 characters.</span
+                >
               </div>
             </div>
             <div class="col-6 offset-3">
@@ -24,7 +30,18 @@
                 class="form-control"
                 name="companyName "
                 v-model="postBody.companyName"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !companyNameIsValid && nameblur,
+                }"
+                v-on:blur="nameblur = true"
+                maxLength="50"
               />
+              <div class="invalid-feedback text-danger h5">
+                <span class="text-danger h5"
+                  >company name is required not more than 50 characters.</span
+                >
+              </div>
             </div>
           </div>
           <br />
@@ -35,9 +52,21 @@
                 class="form-control"
                 id="companyAddress"
                 v-model="postBody.companyAddress"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !companyAddressIsValid && addressblur,
+                }"
+                v-on:blur="addressblur = true"
                 rows="5"
+                required
               >
               </textarea>
+              <div class="invalid-feedback">
+                <span class="text-danger h5"
+                  >Please enter company address not more than 60
+                  characters.</span
+                >
+              </div>
             </div>
             <div class="col-6">
               <label class="mb-1" for="companyTelephone"
@@ -45,7 +74,7 @@
               >
               <input
                 class="form-control"
-                nameid="companyTelephone "
+                name="companyTelephone "
                 v-model="postBody.phone"
               />
             </div>
@@ -54,7 +83,18 @@
           <div class="row">
             <div class="col-6">
               <label class="mb-1" for="email">Company Email</label>
-              <input class="form-control" id="email" v-model="postBody.email" />
+              <input
+                class="form-control"
+                id="email"
+                v-model="postBody.email"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !EmailIsValid,
+                }"
+              />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">invalid Email</span>
+              </div>
             </div>
             <div class="col-6">
               <label class="mb-1" for="stateName">State</label>
@@ -118,19 +158,35 @@
             <div class="col-6">
               <label class="mb-1" for="processYear">Process Year</label>
               <input
+                type="number"
                 class="form-control"
                 id="processYear"
                 v-model="postBody.processYear"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !processYearIsValid,
+                }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">invalid Year</span>
+              </div>
             </div>
 
             <div class="col-6">
               <label class="mb-1" for="processMonth">Process Month</label>
               <input
+                type="number"
                 class="form-control"
                 id="processMonth"
                 v-model="postBody.processMonth"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !processMonthIsValid,
+                }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">invalid Month</span>
+              </div>
             </div>
           </div>
           <br />
@@ -157,7 +213,6 @@
                 class="form-control"
                 v-model="postBody.writeoffLoc"
                 id="writeOffLoc"
-                required
               >
                 <option
                   v-for="writeOff in writeoffLocList"
@@ -177,7 +232,6 @@
                 class="form-control"
                 v-model="postBody.creditorsCode"
                 id="creditorsCode"
-                required
               >
                 <option
                   v-for="crCode in CreditorCodeList"
@@ -196,7 +250,6 @@
                 class="form-control"
                 v-model="postBody.busLine"
                 id="busLine"
-                required
               >
                 <option
                   v-for="businessLine in BusinessLineList"
@@ -219,6 +272,10 @@
                 name="holdDays "
                 v-model="postBody.holdDays"
                 placeholder="0"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !holdDaysIsValid,
+                }"
               />
             </div>
             <div class="col-1 ml-0">
@@ -230,7 +287,7 @@
             <div class="col-1">
               <input
                 class="form-control"
-                name="approvedDay "
+                name="approvedDay"
                 v-model="postBody.approvedDay"
                 placeholder="0"
               />
@@ -256,13 +313,21 @@
 </template>
 <script>
 import Datepicker from "vuejs-datepicker";
+import VueSimpleAlert from "vue-simple-alert";
 export default {
   components: {
     Datepicker,
+    VueSimpleAlert
   },
-  
+
   data() {
     return {
+      numLength: 4,
+      minYear: 1900,
+      maxMonth: 12,
+      minMonth: 1,
+      minDay: 1,
+      maxDay: 7,
       errors: null,
       responseMessage: "",
       submitorUpdate: "Submit",
@@ -274,8 +339,8 @@ export default {
       CreditorCodeList: null,
       ExpenseCodeList: null,
       isCrCode: false,
-      isGLCode:false,
-      isExpenseCode:false,
+      isGLCode: false,
+      isExpenseCode: false,
       postBody: {
         companyCode: "",
         companyName: "",
@@ -288,7 +353,7 @@ export default {
         installDate: new Date(),
         glCode: "",
         serialNumber: "",
-        processYear: "",
+        processYear: 0,
         processMonth: "",
         expenseCode: "",
         writeoffLoc: "",
@@ -297,9 +362,13 @@ export default {
         holdDays: "",
         approvedDay: "",
       },
+      valid: false,
+      codeblur: false,
+      nameblur: false,
+      addressblur: false,
+      
     };
   },
-  attemptedSubmit: false,
 
   mounted() {
     this.getStates();
@@ -334,22 +403,17 @@ export default {
     },
   },
   methods: {
-
     checkForm: function(e) {
-      if(this.missingCompanyCode && this.missingCompanyName && this.missingCompanyAddress){
-           e.preventDefault();
-        }
-       else {
-
-        if (this.postBody.companyCode && this.postBody.companyName && this.postBody.companyAddress) {
+      this.validate();
+      if (this.valid) {
         e.preventDefault();
         this.canProcess = false;
-        alert(this.postBody.companyCode, "i am here");
         this.postPost();
-      }
-        //  e.preventDefault();
-        // this.errors = [];
-        // this.errors.push("Supply all the required field");
+        this.$alert("Submit Form", "Ok", "info");
+      } else {
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
+        this.errors = [];
+        this.errors.push("Supply all the required field");
       }
     },
     postPost() {
@@ -418,7 +482,7 @@ export default {
       }
     },
     //function for number check
-     isNumeric: function (n) {
+    isNumeric: function(n) {
       return !isNaN(parseFloat(n)) && isFinite(n);
     },
 
@@ -447,18 +511,99 @@ export default {
         this.ExpenseCodeList = response.data;
       });
     },
+
+    //validation functions
+    validate() {
+      this.codeblur = true;
+      this.nameblur = true;
+      this.addressblur = true;
+      if (
+        this.companyCodeIsValid &&
+        this.companyNameIsValid &&
+        this.companyAddressIsValid &&
+        this.processYearIsValid &&
+        this.processMonthIsValid &&
+        this.holdDaysIsValid && 
+        this.PhoneNoIsvalid && 
+        this.validEmail
+      ) {
+        this.valid = true;
+      } else {
+        this.valid = false;
+        return;
+      }
+    },
+
   },
   computed: {
-    missingCompanyCode: function(){
-      return this.companyCode === "";
+    companyCodeIsValid() {
+      return (
+        this.postBody.companyCode != "" &&
+        this.postBody.companyCode.length >= 1 &&
+        this.postBody.companyCode.length <= 10
+      );
     },
-
-    missingCompanyName: function(){
-      return this.companyName === "";
+    companyNameIsValid() {
+      return (
+        this.postBody.companyName != "" &&
+        this.postBody.companyName.length >= 1 &&
+        this.postBody.companyName.length <= 50
+      );
     },
-
-    missingCompanyAddress: function(){
-      return this.companyAddress === "";
+    companyAddressIsValid() {
+      return (
+        this.postBody.companyAddress != "" &&
+        this.postBody.companyAddress.length >= 1 &&
+        this.postBody.companyAddress.length <= 60
+      );
+    },
+    processYearIsValid() {
+      return (
+        this.postBody.processYear == "" ||
+        (this.postBody.processYear.length == this.numLength &&
+          parseInt(this.postBody.processYear) >= this.minYear)
+      );
+    },
+    processMonthIsValid() {
+      return (
+        this.postBody.processMonth == "" ||
+        (this.postBody.processMonth.length >= 1 &&
+          parseInt(this.postBody.processMonth) >= this.minMonth &&
+          parseInt(this.postBody.processMonth) <= this.maxMonth)
+      );
+    },
+    holdDaysIsValid() {
+      return (
+        this.postBody.holdDays == "" ||
+        (this.postBody.holdDays.length >= 1 &&
+          this.postBody.holdDays.length <= 2 &&
+          parseInt(this.postBody.holdDays) >= this.minDay &&
+          parseInt(this.postBody.holdDays) <= this.maxDay)
+      );
+    },
+    approvedDayIsValid() {
+      return (
+        this.postBody.approvedDay == "" ||
+        (this.postBody.approvedDay.length >= 1 &&
+          this.postBody.approvedDay.length <= 2 &&
+          parseInt(this.postBody.approvedDay) >= this.minDay &&
+          parseInt(this.postBody.approvedDay) <= this.maxDay)
+      );
+    },
+    EmailIsValid() {
+      var re = /(.+)@(.+){2,}\.(.+){2,}/;
+      return (
+        this.postBody.email == "" || re.test(this.postBody.email.toLowerCase())
+      );
+    },
+    PhoneNoIsvalid() {
+      var phoneno =  /^\(?([0-9]{4})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+      return (
+        this.postBody.phone == "" || 
+        (this.postBody.phone.length >= 1 
+        && this.postBody.phone.length <= 15 
+        && this.postBody.phone.match(phoneno))
+      );
     },
 
     setter() {

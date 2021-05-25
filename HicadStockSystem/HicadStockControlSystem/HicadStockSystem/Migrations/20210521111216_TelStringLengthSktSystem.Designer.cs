@@ -4,14 +4,16 @@ using HicadStockSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HicadStockSystem.Migrations
 {
     [DbContext(typeof(StockControlDBContext))]
-    partial class StockControlDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210521111216_TelStringLengthSktSystem")]
+    partial class TelStringLengthSktSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -579,10 +581,10 @@ namespace HicadStockSystem.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<int?>("ReOrderLevel")
+                    b.Property<int>("ReOrderLevel")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ReOrderQty")
+                    b.Property<int>("ReOrderQty")
                         .HasColumnType("int");
 
                     b.Property<string>("StoreLoc")
@@ -868,8 +870,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(30)

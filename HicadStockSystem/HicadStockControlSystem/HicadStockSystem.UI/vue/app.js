@@ -2,6 +2,9 @@ window.axios=require('axios');
 window.Vue=require('vue');
 import store from './store'
 import Vuelidate from 'vuelidate';
+import VueSimpleAlert from "vue-simple-alert";
+
+Vue.use(VueSimpleAlert);
 
 Vue.use(Vuelidate);
 

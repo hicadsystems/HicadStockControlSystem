@@ -27,9 +27,9 @@ namespace HicadStockSystem.Core.Models
         //bin in a session that holds the item
         public string Storebin { get; set; }
         //min reached qty before new order is placed 
-        public int ReOrderLevel { get; set; }
+        public int? ReOrderLevel { get; set; }
         //qty to be consumed before new order arrives
-        public int ReOrderQty { get; set; }
+        public int? ReOrderQty { get; set; }
         [StringLength(10)]
         //e.g pieces, cartons
         public string Units { get; set; }

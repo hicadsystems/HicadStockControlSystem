@@ -9,7 +9,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StkSystem
 {
     public class CreateSt_StkSystemVM
     {
-        [Key]
+        [Required]
         [StringLength(10)]
         public string CompanyCode { get; set; }
         [Required]
@@ -24,38 +24,27 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StkSystem
         [Required]
         [StringLength(30)]
         public string Email { get; set; }
-        public byte StateListId { get; set; }
+        [StringLength(40)]
+        public string State { get; set; }
         [StringLength(40)]
         public string Town_City { get; set; }
-        [Column(TypeName = "smalldatetime")]
-        [Required]
         public DateTime InstallDate { get; set; }
-        [Required]
         [StringLength(30)]
         public string SerialNumber { get; set; }
-        [Required]
         [StringLength(15)]
         public string GLCode { get; set; }
-        [Required]
-        public int ProcessYear { get; set; }
-        [Required]
-        public int ProcessMonth { get; set; }
-        [Required]
+        public int? ProcessYear { get; set; }
+        public int? ProcessMonth { get; set; }
         [StringLength(15)]
         public string ExpenseCode { get; set; }
-        [Required]
         [StringLength(15)]
         public string WriteoffLoc { get; set; }
-        [Required]
         [StringLength(15)]
         public string CreditorsCode { get; set; }
-        [Required]
         [StringLength(2)]
         public string BusLine { get; set; }
-        [Required]
         [StringLength(3)]
         public string HoldDays { get; set; }
-        [Required]
         [StringLength(3)]
         public string ApprovedDay { get; set; }
         public DateTime CreatedOn { get; set; }

@@ -5,10 +5,10 @@
        <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                 <th>Company Code</th>
-                 <th>Company name</th>
-                 <th>Company Address</th>
-                 <th>Company Email</th>
+                 <th>Item Code</th>
+                 <th>Item Description</th>
+                 <th>store Location</th>
+                 <th>store Rack</th>
                  <th>Options</th>
                 </tr>
             </thead>
