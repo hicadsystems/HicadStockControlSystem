@@ -21,5 +21,6 @@ namespace HicadStockSystem.Core.Models
         public string UnitDivDesc { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? UpdatedOn { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

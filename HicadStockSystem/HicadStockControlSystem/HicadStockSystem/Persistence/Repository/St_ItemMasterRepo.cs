@@ -28,12 +28,15 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task<IEnumerable<St_ItemMaster>> GetAll()
         {
-            return await _dbContext.St_ItemMasters.ToListAsync();
+            //return (from approve in _dbContext.St_IssueApproves
+            //        join busLine in _dbContext.Ac_BusinessLines on approve.ItemCode equals busLine.BusinessLine
+            //        join)
+            return await _dbContext.St_ItemMasters.Where(im=>im.IsDeleted==false).ToListAsync();
         }
 
         public St_ItemMaster GetByCode(string itemCode)
         {
-            return _dbContext.St_ItemMasters.Where(im => im.ItemCode == itemCode).FirstOrDefault();
+            return _dbContext.St_ItemMasters.Where(im => im.ItemCode == itemCode && im.IsDeleted==false).FirstOrDefault();
         }
 
         public async Task UpdateAsync(St_ItemMaster itemMaster)
@@ -51,7 +54,7 @@ namespace HicadStockSystem.Persistence.Repository
         public async Task DeleteAsync(string itemCode)
         {
             var itemMasterInDb = GetByCode(itemCode);
-            _dbContext.Remove(itemMasterInDb);
+            itemMasterInDb.IsDeleted=true;
             await _uow.CompleteAsync();
         }
 

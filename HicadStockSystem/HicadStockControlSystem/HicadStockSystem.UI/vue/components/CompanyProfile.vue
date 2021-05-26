@@ -35,7 +35,6 @@
                   'is-invalid': !companyNameIsValid && nameblur,
                 }"
                 v-on:blur="nameblur = true"
-                maxLength="50"
               />
               <div class="invalid-feedback text-danger h5">
                 <span class="text-danger h5"
@@ -76,7 +75,15 @@
                 class="form-control"
                 name="companyTelephone "
                 v-model="postBody.phone"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !PhoneNoIsvalid && phoneNoblur
+                }"
+                v-on:blur="phoneNoblur=true"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Phone No. is required</span>
+              </div>
             </div>
           </div>
           <br />
@@ -133,7 +140,7 @@
           <br />
           <div class="row">
             <div class="col-6">
-              <label class="mb-1" for="city">Serial Number</label>
+              <label class="mb-1">Serial Number</label>
               <input
                 class="form-control"
                 id="serialNumber"
@@ -141,8 +148,8 @@
               />
             </div>
             <div class="col-6">
-              <label class="mb-1" for="city">GL Code</label>
-              <select class="form-control" v-model="postBody.glCode" id="city">
+              <label class="mb-1">GL Code</label>
+              <select class="form-control" v-model="postBody.glCode">
                 <option
                   v-for="gLCode in GLCodeList"
                   v-bind:value="gLCode.acctNumber"
@@ -193,11 +200,7 @@
           <div class="row">
             <div class="col-6">
               <label class="mb-1" for="expenseCode">Expense Code</label>
-              <select
-                class="form-control"
-                v-model="postBody.expenseCode"
-                id="expenseCode"
-              >
+              <select class="form-control" v-model="postBody.expenseCode">
                 <option
                   v-for="expCode in ExpenseCodeList"
                   v-bind:value="expCode.acctNumber"
@@ -208,12 +211,8 @@
               </select>
             </div>
             <div class="col-6">
-              <label class="mb-1" for="writeOffLoc">Write Off Location</label>
-              <select
-                class="form-control"
-                v-model="postBody.writeoffLoc"
-                id="writeOffLoc"
-              >
+              <label class="mb-1">Write Off Location</label>
+              <select class="form-control" v-model="postBody.writeoffLoc">
                 <option
                   v-for="writeOff in writeoffLocList"
                   v-bind:value="writeOff.unitCode"
@@ -277,6 +276,9 @@
                   'is-invalid': !holdDaysIsValid,
                 }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Invalid</span>
+              </div>
             </div>
             <div class="col-1 ml-0">
               <label for="busLine">Days</label>
@@ -290,7 +292,14 @@
                 name="approvedDay"
                 v-model="postBody.approvedDay"
                 placeholder="0"
+                v-bind:class="{
+                  'form-control': true,
+                  'is-invalid': !approvedDayIsValid,
+                }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Invalid</span>
+              </div>
             </div>
             <div class="col-1">
               <label for="busLine">Days</label>
@@ -317,7 +326,7 @@ import VueSimpleAlert from "vue-simple-alert";
 export default {
   components: {
     Datepicker,
-    VueSimpleAlert
+    VueSimpleAlert,
   },
 
   data() {
@@ -366,7 +375,7 @@ export default {
       codeblur: false,
       nameblur: false,
       addressblur: false,
-      
+      phoneNoblur: false,
     };
   },
 
@@ -406,10 +415,10 @@ export default {
     checkForm: function(e) {
       this.validate();
       if (this.valid) {
-        e.preventDefault();
+        // e.preventDefault();
         this.canProcess = false;
-        this.postPost();
         this.$alert("Submit Form", "Ok", "info");
+        this.postPost();
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -517,15 +526,17 @@ export default {
       this.codeblur = true;
       this.nameblur = true;
       this.addressblur = true;
+      this.phoneNoblur = true;
       if (
         this.companyCodeIsValid &&
         this.companyNameIsValid &&
         this.companyAddressIsValid &&
         this.processYearIsValid &&
         this.processMonthIsValid &&
-        this.holdDaysIsValid && 
-        this.PhoneNoIsvalid && 
-        this.validEmail
+        this.holdDaysIsValid &&
+        this.approvedDayIsValid &&
+        this.EmailIsValid &&
+        this.PhoneNoIsvalid
       ) {
         this.valid = true;
       } else {
@@ -533,7 +544,6 @@ export default {
         return;
       }
     },
-
   },
   computed: {
     companyCodeIsValid() {
@@ -543,6 +553,7 @@ export default {
         this.postBody.companyCode.length <= 10
       );
     },
+
     companyNameIsValid() {
       return (
         this.postBody.companyName != "" &&
@@ -550,6 +561,7 @@ export default {
         this.postBody.companyName.length <= 50
       );
     },
+
     companyAddressIsValid() {
       return (
         this.postBody.companyAddress != "" &&
@@ -596,13 +608,14 @@ export default {
         this.postBody.email == "" || re.test(this.postBody.email.toLowerCase())
       );
     },
+
     PhoneNoIsvalid() {
-      var phoneno =  /^\(?([0-9]{4})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+      var phoneno = /^\(?([0-9]{4})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
       return (
-        this.postBody.phone == "" || 
-        (this.postBody.phone.length >= 1 
-        && this.postBody.phone.length <= 15 
-        && this.postBody.phone.match(phoneno))
+        this.postBody.phone != ""
+        // (this.postBody.phone.length >= 1 &&
+        //   this.postBody.phone.length <= 15 &&
+        //   this.postBody.phone.match(phoneno))
       );
     },
 

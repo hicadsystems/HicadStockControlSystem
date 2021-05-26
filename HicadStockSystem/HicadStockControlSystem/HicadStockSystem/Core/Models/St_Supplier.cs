@@ -27,5 +27,6 @@ namespace HicadStockSystem.Core.Models
         public DateTime? Sup_Start_Date { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? UpdatedOn { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

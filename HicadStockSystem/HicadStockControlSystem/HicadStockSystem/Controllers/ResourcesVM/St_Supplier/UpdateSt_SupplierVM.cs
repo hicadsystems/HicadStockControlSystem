@@ -11,7 +11,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_Supplier
         [Required]
         [StringLength(3, ErrorMessage ="character length can not exceeded 3")]
         public string SupplierCode { get; set; }
-        [StringLength(5, ErrorMessage = "character length can not exceeded 5")]
+        [StringLength(50, ErrorMessage = "character length can not exceeded 5")]
         public string Name { get; set; }
         [StringLength(50)]
         public string Address { get; set; }

@@ -55,6 +55,8 @@ namespace HicadStockSystem.Core.Models
         public string BusLine { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
-
+        public bool IsDeleted { get; set; }
+        [StringLength(30)]
+        public string PartNo { get; set; }
     }
 }

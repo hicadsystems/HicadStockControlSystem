@@ -29,7 +29,7 @@ namespace HicadStockSystem.Persistence.Repository
                                      where requisition.RequisitionNo == issueApprove.RequisitionNo 
                                      select requisition).First();
 
-            requisitionUpdate.Quantity = (float)issueApprove.ApprovedQty;
+            requisitionUpdate.Quantity = (float?)issueApprove.ApprovedQty;
             requisitionUpdate.IsApproved = true;
             requisitionUpdate.ApprovedBy = "HICAD2";
 
@@ -39,12 +39,13 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task<IEnumerable<St_IssueApprove>> GetAll()
         {
-            return await _dbContext.St_IssueApproves.ToListAsync();
+            return await _dbContext.St_IssueApproves.Where(ia=>ia.IsDeleted==false).ToListAsync();
         }
 
         public St_IssueApprove GetByCode(string reqNo)
         {
-            return _dbContext.St_IssueApproves.Where(ia => ia.RequisitionNo == reqNo).FirstOrDefault();
+
+            return _dbContext.St_IssueApproves.Where(ia => ia.RequisitionNo == reqNo && ia.IsDeleted==false).FirstOrDefault();
         }
 
         public async Task UpdateAsync(St_IssueApprove issueApprove)
@@ -63,7 +64,7 @@ namespace HicadStockSystem.Persistence.Repository
         public async Task DeleteAsync(string reqNo)
         {
             var issueApproveInDb = GetByCode(reqNo);
-            _dbContext.Remove(issueApproveInDb);
+            issueApproveInDb.IsDeleted=true;
             await _uow.CompleteAsync();
         }
 

@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div v-if="errors" class="has-error">{{ [errors] }}</div>
-    <div v-if="responseMessage" class="has-error">{{ responseMessage }}</div>
-    <form @submit="checkForm" method="post">
+    <form @submit.prevent="checkForm" method="post">
       <div class="p-5" id="vertical-form">
         <div class="preview">
           <div class="row">
@@ -12,9 +10,9 @@
                 class="form-control"
                 v-model="postBody.requisitionNo"
                 name="requisitionNo"
-                placeholder="Requisition No."
-                required
                 @change="getRequisitionApproval"
+                :class="{ 'is-invalid': !requisitionNoIsValid && reqblur }"
+                v-on:blur="reqblur = true"
               >
                 <option>
                   --select Requisition No.--
@@ -27,6 +25,9 @@
                   {{ requisition.requisitionNo }}
                 </option>
               </select>
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Select requisition number</span>
+              </div>
             </div>
           </div>
           <br />
@@ -108,7 +109,11 @@
                       class="form-control"
                       v-model="postBody.approvedQty"
                       name="approvedQty"
+                      :class="{ 'is-invalid': !quantityIsValid }"
                     />
+                    <div class="invalid-feedback">
+                      <span class="text-danger h5">Invalid Entry</span>
+                    </div>
                   </td>
                   <td>
                     <div v-if="canProcess" role="group">
@@ -134,9 +139,11 @@
 </template>
 <script>
 import Datepicker from "vuejs-datepicker";
+import VueSimpleAlert from "vue-simple-alert";
 export default {
   components: {
     Datepicker,
+    VueSimpleAlert,
   },
   data() {
     return {
@@ -146,6 +153,9 @@ export default {
       canProcess: true,
       RequisitionList: null,
       ItemApprovalList: null,
+      valid: false,
+      reqblur: false,
+
       postBody: {
         locationCode: "",
         requisitionNo: "",
@@ -179,12 +189,14 @@ export default {
   },
   methods: {
     checkForm: function(e) {
-      if (this.postBody.itemCode) {
-        e.preventDefault();
+      this.validate();
+      if (this.valid) {
+        // e.preventDefault();
         this.canProcess = false;
-        alert(this.postBody.requisitionNo, "i am here");
+        this.$alert("Submit Form", "Ok", "info");
         this.postPost();
       } else {
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
         this.errors.push("Supply all the required field");
       }
@@ -254,8 +266,27 @@ export default {
         this.RequisitionList = response.data;
       });
     },
+    validate() {
+      this.reqblur = true;
+      if (this.requisitionNoIsValid && this.quantity) {
+        this.valid = true;
+      } else {
+        this.valid = false;
+        return;
+      }
+    },
   },
   computed: {
+    requisitionNoIsValid() {
+      return this.postBody.requisitionNo != "";
+    },
+    //needs more validation
+    quantityIsValid() {
+      return (
+        this.postBody.approvedQty == "" ||
+        parseInt(this.postBody.approvedQty) >= 0
+      );
+    },
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
       if (objecttoedit.supplierCode) {

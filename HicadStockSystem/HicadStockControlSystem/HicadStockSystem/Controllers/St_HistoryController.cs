@@ -72,7 +72,7 @@ namespace HicadStockSystem.Controllers
             return Ok(stockHistoryInDb);
         }
 
-        [HttpDelete("{itemcode}")]
+        [HttpPatch("{itemcode}")]
         public async Task<IActionResult> DeleteIssueReq(string itemcode)
         {
             var stockHistoryInDb = _history.GetByCode(itemcode);

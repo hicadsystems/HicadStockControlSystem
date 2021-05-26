@@ -71,7 +71,7 @@ namespace HicadStockSystem.Controllers
             return Ok(supplierInDb);
         }
 
-        [HttpDelete("{code}")]
+        [HttpPatch("{code}")]
         public async Task<IActionResult> DeleteSupplier(string code)
         {
             var supplierInDb = _supplier.GetByCode(code);

@@ -30,20 +30,20 @@ namespace HicadStockSystem.Persistence
 
         public async Task<IEnumerable<St_StockClass>> GetAll()
         {
-            return await _dbContext.St_StockClasses.ToListAsync();
+            return await _dbContext.St_StockClasses.Where(sc=>sc.IsDeleted==false).ToListAsync();
         }
 
         public St_StockClass GetById(string classId)
         {
             return _dbContext.St_StockClasses
-                .Where(sc => sc.SktClass == classId)
+                .Where(sc => sc.SktClass == classId && sc.IsDeleted==false)
                 .FirstOrDefault();
         }
 
         public async Task DeleteAsync(string classId)
         {
             var stockClassInDb = GetById(classId);
-            _dbContext.Remove(stockClassInDb);
+            stockClassInDb.IsDeleted=true;
             await _uow.CompleteAsync();
         }
 

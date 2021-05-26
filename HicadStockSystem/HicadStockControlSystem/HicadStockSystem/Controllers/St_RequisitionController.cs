@@ -88,7 +88,7 @@ namespace HicadStockSystem.Controllers
             return Ok(requisitioInDb);
         }
 
-        [HttpDelete("{reqNo}")]
+        [HttpPatch("{reqNo}")]
         public async Task<IActionResult> DeleteRequisition(string reqNo)
         {
             var requisitioInDb = _requisition.GetByReqNo(reqNo);

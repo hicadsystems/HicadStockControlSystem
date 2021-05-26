@@ -73,7 +73,7 @@ namespace HicadStockSystem.Controllers
             return Ok(validSktSystem);
         }
 
-       [HttpDelete("{coycode}")]
+       [HttpPatch("{coycode}")]
        public async Task<IActionResult> DeleteStkSystem(string coycode)
         {
             var validStkSystem = _systemRepo.GetByCompanyCode(coycode);

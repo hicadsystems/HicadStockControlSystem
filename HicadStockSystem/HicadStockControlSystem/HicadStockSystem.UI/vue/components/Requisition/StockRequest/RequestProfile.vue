@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div v-if="errors" class="has-error">{{ [errors] }}</div>
-    <div v-if="responseMessage" class="has-error">{{ responseMessage }}</div>
-    <form @submit="checkForm" method="post">
+    <form @submit.prevent="checkForm" method="post">
       <div class="p-5" id="vertical-form">
         <div class="preview">
           <div class="row">
@@ -12,20 +10,23 @@
                 class="form-control"
                 v-model="postBody.locationCode"
                 name="locationCode"
-                placeholder="department"
-                required
+                :class="{ 'is-invalid': !departmentIsValid && locationblur }"
+                v-on:blur="locationblur = true"
               >
                 <option>
                   --select department code--
                 </option>
                 <option
-                  v-for="(costcentre, index) in DepartmentList"
+                  v-for="costcentre in DepartmentList"
                   v-bind:value="costcentre.unitCode"
-                  v-bind:selected="index === 0"
+                  :key="costcentre.unitCode"
                 >
                   {{ costcentre.unitDesc }}
                 </option>
               </select>
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Please select department</span>
+              </div>
             </div>
           </div>
           <br />
@@ -38,19 +39,23 @@
                 name="itemCode"
                 placeholder="item code"
                 @change="getStockItems"
-                required
+                :class="{ 'is-invalid': !itemCodeIsValid && itemCodeblur }"
+                v-on:blur="itemCodeblur = true"
               >
                 <option>
                   --select Item code--
                 </option>
                 <option
-                  v-for="(item, index) in ItemList"
+                  v-for="item in ItemList"
                   v-bind:value="item.itemCode"
-                  v-bind:selected="index === 0"
+                  :key="item.itemCode"
                 >
                   {{ item.itemDesc }}
                 </option>
               </select>
+                <div class="invalid-feedback">
+                <span class="text-danger h5">Please select item</span>
+              </div>
             </div>
             <div class="col-1"></div>
             <div class="col-2">
@@ -73,8 +78,11 @@
                 class="form-control"
                 name="quantity"
                 v-model="postBody.quantity"
-                placeholder="quantity"
+                :class="{ 'is-invalid': !quantityIsValid }"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5">Invalid Entry</span>
+              </div>
             </div>
             <div class="col-1"></div>
             <div class="col-2">
@@ -106,9 +114,11 @@
 </template>
 <script>
 import Datepicker from "vuejs-datepicker";
+import VueSimpleAlert from "vue-simple-alert";
 export default {
   components: {
     Datepicker,
+    VueSimpleAlert,
   },
   data() {
     return {
@@ -119,12 +129,15 @@ export default {
       DepartmentList: null,
       ItemList: null,
       StockItemsList: null,
+      locationblur: false,
+      itemCodeblur: false,
+      valid: false,
       postBody: {
         locationCode: "",
         itemCode: "",
         itemDesc: "",
         qtyInTransaction: 0,
-        quantity: 0,
+        quantity: "",
         unit: "",
       },
     };
@@ -146,12 +159,14 @@ export default {
   },
   methods: {
     checkForm: function(e) {
-      if (this.postBody.itemCode) {
+      this.validate();
+      if (this.valid) {
         e.preventDefault();
         this.canProcess = false;
-        alert(this.postBody.itemCode, "i am here");
+        this.$alert("Submit Form", "Ok", "info");
         this.postPost();
       } else {
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
         this.errors.push("Supply all the required field");
       }
@@ -167,12 +182,13 @@ export default {
               this.postBody.locationCode = "";
               this.postBody.itemCode = "";
               this.postBody.itemDesc = "";
-              this.postBody.quantity = 0;
+              this.postBody.quantity = "";
               this.postBody.unit = "";
               this.$store.stateName.objectToUpdate = "create";
             }
           })
           .catch((e) => {
+            if(e)
             this.errors.push(e);
           });
       }
@@ -220,8 +236,35 @@ export default {
         this.ItemList = response.data;
       });
     },
+    validate() {
+      this.locationblur = true;
+      this.itemCodeblur = true;
+      if (
+        this.departmentIsValid &&
+        this.itemCodeIsValid &&
+        this.quantityIsValid
+      ) {
+        this.valid = true;
+      } else {
+        this.valid = false;
+        return;
+      }
+    },
   },
   computed: {
+    departmentIsValid() {
+      return this.postBody.locationCode != "";
+    },
+
+    itemCodeIsValid() {
+      return this.postBody.itemCode != "";
+    },
+
+    quantityIsValid() {
+      return (
+        this.postBody.quantity == "" || parseInt(this.postBody.quantity) >= 1
+      );
+    },
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
       if (objecttoedit.supplierCode) {

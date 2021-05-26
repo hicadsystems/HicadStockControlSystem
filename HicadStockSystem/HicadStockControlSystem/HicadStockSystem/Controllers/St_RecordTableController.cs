@@ -72,7 +72,7 @@ namespace HicadStockSystem.Controllers
             return Ok(recordTableInDb);
         }
 
-        [HttpDelete("{code}")]
+        [HttpPatch("{code}")]
         public async Task<IActionResult> DeleteRecordTable(string code)
         {
             var recordTableInDb = _recordTable.GetByCode(code);

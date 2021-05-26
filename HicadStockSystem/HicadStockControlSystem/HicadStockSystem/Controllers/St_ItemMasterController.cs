@@ -70,7 +70,7 @@ namespace HicadStockSystem.Controllers
             return Ok(itemMasterInDb);
         }
 
-        [HttpDelete("{itemcode}")]
+        [HttpPatch("{itemcode}")]
         public async Task<IActionResult> DeleteItemMaster(string itemcode)
         {
             var itemMasterInDb = _itemMaster.GetByCode(itemcode);

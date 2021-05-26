@@ -21,7 +21,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StkSystem
         [Required]
         [StringLength(20)]
         public string Phone { get; set; }
-        [Required]
+        //[Required]
         [StringLength(30)]
         public string Email { get; set; }
         [StringLength(40)]

@@ -73,7 +73,7 @@ namespace HicadStockSystem.Controllers
             return Ok(buslineInDb);
         }
 
-        [HttpDelete("{busLine}")]
+        [HttpPatch("{busLine}")]
         public async Task<IActionResult> DeleteBusinessLine(string busLine)
         {
             var buslineInDb = _busLine.GetByBusLine(busLine);

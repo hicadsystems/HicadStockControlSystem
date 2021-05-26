@@ -26,13 +26,13 @@ namespace HicadStockSystem.Persistence
 
         public async Task<IEnumerable<St_StkSystem>> GetAll()
         {
-            return await _dbContext.St_StkSystems.ToListAsync();
+            return await _dbContext.St_StkSystems.Where(stk=>stk.IsDeleted==false).ToListAsync();
 
         }
 
         public St_StkSystem GetByCompanyCode(string compcode)
         {
-            return _dbContext.St_StkSystems.Where(stk => stk.CompanyCode == compcode).FirstOrDefault();
+            return _dbContext.St_StkSystems.Where(stk => stk.CompanyCode == compcode && stk.IsDeleted==false).FirstOrDefault();
         }
 
         public async Task UpdateAsync(St_StkSystem stkSystem)
@@ -50,7 +50,7 @@ namespace HicadStockSystem.Persistence
         {
             //using the GetByCompanyCode instead of repeating code 
             var stkSystem = GetByCompanyCode(compcode);
-            _dbContext.Remove(stkSystem);
+            stkSystem.IsDeleted=true;
             await _dbContext.SaveChangesAsync();
         }
 

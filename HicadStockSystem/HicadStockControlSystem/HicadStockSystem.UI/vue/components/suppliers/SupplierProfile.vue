@@ -112,12 +112,14 @@
                 placeholder="phone number"
                 v-bind:class="{
                   'form-control': true,
-                  'is-invalid': !PhoneNoIsvalid && phoneblur
+                  'is-invalid': !PhoneNoIsvalid && phoneblur,
                 }"
                 v-on:blur="phoneblur = true"
               />
               <div class="invalid-feedback">
-                <span class="text-danger h5">Phone number is required not more than 12 numbers</span>
+                <span class="text-danger h5"
+                  >Phone number is required not more than 12 numbers</span
+                >
               </div>
             </div>
           </div>

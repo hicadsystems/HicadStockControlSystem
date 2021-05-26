@@ -26,5 +26,7 @@ namespace HicadStockSystem.Core.Models
         public string Cashier_Ac { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? UpdatedOn { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

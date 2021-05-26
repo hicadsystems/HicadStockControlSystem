@@ -73,7 +73,7 @@ namespace HicadStockSystem.Controllers
             return Ok(journalInDb);
         }
 
-        [HttpDelete("{coy}")]
+        [HttpPatch("{coy}")]
         public async Task<IActionResult> DeleteJournal(string coy)
         {
             var journalInDb = _journal.GetByCompany(coy);

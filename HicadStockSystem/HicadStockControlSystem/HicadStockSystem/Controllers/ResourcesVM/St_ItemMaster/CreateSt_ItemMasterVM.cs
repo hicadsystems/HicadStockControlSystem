@@ -45,5 +45,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_ItemMaster
         public string BusLine { get; set; }
         public DateTime? CreatedOn { get; set; }
         //public DateTime? UpdatedOn { get; set; }
+        [StringLength(30)]
+        public string PartNo { get; set; }
     }
 }

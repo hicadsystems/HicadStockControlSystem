@@ -32,12 +32,12 @@ namespace HicadStockSystem.Persistence
 
         public async Task<IEnumerable<St_StockMaster>> GetAll()
         {
-            return await _dbContext.St_StockMasters.ToListAsync();
+            return await _dbContext.St_StockMasters.Where(sm=>sm.IsDeleted==false).ToListAsync();
         }
 
         public St_StockMaster GetByItemCode(string itemCode)
         {
-            return _dbContext.St_StockMasters.Where(sm => sm.ItemCode == itemCode).FirstOrDefault();
+            return _dbContext.St_StockMasters.Where(sm => sm.ItemCode == itemCode && sm.IsDeleted==false).FirstOrDefault();
         }
 
         public async Task UpdateAsync(St_StockMaster stockMaster)
@@ -56,7 +56,7 @@ namespace HicadStockSystem.Persistence
         public async Task Delete(string itemCode)
         {
             var stockMasterInDb = GetByItemCode(itemCode);
-            _dbContext.Remove(stockMasterInDb);
+            stockMasterInDb.IsDeleted=true;
             await _uow.CompleteAsync();
         }
     }

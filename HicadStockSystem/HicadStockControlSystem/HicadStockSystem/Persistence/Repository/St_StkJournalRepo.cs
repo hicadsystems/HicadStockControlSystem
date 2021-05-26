@@ -31,12 +31,12 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task<IEnumerable<St_StkJournal>> GetAll()
         {
-            return await _dbContext.St_StkJournals.ToListAsync();
+            return await _dbContext.St_StkJournals.Where(sj=>sj.IsDeleted==false).ToListAsync();
         }
 
         public St_StkJournal GetByCompany(string coy)
         {
-            return _dbContext.St_StkJournals.Where(sj => sj.Stk_Company == coy).FirstOrDefault();
+            return _dbContext.St_StkJournals.Where(sj => sj.Stk_Company == coy && sj.IsDeleted==false).FirstOrDefault();
         }
 
         public async Task UpdateAsync(St_StkJournal stkJournal)
@@ -55,8 +55,8 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task DeleteAsync(string coy)
         {
-            var JournalInDb = GetByCompany(coy);
-            _dbContext.Remove(JournalInDb);
+            var journalInDb = GetByCompany(coy);
+            journalInDb.IsDeleted=true;
             await _uow.CompleteAsync();
         }
 

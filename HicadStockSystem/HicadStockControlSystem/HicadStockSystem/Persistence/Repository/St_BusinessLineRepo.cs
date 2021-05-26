@@ -32,12 +32,12 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task<IEnumerable<St_BusinessLine>> GetAll()
         {
-            return await _dbContext.St_BusinessLines.ToListAsync();
+            return await _dbContext.St_BusinessLines.Where(bl=>bl.IsDeleted==false).ToListAsync();
         }
 
         public virtual St_BusinessLine GetByBusLine(string busLine)
         {
-            return _dbContext.St_BusinessLines.Where(bl => bl.BusinessLine == busLine).FirstOrDefault();
+            return _dbContext.St_BusinessLines.Where(bl => bl.BusinessLine == busLine && bl.IsDeleted == false).FirstOrDefault();
         }
 
         public async Task UpdateAsync(St_BusinessLine busLine)
@@ -57,7 +57,7 @@ namespace HicadStockSystem.Persistence.Repository
         public async Task DeleteAsync(string busLine)
         {
             var busLineInDb = GetByBusLine(busLine);
-            _dbContext.Remove(busLineInDb);
+            busLineInDb.IsDeleted = true;
             await _uow.CompleteAsync();
         }
 

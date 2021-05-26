@@ -70,7 +70,7 @@ namespace HicadStockSystem.Controllers
             return Ok(issueReqInDb);
         }
 
-        [HttpDelete("{itemcode}")]
+        [HttpPatch("{itemcode}")]
         public async Task<IActionResult> DeleteIssueReq(string itemcode)
         {
             var issueReqInDb = _IssueReq.GetByCode(itemcode);

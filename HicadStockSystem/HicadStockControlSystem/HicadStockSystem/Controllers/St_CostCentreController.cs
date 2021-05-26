@@ -68,7 +68,7 @@ namespace HicadStockSystem.Controllers
             return Ok(costCenterInDb);
         }
 
-        [HttpDelete("{unitCode}")]
+        [HttpPatch("{unitCode}")]
         public async Task<IActionResult> DeleteCostCenter(string unitCode)
         {
             var costCenterInDb = _costCentre.GetByItemCode(unitCode);

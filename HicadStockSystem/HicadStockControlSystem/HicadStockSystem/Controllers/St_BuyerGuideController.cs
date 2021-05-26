@@ -71,7 +71,7 @@ namespace HicadStockSystem.Controllers
             return Ok(buyerGuideInDb);
         }
 
-        [HttpDelete("{itemCode}")]
+        [HttpPatch("{itemCode}")]
         public async Task<IActionResult> DeleteBuyerGuide(string itemCode)
         {
             var buyerGuideInDb = _buyerGuide.GetByItemCode(itemCode);
