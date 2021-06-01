@@ -36,22 +36,35 @@ namespace HicadStockSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newStockHistory = _mapper.Map<CreateSt_HistoryVM, St_History>(historyVM);
+                var docNo = historyVM.DocNo = _history.GenerateDocNo();
+                var docNoInDb = _history.GetByDocNo(docNo);
+                if (docNoInDb == null)
+                {
+                    //if (docNoInDb.Supplier )
+                    //{
 
-                newStockHistory.DateCreated = DateTime.Now;
+                    //}
 
-                await _history.CreateAsync(newStockHistory);
+                    historyVM.DocType = "GRA";
 
-                return Ok(newStockHistory);
+                    var newStockHistory = _mapper.Map<CreateSt_HistoryVM, St_History>(historyVM);
+                    //confirm if correct
+                    newStockHistory.DocDate = DateTime.Now;
+
+                    await _history.CreateAsync(newStockHistory);
+
+                    return Ok(newStockHistory);
+                }
+              
             }
 
             return BadRequest();
         }
 
         [HttpGet("{itemcode}")]
-        public IActionResult GetIssueReqByCode(string itemcode)
+        public IActionResult GetIssueReqByCode(string docNo)
         {
-            var stockHistoryInDb = _history.GetByCode(itemcode);
+            var stockHistoryInDb = _history.GetByDocNo(docNo);
             if (stockHistoryInDb == null)
                 return NotFound();
 
@@ -61,25 +74,25 @@ namespace HicadStockSystem.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateIssueReq([FromBody] UpdateSt_HistoryVM historyVM)
         {
-            var stockHistoryInDb = _history.GetByCode(historyVM.ItemCode);
+            var stockHistoryInDb = _history.GetByDocNo(historyVM.DocNo);
             if (stockHistoryInDb == null)
                 return NotFound();
 
             _mapper.Map(historyVM, stockHistoryInDb);
-            stockHistoryInDb.UpdatedOn = DateTime.Now;
+            stockHistoryInDb.DateCreated = DateTime.Now;
             await _history.UpdateAsync(stockHistoryInDb);
 
             return Ok(stockHistoryInDb);
         }
 
         [HttpPatch("{itemcode}")]
-        public async Task<IActionResult> DeleteIssueReq(string itemcode)
+        public async Task<IActionResult> DeleteIssueReq(string docNo)
         {
-            var stockHistoryInDb = _history.GetByCode(itemcode);
+            var stockHistoryInDb = _history.GetByDocNo(docNo);
             if (stockHistoryInDb == null)
                 return NotFound();
 
-            await _history.DeleteAsync(itemcode);
+            await _history.DeleteAsync(docNo);
 
             return Ok(stockHistoryInDb);
         }

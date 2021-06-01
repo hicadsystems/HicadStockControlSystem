@@ -22,7 +22,7 @@
             <button
               type="button"
               class="btn btn-submit btn-primary"
-              @click="processRetrieve(status)"
+              @click="processRetrieve(status.supplierCode)"
             >
               Edit
             </button>
@@ -67,6 +67,10 @@ export default {
       // alert(Status)
       this.$store.state.objectToUpdate = Status;
     },
+    // processRetrieve: function(Status) {
+    //   // alert(Status)
+    //   this.$store.state.objectToUpdate = Status;
+    // },
     processDelete: function(companyCode) {
       //alert(companyCode);
       axios

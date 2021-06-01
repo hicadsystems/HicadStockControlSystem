@@ -29,7 +29,7 @@ namespace HicadStockSystem.Core.Models
         [StringLength(20)]
         public string UserId { get; set; }
         public DateTime? DateCreated { get; set; }
-        public DateTime? UpdatedOn { get; set; }
+        //public DateTime? UpdatedOn { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

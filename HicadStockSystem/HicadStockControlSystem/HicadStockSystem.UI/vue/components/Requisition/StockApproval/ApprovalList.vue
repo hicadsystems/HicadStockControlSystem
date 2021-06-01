@@ -63,7 +63,7 @@ export default {
   methods: {
     processRetrieve: function(Status) {
       // alert(Status)
-      alert(Status)
+      alert(Status.itemCode)
       this.$store.state.objectToUpdate = Status;
     },
     processDelete: function(requisitionNo) {

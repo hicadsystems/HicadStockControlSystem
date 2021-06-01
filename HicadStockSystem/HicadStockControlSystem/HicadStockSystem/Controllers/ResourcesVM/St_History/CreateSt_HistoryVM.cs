@@ -12,7 +12,6 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_History
         public string ItemCode { get; set; }
         [StringLength(12)]
         public string DocNo { get; set; }
-        [Required]
         [StringLength(3)]
         public string DocType { get; set; }
         public DateTime? DocDate { get; set; }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="checkForm" method="post">
+    <form @submit.prevent="checkForm()" method="post">
       <div class="p-5" id="vertical-form">
         <div class="preview">
           <div class="row">
@@ -9,15 +9,15 @@
               <input
                 class="form-control"
                 name="itemCode"
-                placeholder="Item Code"
                 v-model="postBody.itemCode"
-                v-bind:class="{ 'is-invalid': !itemCodeIsValid && codeblur }"
+                v-bind:class="{ 'is-invalid': !itemCodeIsValid && codeblur}"
                 v-on:blur="codeblur = true"
               />
               <div class="invalid-feedback">
                 <span class="text-danger h5"
                   >Please enter supplier code not more than 6 characters</span
                 >
+                <span v-bind:class="[postBody.itemCode ? 'is-valid' : 'is-invalid']" >{{responseMessage}}</span>
               </div>
             </div>
             <div class="col-6">
@@ -26,7 +26,6 @@
                 class="form-control"
                 name="itemDesc "
                 v-model="postBody.itemDesc"
-                placeholder="Item Description"
                 :class="{ 'is-invalid': !itemDescIsValid && itemDescblur }"
                 v-on:blur="itemDescblur = true"
               />
@@ -35,6 +34,7 @@
                   >Please enter Item Description not more than 40
                   characters</span
                 >
+                 
               </div>
             </div>
 
@@ -42,7 +42,7 @@
               <label for="class" class="mb-1">Class Description</label>
               <select
                 class="form-control"
-                v-model="postBody.sktClass"
+                v-model="postBody.class"
                 name="class"
                 :class="{ 'is-invalid': !stkClassIsValid && stkClassblur }"
                 v-on:blur="stkClassblur = true"
@@ -52,7 +52,7 @@
                 </option>
                 <option
                   v-for="stockclass in ClassList"
-                  :value="stockclass.stkClass"
+                  :value="stockclass.sktClass"
                   :key="stockclass.sktClass"
                 >
                   {{ stockclass.sktClass }}
@@ -88,7 +88,7 @@
                 v-model="postBody.storerack"
                 v-bind:class="{ 'is-invalid': !storeRackIsValid }"
               />
-               <div class="invalid-feedback">
+              <div class="invalid-feedback">
                 <span class="text-danger h5"
                   >Entry cannot be more than 5 characters</span
                 >
@@ -103,7 +103,7 @@
                 v-model="postBody.storebin"
                 v-bind:class="{ 'is-invalid': !storeBinIsValid }"
               />
-               <div class="invalid-feedback">
+              <div class="invalid-feedback">
                 <span class="text-danger h5"
                   >Entry can not be more than 5 characters</span
                 >
@@ -119,7 +119,6 @@
                 class="form-control"
                 name="reOrderLevel"
                 v-model="postBody.reOrderLevel"
-                placeholder="Reorder Level"
                 :class="{ 'is-invalid': !reOrderLevelIsValid }"
               />
               <div class="invalid-feedback">
@@ -132,7 +131,6 @@
                 class="form-control"
                 name="reOrderQty"
                 v-model="postBody.reOrderQty"
-                placeholder="Reorder Qty"
                 :class="{ 'is-invalid': !reOrderQtyIsValid }"
               />
               <div class="invalid-feedback">
@@ -150,7 +148,7 @@
                 v-model="postBody.units"
                 v-bind:class="{ 'is-invalid': !unitIsValid }"
               />
-               <div class="invalid-feedback">
+              <div class="invalid-feedback">
                 <span class="text-danger h5"
                   >Entry can not be more than 10 characters</span
                 >
@@ -165,7 +163,7 @@
                 v-model="postBody.xRef"
                 v-bind:class="{ 'is-invalid': !XRefIsValid }"
               />
-               <div class="invalid-feedback">
+              <div class="invalid-feedback">
                 <span class="text-danger h5"
                   >Entry can not be more than 12 characters</span
                 >
@@ -177,9 +175,15 @@
               <input
                 class="form-control"
                 name="partNo."
-                v-model="postBody.xRef"
+                v-model="postBody.partNo"
+                v-bind:class="{ 'is-invalid': !partNoIsValid }"
                 placeholder="Part No.(404)"
               />
+              <div class="invalid-feedback">
+                <span class="text-danger h5"
+                  >Entry can not be more than 30 characters</span
+                >
+              </div>
             </div>
 
             <div class="col-4">
@@ -188,7 +192,7 @@
                 v-model="postBody.busLine"
                 v-bind:class="{
                   'form-control': true,
-                  'is-invalid': !busLineIsValid,
+                  'is-invalid': !busLineIsValid && busLineblur,
                 }"
                 v-on:bind="busLineblur = true"
               >
@@ -196,11 +200,11 @@
                   --select businessLine--
                 </option>
                 <option
-                  v-for="businessLine in BusinessLineList"
-                  v-bind:value="businessLine.businessLine"
-                  :key="businessLine.businessLine"
+                  v-for="busLine in BusinessLineList"
+                  v-bind:value="busLine.businessLine"
+                  :key="busLine.businessLine"
                 >
-                  {{ businessLine.businessDesc }}
+                  {{ busLine.businessDesc }}
                 </option>
               </select>
             </div>
@@ -247,13 +251,17 @@ export default {
         reOrderQty: "",
         units: "",
         xRef: "",
-        sktClass: "",
-        businessLine: "",
+        partNo: "",
+        class: "",
+        busLine: "",
+        isDeleted:false
       },
+
       codeblur: false,
       itemDescblur: false,
       stkClassblur: false,
       busLineblur: false,
+      isAvailable: false
     };
   },
   mounted() {
@@ -271,8 +279,9 @@ export default {
       this.postBody.reOrderQty = this.$store.state.objectToUpdate.reOrderQty;
       this.postBody.units = this.$store.state.objectToUpdate.units;
       this.postBody.xRef = this.$store.state.objectToUpdate.xRef;
-      this.postBody.class = this.$store.state.objectToUpdate.sktClass;
-      this.postBody.busLine = this.$store.state.objectToUpdate.businessLine;
+      this.postBody.partNo = this.$store.state.objectToUpdate.partNo;
+      this.postBody.class = this.$store.state.objectToUpdate.class;
+      this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
       this.submitorUpdate = "Update";
     },
   },
@@ -308,17 +317,19 @@ export default {
               this.postBody.reOrderLevel = "";
               this.postBody.reOrderQty = "";
               this.postBody.units = new Date();
-              (this.postBody.xRef = ""), (this.postBody.sktClass = "");
-              this.postBody.businessLine = "";
+              (this.postBody.xRef = ""),
+                (this.postBody.partNo = ""),
+                (this.postBody.class = "");
+              this.postBody.busLine = "";
               this.$store.stateName.objectToUpdate = "create";
             }
           })
           .catch((e) => {
-            this.errors.push(e);
+            alert(this.errors.push(e));
           });
       }
       if (this.submitorUpdate == "Update") {
-        alert("Raedy to Update");
+        // alert("Ready to Update");
         axios
           .put(`/api/itemmaster/`, this.postBody)
           .then((response) => {
@@ -335,8 +346,9 @@ export default {
               this.postBody.reOrderQty = "";
               this.postBody.units = "";
               this.postBody.xRef = "";
-              this.postBody.sktClass = "";
-              this.postBody.businessLine = "";
+              this.postBody.partNo = "";
+              this.postBody.class = "";
+              this.postBody.busLine = "";
               this.$store.state.objectToUpdate = "update";
             }
           })
@@ -358,6 +370,28 @@ export default {
       });
     },
 
+    // checkItemCode(){
+    //   var itemCode = this.postBody.itemCode.trim();
+    //   if(itemCode != ''){
+    //     axios.get(`/api/itemmaster/`, {
+    //       params:{
+    //         itemCode: itemCode
+    //       }
+    //     }).then((response)=>{
+    //       postBody.itemCode = response.data;
+    //       if(response.data==postBody.itemCode){
+    //         this.responseMessage = "Item Code is Available.";
+    //       }else{
+    //         this.responseMessage = "Item Code already exist"
+    //       }
+    //     }).catch((error)=>{
+    //       console.log(error)
+    //     })
+    //   }else{
+    //     this.responseMessage="";
+    //   }
+    // },
+
     validate() {
       this.codeblur = true;
       this.itemDescblur = true;
@@ -374,7 +408,9 @@ export default {
         this.storeRackIsValid &&
         this.storeBinIsValid &&
         this.unitIsValid &&
-        this.XRefIsValid
+        this.XRefIsValid &&
+        this.partNoIsValid 
+        // this.checkItemCode
       ) {
         this.valid = true;
       } else {
@@ -389,7 +425,7 @@ export default {
       return (
         this.postBody.itemCode != "" &&
         this.postBody.itemCode.length >= 1 &&
-        this.postBody.itemCode.length <= 6
+        this.postBody.itemCode.length <= 6 
       );
     },
 
@@ -424,20 +460,24 @@ export default {
     unitIsValid() {
       return (
         this.postBody.units == "" ||
-        (this.postBody.units.length >= 1 &&
-          this.postBody.units.length <= 10)
+        (this.postBody.units.length >= 1 && this.postBody.units.length <= 10)
       );
     },
     XRefIsValid() {
       return (
         this.postBody.xRef == "" ||
-        (this.postBody.xRef.length >= 1 &&
-        this.postBody.xRef.length <= 12)
+        (this.postBody.xRef.length >= 1 && this.postBody.xRef.length <= 12)
+      );
+    },
+    partNoIsValid() {
+      return (
+        this.postBody.partNo == "" ||
+        (this.postBody.partNo.length >= 1 && this.postBody.partNo.length <= 30)
       );
     },
 
     stkClassIsValid() {
-      return this.postBody.sktClass != "";
+      return this.postBody.class != "";
     },
 
     busLineIsValid() {
@@ -446,17 +486,36 @@ export default {
 
     reOrderQtyIsValid() {
       return (
-        this.postBody.reOrderQty == "" ||
+        this.postBody.reOrderQty == ""  || this.postBody.reOrderQty == null ||
         parseInt(this.postBody.reOrderQty) >= 1
       );
     },
 
     reOrderLevelIsValid() {
       return (
-        this.postBody.reOrderLevel == "" ||
+        this.postBody.reOrderLevel == "" || this.postBody.reOrderLevel == null ||
         parseInt(this.postBody.reOrderLevel) >= 1
       );
     },
+
+    // checkItemCode(){
+    //   var itemCode = this.postBody.itemCode.trim();
+    //   if(itemCode != ''){
+    //     axios.get(`/api/itemmaster/${itemCode}`, {
+    //     }).then((response)=>{
+    //      this.itemCode = response.data.itemCode;
+    //       if(response.data.itemCode!=this.itemCode){
+    //         this.responseMessage = "Item Code is Available.";
+    //       }else{
+    //         this.responseMessage = "Item Code already exist"
+    //       }
+    //     }).catch((error)=>{
+    //       console.log(error)
+    //     })
+    //   }else{
+    //     this.responseMessage="";
+    //   }
+    // },
 
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
@@ -470,8 +529,9 @@ export default {
         this.postBody.reOrderQty = objecttoedit.reOrderQty;
         this.postBody.units = objecttoedit.units;
         this.postBody.xRef = objecttoedit.xRef;
-        this.postBody.class = objecttoedit.sktClass;
-        this.postBody.busLine = objecttoedit.businessLine;
+        this.postBody.partNo = objecttoedit.partNo;
+        this.postBody.class = objecttoedit.class;
+        this.postBody.busLine = objecttoedit.busLine;
       }
     },
   },

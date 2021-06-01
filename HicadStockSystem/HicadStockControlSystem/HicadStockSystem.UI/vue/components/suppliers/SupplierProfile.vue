@@ -10,7 +10,6 @@
                 class="form-control"
                 name="supplierCode"
                 v-model="postBody.supplierCode"
-                placeholder="supplier code"
                 v-bind:class="{
                   'form-control': true,
                   'is-invalid': !supplierCodeIsValid && codeblur,
@@ -29,7 +28,6 @@
                 class="form-control"
                 name="name"
                 v-model="postBody.name"
-                placeholder="supplier name"
                 v-bind:class="{
                   'form-control': true,
                   'is-invalid': !supplierNameIsValid && nameblur,
@@ -51,7 +49,6 @@
                 class="form-control"
                 name="address"
                 v-model="postBody.address"
-                placeholder="supplier address"
                 v-bind:class="{
                   'form-control': true,
                   'is-invalid': !supplierAddressIsValid && addressblur,
@@ -66,12 +63,11 @@
               </div>
             </div>
             <div class="col-6">
-              <label for="contact" class="mb-1">Contact Address</label>
+              <label for="contact" class="mb-1">Contact</label>
               <input
                 class="form-control"
                 name="contact "
                 v-model="postBody.contact"
-                placeholder="contact address"
                 v-bind:class="{
                   'form-control': true,
                   'is-invalid': !supplierContactAddressIsValid,
@@ -93,7 +89,6 @@
                 class="form-control"
                 name="email"
                 v-model="postBody.email"
-                placeholder="email"
                 v-bind:class="{
                   'form-control': true,
                   'is-invalid': !EmailIsValid,
@@ -107,9 +102,7 @@
               <label for="phone" class="mb-1">Phone No.</label>
               <input
                 class="form-control"
-                name="phone"
                 v-model="postBody.phone"
-                placeholder="phone number"
                 v-bind:class="{
                   'form-control': true,
                   'is-invalid': !PhoneNoIsvalid && phoneblur,
@@ -143,6 +136,7 @@
 import Datepicker from "vuejs-datepicker";
 import VueSimpleAlert from "vue-simple-alert";
 export default {
+  props:['isFormVisible'],
   components: {
     Datepicker,
     VueSimpleAlert,
@@ -179,6 +173,8 @@ export default {
   //   },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
+      alert("watch");
+      this.isFormVisible = true;
       (this.postBody.supplierCode = this.$store.state.objectToUpdate.supplierCode),
         (this.postBody.name = this.$store.state.objectToUpdate.name),
         (this.postBody.address = this.$store.state.objectToUpdate.address),
@@ -204,6 +200,7 @@ export default {
         this.errors = [];
         this.errors.push("Supply all the required field");
       }
+      this.isFormVisible=false;
     },
     postPost() {
       if (this.submitorUpdate == "Submit") {
@@ -325,6 +322,7 @@ export default {
     },
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
+       alert("setter");
       if (objecttoedit.supplierCode) {
         this.postBody.supplierCode = objecttoedit.supplierCode;
         this.postBody.name = objecttoedit.name;

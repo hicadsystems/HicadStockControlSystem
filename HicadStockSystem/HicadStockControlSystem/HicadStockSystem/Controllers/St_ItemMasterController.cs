@@ -32,15 +32,24 @@ namespace HicadStockSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateItemMaster([FromBody] CreateSt_ItemMasterVM itemMasterVM)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var newitemMaster = _mapper.Map<CreateSt_ItemMasterVM, St_ItemMaster>(itemMasterVM);
 
-                newitemMaster.CreatedOn = DateTime.Now;
+                if (ModelState.IsValid)
+                {
+                    var newitemMaster = _mapper.Map<CreateSt_ItemMasterVM, St_ItemMaster>(itemMasterVM);
 
-                await _itemMaster.CreateAsync(newitemMaster);
+                    newitemMaster.CreatedOn = DateTime.Now;
 
-                return Ok(newitemMaster);
+                    await _itemMaster.CreateAsync(newitemMaster);
+
+                    return Ok(newitemMaster);
+                }
+            }
+            catch (Exception e)
+            {
+
+                new Exception(e.Message);
             }
 
             return BadRequest();

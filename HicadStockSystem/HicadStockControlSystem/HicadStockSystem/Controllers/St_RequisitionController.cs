@@ -37,7 +37,7 @@ namespace HicadStockSystem.Controllers
             {
                 var reqNo = requisitionVM.RequisitionNo = _requisition.GenerateRequisitionNo();
 
-                var requisitionNumberInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+                var requisitionNumberInDb = _requisition.GetByReqNo(reqNo);
 
                 //check to avoid duplicate number
                 if (requisitionNumberInDb == null)

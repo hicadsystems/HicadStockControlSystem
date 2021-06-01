@@ -16,6 +16,7 @@ namespace HicadStockSystem.Core.Models
 
         public int IssAppDocCode { get; set; }
         public int RequsitionNo { get; set; }
+        public int ReceiptNo { get; set; }
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public bool IsDeleted { get; set; }
