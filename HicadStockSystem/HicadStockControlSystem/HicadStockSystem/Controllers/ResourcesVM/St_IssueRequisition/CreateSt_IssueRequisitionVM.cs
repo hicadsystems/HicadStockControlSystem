@@ -10,7 +10,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_IssueRequisition
     {
         [Required]
         //remember to input stringLength at ViewModel api resource
-        [StringLength(10)]
+        [StringLength(15)]
         public string ItemCode { get; set; }
         [StringLength(25)]
         public string Description { get; set; }

@@ -11,17 +11,17 @@ namespace HicadStockSystem.Core.Models
     public class St_Supplier
     {
         [Key]
-        [StringLength(3)]
+        [StringLength(15)]
         public string SupplierCode { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
-        [StringLength(50)]
+        [StringLength(100)]
         public string Address { get; set; }
-        [StringLength(15)]
+        [StringLength(50)]
         public string Email { get; set; }
-        [StringLength(20)]
-        public string Contact { get; set; }
         [StringLength(30)]
+        public string Contact { get; set; }
+        [StringLength(20)]
         public string Phone { get; set; }
         public int? Sup_Last_Num { get; set; }
         public DateTime? Sup_Start_Date { get; set; }

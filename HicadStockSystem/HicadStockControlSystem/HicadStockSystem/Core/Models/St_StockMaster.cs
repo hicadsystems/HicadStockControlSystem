@@ -12,7 +12,7 @@ namespace HicadStockSystem.Core.Models
     {
         [Key]
         //remember to input stringLength at ViewModel api resource
-        [StringLength(6)]
+        [StringLength(15)]
         public string ItemCode { get; set; }
         [StringLength(50)]
         public string Description { get; set; }

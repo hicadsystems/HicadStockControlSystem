@@ -1,64 +1,97 @@
 <template>
   <div>
-    <form @submit.prevent="checkForm" method="post">
-      <div class="p-5" id="vertical-form">
-        <div class="preview">
-          <div class="row">
-            <div class="col-6">
-              <label for="locationCode" class="mb-1">Department</label>
-              <select
-                class="form-control"
-                v-model="postBody.locationCode"
-                name="locationCode"
-                :class="{ 'is-invalid': !departmentIsValid && locationblur }"
-                v-on:blur="locationblur = true"
-              >
-                <option>
-                  --select department code--
-                </option>
-                <option
-                  v-for="costcentre in DepartmentList"
-                  v-bind:value="costcentre.unitCode"
-                  :key="costcentre.unitCode"
-                >
-                  {{ costcentre.unitDesc }}
-                </option>
-              </select>
-              <div class="invalid-feedback">
-                <span class="text-danger h5">Please select department</span>
+    <div class="row">
+      <!--  <div class="col-6">
+        <label for="locationCode" class="mb-1">Department</label>
+        <select
+          class="form-control"
+          v-model="locationCode"
+          name="locationCode"
+          :class="{ 'is-invalid': !departmentIsValid && locationblur }"
+          v-on:blur="locationblur = true"
+        >
+          <option>
+            --select department code--
+          </option>
+          <option
+            v-for="costcentre in DepartmentList"
+            v-bind:value="costcentre.unitCode"
+            :key="costcentre.unitCode"
+          >
+            {{ costcentre.unitDesc }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          <span class="text-danger h5">Please select department</span>
+        </div>
+      </div> -->
+    </div>
+    <div class="card">
+      <!--<div class="card-header">
+        <h3 class="card-title  text-center">Stock Request Form</h3>
+      </div>-->
+      <div>
+          <div class="p-5" id="vertical-form">
+            <div class="preview">
+              <div class="row">
+                <div class="col-6">
+                  <label for="locationCode" class="mb-1">Department</label>
+                  <select
+                    class="form-control"
+                    v-model="locationCode"
+                    name="locationCode"
+                    :class="{
+                      'is-invalid': !departmentIsValid && locationblur,
+                    }"
+                    v-on:blur="locationblur = true"
+                  >
+                    <option>
+                      --select department code--
+                    </option>
+                    <option
+                      v-for="costcentre in DepartmentList"
+                      v-bind:value="costcentre.unitCode"
+                      :key="costcentre.unitCode"
+                    >
+                      {{ costcentre.unitDesc }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5">Please select department</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-6">
-              <label for="itemCode" class="mb-1">Item Description</label>
-              <select
-                class="form-control"
-                v-model="postBody.itemCode"
-                name="itemCode"
-                placeholder="item code"
-                @change="getStockItems"
-                :class="{ 'is-invalid': !itemCodeIsValid && itemCodeblur }"
-                v-on:blur="itemCodeblur = true"
-              >
-                <option>
-                  --select Item code--
-                </option>
-                <option
-                  v-for="item in ItemList"
-                  v-bind:value="item.itemCode"
-                  :key="item.itemCode"
-                >
-                  {{ item.itemDesc }}
-                </option>
-              </select>
-                <div class="invalid-feedback">
-                <span class="text-danger h5">Please select item</span>
-              </div>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-2">
+              <br />
+              <div class="row">
+                <div class="col-6">
+                  <label for="itemCode" class="mb-1">Item Description</label>
+                  <select
+                    class="form-control"
+                    v-model="newItem.itemCode"
+                    v-bind:value="newItem.itemCode"
+                    name="itemCode"
+                    placeholder="item code"
+                    @change="getStockItems"
+                    :class="{ 'is-invalid': !itemCodeIsValid && itemCodeblur }"
+                    v-on:blur="itemCodeblur = true"
+                  >
+                    <option>
+                      --select Item code--
+                    </option>
+                    <option
+                      v-for="item in ItemList"
+                      v-bind:value="item.itemCode"
+                      :key="item.itemCode"
+                    >
+                      {{ item.itemDesc }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5">Please select item</span>
+                  </div>
+                </div>
+                <div class="col-1"></div>
+                <!--  <div class="col-2">
               <label for="qtyInTransaction" class="mb-1">Current Balance</label>
               <input
                 class="form-control"
@@ -67,38 +100,65 @@
                 v-model="postBody.qtyInTransaction"
                 placeholder="current bal"
               />
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-4"></div>
-            <div class="col-2">
-              <label for="quantity" class="mb-1">Quantity Required</label>
-              <input
-                class="form-control"
-                name="quantity"
-                v-model="postBody.quantity"
-                :class="{ 'is-invalid': !quantityIsValid }"
-              />
-              <div class="invalid-feedback">
-                <span class="text-danger h5">Invalid Entry</span>
+            </div>  -->
+                <div class="col-2">
+                  <label for="qtyInTransaction" class="mb-1"
+                    >Current Balance</label
+                  >
+                  <input
+                    class="form-control"
+                    name="qtyInTransaction "
+                    readonly="readonly"
+                    v-model="currentBal"
+                    placeholder="current bal"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-2">
-              <label for="unit" class="mb-1">unit</label>
-              <input
-                class="form-control"
-                name="unit"
-                readonly="readonly"
-                v-model="postBody.unit"
-                placeholder="unit"
-              />
-            </div>
-          </div>
+              <br />
+              <div class="row">
+                <div class="col-4"></div>
+                <div class="col-2">
+                  <label for="quantity" class="mb-1">Quantity Required</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="quantity"
+                    v-model="newItem.quantity"
+                    :class="{ 'is-invalid': !quantityIsValid && quantityblur }"
+                    v-on:blur="quantityblur = true"
+                  />
+                  {{ quantityIsValid }}
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5">Invalid Entry Or</span> <br />
+                    <span class="text-danger h5"
+                      >quantity requested is more than current quantity</span
+                    >
+                  </div>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-2">
+                  <label for="unit" class="mb-1">unit</label>
+                  <input
+                    class="form-control"
+                    name="unit"
+                    readonly="readonly"
+                    v-model="newItem.unit"
+                    placeholder="unit"
+                  />
+                </div>
+              </div>
 
-          <br />
-          <div v-if="canProcess" role="group">
+              <br />
+              <div v-if="canProcess" role="group">
+                <button
+                  class="btn btn-submit btn-primary float-right"
+                  v-on:click="addLineItem()"
+                  type="submit"
+                >
+                  Add item
+                </button>
+              </div>
+              <!-- <div v-if="canProcess" role="group">
             <button
               class="btn btn-submit btn-primary float-right"
               v-on:click="checkForm"
@@ -106,10 +166,53 @@
             >
               {{ submitorUpdate }}
             </button>
+          </div> -->
+            </div>
           </div>
         </div>
+      <!--<div class="card-body">
+        
+      </div>-->
+    </div>
+
+
+
+<div class="card">
+      <div class="card-header">
+        <h1 class="card-title  text-center"><b>Request Items</b></h1>
       </div>
-    </form>
+      <div class="card-body">
+        <div class="table-responsive-sm">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Item Code</th>
+            <th>Quantity</th>
+            <th>unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="lineItem in lineItems" :key="lineItem.itemCode">
+            <td>{{ lineItem.itemCode }}</td>
+            <td>{{ lineItem.quantity }}</td>
+            <td>{{ lineItem.unit }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-if="lineItems.length > 0" role="group">
+        <button
+          class="btn btn-submit btn-primary float-right"
+          v-on:click="checkForm"
+          type="submit"
+        >
+          Process
+        </button>
+      </div>
+    </div>
+      </div>
+    </div>
+    <!--Line Items -->
+    
   </div>
 </template>
 <script>
@@ -131,39 +234,77 @@ export default {
       StockItemsList: null,
       locationblur: false,
       itemCodeblur: false,
+      quantityblur: false,
       valid: false,
+
+      lineItems: [],
+      locationCode: "",
+      currentBal: "",
+
       postBody: {
-        locationCode: "",
+        // itemCode: "",
+        // quantity: "",
+        // unit: "",
+        location: "",
+        lineItems: [],
+        // itemDesc: "",
+        // qtyInTransaction: 0,
+      },
+
+      newItem: {
+        quantity: 0,
         itemCode: "",
-        itemDesc: "",
-        qtyInTransaction: 0,
-        quantity: "",
         unit: "",
+        // itemDesc:""
       },
     };
   },
+
   mounted() {
     this.getDepartment();
     this.getItemCode();
   },
-  watch: {
-    "$store.state.objectToUpdate": function(newVal, oldVal) {
-      (this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode),
-        (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
-        (this.postBody.itemCode = this.$store.state.objectToUpdate.itemDesc),
-        (this.postBody.qtyInTransaction = this.$store.state.objectToUpdate.qtyInTransaction),
-        (this.postBody.quantity = this.$store.state.objectToUpdate.quantity);
-      this.postBody.unit = this.$store.state.objectToUpdate.unit;
-      this.submitorUpdate = "Update";
-    },
-  },
+  // watch: {
+  //   "$store.state.objectToUpdate": function(newVal, oldVal) {
+  //     (this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode),
+  //       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
+  //       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemDesc),
+  //       (this.postBody.qtyInTransaction = this.$store.state.objectToUpdate.qtyInTransaction),
+  //       (this.postBody.quantity = this.$store.state.objectToUpdate.quantity);
+  //     this.postBody.unit = this.$store.state.objectToUpdate.unit;
+  //     this.submitorUpdate = "Update";
+  //   },
+  // },
   methods: {
     checkForm: function(e) {
       this.validate();
       if (this.valid) {
         e.preventDefault();
         this.canProcess = false;
-        this.$alert("Submit Form", "Ok", "info");
+
+        axios
+          .post(`/api/requisition/`, this.postBody)
+          .then((response) => {
+            this.responseMessage = response.data.responseDescription;
+            this.canProcess = true;
+            if (response.data.responseCode == "200") {
+              // this.postBody.locationCode = "";
+              // this.postBody.itemCode = "";
+              // this.postBody.itemDesc = "";
+              // this.postBody.quantity = "";
+              // this.postBody.unit = "";
+              // this.$store.stateName.objectToUpdate = "create";
+              location = this.locationCode;
+              this.lineItems = [];
+            }
+            // this.document.getElementById('#requestForm').value = "";
+            // this.$refs.requestForm.reset();
+            // window.location.reload();
+          })
+          .catch((e) => {
+            if (e) this.errors.push(e);
+          });
+        // this.$alert("Submit Form", "Ok", "info");
         this.postPost();
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
@@ -179,17 +320,21 @@ export default {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
-              this.postBody.locationCode = "";
-              this.postBody.itemCode = "";
-              this.postBody.itemDesc = "";
-              this.postBody.quantity = "";
-              this.postBody.unit = "";
-              this.$store.stateName.objectToUpdate = "create";
+              // this.postBody.locationCode = "";
+              // this.postBody.itemCode = "";
+              // this.postBody.itemDesc = "";
+              // this.postBody.quantity = "";
+              // this.postBody.unit = "";
+              // this.$store.stateName.objectToUpdate = "create";
+              location = this.locationCode;
+              this.lineItems = [];
             }
+            // this.document.getElementById('#requestForm').value = "";
+            // this.$refs.requestForm.reset();
+            // window.location.reload();
           })
           .catch((e) => {
-            if(e)
-            this.errors.push(e);
+            if (e) this.errors.push(e);
           });
       }
       if (this.submitorUpdate == "Update") {
@@ -208,6 +353,7 @@ export default {
               this.postBody.unit = "";
               this.$store.state.objectToUpdate = "update";
             }
+            window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);
@@ -222,13 +368,15 @@ export default {
     //gets the unit, currentBal of item
     getStockItems() {
       // this.postBody.itemCode="1234"
-      alert(this.postBody.itemCode);
+      // alert(this.postBody.itemCode);
       axios
-        .get(`/api/requisition/getStockItems/${this.postBody.itemCode}`)
+        .get(`/api/requisition/getStockItems/${this.newItem.itemCode}`)
         .then((response) => {
           this.StockItemsList = response.data;
-          this.postBody.qtyInTransaction = response.data.currentBalance;
-          this.postBody.unit = response.data.unit;
+          this.currentBal = response.data.currentBalance;
+          this.newItem.unit = response.data.unit;
+          // this.postBody.currentBal = response.data.currentBalance;
+          // this.postBody.unit = response.data.unit;
         });
     },
     getItemCode() {
@@ -236,9 +384,11 @@ export default {
         this.ItemList = response.data;
       });
     },
+
     validate() {
       this.locationblur = true;
       this.itemCodeblur = true;
+      this.quantityblur = true;
       if (
         this.departmentIsValid &&
         this.itemCodeIsValid &&
@@ -250,31 +400,65 @@ export default {
         return;
       }
     },
+
+    addLineItem() {
+      // alert(this.newItem.itemCode)
+      let newItem = {
+        itemCode: this.newItem.itemCode,
+        quantity: Number(this.newItem.quantity),
+        unit: this.newItem.unit,
+      };
+
+      //checking for duplicate item
+      let existingItems = this.lineItems.map((item) => item.itemCode);
+
+      if (existingItems.includes(newItem.itemCode)) {
+        let lineItem = this.lineItems.find(
+          (item) => item.itemCode === newItem.itemCode
+        );
+
+        let currentQuantity = Number(lineItem.quantity);
+        let updateQuantity = (currentQuantity += newItem.quantity);
+        lineItem.quantity = updateQuantity;
+      } else {
+        let result = this.lineItems.push(this.newItem);
+        console.log(result)
+      }
+      
+      // this.newItem = { itemCode: "", quantity: "", unit: "" };
+      this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
+
+      // this.currentBal -= this.quantity
+    },
   },
   computed: {
     departmentIsValid() {
-      return this.postBody.locationCode != "";
+      // return this.postBody.locationCode != "";
+      return this.locationCode != "";
     },
 
     itemCodeIsValid() {
-      return this.postBody.itemCode != "";
+      // return this.postBody.itemCode != "";
+      return this.newItem.itemCode != "";
     },
 
     quantityIsValid() {
       return (
-        this.postBody.quantity == "" || parseInt(this.postBody.quantity) >= 1
+        this.newItem.quantity != "" &&
+        parseInt(this.newItem.quantity) >= 1 &&
+        parseInt(this.newItem.quantity) <= parseInt(this.currentBal)
       );
     },
-    setter() {
-      let objecttoedit = this.$store.state.objectToUpdate;
-      if (objecttoedit.supplierCode) {
-        this.postBody.locationCode = objecttoedit.locationCode;
-        this.postBody.itemCode = objecttoedit.itemCode;
-        this.postBody.itemCode = objecttoedit.itemDesc;
-        this.postBody.quantity = objecttoedit.quantity;
-        this.postBody.unit = objecttoedit.unit;
-      }
-    },
+    // setter() {
+    //   let objecttoedit = this.$store.state.objectToUpdate;
+    //   if (objecttoedit.supplierCode) {
+    //     this.postBody.locationCode = objecttoedit.locationCode;
+    //     this.postBody.itemCode = objecttoedit.itemCode;
+    //     this.postBody.itemCode = objecttoedit.itemDesc;
+    //     this.postBody.quantity = objecttoedit.quantity;
+    //     this.postBody.unit = objecttoedit.unit;
+    //   }
+    // },
   },
 };
 </script>

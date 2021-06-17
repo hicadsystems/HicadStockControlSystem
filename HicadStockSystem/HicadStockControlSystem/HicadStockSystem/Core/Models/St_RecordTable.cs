@@ -14,7 +14,7 @@ namespace HicadStockSystem.Core.Models
         [StringLength(5)]
         public string Code { get; set; }
 
-        public int IssAppDocCode { get; set; }
+        public int ReturnsNo { get; set; }
         public int RequsitionNo { get; set; }
         public int ReceiptNo { get; set; }
         public DateTime? CreatedOn { get; set; }

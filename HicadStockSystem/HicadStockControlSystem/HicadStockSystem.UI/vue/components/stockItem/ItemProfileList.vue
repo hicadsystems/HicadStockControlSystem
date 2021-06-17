@@ -2,7 +2,7 @@
   <!-- WRAPPER -->
   <div>
     <div v-if="isFormVisible">
-      <form @submit.prevent="checkForm" method="post">
+      <form @submit.prevent="checkForm" ref="itemForm" method="post">
         <div class="p-5" id="vertical-form">
           <div class="preview">
             <div class="row">
@@ -14,10 +14,12 @@
                   v-model="postBody.itemCode"
                   v-bind:class="{ 'is-invalid': !itemCodeIsValid && codeblur }"
                   v-on:blur="codeblur = true"
+                  :readonly="isEdit"
                 />
                 <div class="invalid-feedback">
                   <span class="text-danger h5"
-                    >Please enter supplier code not more than 6 characters</span
+                    >Please enter supplier code not more than 15
+                    characters</span
                   >
                   <span
                     v-bind:class="[
@@ -81,7 +83,7 @@
                 />
                 <div class="invalid-feedback">
                   <span class="text-danger h5"
-                    >Entry cannot be more than 5 characters</span
+                    >Entry cannot be more than 15 characters</span
                   >
                 </div>
               </div>
@@ -122,6 +124,7 @@
               <div class="col-3">
                 <label for="reOrderLevel" class="mb-1">Reorder Level</label>
                 <input
+                  type="number"
                   class="form-control"
                   name="reOrderLevel"
                   v-model="postBody.reOrderLevel"
@@ -134,6 +137,7 @@
               <div class="col-3">
                 <label for="reOrderQty" class="mb-1">Reorder Quantity</label>
                 <input
+                  type="number"
                   class="form-control"
                   name="reOrderQty"
                   v-model="postBody.reOrderQty"
@@ -198,9 +202,8 @@
                   v-model="postBody.busLine"
                   v-bind:class="{
                     'form-control': true,
-                    'is-invalid': !busLineIsValid && busLineblur,
+                    'is-invalid': !busLineIsValid,
                   }"
-                  v-on:bind="busLineblur = true"
                 >
                   <option>
                     --select businessLine--
@@ -305,7 +308,7 @@ export default {
       statusList: null,
       responseMessage: "",
       isFormVisible: false,
-         postBody: {
+      postBody: {
         itemCode: "",
         itemDesc: "",
         storeLoc: "",
@@ -318,14 +321,15 @@ export default {
         partNo: "",
         class: "",
         busLine: "",
-        isDeleted:false
+        isDeleted: false,
       },
 
       codeblur: false,
       itemDescblur: false,
       stkClassblur: false,
       busLineblur: false,
-      isAvailable: false
+      isAvailable: false,
+      isEdit: false,
     };
   },
   created() {
@@ -337,7 +341,7 @@ export default {
       this.processDelete();
       // this.processRetrieve();
     },
-     "$store.state.objectToUpdate": function(newVal, oldVal) {
+    "$store.state.objectToUpdate": function(newVal, oldVal) {
       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
         (this.postBody.itemDesc = this.$store.state.objectToUpdate.itemDesc),
         (this.postBody.storeLoc = this.$store.state.objectToUpdate.storeLoc),
@@ -355,13 +359,14 @@ export default {
   },
   mounted() {
     this.getAllStockItems();
-     this.getBusinessLine();
+    this.getBusinessLine();
     this.getStockClass();
   },
   methods: {
     processRetrieve: function(Status) {
       alert(Status);
       this.isFormVisible = true;
+      this.isEdit = true;
       this.$store.state.objectToUpdate = Status;
     },
     processDelete: function(itemCode) {
@@ -388,14 +393,15 @@ export default {
     },
 
     // Input form methods
-      checkForm: function(e) {
+    checkForm: function(e) {
       this.validate();
       if (this.valid) {
-        // e.preventDefault();
+        e.preventDefault();
         this.canProcess = false;
-        this.$alert("Submit Form", "Ok", "info");
+        // this.$alert("Submit Form", "Ok", "info");
         this.isFormVisible = false;
         this.postPost();
+        // this.$refs.itemForm.reset();
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -425,13 +431,16 @@ export default {
               this.postBody.busLine = "";
               this.$store.stateName.objectToUpdate = "create";
             }
+            this.getAllStockItems();
+            // this.$alert("Submit Form", "Ok", "info");
+            window.location.reload();
           })
           .catch((error) => {
             alert(error.response.message);
           });
-          // .catch((e) => {
-          //   alert(this.errors.push(e));
-          // });
+        // .catch((e) => {
+        //   alert(this.errors.push(e));
+        // });
       }
       if (this.submitorUpdate == "Update") {
         // alert("Ready to Update");
@@ -456,13 +465,15 @@ export default {
               this.postBody.busLine = "";
               this.$store.state.objectToUpdate = "update";
             }
+            this.getAllStockItems();
+            window.location.reload();
           })
           .catch((error) => {
             alert("something went wrong");
           });
-          // .catch((e) => {
-          //   this.errors.push(e);
-          // });
+        // .catch((e) => {
+        //   this.errors.push(e);
+        // });
       }
     },
 
@@ -477,11 +488,11 @@ export default {
         this.BusinessLineList = response.data;
       });
     },
-      validate() {
+    validate() {
       this.codeblur = true;
       this.itemDescblur = true;
       this.stkClassblur = true;
-      this.busLineblur = true;
+      // this.busLineblur = true;
       if (
         this.itemCodeIsValid &&
         this.itemDescIsValid &&
@@ -494,7 +505,7 @@ export default {
         this.storeBinIsValid &&
         this.unitIsValid &&
         this.XRefIsValid &&
-        this.partNoIsValid 
+        this.partNoIsValid
         // this.checkItemCode
       ) {
         this.valid = true;
@@ -509,7 +520,7 @@ export default {
       return (
         this.postBody.itemCode != "" &&
         this.postBody.itemCode.length >= 1 &&
-        this.postBody.itemCode.length <= 6 
+        this.postBody.itemCode.length <= 15
       );
     },
 
@@ -520,13 +531,15 @@ export default {
         this.postBody.itemDesc.length <= 40
       );
     },
+
     storeLocIsValid() {
       return (
         this.postBody.storeLoc == "" ||
         (this.postBody.storeLoc.length >= 1 &&
-          this.postBody.storeLoc.length <= 5)
+          this.postBody.storeLoc.length <= 15)
       );
     },
+
     storeRackIsValid() {
       return (
         this.postBody.storerack == "" ||
@@ -534,6 +547,7 @@ export default {
           this.postBody.storerack.length <= 5)
       );
     },
+
     storeBinIsValid() {
       return (
         this.postBody.storebin == "" ||
@@ -565,23 +579,46 @@ export default {
     },
 
     busLineIsValid() {
-      return this.postBody.busLine != "";
+      return (
+        this.postBody.busLine == "" ||
+        (this.postBody.busLine.length >= 1 &&
+          this.postBody.busLine.length <= 50)
+      );
     },
 
     reOrderQtyIsValid() {
+      var re = /^[+-]?[0-9]+$/;
       return (
-        this.postBody.reOrderQty == ""  || this.postBody.reOrderQty == null ||
+        this.postBody.reOrderQty == "" ||
+        this.postBody.reOrderQty == null ||
         parseInt(this.postBody.reOrderQty) >= 1
+        /*&& this.postBody.reOrderQty.match(re)*/
       );
     },
 
     reOrderLevelIsValid() {
+      var re = /^[+-]?[0-9]+$/;
       return (
-        this.postBody.reOrderLevel == "" || this.postBody.reOrderLevel == null ||
+        this.postBody.reOrderLevel == "" ||
+        this.postBody.reOrderLevel == null ||
         parseInt(this.postBody.reOrderLevel) >= 1
+        /*&& this.postBody.reOrderLevel.match(re)*/
       );
     },
-
+    resetForm() {
+      this.postBody.itemCode = "";
+      this.postBody.itemDesc = "";
+      this.postBody.storeLoc = "";
+      this.postBody.storerack = "";
+      this.postBody.storebin = "";
+      this.postBody.reOrderLevel = "";
+      this.postBody.reOrderQty = "";
+      this.postBody.units = "";
+      this.postBody.xRef = "";
+      this.postBody.partNo = "";
+      this.postBody.class = "";
+      this.postBody.busLine = "";
+    },
 
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;

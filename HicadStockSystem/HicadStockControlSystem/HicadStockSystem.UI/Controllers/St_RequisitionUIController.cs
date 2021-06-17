@@ -21,6 +21,12 @@ namespace HicadStockSystem.UI.Controllers
         {
             return View();
         }
+
+        public IActionResult ApprovedRequisitions()
+        {
+            return View();
+        }
+
         public IActionResult GetByCode()
         {
             return View();

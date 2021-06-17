@@ -22,7 +22,7 @@ namespace HicadStockSystem.Core.Models
         public string Period { get; set; }
         public int Quantity { get; set; }
         public decimal? Price { get; set; }
-        [StringLength(5)]
+        [StringLength(15)]
         public string Supplier { get; set; }
         [StringLength(4)]
         public string Location { get; set; }
@@ -31,5 +31,6 @@ namespace HicadStockSystem.Core.Models
         public DateTime? DateCreated { get; set; }
         //public DateTime? UpdatedOn { get; set; }
         public bool IsDeleted { get; set; }
+        
     }
 }

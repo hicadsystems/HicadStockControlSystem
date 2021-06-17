@@ -8845,11 +8845,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.UI\\HicadStockSystem.UI.csproj",
+      "projectUniqueName": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.UI\\HicadStockSystem.UI.csproj",
       "projectName": "HicadStockSystem.UI",
-      "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.UI\\HicadStockSystem.UI.csproj",
+      "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.UI\\HicadStockSystem.UI.csproj",
       "packagesPath": "C:\\Users\\HICADB\\.nuget\\packages\\",
-      "outputPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.UI\\obj\\",
+      "outputPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.UI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HICADB\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -8866,8 +8866,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {
-              "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj"
+            "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {
+              "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj"
             }
           }
         }
@@ -8899,8 +8899,8 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[3.1.10, 3.1.10]"
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.1.14, 3.1.14]"
           }
         ],
         "frameworkReferences": {
@@ -8911,7 +8911,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200-preview.20601.7\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300-preview.21258.4\\RuntimeIdentifierGraph.json"
       }
     }
   }

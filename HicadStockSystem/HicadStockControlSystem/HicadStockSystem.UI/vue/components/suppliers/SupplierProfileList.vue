@@ -3,13 +3,14 @@
   <!-- FORM DIV -->
   <div>
     <div v-if="isFormVisible">
-      <form @submit.prevent="checkForm" method="post">
+      <form @submit.prevent="checkForm()" ref="supplierForm" method="post">
         <div class="p-5" id="vertical-form">
           <div class="preview">
             <div class="row">
               <div class="col-3">
                 <label for="supplierCode" class="mb-1">Supplier Code</label>
                 <input
+                ref="supplierCode"
                   class="form-control"
                   name="supplierCode"
                   v-model="postBody.supplierCode"
@@ -18,16 +19,19 @@
                     'is-invalid': !supplierCodeIsValid && codeblur,
                   }"
                   v-on:blur="codeblur = true"
+                  :readonly="isEdit"
                 />
                 <div class="invalid-feedback">
                   <span class="text-danger h5"
-                    >Please enter supplier code not more than 3 characters</span
+                    >Please enter supplier code not more than 15
+                    characters</span
                   >
                 </div>
               </div>
               <div class="col-6 offset-3">
                 <label for="name" class="mb-1">Supplier Name</label>
                 <input
+                ref="supplierCode"
                   class="form-control"
                   name="name"
                   v-model="postBody.name"
@@ -50,6 +54,7 @@
               <div class="col-6">
                 <label for="address" class="mb-1">Supplier Address</label>
                 <input
+                ref="address"
                   class="form-control"
                   name="address"
                   v-model="postBody.address"
@@ -69,6 +74,7 @@
               <div class="col-6">
                 <label for="contact" class="mb-1">Contact</label>
                 <input
+                ref="contact"
                   class="form-control"
                   name="contact "
                   v-model="postBody.contact"
@@ -90,6 +96,7 @@
               <div class="col-6">
                 <label for="email" class="mb-1">Email</label>
                 <input
+                ref="email"
                   class="form-control"
                   name="email"
                   v-model="postBody.email"
@@ -105,6 +112,7 @@
               <div class="col-6">
                 <label for="phone" class="mb-1">Phone No.</label>
                 <input
+                ref="phone"
                   class="form-control"
                   v-model="postBody.phone"
                   v-bind:class="{
@@ -115,7 +123,7 @@
                 />
                 <div class="invalid-feedback">
                   <span class="text-danger h5"
-                    >Phone number is required not more than 12 numbers</span
+                    >Phone number is required not more than 20 characters</span
                   >
                 </div>
               </div>
@@ -125,7 +133,7 @@
             <div v-if="canProcess" role="group">
               <button
                 class="btn btn-submit btn-primary float-right"
-                v-on:click="checkForm"
+                v-on:click="checkForm()"
                 type="submit"
               >
                 {{ submitorUpdate }}
@@ -197,22 +205,22 @@ import SupplierProfile from "/vue/components/suppliers/SupplierProfile";
 import Datepicker from "vuejs-datepicker";
 import VueSimpleAlert from "vue-simple-alert";
 export default {
-  components: { 
-     Datepicker,
+  components: {
+    Datepicker,
     VueSimpleAlert,
-    
-   },
+  },
   data() {
     return {
       statusList: null,
       responseMessage: "",
       isFormVisible: false,
-       errors: null,
+      isEdit: false,
+      errors: null,
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
       stateList: null,
-       postBody: {
+      postBody: {
         supplierCode: "",
         name: "",
         address: "",
@@ -238,7 +246,7 @@ export default {
       // this.getAllSuppliers();
       // this.processDelete();
     },
-     "$store.state.objectToUpdate": function(newVal, oldVal) {
+    "$store.state.objectToUpdate": function(newVal, oldVal) {
       alert("watch");
       this.isFormVisible = true;
       (this.postBody.supplierCode = this.$store.state.objectToUpdate.supplierCode),
@@ -259,8 +267,9 @@ export default {
   methods: {
     processRetrieve: function(Status) {
       alert(Status.supplierCode);
-      this.$store.state.objectToUpdate = Status
+      this.$store.state.objectToUpdate = Status;
       this.isFormVisible = true;
+      this.isEdit = true;
       // if ((this.$store.state.objectToUpdate = Status)) {
       //   this.isFormVisible = true;
       // }
@@ -289,16 +298,19 @@ export default {
     },
     showForm() {
       this.isFormVisible = true;
+      // this.resetForm();
       //  window.location.reload();
     },
-      checkForm: function(e) {
+    checkForm: function(e) {
       this.validate();
       if (this.valid) {
-        e.preventDefault();
+        // e.preventDefault();
         this.canProcess = false;
         this.postPost();
-        this.$alert("Submit Form", "Ok", "info");
-        this.isFormVisible=false;
+        // this.$alert("Submit Form", "Ok", "info");
+        this.isFormVisible = false;
+        // window.location.reload()
+        // this.$refs.supplierForm.reset();
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -324,6 +336,10 @@ export default {
               this.postBody.sup_Last_Num = "";
               this.$store.stateName.objectToUpdate = "create";
             }
+            this.getAllSuppliers();
+            window.location.reload();
+            // this.resetForm();
+            // this.$refs.supplierForm.reset();
           })
           .catch((e) => {
             this.errors.push(e);
@@ -348,6 +364,10 @@ export default {
               this.postBody.sup_Last_Num = "";
               this.$store.state.objectToUpdate = "update";
             }
+            this.getAllSuppliers();
+            // this.$refs.supplierForm.reset();
+            window.location.reload();
+            
           })
           .catch((e) => {
             this.errors.push(e);
@@ -375,12 +395,12 @@ export default {
       }
     },
   },
-   computed: {
+  computed: {
     supplierCodeIsValid() {
       return (
         this.postBody.supplierCode != "" &&
         this.postBody.supplierCode.length >= 1 &&
-        this.postBody.supplierCode.length <= 5
+        this.postBody.supplierCode.length <= 15
       );
     },
 
@@ -420,13 +440,14 @@ export default {
       return (
         this.postBody.phone != "" &&
         this.postBody.phone.length >= 1 &&
-        this.postBody.phone.length <= 15
+        this.postBody.phone.length <= 20
         // this.postBody.phone.match(phoneno))
       );
     },
+   
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
-       alert("setter");
+      alert("setter");
       if (objecttoedit.supplierCode) {
         this.postBody.supplierCode = objecttoedit.supplierCode;
         this.postBody.name = objecttoedit.name;

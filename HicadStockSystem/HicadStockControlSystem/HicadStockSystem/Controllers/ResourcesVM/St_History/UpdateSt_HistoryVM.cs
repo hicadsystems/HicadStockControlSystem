@@ -12,10 +12,10 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_IssueApprove
         [Required]
         [StringLength(20)]
         public string ItemCode { get; set; }
-        [Required]
+        //[Required]
         [StringLength(12)]
         public string DocNo { get; set; }
-        [Required]
+        //[Required]
         [StringLength(2)]
         public string DocType { get; set; }
         public DateTime? DocDate { get; set; }
@@ -23,7 +23,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_IssueApprove
         public string Period { get; set; }
         public int Quantity { get; set; }
         public decimal? Price { get; set; }
-        [StringLength(10)]
+        [StringLength(15)]
         public string Supplier { get; set; }
         [StringLength(4)]
         public string Location { get; set; }

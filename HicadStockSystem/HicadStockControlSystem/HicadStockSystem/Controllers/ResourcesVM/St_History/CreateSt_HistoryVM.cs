@@ -19,7 +19,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_History
         public string Period { get; set; }
         public int Quantity { get; set; }
         public decimal? Price { get; set; }
-        [StringLength(10)]
+        [StringLength(15)]
         public string Supplier { get; set; }
         [StringLength(4)]
         public string Location { get; set; }

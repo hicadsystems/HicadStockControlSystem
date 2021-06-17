@@ -484,8 +484,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Supplier")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("UserId")
                         .HasMaxLength(20)
@@ -520,8 +520,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ItemCode")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<float?>("Quantity")
                         .HasColumnType("real");
@@ -556,8 +556,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ItemCode")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<float?>("Quantity")
                         .HasColumnType("real");
@@ -576,8 +576,8 @@ namespace HicadStockSystem.Migrations
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_ItemMaster", b =>
                 {
                     b.Property<string>("ItemCode")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("BusLine")
                         .HasMaxLength(2)
@@ -608,8 +608,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("StoreLoc")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Storebin")
                         .HasMaxLength(5)
@@ -620,28 +620,28 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Supplier1")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Supplier2")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Supplier3")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Supplier4")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Supplier5")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Supplier6")
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Units")
                         .HasMaxLength(10)
@@ -651,8 +651,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("XRef")
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("ItemCode");
 
@@ -671,13 +671,13 @@ namespace HicadStockSystem.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("IssAppDocCode")
-                        .HasColumnType("int");
-
                     b.Property<int>("ReceiptNo")
                         .HasColumnType("int");
 
                     b.Property<int>("RequsitionNo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReturnsNo")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedOn")
@@ -695,8 +695,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("ItemCode")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("ApprovedBy")
                         .HasMaxLength(20)
@@ -713,6 +713,9 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSupplied")
                         .HasColumnType("bit");
 
                     b.Property<string>("LocationCode")
@@ -838,8 +841,8 @@ namespace HicadStockSystem.Migrations
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_StockMaster", b =>
                 {
                     b.Property<string>("ItemCode")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -889,23 +892,23 @@ namespace HicadStockSystem.Migrations
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_Supplier", b =>
                 {
                     b.Property<string>("SupplierCode")
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Address")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Contact")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -915,8 +918,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int?>("Sup_Last_Num")
                         .HasColumnType("int");

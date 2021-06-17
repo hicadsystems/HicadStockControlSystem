@@ -36,20 +36,23 @@ namespace HicadStockSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 var docNo = historyVM.DocNo = _history.GenerateDocNo();
                 var docNoInDb = _history.GetByDocNo(docNo);
                 if (docNoInDb == null)
                 {
-                    //if (docNoInDb.Supplier )
-                    //{
-
-                    //}
-
-                    historyVM.DocType = "GRA";
+                    historyVM.DocType = "GR";
+                    historyVM.Location = "";
+                    historyVM.UserId = "HICAD1";
+                    if (historyVM.DocDate==null)
+                    {
+                        historyVM.DocDate = DateTime.Now;
+                    }
+                    historyVM.DocNo = docNo;
+                    historyVM.DateCreated = DateTime.Now;
 
                     var newStockHistory = _mapper.Map<CreateSt_HistoryVM, St_History>(historyVM);
                     //confirm if correct
-                    newStockHistory.DocDate = DateTime.Now;
 
                     await _history.CreateAsync(newStockHistory);
 
@@ -74,15 +77,29 @@ namespace HicadStockSystem.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateIssueReq([FromBody] UpdateSt_HistoryVM historyVM)
         {
-            var stockHistoryInDb = _history.GetByDocNo(historyVM.DocNo);
-            if (stockHistoryInDb == null)
-                return NotFound();
+            var docNo = historyVM.DocNo = _history.ReturnNo();
 
-            _mapper.Map(historyVM, stockHistoryInDb);
-            stockHistoryInDb.DateCreated = DateTime.Now;
-            await _history.UpdateAsync(stockHistoryInDb);
+            var stockHistoryInDb = _history.GetByDocNo(docNo);
 
-            return Ok(stockHistoryInDb);
+            if (ModelState.IsValid)
+            {
+                //var stockHistoryInDb = _history.GetByDocNo(historyVM.DocNo);
+                if (stockHistoryInDb == null)
+                {
+                    var returns = _mapper.Map<UpdateSt_HistoryVM, St_History>(historyVM);
+                    if (historyVM.DocDate == null)
+                    {
+                        historyVM.DocDate = DateTime.Now;
+                    }
+                    historyVM.UpdatedOn = DateTime.Now;
+                    //historyVM.UserId = "HICAD3";
+                    await _history.UpdateAsync(returns);
+
+                    return Ok(returns);
+                } 
+            }
+                return BadRequest();
+
         }
 
         [HttpPatch("{itemcode}")]

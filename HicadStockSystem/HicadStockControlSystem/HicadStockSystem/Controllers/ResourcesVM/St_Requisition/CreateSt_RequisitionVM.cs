@@ -12,7 +12,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_Requisition
         public string RequisitionNo { get; set; }
         //key
         [Required]
-        [StringLength(12)]
+        [StringLength(15)]
         public string Itemcode { get; set; }
         [StringLength(50)]
         public string Description { get; set; }

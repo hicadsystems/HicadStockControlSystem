@@ -44,6 +44,15 @@ namespace HicadStockSystem.Controllers
                 {
                     requisitionVM.Description = _requisition.GetDescription(requisitionVM.Itemcode);
 
+                    //check for the availability of requested quantity 
+                    var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
+                    var currentBal = _requisition.CheckCurrentBal(checkCurrentBal);
+
+                    if (requisitionVM.Quantity >= currentBal)
+                    {
+                        return BadRequest();
+                    }
+
                     //logged in user
                     requisitionVM.UserId = "HICAD1";
 
@@ -74,16 +83,41 @@ namespace HicadStockSystem.Controllers
             return Ok(requisitonInDb);
         }
 
-        [HttpPut("{itemCode}")]
-        public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM, string itemCode)
+        [HttpPut]
+        public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM)
         {
-            var requisitioInDb = _requisition.GetByItemcode(requisitionVM.Itemcode);
+            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+            if (requisitioInDb == null)
+                return BadRequest();
+
+            requisitionVM.Price = 0;
+
+            _mapper.Map(requisitionVM, requisitioInDb);
+            //swapping supplyqty to quantity and approved qty to supplyqty column
+            requisitioInDb.SupplyQty = (decimal?)requisitionVM.Quantity;
+            requisitioInDb.Quantity = (float?)requisitionVM.SupplyQty;
+
+            requisitioInDb.IsSupplied = true;
+            requisitioInDb.SupplyBy = "HICAD90";
+            requisitioInDb.SupplyDate = DateTime.Now;
+            requisitioInDb.UpdatedOn = DateTime.Now;
+
+            await _requisition.UpdateAsync(requisitioInDb);
+
+            return Ok(requisitioInDb);
+        }
+
+        [HttpPatch]
+        [Route("RequisitionApproval")]
+        public async Task<IActionResult>RequisitionApproval([FromBody] UpdateSt_RequisitionVM requisitionVM)
+        {
+            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
             if (requisitioInDb == null)
                 return BadRequest();
 
             _mapper.Map(requisitionVM, requisitioInDb);
             requisitioInDb.UpdatedOn = DateTime.Now;
-            await _requisition.UpdateAsync(requisitioInDb);
+            await _requisition.RequisitioApprovalAsync(requisitioInDb);
 
             return Ok(requisitioInDb);
         }
@@ -130,9 +164,17 @@ namespace HicadStockSystem.Controllers
         [Route("RequisitionApproval/{itemCode}")]
         public async Task<IActionResult> RequisitionApproval(string itemCode)
         {
-            var approval = await _requisition.RequesitionApprovalVM(itemCode);
+            var approval = await _requisition.RequesitionsVM(itemCode);
 
             return Ok(approval);
+        }
+
+        [HttpGet]
+        [Route("GetApprovedRequistion")]
+        public async Task<IActionResult> GetApprovedRequistion()
+        {
+            var requisition = await _requisition.GetApproved();
+            return Ok(requisition);
         }
     }
 }

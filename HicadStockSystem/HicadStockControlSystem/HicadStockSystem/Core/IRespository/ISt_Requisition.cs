@@ -20,8 +20,12 @@ namespace HicadStockSystem.Core.IRespository
         Task<ItemStockMasterViewModel> StockItemViewModels(string ItemCodes);
 
         Task<IEnumerable<St_ItemMaster>> GetItemCode();
-        Task<IssueRequesitionApprovalVM> RequesitionApprovalVM(string itemCode);
+        Task<RequesitionVM> RequesitionsVM(string itemCode);
         string GetDescription(string itemCode);
         string GenerateRequisitionNo();
+        Task<IEnumerable<St_Requisition>> GetApproved();
+        Task RequisitioApprovalAsync(St_Requisition requisition);
+
+        float? CheckCurrentBal(St_Requisition requisition);
     }
 }

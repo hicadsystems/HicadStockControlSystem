@@ -10,7 +10,7 @@
                 class="form-control"
                 v-model="postBody.requisitionNo"
                 name="requisitionNo"
-                @change="getRequisitionApproval"
+                @change="getRequisitionApproval()"
                 :class="{ 'is-invalid': !requisitionNoIsValid && reqblur }"
                 v-on:blur="reqblur = true"
               >
@@ -36,10 +36,9 @@
               <label for="unit" class="mb-1">Requisition By</label>
               <input
                 class="form-control"
-                name="requisitionBy "
+                name="userId "
                 readonly="readonly"
-                v-model="postBody.requisitionBy"
-                placeholder="Requisition By"
+                v-model="postBody.userId"
               />
             </div>
             <div class="col-4">
@@ -49,8 +48,9 @@
                 name="department "
                 readonly="readonly"
                 v-model="postBody.department"
-                placeholder="department"
               />
+              <input type="hidden" name="locationCode" class="form-control" :value="postBody.locationCode">
+              <input type="hidden" name="locationCode" class="form-control" :value="postBody.unit">
             </div>
             <div class="col-4">
               <label for="unit" class="mb-1">Date and Time</label>
@@ -58,9 +58,9 @@
                 class="form-control"
                 name="dateAndTime "
                 readonly="readonly"
-                v-model="postBody.dateAndTime"
-                placeholder="Date And Time"
+                v-model="postBody.requisitionDate"
               />
+              <input type="hidden" name="createdOn" class="form-control" :value="postBody.createdOn">
             </div>
           </div>
           <br />
@@ -83,7 +83,6 @@
                       name="itemCode "
                       readonly="readonly"
                       v-model="postBody.itemCode"
-                      placeholder="item code"
                     />
                   </td>
                   <td>
@@ -92,7 +91,6 @@
                       name="description "
                       readonly="readonly"
                       v-model="postBody.description"
-                      placeholder="description"
                     />
                   </td>
                   <td>
@@ -100,29 +98,29 @@
                       class="form-control"
                       name="quantity"
                       readonly="readonly"
-                      v-model="postBody.quantity"
-                      placeholder="quantity"
+                      v-model="postBody.Requestedquantity"
                     />
                   </td>
                   <td>
                     <input
                       class="form-control"
-                      v-model="postBody.approvedQty"
+                      v-model="postBody.quantity"
                       name="approvedQty"
-                      :class="{ 'is-invalid': !quantityIsValid }"
+                      :class="{ 'is-invalid': !quantityIsValid && qtyblur }"
+                      v-on:blur="qtyblur = true"
                     />
                     <div class="invalid-feedback">
                       <span class="text-danger h5">Invalid Entry</span>
                     </div>
                   </td>
                   <td>
-                    <div v-if="canProcess" role="group">
+                    <div role="group">
                       <button
                         class="btn btn-submit btn-primary float-right"
                         v-on:click="checkForm"
-                        type="submit"
+                        type="button"
                       >
-                        {{ submitorUpdate }}
+                        Sign
                       </button>
                     </div>
                   </td>
@@ -155,17 +153,20 @@ export default {
       ItemApprovalList: null,
       valid: false,
       reqblur: false,
+      qtyblur: false,
 
       postBody: {
         locationCode: "",
         requisitionNo: "",
-        requisitionBy: "",
+        userId: "",
         department: "",
-        dateAndTime: "",
+        requisitionDate: "",
         itemCode: "",
         description: "",
         quantity: "",
-        approvedQty: "",
+        Requestedquantity: "",
+        createdOn: "",
+        unit:"",
       },
     };
   },
@@ -173,102 +174,72 @@ export default {
     this.getRequisition();
     // this.getItemCode();
   },
-  watch: {
-    "$store.state.objectToUpdate": function(newVal, oldVal) {
-      (this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode),
-        (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
-        (this.postBody.requisitionNo = this.$store.state.objectToUpdate.requisitionNo),
-        (this.postBody.requisitionBy = this.$store.state.objectToUpdate.requisitionBy),
-        (this.postBody.department = this.$store.state.objectToUpdate.department);
-      this.postBody.dateAndTime = this.$store.state.objectToUpdate.dateAndTime;
-      this.postBody.description = this.$store.state.objectToUpdate.description;
-      this.postBody.quantity = this.$store.state.objectToUpdate.quantity;
-      this.postBody.approvedQty = this.$store.state.objectToUpdate.approvedQty;
-      this.submitorUpdate = "Update";
-    },
-  },
+
   methods: {
-    checkForm: function(e) {
+    checkForm() {
       this.validate();
       if (this.valid) {
         // e.preventDefault();
-        this.canProcess = false;
+        axios
+          .patch(`/api/requisition/RequisitionApproval`, this.postBody)
+          .then((response) => {
+            this.responseMessage = response.data.responseDescription;
+            this.canProcess = true;
+            if (response.data.responseCode == "200") {
+              this.postBody.requisitionNo = "";
+              this.postBody.userId = "";
+              this.postBody.requisitionDate = "";
+              this.postBody.createdOn = "";
+              this.postBody.itemCode = "";
+              this.postBody.description = "";
+              // this.postBody.quantity = 0;
+              this.postBody.quantity = "";
+              this.postBody.locationCode = "";
+              this.postBody.unit = "";
+            }
+            window.location.reload();
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
         this.$alert("Submit Form", "Ok", "info");
-        this.postPost();
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
         this.errors.push("Supply all the required field");
       }
     },
-    postPost() {
-      if (this.submitorUpdate == "Submit") {
-        axios
-          .post(`/api/issueapprove/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              this.postBody.requisitionNo = "";
-              this.postBody.itemCode = "";
-              this.postBody.quantity = "";
-              this.postBody.description = "";
-              this.postBody.approvedQty = "";
-              this.$store.stateName.objectToUpdate = "create";
-            }
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
-      }
-      if (this.submitorUpdate == "Update") {
-        alert("Ready to Update");
-        axios
-          .put(`/api/issueapprove/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              this.submitorUpdate = "Submit";
-              this.postBody.requisitionNo = "";
-              this.postBody.itemCode = "";
-              this.postBody.description = "";
-              this.postBody.quantity = 0;
-              this.postBody.approvedQty = "";
-              this.$store.state.objectToUpdate = "update";
-            }
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
-      }
-    },
+
     getRequisitionApproval() {
       // this.postBody.itemCode="1234"
       // alert(this.postBody.itemCode)
       axios
         .get(
-          `/api/issueapprove/RequisitionApproval/${this.postBody.requisitionNo}`
+          `/api/requisition/RequisitionApproval/${this.postBody.requisitionNo}`
         )
         .then((response) => {
           this.ItemApprovalList = response.data;
-          this.postBody.requisitionBy = response.data.requisitionBy;
+          this.postBody.userId = response.data.requisitionBy;
           this.postBody.department = response.data.department;
-          this.postBody.dateAndTime = response.data.dateAndTime;
+          this.postBody.requisitionDate = response.data.dateAndTime;
           this.postBody.requisitionNo = response.data.requisitionNo;
           this.postBody.itemCode = response.data.itemCode;
           this.postBody.description = response.data.itemDescription;
-          this.postBody.quantity = response.data.requested;
+          this.postBody.Requestedquantity = response.data.requested;
+          this.postBody.createdOn = response.data.dateCreated;
+          this.postBody.locationCode = response.data.costLocCode;
+          this.postBody.unit = response.data.unit;
         });
     },
     getRequisition() {
-      axios.get(`/api/issueapprove/GetRequisition`).then((response) => {
+      axios.get(`/api/requisition/`).then((response) => {
         this.RequisitionList = response.data;
       });
     },
     validate() {
       this.reqblur = true;
-      if (this.requisitionNoIsValid && this.quantity) {
+      this.qtyblur = true;
+      if (this.requisitionNoIsValid && this.quantityIsValid) {
         this.valid = true;
       } else {
         this.valid = false;
@@ -283,19 +254,19 @@ export default {
     //needs more validation
     quantityIsValid() {
       return (
-        this.postBody.approvedQty == "" ||
-        parseInt(this.postBody.approvedQty) >= 0
+        this.postBody.quantity != "" &&
+        parseInt(this.postBody.quantity) >= 0
       );
     },
-    setter() {
-      let objecttoedit = this.$store.state.objectToUpdate;
-      if (objecttoedit.supplierCode) {
-        this.postBody.locationCode = objecttoedit.locationCode;
-        this.postBody.itemCode = objecttoedit.itemCode;
-        this.postBody.quantity = objecttoedit.quantity;
-        this.postBody.unit = objecttoedit.unit;
-      }
-    },
+    // setter() {
+    //   let objecttoedit = this.$store.state.objectToUpdate;
+    //   if (objecttoedit.supplierCode) {
+    //     this.postBody.locationCode = objecttoedit.locationCode;
+    //     this.postBody.itemCode = objecttoedit.itemCode;
+    //     this.postBody.quantity = objecttoedit.quantity;
+    //     this.postBody.unit = objecttoedit.unit;
+    //   }
+    // },
   },
 };
 </script>

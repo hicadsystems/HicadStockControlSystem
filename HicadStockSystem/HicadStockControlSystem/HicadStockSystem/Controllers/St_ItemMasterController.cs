@@ -29,6 +29,12 @@ namespace HicadStockSystem.Controllers
             return Ok(itemMaster);
         }
 
+        //[HttpGet]
+        //public IActionResult GetAllItemMaster()
+        //{
+        //    var itemMaster = _itemMaster.GetAll();
+        //    return Ok(itemMaster);
+        //}
         [HttpPost]
         public async Task<IActionResult> CreateItemMaster([FromBody] CreateSt_ItemMasterVM itemMasterVM)
         {
@@ -40,6 +46,7 @@ namespace HicadStockSystem.Controllers
                     var newitemMaster = _mapper.Map<CreateSt_ItemMasterVM, St_ItemMaster>(itemMasterVM);
 
                     newitemMaster.CreatedOn = DateTime.Now;
+
 
                     await _itemMaster.CreateAsync(newitemMaster);
 

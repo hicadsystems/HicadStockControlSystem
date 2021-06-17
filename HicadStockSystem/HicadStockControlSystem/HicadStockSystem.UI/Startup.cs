@@ -52,7 +52,7 @@ namespace HicadStockSystem.UI
             services.AddScoped<ISt_RecordTable, St_RecordTableRepo>();
             services.AddScoped<ISt_ItemMaster, St_ItemMasterRepo>();
             services.AddScoped<ISt_IssueRequisition, St_IssueRequisitionRepo>();
-            services.AddScoped<ISt_IssueApprove, St_IssueApproveRepo>();
+            //services.AddScoped<ISt_IssueApprove, St_IssueApproveRepo>();
             services.AddScoped<ISt_History, St_HistoryRepo>();
             services.AddScoped<ISt_CostCentre, St_CostCentreRepo>();
             services.AddScoped<ISt_BuyerGuide, St_BuyerGuideRepo>();

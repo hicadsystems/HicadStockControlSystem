@@ -30,61 +30,74 @@
 
                       <li class="sidebar-item active">
                           <a class="sidebar-link" asp-controller="Home" asp-action="Index">
-                              <i class="align-middle" data-feather="book"></i> <span class="align-middle">Setup</span>
+                              <i class="align-middle" data-feather="book"></i> <span class="align-middle">Menu Setup</span>
                           </a>
                       </li>
                       @*Company view*@
                       <li class="sidebar-item">
-                          <a asp-controller="St_StkSystemUI" asp-action="Index" class="sidebar-link collapsed">
-                              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">System</span>
+                          <a data-target="#fileSetup" data-toggle="collapse" class="sidebar-link collapsed">
+                              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">File Setup</span>
                           </a>
-                          @*<ul id="company" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_StkSystemUI" asp-action="Index">Register Company</a></li>
-                          </ul>*@
+                          <ul id="fileSetup" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_StkSystemUI" asp-action="Index">System File</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="Ac_BusinessLineUI" asp-action="Index">Business Line</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="Ac_CostCentreUI" asp-action="Index">Cost Centre</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_ItemMasterUI" asp-action="Index">Stock Item</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_SupplierUI" asp-action="Index">Supplier</a></li>
+                          </ul>
                       </li>
 
-                      @*Supplier view*@
-                      <li class="sidebar-item">
-                          <a asp-controller="St_SupplierUI" asp-action="Index" class="sidebar-link collapsed">
-                              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Supplier</span>
-                          </a>
-                          <!--<ul id="supplier" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_SupplierUI" asp-action="Index">Register Supplier</a></li>-->
-                              @*<li class="sidebar-item"><a class="sidebar-link" asp-controller="St_SupplierUI" asp-action="GetAllSuppliers">View All Supplier</a></li>*@
-                          <!--</ul>-->
-                      </li>
 
-                      @*Item Master view*@
-                      <li class="sidebar-item">
-                          <a asp-controller="St_ItemMasterUI" asp-action="Index" class="sidebar-link collapsed">
-                              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Item Master</span>
-                          </a>
-                          <!--<ul id="stockitem" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_ItemMasterUI" asp-action="Index">Register Stock Item</a></li>-->
-                              @*<li class="sidebar-item"><a class="sidebar-link" asp-controller="St_ItemMasterUI" asp-action="GetAllItems">View All Stock Items</a></li>*@
-                          <!--</ul>-->
-                      </li>
-
-                      @*Requisition view*@
+                      @*Requisition*@
                       <li class="sidebar-item">
                           <a data-target="#requisition" data-toggle="collapse" class="sidebar-link collapsed">
                               <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Requisition</span>
                           </a>
                           <ul id="requisition" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_RequisitionUI" asp-action="Index">Stock Requisition</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_RequisitionUI" asp-action="GetAllStockRequest">View All Stock Requisitions</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_RequisitionUI" asp-action="GetAllRequisitionForApproval">View Requisitions For Approval</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_RequisitionUI" asp-action="Index">Stock Request</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_RequisitionUI" asp-action="GetAllRequisitionForApproval">Request Approval</a></li>
                           </ul>
                       </li>
 
-                      @*Stock Receipt*@
+                      @*Transaction*@
                       <li class="sidebar-item">
-                          <a data-target="#stockReceipt" data-toggle="collapse" class="sidebar-link collapsed">
+                          <a data-target="#transactions" data-toggle="collapse" class="sidebar-link collapsed">
                               <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Transactions</span>
                           </a>
-                          <ul id="stockReceipt" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Stock Receipt</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="GetAllStockRequest">View All Stock Receipt</a></li>
+                          <ul id="transactions" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Receipts</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_RequisitionUI" asp-action="ApprovedRequisitions">Issues</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="ProcessReturns">Returns</a></li>
+                          </ul>
+                      </li>
+
+                      @*Reports*@
+                      <li class="sidebar-item">
+                          <a data-target="#reports" data-toggle="collapse" class="sidebar-link collapsed">
+                              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Reports</span>
+                          </a>
+                          <ul id="reports" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">List Stock Items</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Stock Position</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">List Of Receipts</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">List Of Requisition</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Buyers Guide</a></li>
+                          </ul>
+                      </li>
+
+                      @*Utilities*@
+                      <li class="sidebar-item">
+                          <a data-target="#utilities" data-toggle="collapse" class="sidebar-link collapsed">
+                              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Utilities</span>
+                          </a>
+                          <ul id="utilities" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Month End Processing</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Year End Processing</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Physical Count Processing</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Print Physical Count Sheet</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Physical Count Input/Upload</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Discrepancy Report</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Overwrite Book Stock</a></li>
                           </ul>
                       </li>
 

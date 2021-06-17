@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "j2XJlJCdpF3ExCSXZlt1CxRZUaLmyHfujTq9PPUBI2kSt/OiX1Xuim36fGBiQ8SqiV7JuFSu/GXMnvpb32CNtA==",
+  "dgSpecHash": "cbSWBXLFFvxRfxYuKhYl2nHPBF/82h8hm2PQ0ZI8bdl2xX0ZZ6wr6CXLWMbqflsDkzMDR+GPngejEP1lNk+R7Q==",
   "success": true,
-  "projectFilePath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
+  "projectFilePath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HICADB\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
@@ -107,7 +107,7 @@
     "C:\\Users\\HICADB\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\HICADB\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
+    "C:\\Users\\HICADB\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.14\\microsoft.netcore.app.host.win-x64.3.1.14.nupkg.sha512"
   ],
   "logs": []
 }

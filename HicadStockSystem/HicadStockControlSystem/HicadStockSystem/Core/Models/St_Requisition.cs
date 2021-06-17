@@ -14,7 +14,7 @@ namespace HicadStockSystem.Core.Models
         [StringLength(12)]
         public string RequisitionNo { get; set; }
         //key
-        [StringLength(6)]
+        [StringLength(15)]
         public string ItemCode { get; set; }
         [StringLength(50)]
         public string Description { get; set; }
@@ -35,6 +35,7 @@ namespace HicadStockSystem.Core.Models
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public bool IsApproved { get; set; }
+        public bool IsSupplied { get; set; }
         public bool IsDeleted { get; set; }
 
     }

@@ -12,10 +12,15 @@ namespace HicadStockSystem.Core.Models
         public float? currentBalance { get; set; }
         public string ItemDesc { get; set; }
 
+        public float? QtyInTransit { get; set; }
+
+
         //public  St_StockMaster StockMaster { get; set; }
         //public St_ItemMaster ItemMaster { get; set; }
 
         //public IEnumerable<St_ItemMaster> ItemMasters { get; set; }
         //public IEnumerable<St_StockMaster> StockMasters { get; set; }
     }
+
+    
 }

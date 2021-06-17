@@ -152,7 +152,7 @@ export default {
       if (this.valid) {
         // e.preventDefault();
         this.canProcess = false;
-        this.$alert("Submit Form", "Ok", "info");
+        // this.$alert("Submit Form", "Ok", "info");
         this.postPost();
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
@@ -175,6 +175,8 @@ export default {
               this.postBody.quantity = "";
               this.$store.stateName.objectToUpdate = "create";
             }
+            // this.$alert("Submit Form", "Ok", "info");
+            window.location.reload(); 
           })
           .catch((e) => {
             this.errors.push(e);
@@ -196,6 +198,7 @@ export default {
               this.postBody.quantity = "";
               this.$store.state.objectToUpdate = "update";
             }
+            window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);

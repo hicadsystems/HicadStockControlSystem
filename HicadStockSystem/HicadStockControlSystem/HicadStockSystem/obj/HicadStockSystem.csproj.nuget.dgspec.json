@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {}
+    "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {}
   },
   "projects": {
-    "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {
+    "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
+        "projectUniqueName": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
         "projectName": "HicadStockSystem",
-        "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
+        "projectPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockSystem.csproj",
         "packagesPath": "C:\\Users\\HICADB\\.nuget\\packages\\",
-        "outputPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\obj\\",
+        "outputPath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HICADB\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -83,8 +83,8 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.10, 3.1.10]"
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.14, 3.1.14]"
             }
           ],
           "frameworkReferences": {
@@ -95,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200-preview.20601.7\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300-preview.21258.4\\RuntimeIdentifierGraph.json"
         }
       }
     }

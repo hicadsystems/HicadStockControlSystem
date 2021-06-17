@@ -91,6 +91,7 @@ export default {
               this.postBody.sktClass = "";
               this.$store.stateName.objectToUpdate = "create";
             }
+            window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);
@@ -108,6 +109,7 @@ export default {
               this.postBody.sktClass = "";
               this.$store.state.objectToUpdate = "update";
             }
+            window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);

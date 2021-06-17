@@ -15,7 +15,7 @@ namespace HicadStockSystem.Core.IRespository
         Task UpdateAsync(string itemCode);
         Task<IEnumerable<St_IssueApprove>> GetAll();
         Task DeleteAsync(string itemCode);
-        Task<IssueRequesitionApprovalVM> RequesitionApprovalVM(string itemCode);
+        Task<RequesitionVM> RequesitionApprovalVM(string itemCode);
         Task<IEnumerable<St_Requisition>> GetRequisitions();
         string GenerateDocNo();
     }

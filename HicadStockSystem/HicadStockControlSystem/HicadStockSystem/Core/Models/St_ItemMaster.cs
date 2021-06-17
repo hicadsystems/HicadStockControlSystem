@@ -11,13 +11,13 @@ namespace HicadStockSystem.Core.Models
     public class St_ItemMaster
     {
         [Key]
-        [StringLength(6)]
+        [StringLength(15)]
         //uniquely identify items in store
         public string ItemCode { get; set; }
         [StringLength(40)]
         //further decribe item code
         public string ItemDesc { get; set; }
-        [StringLength(5)]
+        [StringLength(15)]
         //session where items are located in the store
         public string StoreLoc { get; set; }
         [StringLength(5)]
@@ -33,20 +33,20 @@ namespace HicadStockSystem.Core.Models
         [StringLength(10)]
         //e.g pieces, cartons
         public string Units { get; set; }
-        [StringLength(12)]
+        [StringLength(15)]
         //cross reference
         public string XRef { get; set; }
-        [StringLength(5)]
+        [StringLength(15)]
         public string Supplier1 { get; set; }
-        [StringLength(5)]
+        [StringLength(15)]
         public string Supplier2 { get; set; }
-        [StringLength(5)]
+        [StringLength(15)]
         public string Supplier3 { get; set; }
-        [StringLength(5)]
+        [StringLength(15)]
         public string Supplier4 { get; set; }
-        [StringLength(5)]
+        [StringLength(15)]
         public string Supplier5 { get; set; }
-        [StringLength(5)]
+        [StringLength(15)]
         public string Supplier6 { get; set; }
         [StringLength(30)]
         //class description
