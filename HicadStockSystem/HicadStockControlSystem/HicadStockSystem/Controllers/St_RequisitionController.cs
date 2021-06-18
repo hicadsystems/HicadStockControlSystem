@@ -27,6 +27,13 @@ namespace HicadStockSystem.Controllers
         public async Task<IActionResult> GetAllRequistion()
         {
             var requisition = await _requisition.GetAll();
+            //foreach (var item in requisition)
+            //{
+            //    if (item.RequisitionNo.Max()>1)
+            //    {
+
+            //    }
+            //}
             return Ok(requisition);
         }
 
@@ -42,29 +49,50 @@ namespace HicadStockSystem.Controllers
                 //check to avoid duplicate number
                 if (requisitionNumberInDb == null)
                 {
-                    requisitionVM.Description = _requisition.GetDescription(requisitionVM.Itemcode);
+                    foreach (var item in requisitionVM.LineItems)
+                    {
+                        requisitionVM.UserId = "HICAD1";
+
+                        requisitionVM.Itemcode = item.Itemcode;
+                        requisitionVM.Quantity = item.Quantity;
+                        requisitionVM.Unit = item.Unit;
+                        requisitionVM.Description = _requisition.GetDescription(requisitionVM.Itemcode);
+                        var newRequisition = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
+                        newRequisition.CreatedOn = DateTime.Now;
+
+                        newRequisition.RequisitionDate = DateTime.Now;
+
+                        await _requisition.CreateAsync(newRequisition);
+
+                        //check for the availability of requested quantity
+                       var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
+
+                    }
+                    //requisitionVM.Description = _requisition.GetDescription(requisitionVM.Itemcode);
 
                     //check for the availability of requested quantity 
-                    var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
-                    var currentBal = _requisition.CheckCurrentBal(checkCurrentBal);
+                    //var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
 
-                    if (requisitionVM.Quantity >= currentBal)
-                    {
-                        return BadRequest();
-                    }
+                    /*var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, CreateSt_RequisitionVM>(requisitionVM);
+                    var currentBal = _requisition.CheckCurrentBal(checkCurrentBal);*/
+
+                    //if (requisitionVM.Quantity >= currentBal)
+                    //{
+                    //    return BadRequest();
+                    //}
 
                     //logged in user
-                    requisitionVM.UserId = "HICAD1";
+                    //requisitionVM.UserId = "HICAD1";
 
-                    var newRequisition = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
+                    //var newRequisition = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
 
-                    newRequisition.CreatedOn = DateTime.Now;
+                    //newRequisition.CreatedOn = DateTime.Now;
 
-                    newRequisition.RequisitionDate = DateTime.Now;
+                    //newRequisition.RequisitionDate = DateTime.Now;
 
-                    await _requisition.CreateAsync(newRequisition);
+                    //await _requisition.CreateAsync(newRequisition);
 
-                    return Ok(newRequisition);
+                    return Ok(/*newRequisition*/);
                 }
 
 

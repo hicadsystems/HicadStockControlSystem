@@ -3551,6 +3551,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3571,14 +3572,15 @@ __webpack_require__.r(__webpack_exports__);
       itemCodeblur: false,
       quantityblur: false,
       valid: false,
-      lineItems: [],
-      locationCode: "",
+      isSelected: false,
+      // lineItems: [],
+      // locationCode: "",
       currentBal: "",
       postBody: {
         // itemCode: "",
         // quantity: "",
         // unit: "",
-        location: "",
+        locationCode: "",
         lineItems: [] // itemDesc: "",
         // qtyInTransaction: 0,
 
@@ -3607,41 +3609,54 @@ __webpack_require__.r(__webpack_exports__);
   //   },
   // },
   methods: {
-    checkForm: function checkForm(e) {
+    checkForm: function checkForm() {
       var _this = this;
 
-      this.validate();
+      alert(this.postBody);
+      console.log(this.postBody); // console.log(this.postBody.locationCode);
 
-      if (this.valid) {
-        e.preventDefault();
-        this.canProcess = false;
-        axios.post("/api/requisition/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
+      axios.post("/api/requisition/", this.postBody).then(function (response) {
+        _this.responseMessage = response.data.responseDescription;
+        _this.canProcess = true;
 
-          if (response.data.responseCode == "200") {
-            // this.postBody.locationCode = "";
-            // this.postBody.itemCode = "";
-            // this.postBody.itemDesc = "";
-            // this.postBody.quantity = "";
-            // this.postBody.unit = "";
-            // this.$store.stateName.objectToUpdate = "create";
-            location = _this.locationCode;
-            _this.lineItems = [];
-          } // this.document.getElementById('#requestForm').value = "";
-          // this.$refs.requestForm.reset();
-          // window.location.reload();
-
-        })["catch"](function (e) {
-          if (e) _this.errors.push(e);
-        }); // this.$alert("Submit Form", "Ok", "info");
-
-        this.postPost();
-      } else {
-        this.$alert("Please Fill Highlighted Fields", "missing", "error");
-        this.errors = [];
-        this.errors.push("Supply all the required field");
-      }
+        if (response.data.responseCode == "200") {
+          _this.postBody.locationCode = "", _this.postBody.lineItems = [];
+        }
+      })["catch"](function (e) {
+        _this.errors.push(e);
+      }); // this.validate();
+      // if (this.valid) {
+      //   e.preventDefault();
+      //   this.canProcess = false;
+      //   // axios
+      //   //   .post(`/api/requisition/`, this.postBody)
+      //   //   .then((response) => {
+      //   //     this.responseMessage = response.data.responseDescription;
+      //   //     this.canProcess = true;
+      //   //     if (response.data.responseCode == "200") {
+      //   //       // this.postBody.locationCode = "";
+      //   //       // this.postBody.itemCode = "";
+      //   //       // this.postBody.itemDesc = "";
+      //   //       // this.postBody.quantity = "";
+      //   //       // this.postBody.unit = "";
+      //   //       // this.$store.stateName.objectToUpdate = "create";
+      //   //       location = this.locationCode;
+      //   //       this.lineItems = [];
+      //   //     }
+      //   //     // this.document.getElementById('#requestForm').value = "";
+      //   //     // this.$refs.requestForm.reset();
+      //   //     // window.location.reload();
+      //   //   })
+      //   //   .catch((e) => {
+      //   //     if (e) this.errors.push(e);
+      //   //   });
+      //   // // this.$alert("Submit Form", "Ok", "info");
+      //   this.postPost();
+      // } else {
+      //   this.$alert("Please Fill Highlighted Fields", "missing", "error");
+      //   this.errors = [];
+      //   this.errors.push("Supply all the required field");
+      // }
     },
     postPost: function postPost() {
       var _this2 = this;
@@ -3731,35 +3746,44 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     addLineItem: function addLineItem() {
-      // alert(this.newItem.itemCode)
-      var newItem = {
-        itemCode: this.newItem.itemCode,
-        quantity: Number(this.newItem.quantity),
-        unit: this.newItem.unit
-      }; //checking for duplicate item
+      this.validate();
 
-      var existingItems = this.lineItems.map(function (item) {
-        return item.itemCode;
-      });
+      if (this.valid) {
+        var newItem = {
+          itemCode: this.newItem.itemCode,
+          quantity: Number(this.newItem.quantity),
+          unit: this.newItem.unit
+        }; //checking for duplicate item
 
-      if (existingItems.includes(newItem.itemCode)) {
-        var lineItem = this.lineItems.find(function (item) {
-          return item.itemCode === newItem.itemCode;
+        var existingItems = this.postBody.lineItems.map(function (item) {
+          return item.itemCode;
         });
-        var currentQuantity = Number(lineItem.quantity);
-        var updateQuantity = currentQuantity += newItem.quantity;
-        lineItem.quantity = updateQuantity;
+
+        if (existingItems.includes(newItem.itemCode)) {
+          var lineItem = this.postBody.lineItems.find(function (item) {
+            return item.itemCode === newItem.itemCode;
+          });
+          var currentQuantity = Number(lineItem.quantity);
+          var updateQuantity = currentQuantity += newItem.quantity;
+          lineItem.quantity = updateQuantity;
+        } else {
+          var result = this.postBody.lineItems.push(this.newItem);
+          console.log(result);
+        }
+
+        this.newItem = {
+          itemCode: "",
+          quantity: "",
+          unit: ""
+        }; // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
+        // this.currentBal -= this.quantity
       } else {
-        var result = this.lineItems.push(this.newItem);
-        console.log(result);
-      } // this.newItem = { itemCode: "", quantity: "", unit: "" };
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
+      } // alert(this.newItem.itemCode)
 
-
-      this.newItem = [{
-        itemCode: "",
-        quantity: "",
-        unit: ""
-      }]; // this.currentBal -= this.quantity
+    },
+    removeItem: function removeItem(itemCode) {
+      this.lineItems.splice(this.itemCode, 1);
     }
   },
   computed: {
@@ -3772,8 +3796,11 @@ __webpack_require__.r(__webpack_exports__);
       return this.newItem.itemCode != "";
     },
     quantityIsValid: function quantityIsValid() {
-      return this.newItem.quantity != "" && parseInt(this.newItem.quantity) >= 1 && parseInt(this.newItem.quantity) <= parseInt(this.currentBal);
-    } // setter() {
+      return this.newItem.quantity != "" && (parseInt(this.newItem.quantity) >= 0 || this.newItem.quantity == null) && parseInt(this.newItem.quantity) <= parseInt(this.currentBal);
+    } // isDisabled() {
+    //   return (this.isSelected = true);
+    // },
+    // setter() {
     //   let objecttoedit = this.$store.state.objectToUpdate;
     //   if (objecttoedit.supplierCode) {
     //     this.postBody.locationCode = objecttoedit.locationCode;
@@ -12622,53 +12649,59 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.locationCode,
-                        expression: "locationCode"
+                        value: _vm.postBody.locationCode,
+                        expression: "postBody.locationCode"
                       }
                     ],
                     staticClass: "form-control",
                     class: {
                       "is-invalid": !_vm.departmentIsValid && _vm.locationblur
                     },
-                    attrs: { name: "locationCode" },
+                    attrs: { name: "locationCode", disabled: _vm.isSelected },
                     on: {
                       blur: function($event) {
                         _vm.locationblur = true
                       },
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.locationCode = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.postBody,
+                            "locationCode",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        },
+                        function($event) {
+                          _vm.isSelected = true
+                        }
+                      ]
                     }
                   },
                   [
                     _c("option", [
                       _vm._v(
-                        "\n                      --select department code--\n                    "
+                        "\n                  --select department code--\n                "
                       )
                     ]),
                     _vm._v(" "),
                     _vm._l(_vm.DepartmentList, function(costcentre) {
                       return _c(
                         "option",
-                        {
-                          key: costcentre.unitCode,
-                          domProps: { value: costcentre.unitCode }
-                        },
+                        { domProps: { value: costcentre.unitCode } },
                         [
                           _vm._v(
-                            "\n                      " +
+                            "\n                  " +
                               _vm._s(costcentre.unitDesc) +
-                              "\n                    "
+                              "\n                "
                           )
                         ]
                       )
@@ -12707,7 +12740,6 @@ var render = function() {
                       "is-invalid": !_vm.itemCodeIsValid && _vm.itemCodeblur
                     },
                     attrs: { name: "itemCode", placeholder: "item code" },
-                    domProps: { value: _vm.newItem.itemCode },
                     on: {
                       change: [
                         function($event) {
@@ -12737,7 +12769,7 @@ var render = function() {
                   [
                     _c("option", [
                       _vm._v(
-                        "\n                      --select Item code--\n                    "
+                        "\n                  --select Item code--\n                "
                       )
                     ]),
                     _vm._v(" "),
@@ -12750,9 +12782,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                      " +
+                            "\n                  " +
                               _vm._s(item.itemDesc) +
-                              "\n                    "
+                              "\n                "
                           )
                         ]
                       )
@@ -12841,9 +12873,9 @@ var render = function() {
                   }
                 }),
                 _vm._v(
-                  "\n                  " +
+                  "\n              " +
                     _vm._s(_vm.quantityIsValid) +
-                    "\n                  "
+                    "\n              "
                 ),
                 _vm._m(2)
               ]),
@@ -12885,23 +12917,17 @@ var render = function() {
             _vm._v(" "),
             _c("br"),
             _vm._v(" "),
-            _vm.canProcess
-              ? _c("div", { attrs: { role: "group" } }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-submit btn-primary float-right",
-                      attrs: { type: "submit" },
-                      on: {
-                        click: function($event) {
-                          return _vm.addLineItem()
-                        }
-                      }
-                    },
-                    [_vm._v("\n                  Add item\n                ")]
-                  )
-                ])
-              : _vm._e()
+            _c("div", { attrs: { role: "group" } }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-submit btn-primary float-right",
+                  attrs: { type: "submit" },
+                  on: { click: _vm.addLineItem }
+                },
+                [_vm._v("\n              Add item\n            ")]
+              )
+            ])
           ])
         ])
       ])
@@ -12917,20 +12943,35 @@ var render = function() {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.lineItems, function(lineItem) {
+              _vm._l(_vm.postBody.lineItems, function(lineItem) {
                 return _c("tr", { key: lineItem.itemCode }, [
                   _c("td", [_vm._v(_vm._s(lineItem.itemCode))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(lineItem.quantity))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(lineItem.unit))])
+                  _c("td", [_vm._v(_vm._s(lineItem.unit))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            return _vm.removeItem(lineItem.itemCode)
+                          }
+                        }
+                      },
+                      [_vm._v("Remove Item")]
+                    )
+                  ])
                 ])
               }),
               0
             )
           ]),
           _vm._v(" "),
-          _vm.lineItems.length > 0
+          _vm.postBody.lineItems.length > 0
             ? _c("div", { attrs: { role: "group" } }, [
                 _c(
                   "button",
@@ -12939,7 +12980,7 @@ var render = function() {
                     attrs: { type: "submit" },
                     on: { click: _vm.checkForm }
                   },
-                  [_vm._v("\n          Process\n        ")]
+                  [_vm._v("\n            Process\n          ")]
                 )
               ])
             : _vm._e()
@@ -13005,7 +13046,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Quantity")]),
         _vm._v(" "),
-        _c("th", [_vm._v("unit")])
+        _c("th", [_vm._v("unit")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Option")])
       ])
     ])
   }

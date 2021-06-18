@@ -1,4 +1,5 @@
-﻿using HicadStockSystem.Core.Models;
+﻿using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
+using HicadStockSystem.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,8 @@ namespace HicadStockSystem.Core.IRespository
         Task<IEnumerable<St_Requisition>> GetApproved();
         Task RequisitioApprovalAsync(St_Requisition requisition);
 
-        float? CheckCurrentBal(St_Requisition requisition);
+        //float? CheckCurrentBal(St_Requisition requisition);
+
+        float? CheckCurrentBal(CreateSt_RequisitionVM requisition);
     }
 }

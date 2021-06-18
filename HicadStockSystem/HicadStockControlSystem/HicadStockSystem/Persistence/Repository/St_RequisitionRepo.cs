@@ -1,4 +1,5 @@
-﻿using HicadStockSystem.Core;
+﻿using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
+using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
@@ -24,20 +25,35 @@ namespace HicadStockSystem.Persistence.Repository
             _uow = uow;
             _recordTable = recordTable;
         }
+        /*V1*/
+        //public float? CheckCurrentBal(St_Requisition requisition)
+        //{
+        //    var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
+        //                              where stockmaster.ItemCode == requisition.ItemCode
+        //                              select stockmaster).FirstOrDefault();
+        //    var currentBal = (updateQtyInTransit.OpenBalance + updateQtyInTransit.Receipts - updateQtyInTransit.Issues) - updateQtyInTransit.QtyInTransaction;
 
-        public float? CheckCurrentBal(St_Requisition requisition)
+        //    return currentBal;
+        //}
+
+        public float? CheckCurrentBal(CreateSt_RequisitionVM requisition)
         {
-            var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
-                                      where stockmaster.ItemCode == requisition.ItemCode
-                                      select stockmaster).FirstOrDefault();
-            var currentBal = (updateQtyInTransit.OpenBalance + updateQtyInTransit.Receipts - updateQtyInTransit.Issues) - updateQtyInTransit.QtyInTransaction;
+            float? currentBal=0;
+            foreach (var item in requisition.LineItems)
+            {
+                var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
+                                          where stockmaster.ItemCode == item.Itemcode
+                                          select stockmaster).FirstOrDefault();
+                currentBal = (updateQtyInTransit.OpenBalance + updateQtyInTransit.Receipts - updateQtyInTransit.Issues) - updateQtyInTransit.QtyInTransaction;
 
+            }
             return currentBal;
         }
         public async Task CreateAsync(St_Requisition requisition)
         {
             //requisition.Itemcode = RandomString(12);
             await _dbContext.St_Requisitions.AddAsync(requisition);
+
             var stockprice = (from stockmaster in _dbContext.St_StockMasters
                               where stockmaster.ItemCode == requisition.ItemCode
                               select stockmaster.StockPrice).First();
