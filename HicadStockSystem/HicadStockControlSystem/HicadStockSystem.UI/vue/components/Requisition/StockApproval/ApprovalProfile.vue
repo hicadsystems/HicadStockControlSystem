@@ -19,11 +19,18 @@
                 </option>
                 <option
                   v-for="requisition in RequisitionList"
-                  v-bind:value="requisition.requisitionNo"
-                  v-bind:key="requisition.requisitionNo"
+                  v-bind:value="requisition"
+                  v-bind:key="requisition"
+                >
+                  {{ requisition }}
+                </option>
+                <!-- <option
+                  v-for="requisition in RequisitionList"
+                  v-bind:value="requisition.index"
+                  v-bind:key="requisition.index"
                 >
                   {{ requisition.requisitionNo }}
-                </option>
+                </option>-->
               </select>
               <div class="invalid-feedback">
                 <span class="text-danger h5">Select requisition number</span>
@@ -49,8 +56,12 @@
                 readonly="readonly"
                 v-model="postBody.department"
               />
-              <input type="hidden" name="locationCode" class="form-control" :value="postBody.locationCode">
-              <input type="hidden" name="locationCode" class="form-control" :value="postBody.unit">
+              <input
+                type="hidden"
+                name="locationCode"
+                class="form-control"
+                :value="postBody.locationCode"
+              />
             </div>
             <div class="col-4">
               <label for="unit" class="mb-1">Date and Time</label>
@@ -60,7 +71,12 @@
                 readonly="readonly"
                 v-model="postBody.requisitionDate"
               />
-              <input type="hidden" name="createdOn" class="form-control" :value="postBody.createdOn">
+              <input
+                type="hidden"
+                name="createdOn"
+                class="form-control"
+                :value="postBody.createdOn"
+              />
             </div>
           </div>
           <br />
@@ -76,13 +92,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="item in postBody.itemLists" :key="item.itemCode">
                   <td>
                     <input
                       class="form-control"
                       name="itemCode "
                       readonly="readonly"
-                      v-model="postBody.itemCode"
+                      v-model="item.itemCode"
                     />
                   </td>
                   <td>
@@ -90,7 +106,7 @@
                       class="form-control"
                       name="description "
                       readonly="readonly"
-                      v-model="postBody.description"
+                      v-model="item.itemDescription"
                     />
                   </td>
                   <td>
@@ -98,13 +114,13 @@
                       class="form-control"
                       name="quantity"
                       readonly="readonly"
-                      v-model="postBody.Requestedquantity"
+                      v-model="item.requested"
                     />
                   </td>
                   <td>
                     <input
                       class="form-control"
-                      v-model="postBody.quantity"
+                      v-model="item.quantity"
                       name="approvedQty"
                       :class="{ 'is-invalid': !quantityIsValid && qtyblur }"
                       v-on:blur="qtyblur = true"
@@ -112,17 +128,28 @@
                     <div class="invalid-feedback">
                       <span class="text-danger h5">Invalid Entry</span>
                     </div>
+                    <input
+                      type="hidden"
+                      name="locationCode"
+                      class="form-control"
+                      :value="item.unit"
+                    />
                   </td>
                   <td>
-                    <div role="group">
-                      <button
-                        class="btn btn-submit btn-primary float-right"
-                        v-on:click="checkForm"
-                        type="button"
-                      >
-                        Sign
-                      </button>
-                    </div>
+                    <button
+                      class="btn btn-submit btn-primary"
+                      v-on:click="checkForm"
+                      type="button"
+                    >
+                      Sign
+                    </button>
+                    <button
+                      class="btn btn-submit btn-danger"
+                      v-on:click="checkForm"
+                      type="button"
+                    >
+                    Dismiss
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -161,12 +188,26 @@ export default {
         userId: "",
         department: "",
         requisitionDate: "",
-        itemCode: "",
-        description: "",
+        // itemCode: "",
+        // description: "",
         quantity: "",
-        Requestedquantity: "",
+        // Requestedquantity: "",
         createdOn: "",
-        unit:"",
+        // itemList: {
+        //   itemCode: "",
+        //   description: "",
+        //   Requestedquantity: "",
+        //   unit: "",
+        // },
+        // unit:"",
+        itemLists: [
+          //   {
+          //   itemCode: "",
+          //   description: "",
+          //   Requestedquantity: "",
+          //   unit: "",
+          // },
+        ],
       },
     };
   },
@@ -190,12 +231,13 @@ export default {
               this.postBody.userId = "";
               this.postBody.requisitionDate = "";
               this.postBody.createdOn = "";
-              this.postBody.itemCode = "";
-              this.postBody.description = "";
+              // this.postBody.itemCode = "";
+              // this.postBody.description = "";
               // this.postBody.quantity = 0;
               this.postBody.quantity = "";
               this.postBody.locationCode = "";
-              this.postBody.unit = "";
+              // this.postBody.unit = "";
+              this.postBody.itemLists = [];
             }
             window.location.reload();
           })
@@ -223,11 +265,26 @@ export default {
           this.postBody.department = response.data.department;
           this.postBody.requisitionDate = response.data.dateAndTime;
           this.postBody.requisitionNo = response.data.requisitionNo;
+          // this.postBody.itemCode = response.data.itemCode;
+          // this.postBody.description = response.data.itemDescription;
+          // this.postBody.Requestedquantity = response.data.requested;
+          this.postBody.createdOn = response.data.dateCreated;
+          this.postBody.locationCode = response.data.costLocCode;
+          // this.postBody.unit = response.data.unit;
+          this.postBody.itemLists = response.data.itemLists;
+        });
+    },
+
+    getRequisitionApprovalItems() {
+      axios
+        .get(
+          `/api/requisition/RequisitionApprovalItems/${this.postBody.requisitionNo}`
+        )
+        .then((response) => {
+          this.ItemApprovalList = response.data;
           this.postBody.itemCode = response.data.itemCode;
           this.postBody.description = response.data.itemDescription;
           this.postBody.Requestedquantity = response.data.requested;
-          this.postBody.createdOn = response.data.dateCreated;
-          this.postBody.locationCode = response.data.costLocCode;
           this.postBody.unit = response.data.unit;
         });
     },
@@ -254,8 +311,9 @@ export default {
     //needs more validation
     quantityIsValid() {
       return (
-        this.postBody.quantity != "" &&
-        parseInt(this.postBody.quantity) >= 0
+        this.postBody.itemLists.quantity != "" &&
+        parseInt(this.postBody.itemLists.quantity) >= 0
+        // this.postBody.itemLists.quantity != "" && parseInt(this.postBody.itemLists.quantity) >= 0
       );
     },
     // setter() {

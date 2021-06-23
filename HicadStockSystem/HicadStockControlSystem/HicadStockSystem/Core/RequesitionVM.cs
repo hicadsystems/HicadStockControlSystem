@@ -18,6 +18,15 @@ namespace HicadStockSystem.Core
         public float? Requested { get; set; }
         public string ApprovedBy { get; set; }
         public string Unit { get; set; }
+        public List<ItemListVM> ItemLists { get; set; }
 
     }
+
+    //public class ItemListViewModel
+    //{
+    //    public string Itemcode { get; set; }
+    //    public float? Requested { get; set; }
+    //    public string Unit { get; set; }
+    //    public string ItemDescription { get; set; }
+    //}
 }

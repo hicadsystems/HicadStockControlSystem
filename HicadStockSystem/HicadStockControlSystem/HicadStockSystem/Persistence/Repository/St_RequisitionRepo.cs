@@ -66,13 +66,20 @@ namespace HicadStockSystem.Persistence.Repository
 
             requisition.Price = stockprice;
             
-
+             
             await _uow.CompleteAsync();
         }
 
-        public async Task<IEnumerable<St_Requisition>> GetAll()
+        //public async Task<IEnumerable<St_Requisition>> GetAll()
+        //{
+        //    var distinct = (from req in _dbContext.St_Requisitions select req.RequisitionNo).Distinct().ToList();
+        //    return await _dbContext.St_Requisitions.Where(sr=>sr.IsDeleted==false && sr.IsApproved==false).ToListAsync();
+        //}
+
+        public async Task<IEnumerable<string>> GetAll()
         {
-            return await _dbContext.St_Requisitions.Where(sr=>sr.IsDeleted==false && sr.IsApproved==false).ToListAsync();
+            var distinct = await (from req in _dbContext.St_Requisitions where req.IsApproved==false && req.IsDeleted==false  select req.RequisitionNo).Distinct().ToListAsync();
+            return distinct;
         }
 
         public async Task<IEnumerable<St_Requisition>> GetApproved()
@@ -83,6 +90,11 @@ namespace HicadStockSystem.Persistence.Repository
         public St_Requisition GetByReqNo(string reqNo)
         {
             return _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted==false).FirstOrDefault();
+        }
+        //check 
+        public List<St_Requisition> GetByReqNoForApproval(string reqNo)
+        {
+            return _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted == false).ToList();
         }
 
         public async Task UpdateAsync(St_Requisition requisition)
@@ -168,7 +180,7 @@ namespace HicadStockSystem.Persistence.Repository
                           {
                               itemCode = item.ItemCode,
                               unit = item.Units,
-                              currentBalance = (stock.OpenBalance+stock.Receipts-stock.Issues)- stock.QtyInTransaction,
+                              currentBalance = (stock.OpenBalance+stock.Receipts-stock.Issues) - stock.QtyInTransaction,
                               ItemDesc = item.ItemDesc
                           }).FirstOrDefaultAsync();
         }
@@ -213,27 +225,46 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task<RequesitionVM> RequesitionsVM(string reqNo)
         {
-            return await (from requisition in _dbContext.St_Requisitions
-                          join item in _dbContext.St_ItemMasters on requisition.ItemCode equals item.ItemCode
-                          join costCenter in _dbContext.Ac_CostCentres on requisition.LocationCode equals costCenter.UnitCode
-                          where requisition.RequisitionNo == reqNo
-                          select new RequesitionVM
-                          {
-                              RequisitionNo = requisition.RequisitionNo,
-                              RequisitionBy = requisition.UserId,
-                              //Department = requisition.LocationCode,
-                              Department = costCenter.UnitDesc,
-                              CostLocCode = requisition.LocationCode,
-                              DateAndTime = requisition.RequisitionDate.ToString(),
-                              ItemCode = item.ItemCode,
-                              ItemDescription = item.ItemDesc,
-                              Requested = requisition.Quantity,
-                              DateCreated = requisition.CreatedOn.ToString(),
-                              ApprovedBy = requisition.ApprovedBy,
-                              Unit = item.Units
-                          }).FirstOrDefaultAsync();
+            //var code = GetByReqNo(reqNo);
+
+                return await (from requisition in _dbContext.St_Requisitions
+                              join item in _dbContext.St_ItemMasters on requisition.ItemCode equals item.ItemCode
+                              join costCenter in _dbContext.Ac_CostCentres on requisition.LocationCode equals costCenter.UnitCode
+                              where requisition.RequisitionNo == reqNo
+
+                              select new RequesitionVM
+                              {
+                                  RequisitionNo = requisition.RequisitionNo,
+                                  RequisitionBy = requisition.UserId,
+                                  //Department = requisition.LocationCode,
+                                  Department = costCenter.UnitDesc,
+                                  CostLocCode = requisition.LocationCode,
+                                  DateAndTime = requisition.RequisitionDate.ToString(),
+                                  //ItemCode = item.ItemCode,
+                                  //ItemDescription = item.ItemDesc,
+                                  //Requested = requisition.Quantity,
+                                  ItemLists = ItemLists(reqNo),
+                                  DateCreated = requisition.CreatedOn.ToString(),
+                                  ApprovedBy = requisition.ApprovedBy,
+                                  Unit = item.Units
+                              }).FirstOrDefaultAsync(); 
+            
         }
 
+        public List<ItemListVM> ItemLists(string reqNo)
+        {
+            return  (from requisition in _dbContext.St_Requisitions
+                          where requisition.RequisitionNo == reqNo
+                          select new ItemListVM
+                          {
+                              ItemCode = requisition.ItemCode,
+                              ItemDescription = requisition.Description,
+                              Requested = requisition.Quantity,
+                              Unit = requisition.Unit,
+                              Quantity = requisition.SupplyQty
+                          }).ToList();
+
+        }
 
         public St_Requisition GetByItemcode(string itemCode)
         {

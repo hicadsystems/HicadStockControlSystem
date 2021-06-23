@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
+using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -192,9 +193,21 @@ namespace HicadStockSystem.Controllers
         [Route("RequisitionApproval/{itemCode}")]
         public async Task<IActionResult> RequisitionApproval(string itemCode)
         {
-            var approval = await _requisition.RequesitionsVM(itemCode);
+            var approval = await _requisition.RequesitionsVM(itemCode); 
+
+            RequisitionApprovalItems(itemCode);
 
             return Ok(approval);
+
+        }
+
+        [HttpGet]
+        [Route("RequisitionApprovalItems/{reqNo}")]
+        public IActionResult RequisitionApprovalItems(string reqNo)
+        {
+            var items =  _requisition.ItemLists(reqNo);
+
+            return Ok(items);
         }
 
         [HttpGet]

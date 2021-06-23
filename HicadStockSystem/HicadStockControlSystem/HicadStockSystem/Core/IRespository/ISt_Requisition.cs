@@ -14,7 +14,8 @@ namespace HicadStockSystem.Core.IRespository
         St_Requisition GetByItemcode(string itemCode);
         Task UpdateAsync(St_Requisition requisition);
         Task UpdateAsync(string reqNo);
-        Task<IEnumerable<St_Requisition>> GetAll();
+        //Task<IEnumerable<St_Requisition>> GetAll();
+        Task<IEnumerable<string>> GetAll();
         Task DeleteAsync(string reqNo);
 
         Task<IEnumerable<Ac_CostCentre>> GetCostCentre();
@@ -22,13 +23,15 @@ namespace HicadStockSystem.Core.IRespository
 
         Task<IEnumerable<St_ItemMaster>> GetItemCode();
         Task<RequesitionVM> RequesitionsVM(string itemCode);
+        //Task<List<RequesitionVM>> RequesitionsVM(string reqNo);
         string GetDescription(string itemCode);
         string GenerateRequisitionNo();
         Task<IEnumerable<St_Requisition>> GetApproved();
         Task RequisitioApprovalAsync(St_Requisition requisition);
 
         //float? CheckCurrentBal(St_Requisition requisition);
-
+        //Task<IEnumerable<string>> GetAllByReqNo(string reqno);
         float? CheckCurrentBal(CreateSt_RequisitionVM requisition);
+        List<ItemListVM> ItemLists(string reqNo);
     }
 }

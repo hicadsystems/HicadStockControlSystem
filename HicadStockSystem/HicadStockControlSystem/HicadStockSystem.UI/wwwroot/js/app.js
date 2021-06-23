@@ -3191,6 +3191,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3215,12 +3242,25 @@ __webpack_require__.r(__webpack_exports__);
         userId: "",
         department: "",
         requisitionDate: "",
-        itemCode: "",
-        description: "",
+        // itemCode: "",
+        // description: "",
         quantity: "",
-        Requestedquantity: "",
+        // Requestedquantity: "",
         createdOn: "",
-        unit: ""
+        // itemList: {
+        //   itemCode: "",
+        //   description: "",
+        //   Requestedquantity: "",
+        //   unit: "",
+        // },
+        // unit:"",
+        itemLists: [//   {
+          //   itemCode: "",
+          //   description: "",
+          //   Requestedquantity: "",
+          //   unit: "",
+          // },
+        ]
       }
     };
   },
@@ -3243,13 +3283,14 @@ __webpack_require__.r(__webpack_exports__);
             _this.postBody.requisitionNo = "";
             _this.postBody.userId = "";
             _this.postBody.requisitionDate = "";
-            _this.postBody.createdOn = "";
-            _this.postBody.itemCode = "";
-            _this.postBody.description = ""; // this.postBody.quantity = 0;
+            _this.postBody.createdOn = ""; // this.postBody.itemCode = "";
+            // this.postBody.description = "";
+            // this.postBody.quantity = 0;
 
             _this.postBody.quantity = "";
-            _this.postBody.locationCode = "";
-            _this.postBody.unit = "";
+            _this.postBody.locationCode = ""; // this.postBody.unit = "";
+
+            _this.postBody.itemLists = [];
           }
 
           window.location.reload();
@@ -3273,20 +3314,32 @@ __webpack_require__.r(__webpack_exports__);
         _this2.postBody.userId = response.data.requisitionBy;
         _this2.postBody.department = response.data.department;
         _this2.postBody.requisitionDate = response.data.dateAndTime;
-        _this2.postBody.requisitionNo = response.data.requisitionNo;
-        _this2.postBody.itemCode = response.data.itemCode;
-        _this2.postBody.description = response.data.itemDescription;
-        _this2.postBody.Requestedquantity = response.data.requested;
+        _this2.postBody.requisitionNo = response.data.requisitionNo; // this.postBody.itemCode = response.data.itemCode;
+        // this.postBody.description = response.data.itemDescription;
+        // this.postBody.Requestedquantity = response.data.requested;
+
         _this2.postBody.createdOn = response.data.dateCreated;
-        _this2.postBody.locationCode = response.data.costLocCode;
-        _this2.postBody.unit = response.data.unit;
+        _this2.postBody.locationCode = response.data.costLocCode; // this.postBody.unit = response.data.unit;
+
+        _this2.postBody.itemLists = response.data.itemLists;
+      });
+    },
+    getRequisitionApprovalItems: function getRequisitionApprovalItems() {
+      var _this3 = this;
+
+      axios.get("/api/requisition/RequisitionApprovalItems/".concat(this.postBody.requisitionNo)).then(function (response) {
+        _this3.ItemApprovalList = response.data;
+        _this3.postBody.itemCode = response.data.itemCode;
+        _this3.postBody.description = response.data.itemDescription;
+        _this3.postBody.Requestedquantity = response.data.requested;
+        _this3.postBody.unit = response.data.unit;
       });
     },
     getRequisition: function getRequisition() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/api/requisition/").then(function (response) {
-        _this3.RequisitionList = response.data;
+        _this4.RequisitionList = response.data;
       });
     },
     validate: function validate() {
@@ -3307,7 +3360,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     //needs more validation
     quantityIsValid: function quantityIsValid() {
-      return this.postBody.quantity != "" && parseInt(this.postBody.quantity) >= 0;
+      return this.postBody.itemLists.quantity != "" && parseInt(this.postBody.itemLists.quantity) >= 0 // this.postBody.itemLists.quantity != "" && parseInt(this.postBody.itemLists.quantity) >= 0
+      ;
     } // setter() {
     //   let objecttoedit = this.$store.state.objectToUpdate;
     //   if (objecttoedit.supplierCode) {
@@ -12273,14 +12327,11 @@ var render = function() {
                     _vm._l(_vm.RequisitionList, function(requisition) {
                       return _c(
                         "option",
-                        {
-                          key: requisition.requisitionNo,
-                          domProps: { value: requisition.requisitionNo }
-                        },
+                        { key: requisition, domProps: { value: requisition } },
                         [
                           _vm._v(
                             "\n                " +
-                              _vm._s(requisition.requisitionNo) +
+                              _vm._s(requisition) +
                               "\n              "
                           )
                         ]
@@ -12356,12 +12407,6 @@ var render = function() {
                   staticClass: "form-control",
                   attrs: { type: "hidden", name: "locationCode" },
                   domProps: { value: _vm.postBody.locationCode }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "hidden", name: "locationCode" },
-                  domProps: { value: _vm.postBody.unit }
                 })
               ]),
               _vm._v(" "),
@@ -12415,148 +12460,160 @@ var render = function() {
                 [
                   _vm._m(1),
                   _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.postBody.itemCode,
-                              expression: "postBody.itemCode"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { name: "itemCode ", readonly: "readonly" },
-                          domProps: { value: _vm.postBody.itemCode },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.postBody.itemLists, function(item) {
+                      return _c("tr", { key: item.itemCode }, [
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: item.itemCode,
+                                expression: "item.itemCode"
                               }
-                              _vm.$set(
-                                _vm.postBody,
-                                "itemCode",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.postBody.description,
-                              expression: "postBody.description"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { name: "description ", readonly: "readonly" },
-                          domProps: { value: _vm.postBody.description },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                            ],
+                            staticClass: "form-control",
+                            attrs: { name: "itemCode ", readonly: "readonly" },
+                            domProps: { value: item.itemCode },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(item, "itemCode", $event.target.value)
                               }
-                              _vm.$set(
-                                _vm.postBody,
-                                "description",
-                                $event.target.value
-                              )
                             }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.postBody.Requestedquantity,
-                              expression: "postBody.Requestedquantity"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { name: "quantity", readonly: "readonly" },
-                          domProps: { value: _vm.postBody.Requestedquantity },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.postBody,
-                                "Requestedquantity",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.postBody.quantity,
-                              expression: "postBody.quantity"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": !_vm.quantityIsValid && _vm.qtyblur
-                          },
-                          attrs: { name: "approvedQty" },
-                          domProps: { value: _vm.postBody.quantity },
-                          on: {
-                            blur: function($event) {
-                              _vm.qtyblur = true
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.postBody,
-                                "quantity",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
+                          })
+                        ]),
                         _vm._v(" "),
-                        _vm._m(2)
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("div", { attrs: { role: "group" } }, [
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: item.itemDescription,
+                                expression: "item.itemDescription"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "description ",
+                              readonly: "readonly"
+                            },
+                            domProps: { value: item.itemDescription },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  item,
+                                  "itemDescription",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: item.requested,
+                                expression: "item.requested"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { name: "quantity", readonly: "readonly" },
+                            domProps: { value: item.requested },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(item, "requested", $event.target.value)
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: item.quantity,
+                                expression: "item.quantity"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": !_vm.quantityIsValid && _vm.qtyblur
+                            },
+                            attrs: { name: "approvedQty" },
+                            domProps: { value: item.quantity },
+                            on: {
+                              blur: function($event) {
+                                _vm.qtyblur = true
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(item, "quantity", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._m(2, true),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "form-control",
+                            attrs: { type: "hidden", name: "locationCode" },
+                            domProps: { value: item.unit }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
                           _c(
                             "button",
                             {
-                              staticClass:
-                                "btn btn-submit btn-primary float-right",
+                              staticClass: "btn btn-submit btn-primary",
                               attrs: { type: "button" },
                               on: { click: _vm.checkForm }
                             },
                             [
                               _vm._v(
-                                "\n                      Sign\n                    "
+                                "\n                    Sign\n                  "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-submit btn-danger",
+                              attrs: { type: "button" },
+                              on: { click: _vm.checkForm }
+                            },
+                            [
+                              _vm._v(
+                                "\n                  Dismiss\n                  "
                               )
                             ]
                           )
                         ])
                       ])
-                    ])
-                  ])
+                    }),
+                    0
+                  )
                 ]
               )
             ]),
