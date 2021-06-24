@@ -12,5 +12,7 @@ namespace HicadStockSystem.Core
         public string Unit { get; set; }
         public string ItemDescription { get; set; }
         public decimal? Quantity { get; set; }
+        //public string RequisitionNo { get; set; }
+        public float? currentBalance { get; set; }
     }
 }

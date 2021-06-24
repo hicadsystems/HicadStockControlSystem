@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HicadStockSystem.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -34,5 +35,13 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_Requisition
 
         //public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
+        public List<ItemListVM> ItemLists { get; set; }
     }
+
+    //public class ItemListViewModel
+    //{
+    //    public string Itemcode { get; set; }
+    //    public float? Quantity { get; set; }
+    //    public string Unit { get; set; }
+    //}
 }

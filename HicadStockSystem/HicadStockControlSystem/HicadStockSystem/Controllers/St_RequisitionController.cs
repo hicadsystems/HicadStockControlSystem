@@ -143,11 +143,18 @@ namespace HicadStockSystem.Controllers
             var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
             if (requisitioInDb == null)
                 return BadRequest();
+            foreach (var item in requisitionVM.ItemLists)
+            {
+                requisitioInDb = _requisition.GetByItemCode(item.ItemCode);
+                _mapper.Map(requisitionVM, requisitioInDb);
+                //requisitioInDb.ItemCode = item.ItemCode;
+                requisitioInDb.Quantity = (float?)item.Quantity;
+                requisitioInDb.Description = item.ItemDescription;
+                requisitioInDb.Unit = item.Unit;
+                requisitioInDb.UpdatedOn = DateTime.Now;
+                await _requisition.RequisitioApprovalAsync(requisitioInDb);
 
-            _mapper.Map(requisitionVM, requisitioInDb);
-            requisitioInDb.UpdatedOn = DateTime.Now;
-            await _requisition.RequisitioApprovalAsync(requisitioInDb);
-
+            }
             return Ok(requisitioInDb);
         }
 

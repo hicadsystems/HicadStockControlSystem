@@ -33,5 +33,7 @@ namespace HicadStockSystem.Core.IRespository
         //Task<IEnumerable<string>> GetAllByReqNo(string reqno);
         float? CheckCurrentBal(CreateSt_RequisitionVM requisition);
         List<ItemListVM> ItemLists(string reqNo);
+
+        St_Requisition GetByItemCode(string itemcode);
     }
 }

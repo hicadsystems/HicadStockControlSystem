@@ -81,6 +81,7 @@
           </div>
           <br />
           <div class="row">
+          
             <table class="table table-striped table-bordered table-hover">
               <thead>
                 <tr>
@@ -92,41 +93,45 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in postBody.itemLists" :key="item.itemCode">
+                <tr v-for="item in postBody.itemLists" :key="item.itemcode">
                   <td>
-                    <input
+                    <!--<input
                       class="form-control"
                       name="itemCode "
                       readonly="readonly"
                       v-model="item.itemCode"
-                    />
+                    />-->
+                    {{item.itemCode}}
                   </td>
                   <td>
-                    <input
+                    <!--<input
                       class="form-control"
                       name="description "
                       readonly="readonly"
                       v-model="item.itemDescription"
-                    />
+                    />-->
+                    {{item.itemDescription}}
                   </td>
                   <td>
-                    <input
+                    <!--<input
                       class="form-control"
                       name="quantity"
                       readonly="readonly"
                       v-model="item.requested"
-                    />
+                    />-->
+                    {{item.requested}}
                   </td>
                   <td>
                     <input
                       class="form-control"
                       v-model="item.quantity"
                       name="approvedQty"
-                      :class="{ 'is-invalid': !quantityIsValid && qtyblur }"
+                      :class="{ 'is-invalid': item.quantity > item.currentBalance && isSubmitted}"
                       v-on:blur="qtyblur = true"
                     />
+                    {{quantityIsValid}}
                     <div class="invalid-feedback">
-                      <span class="text-danger h5">Invalid Entry</span>
+                      <span class="text-danger h5">Availaible quantity {{item.currentBalance}}</span>
                     </div>
                     <input
                       type="hidden"
@@ -134,18 +139,12 @@
                       class="form-control"
                       :value="item.unit"
                     />
+                    
                   </td>
                   <td>
                     <button
-                      class="btn btn-submit btn-primary"
-                      v-on:click="checkForm"
-                      type="button"
-                    >
-                      Sign
-                    </button>
-                    <button
                       class="btn btn-submit btn-danger"
-                      v-on:click="checkForm"
+                      @click="dismissItem(item.itemcode)"
                       type="button"
                     >
                     Dismiss
@@ -155,7 +154,16 @@
               </tbody>
             </table>
           </div>
-
+          <div  role="group">
+            <button
+              class="btn btn-submit btn-primary float-right"
+              v-on:click="checkForm"
+              type="submit"
+              v-if="this.postBody.itemLists.length>0"
+            >
+              Process
+            </button>
+          </div>
           <br />
         </div>
       </div>
@@ -181,6 +189,7 @@ export default {
       valid: false,
       reqblur: false,
       qtyblur: false,
+      isSubmitted:false,
 
       postBody: {
         locationCode: "",
@@ -200,14 +209,7 @@ export default {
         //   unit: "",
         // },
         // unit:"",
-        itemLists: [
-          //   {
-          //   itemCode: "",
-          //   description: "",
-          //   Requestedquantity: "",
-          //   unit: "",
-          // },
-        ],
+        itemLists: [],
       },
     };
   },
@@ -219,7 +221,7 @@ export default {
   methods: {
     checkForm() {
       this.validate();
-      if (this.valid) {
+      if (this.isSubmitted=true) {
         // e.preventDefault();
         axios
           .patch(`/api/requisition/RequisitionApproval`, this.postBody)
@@ -293,10 +295,13 @@ export default {
         this.RequisitionList = response.data;
       });
     },
+    dismissItem(itemcode){
+      this.postBody.itemLists.splice(this.itemCode, 1)
+    },
     validate() {
       this.reqblur = true;
       this.qtyblur = true;
-      if (this.requisitionNoIsValid && this.quantityIsValid) {
+      if (this.requisitionNoIsValid /*&& this.quantityIsValid*/) {
         this.valid = true;
       } else {
         this.valid = false;
@@ -310,11 +315,16 @@ export default {
     },
     //needs more validation
     quantityIsValid() {
-      return (
-        this.postBody.itemLists.quantity != "" &&
-        parseInt(this.postBody.itemLists.quantity) >= 0
+      this.postBody.itemLists.forEach(function(item){
+        console.log(item.quantity != "" && item.currentBalance > item.quantity)
+        /*if(item.quantity < item.currentBalance && item.quantity != "" )*/
+        return (
+        item.quantity != "" &&
+        item.currentBalance > item.quantity
         // this.postBody.itemLists.quantity != "" && parseInt(this.postBody.itemLists.quantity) >= 0
       );
+      })
+      
     },
     // setter() {
     //   let objecttoedit = this.$store.state.objectToUpdate;

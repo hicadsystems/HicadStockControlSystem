@@ -124,7 +124,7 @@
                   class="form-control"
                   name="quantity"
                   v-model="newItem.quantity"
-                  :class="{ 'is-invalid': !quantityIsValid && quantityblur }"
+                  :class="{ 'is-invalid': !quantityIsValid && quantityblur && isAddItem}"
                   v-on:blur="quantityblur = true"
                 />
                 {{ quantityIsValid }}
@@ -238,6 +238,7 @@ export default {
       quantityblur: false,
       valid: false,
       isSelected: false,
+      isAddItem: false,
 
       // lineItems: [],
       // locationCode: "",
@@ -447,6 +448,7 @@ export default {
 
         this.newItem = { itemCode: "", quantity: "", unit: "" };
         // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
+        this.isAddItem = true;
 
         // this.currentBal -= this.quantity
       }else{

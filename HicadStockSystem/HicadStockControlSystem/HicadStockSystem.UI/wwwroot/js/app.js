@@ -3218,6 +3218,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3236,6 +3244,7 @@ __webpack_require__.r(__webpack_exports__);
       valid: false,
       reqblur: false,
       qtyblur: false,
+      isSubmitted: false,
       postBody: {
         locationCode: "",
         requisitionNo: "",
@@ -3254,13 +3263,7 @@ __webpack_require__.r(__webpack_exports__);
         //   unit: "",
         // },
         // unit:"",
-        itemLists: [//   {
-          //   itemCode: "",
-          //   description: "",
-          //   Requestedquantity: "",
-          //   unit: "",
-          // },
-        ]
+        itemLists: []
       }
     };
   },
@@ -3273,7 +3276,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.validate();
 
-      if (this.valid) {
+      if (this.isSubmitted = true) {
         // e.preventDefault();
         axios.patch("/api/requisition/RequisitionApproval", this.postBody).then(function (response) {
           _this.responseMessage = response.data.responseDescription;
@@ -3342,13 +3345,18 @@ __webpack_require__.r(__webpack_exports__);
         _this4.RequisitionList = response.data;
       });
     },
+    dismissItem: function dismissItem(itemcode) {
+      this.postBody.itemLists.splice(this.itemCode, 1);
+    },
     validate: function validate() {
       this.reqblur = true;
       this.qtyblur = true;
 
-      if (this.requisitionNoIsValid && this.quantityIsValid) {
-        this.valid = true;
-      } else {
+      if (this.requisitionNoIsValid
+      /*&& this.quantityIsValid*/
+      ) {
+          this.valid = true;
+        } else {
         this.valid = false;
         return;
       }
@@ -3360,8 +3368,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     //needs more validation
     quantityIsValid: function quantityIsValid() {
-      return this.postBody.itemLists.quantity != "" && parseInt(this.postBody.itemLists.quantity) >= 0 // this.postBody.itemLists.quantity != "" && parseInt(this.postBody.itemLists.quantity) >= 0
-      ;
+      this.postBody.itemLists.forEach(function (item) {
+        console.log(item.quantity != "" && item.currentBalance > item.quantity);
+        /*if(item.quantity < item.currentBalance && item.quantity != "" )*/
+
+        return item.quantity != "" && item.currentBalance > item.quantity // this.postBody.itemLists.quantity != "" && parseInt(this.postBody.itemLists.quantity) >= 0
+        ;
+      });
     } // setter() {
     //   let objecttoedit = this.$store.state.objectToUpdate;
     //   if (objecttoedit.supplierCode) {
@@ -3627,6 +3640,7 @@ __webpack_require__.r(__webpack_exports__);
       quantityblur: false,
       valid: false,
       isSelected: false,
+      isAddItem: false,
       // lineItems: [],
       // locationCode: "",
       currentBal: "",
@@ -3830,7 +3844,8 @@ __webpack_require__.r(__webpack_exports__);
           quantity: "",
           unit: ""
         }; // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
-        // this.currentBal -= this.quantity
+
+        this.isAddItem = true; // this.currentBal -= this.quantity
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
       } // alert(this.newItem.itemCode)
@@ -12463,84 +12478,29 @@ var render = function() {
                   _c(
                     "tbody",
                     _vm._l(_vm.postBody.itemLists, function(item) {
-                      return _c("tr", { key: item.itemCode }, [
+                      return _c("tr", { key: item.itemcode }, [
                         _c("td", [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: item.itemCode,
-                                expression: "item.itemCode"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { name: "itemCode ", readonly: "readonly" },
-                            domProps: { value: item.itemCode },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(item, "itemCode", $event.target.value)
-                              }
-                            }
-                          })
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(item.itemCode) +
+                              "\n                "
+                          )
                         ]),
                         _vm._v(" "),
                         _c("td", [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: item.itemDescription,
-                                expression: "item.itemDescription"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              name: "description ",
-                              readonly: "readonly"
-                            },
-                            domProps: { value: item.itemDescription },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  item,
-                                  "itemDescription",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(item.itemDescription) +
+                              "\n                "
+                          )
                         ]),
                         _vm._v(" "),
                         _c("td", [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: item.requested,
-                                expression: "item.requested"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { name: "quantity", readonly: "readonly" },
-                            domProps: { value: item.requested },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(item, "requested", $event.target.value)
-                              }
-                            }
-                          })
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(item.requested) +
+                              "\n                "
+                          )
                         ]),
                         _vm._v(" "),
                         _c("td", [
@@ -12555,7 +12515,9 @@ var render = function() {
                             ],
                             staticClass: "form-control",
                             class: {
-                              "is-invalid": !_vm.quantityIsValid && _vm.qtyblur
+                              "is-invalid":
+                                item.quantity > item.currentBalance &&
+                                _vm.isSubmitted
                             },
                             attrs: { name: "approvedQty" },
                             domProps: { value: item.quantity },
@@ -12571,8 +12533,19 @@ var render = function() {
                               }
                             }
                           }),
-                          _vm._v(" "),
-                          _vm._m(2, true),
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(_vm.quantityIsValid) +
+                              "\n                  "
+                          ),
+                          _c("div", { staticClass: "invalid-feedback" }, [
+                            _c("span", { staticClass: "text-danger h5" }, [
+                              _vm._v(
+                                "Availaible quantity " +
+                                  _vm._s(item.currentBalance)
+                              )
+                            ])
+                          ]),
                           _vm._v(" "),
                           _c("input", {
                             staticClass: "form-control",
@@ -12585,23 +12558,13 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "btn btn-submit btn-primary",
-                              attrs: { type: "button" },
-                              on: { click: _vm.checkForm }
-                            },
-                            [
-                              _vm._v(
-                                "\n                    Sign\n                  "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
                               staticClass: "btn btn-submit btn-danger",
                               attrs: { type: "button" },
-                              on: { click: _vm.checkForm }
+                              on: {
+                                click: function($event) {
+                                  return _vm.dismissItem(item.itemcode)
+                                }
+                              }
                             },
                             [
                               _vm._v(
@@ -12616,6 +12579,20 @@ var render = function() {
                   )
                 ]
               )
+            ]),
+            _vm._v(" "),
+            _c("div", { attrs: { role: "group" } }, [
+              this.postBody.itemLists.length > 0
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-submit btn-primary float-right",
+                      attrs: { type: "submit" },
+                      on: { click: _vm.checkForm }
+                    },
+                    [_vm._v("\n            Process\n          ")]
+                  )
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("br")
@@ -12652,14 +12629,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Options")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "invalid-feedback" }, [
-      _c("span", { staticClass: "text-danger h5" }, [_vm._v("Invalid Entry")])
     ])
   }
 ]
@@ -12913,7 +12882,8 @@ var render = function() {
                   ],
                   staticClass: "form-control",
                   class: {
-                    "is-invalid": !_vm.quantityIsValid && _vm.quantityblur
+                    "is-invalid":
+                      !_vm.quantityIsValid && _vm.quantityblur && _vm.isAddItem
                   },
                   attrs: { type: "number", name: "quantity" },
                   domProps: { value: _vm.newItem.quantity },

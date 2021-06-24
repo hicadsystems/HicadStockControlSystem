@@ -91,6 +91,11 @@ namespace HicadStockSystem.Persistence.Repository
         {
             return _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted==false).FirstOrDefault();
         }
+
+        public St_Requisition GetByItemCode(string itemcode)
+        {
+            return _dbContext.St_Requisitions.Where(sr => sr.ItemCode == itemcode && sr.IsDeleted == false).FirstOrDefault();
+        }
         //check 
         public List<St_Requisition> GetByReqNoForApproval(string reqNo)
         {
@@ -162,6 +167,17 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
+        //public St_Requisition GetItem(string reqNo, string itemcode)
+        //{
+        //    return _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted == false).FirstOrDefault();
+        //}
+        public async Task DeleteItemAsync(string reqNo, string itemcode)
+        {
+            var requisitionInDb = GetByReqNo(reqNo);
+            requisitionInDb.IsDeleted = true;
+            await _uow.CompleteAsync();
+        }
+
 
 
 
@@ -226,11 +242,11 @@ namespace HicadStockSystem.Persistence.Repository
         public async Task<RequesitionVM> RequesitionsVM(string reqNo)
         {
             //var code = GetByReqNo(reqNo);
-
+            var formatdate = new DateTime().ToString("MM/dd/yyyy HH:mm:ss");
                 return await (from requisition in _dbContext.St_Requisitions
                               join item in _dbContext.St_ItemMasters on requisition.ItemCode equals item.ItemCode
                               join costCenter in _dbContext.Ac_CostCentres on requisition.LocationCode equals costCenter.UnitCode
-                              where requisition.RequisitionNo == reqNo
+                              where requisition.RequisitionNo == reqNo && requisition.IsDeleted == false
 
                               select new RequesitionVM
                               {
@@ -240,9 +256,9 @@ namespace HicadStockSystem.Persistence.Repository
                                   Department = costCenter.UnitDesc,
                                   CostLocCode = requisition.LocationCode,
                                   DateAndTime = requisition.RequisitionDate.ToString(),
-                                  //ItemCode = item.ItemCode,
-                                  //ItemDescription = item.ItemDesc,
-                                  //Requested = requisition.Quantity,
+                                  ItemCode = item.ItemCode,
+                                  ItemDescription = item.ItemDesc,
+                                  Requested = requisition.Quantity,
                                   ItemLists = ItemLists(reqNo),
                                   DateCreated = requisition.CreatedOn.ToString(),
                                   ApprovedBy = requisition.ApprovedBy,
@@ -254,6 +270,7 @@ namespace HicadStockSystem.Persistence.Repository
         public List<ItemListVM> ItemLists(string reqNo)
         {
             return  (from requisition in _dbContext.St_Requisitions
+                     join stock in _dbContext.St_StockMasters on requisition.ItemCode equals stock.ItemCode
                           where requisition.RequisitionNo == reqNo
                           select new ItemListVM
                           {
@@ -261,7 +278,8 @@ namespace HicadStockSystem.Persistence.Repository
                               ItemDescription = requisition.Description,
                               Requested = requisition.Quantity,
                               Unit = requisition.Unit,
-                              Quantity = requisition.SupplyQty
+                              Quantity = requisition.SupplyQty,
+                              currentBalance = (stock.OpenBalance + stock.Receipts - stock.Issues) - stock.QtyInTransaction
                           }).ToList();
 
         }
