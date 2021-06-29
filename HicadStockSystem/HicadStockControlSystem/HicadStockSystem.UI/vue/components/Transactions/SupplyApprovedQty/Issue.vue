@@ -19,10 +19,10 @@
                 </option>
                 <option
                   v-for="requisition in RequisitionList"
-                  v-bind:value="requisition.requisitionNo"
-                  v-bind:key="requisition.requisitionNo"
+                  v-bind:value="requisition"
+                  v-bind:key="requisition"
                 >
-                  {{ requisition.requisitionNo }}
+                  {{ requisition }}
                 </option>
               </select>
               <div class="invalid-feedback">
@@ -31,7 +31,7 @@
             </div>
           </div>
           <br />
-           <div class="row">
+          <div class="row">
             <div class="col-6">
               <label for="unit" class="mb-1">Authorised By</label>
               <input
@@ -61,12 +61,31 @@
                 readonly="readonly"
                 v-model="postBody.department"
               />
-              <input type="hidden" name="locationCode" class="form-control" :value="postBody.locationCode">
-              <input type="hidden" name="createdOn" class="form-control" :value="postBody.createdOn">
-              <input type="hidden" name="requisitionDate" class="form-control" :value="postBody.requisitionDate">
-              <input type="hidden" name="requisitionDate" class="form-control" :value="postBody.unit">
+              <input
+                type="hidden"
+                name="locationCode"
+                class="form-control"
+                :value="postBody.locationCode"
+              />
+              <input
+                type="hidden"
+                name="createdOn"
+                class="form-control"
+                :value="postBody.createdOn"
+              />
+              <input
+                type="hidden"
+                name="requisitionDate"
+                class="form-control"
+                :value="postBody.requisitionDate"
+              />
+              <input
+                type="hidden"
+                name="requisitionDate"
+                class="form-control"
+                :value="postBody.unit"
+              />
             </div>
-           
           </div>
           <br />
           <div class="row">
@@ -77,48 +96,53 @@
                   <th>Item Description</th>
                   <th>Quantity Required</th>
                   <th>Quantity Supplied</th>
-                  <th>Options</th>
+                  <!--<th>Options</th>-->
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="item in postBody.itemLists" :key="item.itemcode">
                   <td>
-                    <input
+                    <!-- <input
                       class="form-control"
                       name="itemCode "
                       readonly="readonly"
                       v-model="postBody.itemCode"
-                    />
+                    />-->
+                    {{ item.itemCode }}
                   </td>
                   <td>
-                    <input
+                    <!--<input
                       class="form-control"
                       name="description "
                       readonly="readonly"
                       v-model="postBody.description"
-                    />
+                    />-->
+                    {{ item.itemDescription }}
                   </td>
                   <td>
-                    <input
+                    <!--<input
                       class="form-control"
                       name="quantity"
                       readonly="readonly"
                       v-model="postBody.quantity"
-                    />
+                    />-->
+                    {{ item.requested }}
                   </td>
                   <td>
                     <input
+                      type="number"
                       class="form-control"
-                      v-model="postBody.supplyQty"
+                      v-model="item.quantity"
                       name="approvedQty"
-                      :class="{ 'is-invalid': !quantityIsValid && qtyblur }"
-                      v-on:blur="qtyblur = true"
+                      :class="{ 'is-invalid':
+                            item.quantity >
+                            item.requested }"
                     />
                     <div class="invalid-feedback">
                       <span class="text-danger h5">Invalid Entry</span>
                     </div>
                   </td>
-                  <td>
+                  <!--<td>
                     <div role="group">
                       <button
                         class="btn btn-submit btn-primary float-right"
@@ -128,12 +152,21 @@
                         Sign
                       </button>
                     </div>
-                  </td>
+                  </td>-->
                 </tr>
               </tbody>
             </table>
           </div>
-
+          <div role="group">
+            <button
+              class="btn btn-submit btn-primary float-right"
+              v-on:click="checkForm"
+              type="submit"
+              v-if="this.postBody.itemLists.length > 0"
+            >
+              Process
+            </button>
+          </div>
           <br />
         </div>
       </div>
@@ -168,11 +201,12 @@ export default {
         requisitionDate: "",
         itemCode: "",
         description: "",
-        quantity: "",
+        requested: "",
         approvedBy: "",
         createdOn: "",
-        supplyQty: "",
-        unit: ""
+        quantity: "",
+        itemLists: [],
+        unit: "",
       },
     };
   },
@@ -196,9 +230,9 @@ export default {
               this.postBody.userId = "";
               this.postBody.requisitionDate = "";
               this.postBody.createdOn = "";
-              this.postBody.itemCode = "";
-              this.postBody.description = "";
-              this.postBody.quantity = 0;
+              // this.postBody.itemCode = "";
+              // this.postBody.description = "";
+              // this.postBody.quantity = 0;
               this.postBody.approvedBy = "";
               this.postBody.supplyQty = "";
               this.postBody.locationCode = "";
@@ -219,7 +253,7 @@ export default {
 
     getRequisitionApproval() {
       // this.postBody.itemCode="1234"
-      alert(this.postBody.requisitionNo)
+      alert(this.postBody.requisitionNo);
       axios
         .get(
           `/api/requisition/RequisitionApproval/${this.postBody.requisitionNo}`
@@ -231,12 +265,13 @@ export default {
           this.postBody.department = response.data.department;
           this.postBody.requisitionDate = response.data.dateAndTime;
           this.postBody.requisitionNo = response.data.requisitionNo;
-          this.postBody.itemCode = response.data.itemCode;
-          this.postBody.description = response.data.itemDescription;
-          this.postBody.quantity = response.data.requested;
+          // this.postBody.itemCode = response.data.itemCode;
+          // this.postBody.description = response.data.itemDescription;
+          // this.postBody.quantity = response.data.requested;
           this.postBody.createdOn = response.data.dateCreated;
           this.postBody.locationCode = response.data.costLocCode;
-          this.postBody.unit = response.data.unit;
+          // this.postBody.unit = response.data.unit;
+          this.postBody.itemLists = response.data.itemLists;
         });
     },
     getRequisition() {
@@ -246,8 +281,8 @@ export default {
     },
     validate() {
       this.reqblur = true;
-      this.qtyblur = true;
-      if (this.requisitionNoIsValid && this.quantityIsValid) {
+      // this.qtyblur = true;
+      if (this.requisitionNoIsValid /*&& this.quantityIsValid*/) {
         this.valid = true;
       } else {
         this.valid = false;
@@ -262,8 +297,7 @@ export default {
     //needs more validation
     quantityIsValid() {
       return (
-        this.postBody.quantity != "" &&
-        parseInt(this.postBody.quantity) >= 0
+        this.postBody.quantity != "" && parseInt(this.postBody.quantity) >= 0
       );
     },
     // setter() {

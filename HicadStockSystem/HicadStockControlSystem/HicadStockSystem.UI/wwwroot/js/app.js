@@ -2893,48 +2893,375 @@ __webpack_require__.r(__webpack_exports__);
       responseMessage: ""
     };
   },
-  //   created() {
-  //     this.$store.state.objectToUpdate = null;
-  //   },
-  //   watch: {
-  //     "$store.state.objectToUpdate": function(newVal, oldVal) {
-  //       this.getAllCompany();
-  //       this.processDelete();
-  //       // this.processRetrieve();
-  //     },
-  //   },
   mounted: function mounted() {
     this.getCompanyProfile();
   },
   methods: {
-    // processRetrieve: function(Status) {
-    //   // alert(Status)
-    //   this.$store.state.objectToUpdate = Status;
-    // },
-    // // processRetrieve: function(Status) {
-    // //   // alert(Status)
-    // //   this.$store.state.objectToUpdate = Status;
-    // // },
-    // processDelete: function(companyCode) {
-    //   //alert(companyCode);
-    //   axios
-    //     .delete(`/api/st_stksystem/${companyCode}`)
-    //     .then((response) => {
-    //       if (response.data.responseCode == "200") {
-    //         alert("company successfully deleted");
-    //         this.getAllCompany();
-    //       }
-    //     })
-    //     .catch((e) => {
-    //       this.errors.push(e);
-    //     });
-    // },
     getCompanyProfile: function getCompanyProfile() {
       var _this = this;
 
       axios.get("/api/st_stksystem/").then(function (response) {
         return _this.statusList = response.data;
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
+/* harmony import */ var vue_simple_alert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-simple-alert */ "./node_modules/vue-simple-alert/lib/index.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"],
+    VueSimpleAlert: vue_simple_alert__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      errors: null,
+      responseMessage: "",
+      submitorUpdate: "Submit",
+      canProcess: true,
+      DepartmentList: null,
+      ItemList: null,
+      StockItemsList: null,
+      locationblur: false,
+      itemCodeblur: false,
+      quantityblur: false,
+      valid: false,
+      isSelected: false,
+      isAddItem: false,
+      // lineItems: [],
+      // locationCode: "",
+      currentBal: "",
+      postBody: {
+        // itemCode: "",
+        // quantity: "",
+        // unit: "",
+        locationCode: "",
+        lineItems: [] // itemDesc: "",
+        // qtyInTransaction: 0,
+
+      },
+      newItem: {
+        quantity: 0,
+        itemCode: "",
+        unit: "" // itemDesc:""
+
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.getDepartment();
+    this.getItemCode();
+  },
+  // watch: {
+  //   "$store.state.objectToUpdate": function(newVal, oldVal) {
+  //     (this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode),
+  //       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
+  //       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemDesc),
+  //       (this.postBody.qtyInTransaction = this.$store.state.objectToUpdate.qtyInTransaction),
+  //       (this.postBody.quantity = this.$store.state.objectToUpdate.quantity);
+  //     this.postBody.unit = this.$store.state.objectToUpdate.unit;
+  //     this.submitorUpdate = "Update";
+  //   },
+  // },
+  methods: {
+    checkForm: function checkForm() {
+      var _this = this;
+
+      alert(this.postBody);
+      console.log(this.postBody); // console.log(this.postBody.locationCode);
+
+      axios.post("/api/requisition/", this.postBody).then(function (response) {
+        _this.responseMessage = response.data.responseDescription;
+        _this.canProcess = true;
+
+        if (response.data.responseCode == "200") {
+          _this.postBody.locationCode = "", _this.postBody.lineItems = [];
+        }
+      })["catch"](function (e) {
+        _this.errors.push(e);
+      }); // this.validate();
+      // if (this.valid) {
+      //   e.preventDefault();
+      //   this.canProcess = false;
+      //   // axios
+      //   //   .post(`/api/requisition/`, this.postBody)
+      //   //   .then((response) => {
+      //   //     this.responseMessage = response.data.responseDescription;
+      //   //     this.canProcess = true;
+      //   //     if (response.data.responseCode == "200") {
+      //   //       // this.postBody.locationCode = "";
+      //   //       // this.postBody.itemCode = "";
+      //   //       // this.postBody.itemDesc = "";
+      //   //       // this.postBody.quantity = "";
+      //   //       // this.postBody.unit = "";
+      //   //       // this.$store.stateName.objectToUpdate = "create";
+      //   //       location = this.locationCode;
+      //   //       this.lineItems = [];
+      //   //     }
+      //   //     // this.document.getElementById('#requestForm').value = "";
+      //   //     // this.$refs.requestForm.reset();
+      //   //     // window.location.reload();
+      //   //   })
+      //   //   .catch((e) => {
+      //   //     if (e) this.errors.push(e);
+      //   //   });
+      //   // // this.$alert("Submit Form", "Ok", "info");
+      //   this.postPost();
+      // } else {
+      //   this.$alert("Please Fill Highlighted Fields", "missing", "error");
+      //   this.errors = [];
+      //   this.errors.push("Supply all the required field");
+      // }
+    },
+    postPost: function postPost() {
+      var _this2 = this;
+
+      if (this.submitorUpdate == "Submit") {
+        axios.post("/api/requisition/", this.postBody).then(function (response) {
+          _this2.responseMessage = response.data.responseDescription;
+          _this2.canProcess = true;
+
+          if (response.data.responseCode == "200") {
+            // this.postBody.locationCode = "";
+            // this.postBody.itemCode = "";
+            // this.postBody.itemDesc = "";
+            // this.postBody.quantity = "";
+            // this.postBody.unit = "";
+            // this.$store.stateName.objectToUpdate = "create";
+            location = _this2.locationCode;
+            _this2.lineItems = [];
+          } // this.document.getElementById('#requestForm').value = "";
+          // this.$refs.requestForm.reset();
+          // window.location.reload();
+
+        })["catch"](function (e) {
+          if (e) _this2.errors.push(e);
+        });
+      }
+
+      if (this.submitorUpdate == "Update") {
+        alert("Ready to Update");
+        axios.put("/api/requisition/", this.postBody).then(function (response) {
+          _this2.responseMessage = response.data.responseDescription;
+          _this2.canProcess = true;
+
+          if (response.data.responseCode == "200") {
+            _this2.submitorUpdate = "Submit";
+            _this2.postBody.locationCode = "";
+            _this2.postBody.itemCode = "";
+            _this2.postBody.itemDesc = "";
+            _this2.postBody.quantity = 0;
+            _this2.postBody.unit = "";
+            _this2.$store.state.objectToUpdate = "update";
+          }
+
+          window.location.reload();
+        })["catch"](function (e) {
+          _this2.errors.push(e);
+        });
+      }
+    },
+    getDepartment: function getDepartment() {
+      var _this3 = this;
+
+      axios.get("/api/requisition/getcostcentre").then(function (response) {
+        _this3.DepartmentList = response.data;
+      });
+    },
+    //gets the unit, currentBal of item
+    getStockItems: function getStockItems() {
+      var _this4 = this;
+
+      // this.postBody.itemCode="1234"
+      // alert(this.postBody.itemCode);
+      axios.get("/api/requisition/getStockItems/".concat(this.newItem.itemCode)).then(function (response) {
+        _this4.StockItemsList = response.data;
+        _this4.currentBal = response.data.currentBalance;
+        _this4.newItem.unit = response.data.unit; // this.postBody.currentBal = response.data.currentBalance;
+        // this.postBody.unit = response.data.unit;
+      });
+    },
+    getItemCode: function getItemCode() {
+      var _this5 = this;
+
+      axios.get("/api/requisition/getItemCode").then(function (response) {
+        _this5.ItemList = response.data;
+      });
+    },
+    validate: function validate() {
+      this.locationblur = true;
+      this.itemCodeblur = true;
+      this.quantityblur = true;
+
+      if (this.departmentIsValid && this.itemCodeIsValid && this.quantityIsValid) {
+        this.valid = true;
+      } else {
+        this.valid = false;
+        return;
+      }
+    }
+    /* addLineItem() {
+      this.validate();
+      if (this.valid) {
+        let newItem = {
+          itemCode: this.newItem.itemCode,
+          quantity: Number(this.newItem.quantity),
+          unit: this.newItem.unit,
+        };
+          //checking for duplicate item
+        let existingItems = this.postBody.lineItems.map((item) => item.itemCode);
+          if (existingItems.includes(newItem.itemCode)) {
+          let lineItem = this.postBody.lineItems.find(
+            (item) => item.itemCode === newItem.itemCode
+          );
+            let currentQuantity = Number(lineItem.quantity);
+          let updateQuantity = (currentQuantity += newItem.quantity);
+          lineItem.quantity = updateQuantity;
+        } else {
+          let result = this.postBody.lineItems.push(this.newItem);
+          console.log(result);
+        }
+          this.newItem = { itemCode: "", quantity: "", unit: "" };
+        // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
+        this.isAddItem = true;
+          // this.currentBal -= this.quantity
+      }else{
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
+      }
+      // alert(this.newItem.itemCode)
+    },
+      removeItem(itemCode){
+      this.lineItems.splice(this.itemCode, 1)
+    }*/
+
+  },
+  computed: {
+    departmentIsValid: function departmentIsValid() {
+      // return this.postBody.locationCode != "";
+      return this.locationCode != "";
+    },
+    itemCodeIsValid: function itemCodeIsValid() {
+      // return this.postBody.itemCode != "";
+      return this.newItem.itemCode != "";
+    },
+    quantityIsValid: function quantityIsValid() {
+      return this.newItem.quantity != "" && (parseInt(this.newItem.quantity) >= 0 || this.newItem.quantity == null) && parseInt(this.newItem.quantity) <= parseInt(this.currentBal);
     }
   }
 });
@@ -3226,6 +3553,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3263,8 +3600,18 @@ __webpack_require__.r(__webpack_exports__);
         //   unit: "",
         // },
         // unit:"",
-        itemLists: []
-      }
+        itemLists: [],
+        unapprovedItems: []
+      },
+      //an array of object from sliced array
+      unapproveItem: [{
+        currentBalance: "",
+        itemCode: "",
+        requested: "",
+        unit: "",
+        itemDescription: "",
+        quantity: ""
+      }]
     };
   },
   mounted: function mounted() {
@@ -3276,7 +3623,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.validate();
 
-      if (this.isSubmitted = true) {
+      if (this.valid) {
         // e.preventDefault();
         axios.patch("/api/requisition/RequisitionApproval", this.postBody).then(function (response) {
           _this.responseMessage = response.data.responseDescription;
@@ -3327,26 +3674,58 @@ __webpack_require__.r(__webpack_exports__);
         _this2.postBody.itemLists = response.data.itemLists;
       });
     },
-    getRequisitionApprovalItems: function getRequisitionApprovalItems() {
+    // getRequisitionApprovalItems() {
+    //   axios
+    //     .get(
+    //       `/api/requisition/RequisitionApprovalItems/${this.postBody.requisitionNo}`
+    //     )
+    //     .then((response) => {
+    //       this.ItemApprovalList = response.data;
+    //       this.postBody.itemCode = response.data.itemCode;
+    //       this.postBody.description = response.data.itemDescription;
+    //       this.postBody.Requestedquantity = response.data.requested;
+    //       this.postBody.unit = response.data.unit;
+    //     });
+    // },
+    getRequisition: function getRequisition() {
       var _this3 = this;
 
-      axios.get("/api/requisition/RequisitionApprovalItems/".concat(this.postBody.requisitionNo)).then(function (response) {
-        _this3.ItemApprovalList = response.data;
-        _this3.postBody.itemCode = response.data.itemCode;
-        _this3.postBody.description = response.data.itemDescription;
-        _this3.postBody.Requestedquantity = response.data.requested;
-        _this3.postBody.unit = response.data.unit;
-      });
-    },
-    getRequisition: function getRequisition() {
-      var _this4 = this;
-
       axios.get("/api/requisition/").then(function (response) {
-        _this4.RequisitionList = response.data;
+        _this3.RequisitionList = response.data;
       });
     },
     dismissItem: function dismissItem(itemcode) {
-      this.postBody.itemLists.splice(this.itemCode, 1);
+      var _this4 = this;
+
+      //dismissed items
+      var item = this.postBody.itemLists.splice(this.itemCode, 1); //object of dismissed items
+
+      this.unapproveItem = {
+        itemCode: item[0].itemCode,
+        requested: item[0].requested,
+        unit: item[0].unit,
+        itemDescription: item[0].itemDescription,
+        quantity: item[0].quantity
+      }; //array of dismissed items
+
+      var result = this.postBody.unapprovedItems.push(this.unapproveItem);
+      axios.patch("/api/requisition/UnapprovedItems", this.postBody).then(function (response) {
+        _this4.responseMessage = response.data.responseDescription;
+        _this4.canProcess = true;
+
+        if (response.data.responseCode == "200") {
+          _this4.postBody.requisitionNo = "";
+          _this4.postBody.userId = "";
+          _this4.postBody.requisitionDate = "";
+          _this4.postBody.createdOn = "";
+          _this4.postBody.quantity = "";
+          _this4.postBody.locationCode = "";
+          _this4.postBody.unapprovedItems = [];
+        } // window.location.reload();
+
+      })["catch"](function (e) {
+        _this4.errors.push(e);
+      });
     },
     validate: function validate() {
       this.reqblur = true;
@@ -3692,7 +4071,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (e) {
         _this.errors.push(e);
-      }); // this.validate();
+      });
+      window.location.reload(); // this.validate();
       // if (this.valid) {
       //   e.preventDefault();
       //   this.canProcess = false;
@@ -5241,6 +5621,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5259,11 +5685,18 @@ __webpack_require__.r(__webpack_exports__);
       supplierList: null,
       itemList: null,
       postBody: {
-        itemCode: "",
+        // itemCode: "",
         docDate: "",
         supplier: "",
-        price: "",
-        quantity: ""
+        // price: "",
+        // quantity: "",
+        lineItems: []
+      },
+      newItem: {
+        quantity: 0,
+        itemCode: "",
+        unit: "",
+        price: ""
       }
     };
   },
@@ -5293,64 +5726,63 @@ __webpack_require__.r(__webpack_exports__);
         this.errors.push("Supply all the required field");
       }
     },
-    postPost: function postPost() {
+    // postPost() {
+    //   if (this.submitorUpdate == "Submit") {
+    //     axios
+    //       .post(`/api/stockhistory/`, this.postBody)
+    //       .then((response) => {
+    //         this.responseMessage = response.data.responseDescription;
+    //         this.canProcess = true;
+    //         if (response.data.responseCode == "200") {
+    //           this.postBody.itemCode = "";
+    //           this.postBody.docDate = "";
+    //           this.postBody.supplier = "";
+    //           this.postBody.price = "";
+    //           this.postBody.quantity = "";
+    //           this.$store.stateName.objectToUpdate = "create";
+    //         }
+    //         // this.$alert("Submit Form", "Ok", "info");
+    //         window.location.reload();
+    //       })
+    //       .catch((e) => {
+    //         this.errors.push(e);
+    //       });
+    //   }
+    //   if (this.submitorUpdate == "Update") {
+    //     alert("Ready to Update");
+    //     axios
+    //       .put(`/api/stockhistory/`, this.postBody)
+    //       .then((response) => {
+    //         this.responseMessage = response.data.responseDescription;
+    //         this.canProcess = true;
+    //         if (response.data.responseCode == "200") {
+    //           this.submitorUpdate = "Submit";
+    //           this.postBody.itemCode = "";
+    //           this.postBody.docDate = "";
+    //           this.postBody.supplier = "";
+    //           this.postBody.price = "";
+    //           this.postBody.quantity = "";
+    //           this.$store.state.objectToUpdate = "update";
+    //         }
+    //         window.location.reload();
+    //       })
+    //       .catch((e) => {
+    //         this.errors.push(e);
+    //       });
+    //   }
+    // },
+    getStockItem: function getStockItem() {
       var _this = this;
 
-      if (this.submitorUpdate == "Submit") {
-        axios.post("/api/stockhistory/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
-
-          if (response.data.responseCode == "200") {
-            _this.postBody.itemCode = "";
-            _this.postBody.docDate = "";
-            _this.postBody.supplier = "";
-            _this.postBody.price = "";
-            _this.postBody.quantity = "";
-            _this.$store.stateName.objectToUpdate = "create";
-          } // this.$alert("Submit Form", "Ok", "info");
-
-
-          window.location.reload();
-        })["catch"](function (e) {
-          _this.errors.push(e);
-        });
-      }
-
-      if (this.submitorUpdate == "Update") {
-        alert("Ready to Update");
-        axios.put("/api/stockhistory/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
-
-          if (response.data.responseCode == "200") {
-            _this.submitorUpdate = "Submit";
-            _this.postBody.itemCode = "";
-            _this.postBody.docDate = "";
-            _this.postBody.supplier = "";
-            _this.postBody.price = "";
-            _this.postBody.quantity = "";
-            _this.$store.state.objectToUpdate = "update";
-          }
-
-          window.location.reload();
-        })["catch"](function (e) {
-          _this.errors.push(e);
-        });
-      }
-    },
-    getStockItem: function getStockItem() {
-      var _this2 = this;
-
       axios.get("/api/itemmaster/").then(function (response) {
-        _this2.itemList = response.data;
+        _this.itemList = response.data;
       });
     },
     getSuppliers: function getSuppliers() {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.get("/api/supplier/").then(function (response) {
-        _this3.supplierList = response.data;
+        _this2.supplierList = response.data;
       });
     },
     validate: function validate() {
@@ -5364,24 +5796,65 @@ __webpack_require__.r(__webpack_exports__);
         this.valid = false;
         return;
       }
+    },
+    addLineItem: function addLineItem() {
+      this.validate();
+
+      if (this.valid) {
+        var newItem = {
+          itemCode: this.newItem.itemCode,
+          quantity: Number(this.newItem.quantity),
+          unit: this.newItem.unit
+        }; //checking for duplicate item
+
+        var existingItems = this.postBody.lineItems.map(function (item) {
+          return item.itemCode;
+        });
+
+        if (existingItems.includes(newItem.itemCode)) {
+          var lineItem = this.postBody.lineItems.find(function (item) {
+            return item.itemCode === newItem.itemCode;
+          });
+          var currentQuantity = Number(lineItem.quantity);
+          var updateQuantity = currentQuantity += newItem.quantity;
+          lineItem.quantity = updateQuantity;
+        } else {
+          var result = this.postBody.lineItems.push(this.newItem);
+          console.log(result);
+        }
+
+        this.newItem = {
+          itemCode: "",
+          quantity: "",
+          unit: ""
+        }; // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
+
+        this.isAddItem = true; // this.currentBal -= this.quantity
+      } else {
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
+      } // alert(this.newItem.itemCode)
+
+    },
+    removeItem: function removeItem(itemCode) {
+      this.lineItems.splice(this.itemCode, 1);
     }
   },
   computed: {
     itemIsValid: function itemIsValid() {
-      return this.postBody.itemCode != "" && this.postBody.itemCode.length >= 1;
+      return this.newItem.itemCode != "" && this.newItem.itemCode.length >= 1;
     },
     supplierIsValid: function supplierIsValid() {
       return this.postBody.supplier != "" && this.postBody.supplier.length >= 1;
     },
     priceIsValid: function priceIsValid() {
-      return this.postBody.price == "" || this.postBody.price.length >= 1 && parseInt(this.postBody.price) >= 1;
+      return this.newItem.price == "" || this.newItem.price.length >= 1 && parseInt(this.newItem.price) >= 1;
     },
     dateIsValid: function dateIsValid() {
       return this.postBody.docDate != "" // (this.postBody.price.length >= 1 && parseInt(this.postBody.price) >= 1)
       ;
     },
     quantityIsValid: function quantityIsValid() {
-      return this.postBody.quantity == "" || this.postBody.quantity.length >= 1 && parseInt(this.postBody.quantity) >= 1;
+      return this.newItem.quantity == "" || this.newItem.quantity.length >= 1 && parseInt(this.newItem.quantity) >= 1;
     },
     setter: function setter() {
       var objecttoedit = this.$store.state.objectToUpdate;
@@ -5555,6 +6028,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5581,10 +6087,11 @@ __webpack_require__.r(__webpack_exports__);
         requisitionDate: "",
         itemCode: "",
         description: "",
-        quantity: "",
+        requested: "",
         approvedBy: "",
         createdOn: "",
-        supplyQty: "",
+        quantity: "",
+        itemLists: [],
         unit: ""
       }
     };
@@ -5608,10 +6115,10 @@ __webpack_require__.r(__webpack_exports__);
             _this.postBody.requisitionNo = "";
             _this.postBody.userId = "";
             _this.postBody.requisitionDate = "";
-            _this.postBody.createdOn = "";
-            _this.postBody.itemCode = "";
-            _this.postBody.description = "";
-            _this.postBody.quantity = 0;
+            _this.postBody.createdOn = ""; // this.postBody.itemCode = "";
+            // this.postBody.description = "";
+            // this.postBody.quantity = 0;
+
             _this.postBody.approvedBy = "";
             _this.postBody.supplyQty = "";
             _this.postBody.locationCode = "";
@@ -5640,13 +6147,14 @@ __webpack_require__.r(__webpack_exports__);
         _this2.postBody.approvedBy = response.data.approvedBy;
         _this2.postBody.department = response.data.department;
         _this2.postBody.requisitionDate = response.data.dateAndTime;
-        _this2.postBody.requisitionNo = response.data.requisitionNo;
-        _this2.postBody.itemCode = response.data.itemCode;
-        _this2.postBody.description = response.data.itemDescription;
-        _this2.postBody.quantity = response.data.requested;
+        _this2.postBody.requisitionNo = response.data.requisitionNo; // this.postBody.itemCode = response.data.itemCode;
+        // this.postBody.description = response.data.itemDescription;
+        // this.postBody.quantity = response.data.requested;
+
         _this2.postBody.createdOn = response.data.dateCreated;
-        _this2.postBody.locationCode = response.data.costLocCode;
-        _this2.postBody.unit = response.data.unit;
+        _this2.postBody.locationCode = response.data.costLocCode; // this.postBody.unit = response.data.unit;
+
+        _this2.postBody.itemLists = response.data.itemLists;
       });
     },
     getRequisition: function getRequisition() {
@@ -5657,12 +6165,13 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     validate: function validate() {
-      this.reqblur = true;
-      this.qtyblur = true;
+      this.reqblur = true; // this.qtyblur = true;
 
-      if (this.requisitionNoIsValid && this.quantityIsValid) {
-        this.valid = true;
-      } else {
+      if (this.requisitionNoIsValid
+      /*&& this.quantityIsValid*/
+      ) {
+          this.valid = true;
+        } else {
         this.valid = false;
         return;
       }
@@ -12155,6 +12664,120 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=template&id=0f50e055&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=template&id=0f50e055& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "card col-sm-6" }, [
+      _c("div", { staticClass: "p-4 ml-2" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
+        _c("div", { attrs: { role: "group" } }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-submit btn-primary float-right",
+              attrs: { type: "submit" },
+              on: { click: _vm.checkForm }
+            },
+            [_vm._v("\n          Process\n        ")]
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-check" }, [
+      _c("input", {
+        staticClass: "form-check-input",
+        attrs: {
+          type: "radio",
+          name: "exampleRadios",
+          id: "exampleRadios1",
+          value: "option1",
+          checked: ""
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "label",
+        { staticClass: "form-check-label", attrs: { for: "exampleRadios1" } },
+        [_vm._v("\n          All\n        ")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-check" }, [
+      _c("input", {
+        staticClass: "form-check-input",
+        attrs: {
+          type: "radio",
+          name: "exampleRadios",
+          id: "exampleRadios2",
+          value: "option2"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "label",
+        { staticClass: "form-check-label", attrs: { for: "exampleRadios2" } },
+        [_vm._v("\n         Before Specific Code\n        ")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-check" }, [
+      _c("input", {
+        staticClass: "form-check-input",
+        attrs: {
+          type: "radio",
+          name: "exampleRadios",
+          id: "exampleRadios2",
+          value: "option2"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "label",
+        { staticClass: "form-check-label", attrs: { for: "exampleRadios2" } },
+        [_vm._v("\n         Specific Requisition\n        ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Requisition/StockApproval/ApprovalList.vue?vue&type=template&id=90121588&":
 /*!********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./vue/components/Requisition/StockApproval/ApprovalList.vue?vue&type=template&id=90121588& ***!
@@ -12268,338 +12891,342 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "form",
-      {
-        attrs: { method: "post" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.checkForm($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "p-5", attrs: { id: "vertical-form" } }, [
-          _c("div", { staticClass: "preview" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-4" }, [
-                _c("label", { staticClass: "mb-1", attrs: { for: "unit" } }, [
-                  _vm._v("Requisition No.")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.postBody.requisitionNo,
-                        expression: "postBody.requisitionNo"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    class: {
-                      "is-invalid": !_vm.requisitionNoIsValid && _vm.reqblur
-                    },
-                    attrs: { name: "requisitionNo" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.postBody,
-                            "requisitionNo",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                        function($event) {
-                          return _vm.getRequisitionApproval()
-                        }
-                      ],
-                      blur: function($event) {
-                        _vm.reqblur = true
-                      }
-                    }
-                  },
-                  [
-                    _c("option", [
-                      _vm._v(
-                        "\n                --select Requisition No.--\n              "
-                      )
-                    ]),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "form",
+          {
+            attrs: { method: "post" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.checkForm($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "p-5", attrs: { id: "vertical-form" } }, [
+              _c("div", { staticClass: "preview" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-4" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "unit" } },
+                      [_vm._v("Requisition No.")]
+                    ),
                     _vm._v(" "),
-                    _vm._l(_vm.RequisitionList, function(requisition) {
-                      return _c(
-                        "option",
-                        { key: requisition, domProps: { value: requisition } },
-                        [
-                          _vm._v(
-                            "\n                " +
-                              _vm._s(requisition) +
-                              "\n              "
-                          )
-                        ]
-                      )
-                    })
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _vm._m(0)
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-4" }, [
-                _c("label", { staticClass: "mb-1", attrs: { for: "unit" } }, [
-                  _vm._v("Requisition By")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.postBody.userId,
-                      expression: "postBody.userId"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { name: "userId ", readonly: "readonly" },
-                  domProps: { value: _vm.postBody.userId },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.postBody, "userId", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-4" }, [
-                _c("label", { staticClass: "mb-1", attrs: { for: "unit" } }, [
-                  _vm._v("Department")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.postBody.department,
-                      expression: "postBody.department"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { name: "department ", readonly: "readonly" },
-                  domProps: { value: _vm.postBody.department },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.postBody, "department", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "hidden", name: "locationCode" },
-                  domProps: { value: _vm.postBody.locationCode }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-4" }, [
-                _c("label", { staticClass: "mb-1", attrs: { for: "unit" } }, [
-                  _vm._v("Date and Time")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.postBody.requisitionDate,
-                      expression: "postBody.requisitionDate"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { name: "dateAndTime ", readonly: "readonly" },
-                  domProps: { value: _vm.postBody.requisitionDate },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.postBody,
-                        "requisitionDate",
-                        $event.target.value
-                      )
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "hidden", name: "createdOn" },
-                  domProps: { value: _vm.postBody.createdOn }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "table",
-                {
-                  staticClass: "table table-striped table-bordered table-hover"
-                },
-                [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.postBody.itemLists, function(item) {
-                      return _c("tr", { key: item.itemcode }, [
-                        _c("td", [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(item.itemCode) +
-                              "\n                "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(item.itemDescription) +
-                              "\n                "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(item.requested) +
-                              "\n                "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: item.quantity,
-                                expression: "item.quantity"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid":
-                                item.quantity > item.currentBalance &&
-                                _vm.isSubmitted
-                            },
-                            attrs: { name: "approvedQty" },
-                            domProps: { value: item.quantity },
-                            on: {
-                              blur: function($event) {
-                                _vm.qtyblur = true
-                              },
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(item, "quantity", $event.target.value)
-                              }
-                            }
-                          }),
-                          _vm._v(
-                            "\n                  " +
-                              _vm._s(_vm.quantityIsValid) +
-                              "\n                  "
-                          ),
-                          _c("div", { staticClass: "invalid-feedback" }, [
-                            _c("span", { staticClass: "text-danger h5" }, [
-                              _vm._v(
-                                "Availaible quantity " +
-                                  _vm._s(item.currentBalance)
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.postBody.requisitionNo,
+                            expression: "postBody.requisitionNo"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": !_vm.requisitionNoIsValid && _vm.reqblur
+                        },
+                        attrs: { name: "requisitionNo" },
+                        on: {
+                          change: [
+                            function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.postBody,
+                                "requisitionNo",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
                               )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("input", {
-                            staticClass: "form-control",
-                            attrs: { type: "hidden", name: "locationCode" },
-                            domProps: { value: item.unit }
-                          })
+                            },
+                            function($event) {
+                              return _vm.getRequisitionApproval()
+                            }
+                          ],
+                          blur: function($event) {
+                            _vm.reqblur = true
+                          }
+                        }
+                      },
+                      [
+                        _c("option", [
+                          _vm._v(
+                            "\n                  --select Requisition No.--\n                "
+                          )
                         ]),
                         _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "button",
+                        _vm._l(_vm.RequisitionList, function(requisition) {
+                          return _c(
+                            "option",
                             {
-                              staticClass: "btn btn-submit btn-danger",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.dismissItem(item.itemcode)
-                                }
-                              }
+                              key: requisition,
+                              domProps: { value: requisition }
                             },
                             [
                               _vm._v(
-                                "\n                  Dismiss\n                  "
+                                "\n                  " +
+                                  _vm._s(requisition) +
+                                  "\n                "
                               )
                             ]
                           )
-                        ])
-                      ])
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-4" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "unit" } },
+                      [_vm._v("Requisition By")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.postBody.userId,
+                          expression: "postBody.userId"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "userId ", readonly: "readonly" },
+                      domProps: { value: _vm.postBody.userId },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.postBody, "userId", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-4" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "unit" } },
+                      [_vm._v("Department")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.postBody.department,
+                          expression: "postBody.department"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "department ", readonly: "readonly" },
+                      domProps: { value: _vm.postBody.department },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.postBody,
+                            "department",
+                            $event.target.value
+                          )
+                        }
+                      }
                     }),
-                    0
-                  )
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { attrs: { role: "group" } }, [
-              this.postBody.itemLists.length > 0
-                ? _c(
-                    "button",
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "hidden", name: "locationCode" },
+                      domProps: { value: _vm.postBody.locationCode }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-4" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "unit" } },
+                      [_vm._v("Date and Time")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.postBody.requisitionDate,
+                          expression: "postBody.requisitionDate"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "dateAndTime ", readonly: "readonly" },
+                      domProps: { value: _vm.postBody.requisitionDate },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.postBody,
+                            "requisitionDate",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "hidden", name: "createdOn" },
+                      domProps: { value: _vm.postBody.createdOn }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "table",
                     {
-                      staticClass: "btn btn-submit btn-primary float-right",
-                      attrs: { type: "submit" },
-                      on: { click: _vm.checkForm }
+                      staticClass:
+                        "table table-striped table-bordered table-hover"
                     },
-                    [_vm._v("\n            Process\n          ")]
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.postBody.itemLists, function(item) {
+                          return _c("tr", { key: item.itemcode }, [
+                            _c("td", [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(item.itemCode) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(item.itemDescription) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(item.requested) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: item.quantity,
+                                    expression: "item.quantity"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid":
+                                    item.quantity >
+                                    item.currentBalance /*&& isSubmitted*/
+                                },
+                                attrs: { type: "number", name: "approvedQty" },
+                                domProps: { value: item.quantity },
+                                on: {
+                                  blur: function($event) {
+                                    _vm.qtyblur = true
+                                  },
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      item,
+                                      "quantity",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(_vm.quantityIsValid) +
+                                  "\n                    "
+                              ),
+                              _c("div", { staticClass: "invalid-feedback" }, [
+                                _c("span", { staticClass: "text-danger h5" }, [
+                                  _vm._v(
+                                    "Availaible quantity " +
+                                      _vm._s(item.currentBalance)
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("input", {
+                                staticClass: "form-control",
+                                attrs: { type: "hidden", name: "locationCode" },
+                                domProps: { value: item.unit }
+                              })
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
                   )
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c("br")
-          ])
-        ])
-      ]
-    )
+                ]),
+                _vm._v(" "),
+                _c("div", { attrs: { role: "group" } }, [
+                  this.postBody.itemLists.length > 0
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-submit btn-primary float-right",
+                          attrs: { type: "submit" },
+                          on: { click: _vm.checkForm }
+                        },
+                        [_vm._v("\n              Process\n            ")]
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("br")
+              ])
+            ])
+          ]
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -12625,9 +13252,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Request")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Quantity Approved")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Options")])
+        _c("th", [_vm._v("Quantity Approved")])
       ])
     ])
   }
@@ -12763,7 +13388,10 @@ var render = function() {
                     ],
                     staticClass: "form-control",
                     class: {
-                      "is-invalid": !_vm.itemCodeIsValid && _vm.itemCodeblur
+                      "is-invalid":
+                        !_vm.itemCodeIsValid &&
+                        _vm.itemCodeblur &&
+                        _vm.isAddItem
                     },
                     attrs: { name: "itemCode", placeholder: "item code" },
                     on: {
@@ -14413,291 +15041,354 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "form",
-      {
-        attrs: { method: "post" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.checkForm($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "p-5", attrs: { id: "vertical-form" } }, [
-          _c("div", { staticClass: "preview" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-6" }, [
-                _c(
-                  "label",
-                  { staticClass: "mb-1", attrs: { for: "supplier" } },
-                  [_vm._v("Supplier")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "form",
+          {
+            attrs: { method: "post" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.checkForm($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "p-5", attrs: { id: "vertical-form" } }, [
+              _c("div", { staticClass: "preview" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-6" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "supplier" } },
+                      [_vm._v("Supplier")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.postBody.supplier,
-                        expression: "postBody.supplier"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    class: {
-                      "is-invalid": !_vm.supplierIsValid && _vm.supplierblur
-                    },
-                    attrs: { name: "supplier" },
-                    on: {
-                      blur: function($event) {
-                        _vm.supplierblur = true
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.postBody.supplier,
+                            expression: "postBody.supplier"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": !_vm.supplierIsValid && _vm.supplierblur
+                        },
+                        attrs: { name: "supplier" },
+                        on: {
+                          blur: function($event) {
+                            _vm.supplierblur = true
+                          },
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.postBody,
+                              "supplier",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
                       },
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.postBody,
-                          "supplier",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
+                      _vm._l(_vm.supplierList, function(supplier) {
+                        return _c(
+                          "option",
+                          {
+                            key: supplier.supplierCode,
+                            domProps: { value: supplier.supplierCode }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(supplier.name) +
+                                "\n                  "
+                            )
+                          ]
                         )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-3" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "docDate" } },
+                      [_vm._v("Date")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.postBody.docDate,
+                          expression: "postBody.docDate"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      class: { "is-invalid": !_vm.dateIsValid && _vm.dateblur },
+                      attrs: { type: "date", name: "docDate" },
+                      domProps: { value: _vm.postBody.docDate },
+                      on: {
+                        bind: function($event) {
+                          _vm.dateblur = true
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.postBody, "docDate", $event.target.value)
+                        }
                       }
-                    }
-                  },
-                  _vm._l(_vm.supplierList, function(supplier) {
-                    return _c(
-                      "option",
-                      {
-                        key: supplier.supplierCode,
-                        domProps: { value: supplier.supplierCode }
-                      },
-                      [
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(supplier.name) +
-                            "\n              "
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                ),
-                _vm._v(" "),
-                _vm._m(0)
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-3" }, [
-                _c(
-                  "label",
-                  { staticClass: "mb-1", attrs: { for: "docDate" } },
-                  [_vm._v("Date")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.postBody.docDate,
-                      expression: "postBody.docDate"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  class: { "is-invalid": !_vm.dateIsValid && _vm.dateblur },
-                  attrs: { type: "date", name: "docDate" },
-                  domProps: { value: _vm.postBody.docDate },
-                  on: {
-                    bind: function($event) {
-                      _vm.dateblur = true
-                    },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.postBody, "docDate", $event.target.value)
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-9" }, [
-                _c(
-                  "label",
-                  { staticClass: "mb-1", attrs: { for: "itemCode" } },
-                  [_vm._v("Stock Item")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.postBody.itemCode,
-                        expression: "postBody.itemCode"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    class: { "is-invalid": !_vm.itemIsValid && _vm.codeblur },
-                    attrs: { name: "itemCode" },
-                    on: {
-                      blur: function($event) {
-                        _vm.codeblur = true
-                      },
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.postBody,
-                          "itemCode",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  _vm._l(_vm.itemList, function(item) {
-                    return _c(
-                      "option",
-                      {
-                        key: item.itemCode,
-                        domProps: { value: item.itemCode }
-                      },
-                      [
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(item.itemDesc) +
-                            "\n              "
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                ),
-                _vm._v(" "),
-                _vm._m(1)
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-2" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-3" }, [
-                _c(
-                  "label",
-                  { staticClass: "mb-1", attrs: { for: "quantity" } },
-                  [_vm._v("Quantity")]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.postBody.quantity,
-                      expression: "postBody.quantity"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  class: { "is-invalid": !_vm.quantityIsValid },
-                  attrs: { name: "quantity" },
-                  domProps: { value: _vm.postBody.quantity },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.postBody, "quantity", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _vm._m(2)
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-1" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-3" }, [
-                _c("label", { staticClass: "mb-1", attrs: { for: "price" } }, [
-                  _vm._v("Price")
+                    })
+                  ])
                 ]),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.postBody.price,
-                      expression: "postBody.price"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  class: { "is-invalid": !_vm.priceIsValid },
-                  attrs: { name: "price" },
-                  domProps: { value: _vm.postBody.price },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.postBody, "price", $event.target.value)
-                    }
-                  }
-                }),
+                _c("br"),
                 _vm._v(" "),
-                _vm._m(3)
-              ])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _vm.canProcess
-              ? _c("div", { attrs: { role: "group" } }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-submit btn-primary float-right",
-                      attrs: { type: "submit" },
-                      on: { click: _vm.checkForm }
-                    },
-                    [
-                      _vm._v(
-                        "\n            " +
-                          _vm._s(_vm.submitorUpdate) +
-                          "\n          "
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-9" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "itemCode" } },
+                      [_vm._v("Stock Item")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newItem.itemCode,
+                            expression: "newItem.itemCode"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": !_vm.itemIsValid && _vm.codeblur
+                        },
+                        attrs: { name: "itemCode" },
+                        on: {
+                          blur: function($event) {
+                            _vm.codeblur = true
+                          },
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.newItem,
+                              "itemCode",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      _vm._l(_vm.itemList, function(item) {
+                        return _c(
+                          "option",
+                          {
+                            key: item.itemCode,
+                            domProps: { value: item.itemCode }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(item.itemDesc) +
+                                "\n                  "
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _vm._m(1)
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-2" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-3" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "quantity" } },
+                      [_vm._v("Quantity")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newItem.quantity,
+                          expression: "newItem.quantity"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      class: { "is-invalid": !_vm.quantityIsValid },
+                      attrs: { name: "quantity" },
+                      domProps: { value: _vm.newItem.quantity },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.newItem, "quantity", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(2)
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-1" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-3" }, [
+                    _c(
+                      "label",
+                      { staticClass: "mb-1", attrs: { for: "price" } },
+                      [_vm._v("Price")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newItem.price,
+                          expression: "newItem.price"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      class: { "is-invalid": !_vm.priceIsValid },
+                      attrs: { name: "price" },
+                      domProps: { value: _vm.newItem.price },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.newItem, "price", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(3)
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _vm.canProcess
+                  ? _c("div", { attrs: { role: "group" } }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-submit btn-primary float-right",
+                          attrs: { type: "submit" },
+                          on: { click: _vm.checkForm }
+                        },
+                        [
+                          _vm._v(
+                            "\n                " +
+                              _vm._s(_vm.submitorUpdate) +
+                              "\n              "
+                          )
+                        ]
                       )
-                    ]
-                  )
+                    ])
+                  : _vm._e()
+              ])
+            ])
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _vm._m(4),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "table-responsive-sm" }, [
+          _c("table", { staticClass: "table table-bordered table-hover" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.postBody.lineItems, function(lineItem) {
+                return _c("tr", { key: lineItem.itemCode }, [
+                  _c("td", [_vm._v(_vm._s(lineItem.itemCode))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(lineItem.quantity))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(lineItem.unit))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            return _vm.removeItem(lineItem.itemCode)
+                          }
+                        }
+                      },
+                      [_vm._v("Remove Item")]
+                    )
+                  ])
                 ])
-              : _vm._e()
-          ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          this.postBody.lineItems.length > 0
+            ? _c("div", { attrs: { role: "group" } }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-submit btn-primary float-right",
+                    attrs: { type: "submit" },
+                    on: { click: _vm.checkForm }
+                  },
+                  [_vm._v("\n            Process\n          ")]
+                )
+              ])
+            : _vm._e()
         ])
-      ]
-    )
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -14735,6 +15426,32 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "invalid-feedback" }, [
       _c("span", { staticClass: "text-danger h5" }, [_vm._v("Invalid Entry")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h1", { staticClass: "card-title  text-center" }, [
+        _c("b", [_vm._v("Request Items")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Item Code")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Quantity")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("unit")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Option")])
+      ])
     ])
   }
 ]
@@ -14834,14 +15551,11 @@ var render = function() {
                     _vm._l(_vm.RequisitionList, function(requisition) {
                       return _c(
                         "option",
-                        {
-                          key: requisition.requisitionNo,
-                          domProps: { value: requisition.requisitionNo }
-                        },
+                        { key: requisition, domProps: { value: requisition } },
                         [
                           _vm._v(
                             "\n                " +
-                              _vm._s(requisition.requisitionNo) +
+                              _vm._s(requisition) +
                               "\n              "
                           )
                         ]
@@ -14982,150 +15696,82 @@ var render = function() {
                 [
                   _vm._m(1),
                   _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.postBody.itemCode,
-                              expression: "postBody.itemCode"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { name: "itemCode ", readonly: "readonly" },
-                          domProps: { value: _vm.postBody.itemCode },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.postBody,
-                                "itemCode",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.postBody.description,
-                              expression: "postBody.description"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { name: "description ", readonly: "readonly" },
-                          domProps: { value: _vm.postBody.description },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.postBody,
-                                "description",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.postBody.quantity,
-                              expression: "postBody.quantity"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { name: "quantity", readonly: "readonly" },
-                          domProps: { value: _vm.postBody.quantity },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.postBody,
-                                "quantity",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.postBody.supplyQty,
-                              expression: "postBody.supplyQty"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": !_vm.quantityIsValid && _vm.qtyblur
-                          },
-                          attrs: { name: "approvedQty" },
-                          domProps: { value: _vm.postBody.supplyQty },
-                          on: {
-                            blur: function($event) {
-                              _vm.qtyblur = true
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.postBody,
-                                "supplyQty",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm._m(2)
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("div", { attrs: { role: "group" } }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn btn-submit btn-primary float-right",
-                              attrs: { type: "button" },
-                              on: { click: _vm.checkForm }
-                            },
-                            [
-                              _vm._v(
-                                "\n                      Sign\n                    "
-                              )
-                            ]
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.postBody.itemLists, function(item) {
+                      return _c("tr", { key: item.itemcode }, [
+                        _c("td", [
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(item.itemCode) +
+                              "\n                "
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(item.itemDescription) +
+                              "\n                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            "\n                  " +
+                              _vm._s(item.requested) +
+                              "\n                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: item.quantity,
+                                expression: "item.quantity"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": item.quantity > item.requested
+                            },
+                            attrs: { type: "number", name: "approvedQty" },
+                            domProps: { value: item.quantity },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(item, "quantity", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._m(2, true)
                         ])
                       ])
-                    ])
-                  ])
+                    }),
+                    0
+                  )
                 ]
               )
+            ]),
+            _vm._v(" "),
+            _c("div", { attrs: { role: "group" } }, [
+              this.postBody.itemLists.length > 0
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-submit btn-primary float-right",
+                      attrs: { type: "submit" },
+                      on: { click: _vm.checkForm }
+                    },
+                    [_vm._v("\n            Process\n          ")]
+                  )
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("br")
@@ -15158,9 +15804,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Quantity Required")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Quantity Supplied")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Options")])
+        _c("th", [_vm._v("Quantity Supplied")])
       ])
     ])
   },
@@ -34517,6 +35161,7 @@ var map = {
 	"./components/Company/CompanyProfileList.vue": "./vue/components/Company/CompanyProfileList.vue",
 	"./components/Cost_Centre/CostCentreList.vue": "./vue/components/Cost_Centre/CostCentreList.vue",
 	"./components/FirstComponent.vue": "./vue/components/FirstComponent.vue",
+	"./components/Requisition/Purge/PurgedItem.vue": "./vue/components/Requisition/Purge/PurgedItem.vue",
 	"./components/Requisition/StockApproval/ApprovalList.vue": "./vue/components/Requisition/StockApproval/ApprovalList.vue",
 	"./components/Requisition/StockApproval/ApprovalProfile.vue": "./vue/components/Requisition/StockApproval/ApprovalProfile.vue",
 	"./components/Requisition/StockRequest/RequestProfile.vue": "./vue/components/Requisition/StockRequest/RequestProfile.vue",
@@ -34929,6 +35574,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FirstComponent_vue_vue_type_template_id_65e4b802___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FirstComponent_vue_vue_type_template_id_65e4b802___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./vue/components/Requisition/Purge/PurgedItem.vue":
+/*!*********************************************************!*\
+  !*** ./vue/components/Requisition/Purge/PurgedItem.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PurgedItem_vue_vue_type_template_id_0f50e055___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PurgedItem.vue?vue&type=template&id=0f50e055& */ "./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=template&id=0f50e055&");
+/* harmony import */ var _PurgedItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PurgedItem.vue?vue&type=script&lang=js& */ "./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PurgedItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PurgedItem_vue_vue_type_template_id_0f50e055___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PurgedItem_vue_vue_type_template_id_0f50e055___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "vue/components/Requisition/Purge/PurgedItem.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PurgedItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PurgedItem.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PurgedItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=template&id=0f50e055&":
+/*!****************************************************************************************!*\
+  !*** ./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=template&id=0f50e055& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PurgedItem_vue_vue_type_template_id_0f50e055___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PurgedItem.vue?vue&type=template&id=0f50e055& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Requisition/Purge/PurgedItem.vue?vue&type=template&id=0f50e055&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PurgedItem_vue_vue_type_template_id_0f50e055___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PurgedItem_vue_vue_type_template_id_0f50e055___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

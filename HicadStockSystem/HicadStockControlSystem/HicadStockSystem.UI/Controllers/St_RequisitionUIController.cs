@@ -31,5 +31,10 @@ namespace HicadStockSystem.UI.Controllers
         {
             return View();
         }
+
+        public IActionResult PurgeItem()
+        {
+            return View();
+        }
     }
 }

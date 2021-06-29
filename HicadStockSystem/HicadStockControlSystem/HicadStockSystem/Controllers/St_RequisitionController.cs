@@ -115,47 +115,99 @@ namespace HicadStockSystem.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM)
         {
-            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
-            if (requisitioInDb == null)
-                return BadRequest();
+            foreach (var item in requisitionVM.ItemLists)
+            {
+                var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+                if (requisitioInDb == null)
+                    return BadRequest();
 
-            requisitionVM.Price = 0;
+                //requisitionVM.Price = 0;
 
-            _mapper.Map(requisitionVM, requisitioInDb);
-            //swapping supplyqty to quantity and approved qty to supplyqty column
-            requisitioInDb.SupplyQty = (decimal?)requisitionVM.Quantity;
-            requisitioInDb.Quantity = (float?)requisitionVM.SupplyQty;
+                _mapper.Map(requisitionVM, requisitioInDb);
+                requisitioInDb.ItemCode = requisitionVM.ItemCode = item.ItemCode;
+                //swapping supplyqty to quantity and approved qty to supplyqty column
+                requisitioInDb.SupplyQty = requisitionVM.SupplyQty = (decimal?)item.Requested;
+                requisitioInDb.Quantity = requisitionVM.Quantity = (float?)item.Quantity;
+                requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
+                requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
 
-            requisitioInDb.IsSupplied = true;
-            requisitioInDb.SupplyBy = "HICAD90";
-            requisitioInDb.SupplyDate = DateTime.Now;
-            requisitioInDb.UpdatedOn = DateTime.Now;
+                requisitioInDb.IsSupplied = true;
+                requisitioInDb.SupplyBy = "HICAD90";
+                requisitioInDb.SupplyDate = DateTime.Now;
+                requisitioInDb.UpdatedOn = DateTime.Now;
 
-            await _requisition.UpdateAsync(requisitioInDb);
+                await _requisition.UpdateAsync(requisitioInDb);
 
-            return Ok(requisitioInDb);
+            }
+            return Ok(/*requisitioInDb*/);
         }
 
         [HttpPatch]
         [Route("RequisitionApproval")]
-        public async Task<IActionResult>RequisitionApproval([FromBody] UpdateSt_RequisitionVM requisitionVM)
+        public async Task<IActionResult> RequisitionApproval([FromBody] UpdateSt_RequisitionVM requisitionVM)
         {
-            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
-            if (requisitioInDb == null)
-                return BadRequest();
+            //var requisitioInDb = new St_Requisition();
             foreach (var item in requisitionVM.ItemLists)
             {
-                requisitioInDb = _requisition.GetByItemCode(item.ItemCode);
+                var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+                //requisitionVM.ItemCode = item.ItemCode;
+                //var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+                if (requisitioInDb == null)
+                    return BadRequest();
+
                 _mapper.Map(requisitionVM, requisitioInDb);
-                //requisitioInDb.ItemCode = item.ItemCode;
-                requisitioInDb.Quantity = (float?)item.Quantity;
-                requisitioInDb.Description = item.ItemDescription;
-                requisitioInDb.Unit = item.Unit;
+                requisitioInDb.ItemCode = item.ItemCode;
+                requisitioInDb.Quantity = requisitionVM.Quantity = (float?)item.Quantity;
+                requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
+                requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
                 requisitioInDb.UpdatedOn = DateTime.Now;
+
+
+                //requisitioInDb.ItemCode = item.ItemCode;
+                await _requisition.RequisitioApprovalAsync(requisitioInDb);
+            }
+
+                //if (requisitioInDb == null)
+                // return BadRequest();
+            //foreach (var item in requisitionVM.ItemLists)
+            //{
+            //    requisitioInDb.ItemCode = _requisition.GetByItemCode(item.ItemCode);
+            //    requisitioInDb.Quantity = (float?)item.Quantity;
+            //    requisitioInDb.Description = item.ItemDescription;
+            //    requisitioInDb.Unit = item.Unit;
+            //    requisitioInDb.UpdatedOn = DateTime.Now;
+
+            //    _mapper.Map(requisitionVM, requisitioInDb);
+            //    //requisitioInDb.ItemCode = item.ItemCode;
+            //    await _requisition.RequisitioApprovalAsync(requisitioInDb);
+
+            //}
+            return Ok(/*requisitioInDb*/);
+        }
+
+        [HttpPatch]
+        [Route("UnapprovedItems")]
+        public async Task<IActionResult> UnapprovedItems([FromBody] UpdateSt_RequisitionVM requisitionVM)
+        {
+            foreach (var item in requisitionVM.UnApprovedItems)
+            {
+                var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+
+                if (requisitioInDb == null)
+                    return BadRequest();
+
+                _mapper.Map(requisitionVM, requisitioInDb);
+                requisitioInDb.ItemCode = item.ItemCode;
+                requisitioInDb.Quantity = 0;
+                requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
+                requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
+                requisitioInDb.IsDeleted = true;
+                requisitioInDb.UpdatedOn = DateTime.Now;
+
                 await _requisition.RequisitioApprovalAsync(requisitioInDb);
 
             }
-            return Ok(requisitioInDb);
+            return Ok();
         }
 
         [HttpPatch("{reqNo}")]

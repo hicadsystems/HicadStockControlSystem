@@ -15,7 +15,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_Requisition
         //key
         //[Required]
         [StringLength(15)]
-        public string Itemcode { get; set; }
+        public string ItemCode { get; set; }
         [StringLength(50)]
         public string Description { get; set; }
         [StringLength(5)]
@@ -36,12 +36,16 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_Requisition
         //public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public List<ItemListVM> ItemLists { get; set; }
+        public List<UnApprovedItemVM> UnApprovedItems { get; set; }
+
     }
 
-    //public class ItemListViewModel
-    //{
-    //    public string Itemcode { get; set; }
-    //    public float? Quantity { get; set; }
-    //    public string Unit { get; set; }
-    //}
+    public class UnApprovedItemVM
+    {
+        public string ItemCode { get; set; }
+        //public float? Requested { get; set; }
+        public string Unit { get; set; }
+        public string ItemDescription { get; set; }
+        public decimal? Quantity { get; set; }
+    }
 }

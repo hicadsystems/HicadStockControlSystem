@@ -1,181 +1,57 @@
 <template>
   <div>
-    <div class="row">
-      <!--  <div class="col-6">
-        <label for="locationCode" class="mb-1">Department</label>
-        <select
-          class="form-control"
-          v-model="locationCode"
-          name="locationCode"
-          :class="{ 'is-invalid': !departmentIsValid && locationblur }"
-          v-on:blur="locationblur = true"
-        >
-          <option>
-            --select department code--
-          </option>
-          <option
-            v-for="costcentre in DepartmentList"
-            v-bind:value="costcentre.unitCode"
-            :key="costcentre.unitCode"
-          >
-            {{ costcentre.unitDesc }}
-          </option>
-        </select>
-        <div class="invalid-feedback">
-          <span class="text-danger h5">Please select department</span>
+    <div class="card col-sm-6">
+      <div class="p-4 ml-2">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="exampleRadios"
+            id="exampleRadios1"
+            value="option1"
+            checked
+          />
+          <label class="form-check-label" for="exampleRadios1">
+            All
+          </label>
         </div>
-      </div> -->
-    </div>
-    <div class="card">
-      <!--<div class="card-header">
-        <h3 class="card-title  text-center">Stock Request Form</h3>
-      </div>-->
-      <div>
-        <div class="p-5" id="vertical-form">
-          <div class="preview">
-            <div class="row">
-              <div class="col-6">
-                <label for="locationCode" class="mb-1">Department</label>
-                <select
-                  class="form-control"
-                  v-model="postBody.locationCode"
-                  name="locationCode"
-                  :class="{
-                    'is-invalid': !departmentIsValid && locationblur,
-                  }"
-                  v-on:blur="locationblur = true"
-                  @change="isSelected = true"
-                  :disabled="isSelected"
-                >
-                  <option>
-                    --select department code--
-                  </option>
-                  <option
-                    v-for="costcentre in DepartmentList"
-                    v-bind:value="costcentre.unitCode"
-                  >
-                    {{ costcentre.unitDesc }}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  <span class="text-danger h5">Please select department</span>
-                </div>
-              </div>
-            </div>
-            <br />
-            <div class="row">
-              <div class="col-6">
-                <label for="itemCode" class="mb-1">Item Description</label>
-                <select
-                  class="form-control"
-                  v-model="newItem.itemCode"
-                  name="itemCode"
-                  placeholder="item code"
-                  @change="getStockItems"
-                  :class="{ 'is-invalid': !itemCodeIsValid && itemCodeblur && isAddItem }"
-                  v-on:blur="itemCodeblur = true"
-                >
-                  <option>
-                    --select Item code--
-                  </option>
-                  <option
-                    v-for="item in ItemList"
-                    v-bind:value="item.itemCode"
-                    :key="item.itemCode"
-                  >
-                    {{ item.itemDesc }}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  <span class="text-danger h5">Please select item</span>
-                </div>
-              </div>
-              <div class="col-1"></div>
-              <!--  <div class="col-2">
-              <label for="qtyInTransaction" class="mb-1">Current Balance</label>
-              <input
-                class="form-control"
-                name="qtyInTransaction "
-                readonly="readonly"
-                v-model="postBody.qtyInTransaction"
-                placeholder="current bal"
-              />
-            </div>  -->
-              <div class="col-2">
-                <label for="qtyInTransaction" class="mb-1"
-                  >Current Balance</label
-                >
-                <input
-                  class="form-control"
-                  name="qtyInTransaction "
-                  readonly="readonly"
-                  v-model="currentBal"
-                  placeholder="current bal"
-                />
-              </div>
-            </div>
-            <br />
-            <div class="row">
-              <div class="col-4"></div>
-              <div class="col-2">
-                <label for="quantity" class="mb-1">Quantity Required</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  name="quantity"
-                  v-model="newItem.quantity"
-                  :class="{ 'is-invalid': !quantityIsValid && quantityblur && isAddItem}"
-                  v-on:blur="quantityblur = true"
-                />
-                {{ quantityIsValid }}
-                <div class="invalid-feedback">
-                  <span class="text-danger h5">Invalid Entry Or</span> <br />
-                  <span class="text-danger h5"
-                    >quantity requested is more than current quantity</span
-                  >
-                </div>
-              </div>
-              <div class="col-1"></div>
-              <div class="col-2">
-                <label for="unit" class="mb-1">unit</label>
-                <input
-                  class="form-control"
-                  name="unit"
-                  readonly="readonly"
-                  v-model="newItem.unit"
-                  placeholder="unit"
-                />
-              </div>
-            </div>
-
-            <br />
-            <div role="group">
-              <button
-                class="btn btn-submit btn-primary float-right"
-                v-on:click="addLineItem"
-                type="submit"
-              >
-                Add item
-              </button>
-            </div>
-            <!-- <div v-if="canProcess" role="group">
-            <button
-              class="btn btn-submit btn-primary float-right"
-              v-on:click="checkForm"
-              type="submit"
-            >
-              {{ submitorUpdate }}
-            </button>
-          </div> -->
-          </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="exampleRadios"
+            id="exampleRadios2"
+            value="option2"
+          />
+          <label class="form-check-label" for="exampleRadios2">
+           Before Specific Code
+          </label>
+        </div>
+       <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="exampleRadios"
+            id="exampleRadios2"
+            value="option2"
+          />
+          <label class="form-check-label" for="exampleRadios2">
+           Specific Requisition
+          </label>
+        </div>
+        <div  role="group">
+          <button
+            class="btn btn-submit btn-primary float-right"
+            v-on:click="checkForm"
+            type="submit"
+          >
+            Process
+          </button>
         </div>
       </div>
-      <!--<div class="card-body">
-        
-      </div>-->
     </div>
 
-    <div class="card">
+    <!-- <div class="card">
       <div class="card-header">
         <h1 class="card-title  text-center"><b>Request Items</b></h1>
       </div>
@@ -191,12 +67,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="lineItem in postBody.lineItems" :key="lineItem.itemCode">
+              <tr
+                v-for="lineItem in postBody.lineItems"
+                :key="lineItem.itemCode"
+              >
                 <td>{{ lineItem.itemCode }}</td>
                 <td>{{ lineItem.quantity }}</td>
                 <td>{{ lineItem.unit }}</td>
                 <td>
-                <button @click="removeItem(lineItem.itemCode)" class="btn btn-danger">Remove Item</button>
+                  <button
+                    @click="removeItem(lineItem.itemCode)"
+                    class="btn btn-danger"
+                  >
+                    Remove Item
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -212,7 +96,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
     <!--Line Items -->
   </div>
 </template>
@@ -284,19 +168,17 @@ export default {
       console.log(this.postBody);
       // console.log(this.postBody.locationCode);
       axios
-          .post(`/api/requisition/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              this.postBody.locationCode = "",
-              this.postBody.lineItems=[]
-            }
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
-          window.location.reload();
+        .post(`/api/requisition/`, this.postBody)
+        .then((response) => {
+          this.responseMessage = response.data.responseDescription;
+          this.canProcess = true;
+          if (response.data.responseCode == "200") {
+            (this.postBody.locationCode = ""), (this.postBody.lineItems = []);
+          }
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
       // this.validate();
       // if (this.valid) {
       //   e.preventDefault();
@@ -422,7 +304,7 @@ export default {
       }
     },
 
-    addLineItem() {
+    /* addLineItem() {
       this.validate();
       if (this.valid) {
         let newItem = {
@@ -460,8 +342,9 @@ export default {
 
     removeItem(itemCode){
       this.lineItems.splice(this.itemCode, 1)
-    }
+    }*/
   },
+
   computed: {
     departmentIsValid() {
       // return this.postBody.locationCode != "";
@@ -476,24 +359,11 @@ export default {
     quantityIsValid() {
       return (
         this.newItem.quantity != "" &&
-       ( parseInt(this.newItem.quantity) >= 0 || this.newItem.quantity == null) &&
+        (parseInt(this.newItem.quantity) >= 0 ||
+          this.newItem.quantity == null) &&
         parseInt(this.newItem.quantity) <= parseInt(this.currentBal)
       );
     },
-
-    // isDisabled() {
-    //   return (this.isSelected = true);
-    // },
-    // setter() {
-    //   let objecttoedit = this.$store.state.objectToUpdate;
-    //   if (objecttoedit.supplierCode) {
-    //     this.postBody.locationCode = objecttoedit.locationCode;
-    //     this.postBody.itemCode = objecttoedit.itemCode;
-    //     this.postBody.itemCode = objecttoedit.itemDesc;
-    //     this.postBody.quantity = objecttoedit.quantity;
-    //     this.postBody.unit = objecttoedit.unit;
-    //   }
-    // },
   },
 };
 </script>

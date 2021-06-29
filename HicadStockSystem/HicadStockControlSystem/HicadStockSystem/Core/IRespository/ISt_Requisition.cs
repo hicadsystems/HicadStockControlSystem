@@ -26,7 +26,8 @@ namespace HicadStockSystem.Core.IRespository
         //Task<List<RequesitionVM>> RequesitionsVM(string reqNo);
         string GetDescription(string itemCode);
         string GenerateRequisitionNo();
-        Task<IEnumerable<St_Requisition>> GetApproved();
+        //Task<IEnumerable<St_Requisition>> GetApproved();
+        Task<IEnumerable<string>> GetApproved();
         Task RequisitioApprovalAsync(St_Requisition requisition);
 
         //float? CheckCurrentBal(St_Requisition requisition);
@@ -34,6 +35,7 @@ namespace HicadStockSystem.Core.IRespository
         float? CheckCurrentBal(CreateSt_RequisitionVM requisition);
         List<ItemListVM> ItemLists(string reqNo);
 
-        St_Requisition GetByItemCode(string itemcode);
+        List<St_Requisition> GetByItemCode(string requisitionNo, string itemcode);
+        List<St_Requisition> GetByReqNoForApproval(string reqNo);
     }
 }
