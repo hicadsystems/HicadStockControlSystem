@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <div class="card-body">
-        <form @submit.prevent="checkForm" method="post">
+        <div>
           <div class="p-5" id="vertical-form">
             <div class="preview">
               <div class="row">
@@ -14,6 +14,8 @@
                     name="supplier"
                     :class="{ 'is-invalid': !supplierIsValid && supplierblur }"
                     v-on:blur="supplierblur = true"
+                    @change="isSelected = true"
+                    :disabled="isSelected"
                   >
                     <option
                       v-for="supplier in supplierList"
@@ -36,6 +38,8 @@
                     v-model="postBody.docDate"
                     :class="{ 'is-invalid': !dateIsValid && dateblur }"
                     v-on:bind="dateblur = true"
+                     @change="isSelectedDate = true"
+                    v-bind:disabled="isSelectedDate"
                   />
                 </div>
               </div>
@@ -52,7 +56,7 @@
                   >
                     <option
                       v-for="item in itemList"
-                      v-bind:value="item.itemCode"
+                      v-bind:value="item.itemDesc"
                       v-bind:key="item.itemCode"
                     >
                       {{ item.itemDesc }}
@@ -72,7 +76,8 @@
                     class="form-control"
                     name="quantity"
                     v-model="newItem.quantity"
-                    :class="{ 'is-invalid': !quantityIsValid }"
+                    :class="{ 'is-invalid': !quantityIsValid && quantityblur}"
+                    v-on:blur="quantityblur=true"
                   />
                   <div class="invalid-feedback">
                     <span class="text-danger h5">Invalid Entry</span>
@@ -85,7 +90,8 @@
                     class="form-control"
                     name="price"
                     v-model="newItem.price"
-                    :class="{ 'is-invalid': !priceIsValid }"
+                    :class="{ 'is-invalid': !priceIsValid && priceblur}"
+                    v-on:blur="priceblur=true"
                   />
                   <div class="invalid-feedback">
                     <span class="text-danger h5">Invalid Entry</span>
@@ -93,18 +99,18 @@
                 </div>
               </div>
               <br />
-              <div v-if="canProcess" role="group">
+              <div role="group">
                 <button
                   class="btn btn-submit btn-primary float-right"
-                  v-on:click="checkForm"
+                  v-on:click="addLineItem"
                   type="submit"
                 >
-                  {{ submitorUpdate }}
+                  Add item
                 </button>
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
     <!--End Of Form -->
@@ -121,17 +127,27 @@
               <tr>
                 <th>Item Code</th>
                 <th>Quantity</th>
-                <th>unit</th>
+                <th>Unit Price</th>
+                <!--<th>Unit</th>-->
                 <th>Option</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="lineItem in postBody.lineItems" :key="lineItem.itemCode">
+              <tr
+                v-for="lineItem in postBody.lineItems"
+                :key="lineItem.itemCode"
+              >
                 <td>{{ lineItem.itemCode }}</td>
                 <td>{{ lineItem.quantity }}</td>
-                <td>{{ lineItem.unit }}</td>
+                <td>{{ lineItem.price }}</td>
+                <!--<td>{{ lineItem.units }}</td>-->
                 <td>
-                <button @click="removeItem(lineItem.itemCode)" class="btn btn-danger">Remove Item</button>
+                  <button
+                    @click="removeItem(lineItem.itemCode)"
+                    class="btn btn-danger"
+                  >
+                    Remove Item
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -164,11 +180,15 @@ export default {
       codeblur: false,
       supplierblur: false,
       dateblur: false,
+      priceblur: false,
+      quantityblur: false,
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
       supplierList: null,
       itemList: null,
+      isSelected: false,
+      isSelectedDate: false,
 
       postBody: {
         // itemCode: "",
@@ -178,10 +198,10 @@ export default {
         // quantity: "",
         lineItems: [],
       },
-       newItem: {
+      newItem: {
         quantity: 0,
         itemCode: "",
-        unit: "",
+        // unit: "",
         price: "",
       },
     };
@@ -202,17 +222,25 @@ export default {
   },
   methods: {
     checkForm: function(e) {
-      this.validate();
-      if (this.valid) {
-        // e.preventDefault();
-        this.canProcess = false;
-        // this.$alert("Submit Form", "Ok", "info");
-        this.postPost();
-      } else {
-        this.$alert("Please Fill Highlighted Fields", "missing", "error");
-        this.errors = [];
-        this.errors.push("Supply all the required field");
-      }
+      alert(this.postBody);
+      console.log(this.postBody);
+      // console.log(this.postBody.locationCode);
+      axios
+        .post(`/api/stockhistory/`, this.postBody)
+        .then((response) => {
+          this.responseMessage = response.data.responseDescription;
+          this.canProcess = true;
+          if (response.data.responseCode == "200") {
+            (this.postBody.docDate = ""),
+              (this.postBody.supplier = ""),
+              (this.postBody.lineItems = []);
+          }
+          window.location.reload();
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      // window.location.reload();
     },
     // postPost() {
     //   if (this.submitorUpdate == "Submit") {
@@ -276,6 +304,8 @@ export default {
       this.codeblur = true;
       this.supplierblur = true;
       this.dateblur = true;
+      this.priceblur = true;
+      this.quantityblur = true;
       if (this.priceIsValid && this.itemIsValid && this.supplierIsValid) {
         this.valid = true;
       } else {
@@ -290,11 +320,14 @@ export default {
         let newItem = {
           itemCode: this.newItem.itemCode,
           quantity: Number(this.newItem.quantity),
-          unit: this.newItem.unit,
+          // unit: this.newItem.unit,
+          price: this.newItem.price,
         };
 
         //checking for duplicate item
-        let existingItems = this.postBody.lineItems.map((item) => item.itemCode);
+        let existingItems = this.postBody.lineItems.map(
+          (item) => item.itemCode
+        );
 
         if (existingItems.includes(newItem.itemCode)) {
           let lineItem = this.postBody.lineItems.find(
@@ -309,19 +342,19 @@ export default {
           console.log(result);
         }
 
-        this.newItem = { itemCode: "", quantity: "", unit: "" };
+        this.newItem = { itemCode: "", quantity: "", price: "" };
         // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
         this.isAddItem = true;
 
         // this.currentBal -= this.quantity
-      }else{
+      } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
       }
       // alert(this.newItem.itemCode)
     },
-    removeItem(itemCode){
-      this.lineItems.splice(this.itemCode, 1)
-    }
+    removeItem(itemCode) {
+      this.postBody.lineItems.splice(this.itemCode, 1);
+    },
   },
 
   computed: {
@@ -335,7 +368,7 @@ export default {
 
     priceIsValid() {
       return (
-        this.newItem.price == "" ||
+        this.newItem.price != "" ||
         (this.newItem.price.length >= 1 && parseInt(this.newItem.price) >= 1)
       );
     },
@@ -348,7 +381,7 @@ export default {
     },
     quantityIsValid() {
       return (
-        this.newItem.quantity == "" ||
+        this.newItem.quantity != "" ||
         (this.newItem.quantity.length >= 1 &&
           parseInt(this.newItem.quantity) >= 1)
       );

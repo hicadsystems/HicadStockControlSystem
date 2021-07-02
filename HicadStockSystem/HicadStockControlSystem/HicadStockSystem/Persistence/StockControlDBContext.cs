@@ -35,6 +35,7 @@ namespace HicadStockSystem.Data
         public DbSet<St_IssueRequisition> St_IssueRequisitions { get; set; }
         public DbSet<St_IssueApprove> St_IssueApproves { get; set; }
         public DbSet<AccChart> AccCharts { get; set; }
+        public DbSet<St_Remark> St_Remarks { get; set; }
 
 
 
@@ -68,6 +69,18 @@ namespace HicadStockSystem.Data
             {
                 h.RequisitionNo,
                 h.DocNo,
+            });
+
+            modelBuilder.Entity<St_ItemMaster>().HasKey(h => new
+            {
+                h.ItemCode,
+                h.ItemDesc,
+            });
+
+            modelBuilder.Entity<St_Remark>().HasKey(h => new
+            {
+                h.Id,
+                h.Remark,
             });
 
             base.OnModelCreating(modelBuilder);

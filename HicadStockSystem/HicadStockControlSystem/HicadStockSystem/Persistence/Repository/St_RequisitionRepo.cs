@@ -152,9 +152,24 @@ namespace HicadStockSystem.Persistence.Repository
             var supcodeParam = new SqlParameter("@supcode", "");
             var unitcodeParam = new SqlParameter("@unitcode", requisition.LocationCode);
             var user = new SqlParameter("@user", requisition.SupplyBy);
+            var remark = new SqlParameter("@remark", "0");
             await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_update_transactions @docno, @itemcode, @trandate, @quantity, 
-                                                           @price,@doctype, @supcode, @unitcode, @user",
-                docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
+                                                           @price,@doctype, @supcode, @unitcode, @user,@remark",
+                docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user, remark);
+
+            /*using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    transaction.Commit();
+                    await _uow.CompleteAsync();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }*/
 
             //requisition.Price = stkprice;
 

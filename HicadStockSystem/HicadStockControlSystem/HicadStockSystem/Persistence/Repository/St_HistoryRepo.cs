@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace HicadStockSystem.Persistence.Repository
 {
@@ -26,27 +27,40 @@ namespace HicadStockSystem.Persistence.Repository
         }
         public async Task CreateAsync(St_History history)
         {
-            history.DocType = "GR";
-            history.UserId = "HICAD1";
-           
-            await TransStoreProc(history);
-            //var docNoParam = new SqlParameter("@docno", history.DocNo);
-            //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
-            //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
-            //var quantityParam = new SqlParameter("@quantity", history.Quantity);
-            //var priceParam = new SqlParameter("@price",history.Price);
-            //var doctypeParam = new SqlParameter("@doctype", history.DocType);
-            //var supcodeParam = new SqlParameter("@supcode", history.Supplier);
-            //var unitcodeParam = new SqlParameter("@unitcode", history.Location);
-            //var user = new SqlParameter("@user", history.UserId);
-            //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
-            //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    history.DocType = "GR";
+                    history.UserId = "HICAD1";
+                    history.RemarkId = 0;
 
-            //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
-            //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
+                    await TransStoreProc(history);
+                    //var docNoParam = new SqlParameter("@docno", history.DocNo);
+                    //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
+                    //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
+                    //var quantityParam = new SqlParameter("@quantity", history.Quantity);
+                    //var priceParam = new SqlParameter("@price",history.Price);
+                    //var doctypeParam = new SqlParameter("@doctype", history.DocType);
+                    //var supcodeParam = new SqlParameter("@supcode", history.Supplier);
+                    //var unitcodeParam = new SqlParameter("@unitcode", history.Location);
+                    //var user = new SqlParameter("@user", history.UserId);
+                    //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
+                    //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
+
+                    //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
+                    //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
 
 
-            await _uow.CompleteAsync();
+                    transaction.Commit();
+                    await _uow.CompleteAsync();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         public async Task<IEnumerable<St_History>> GetAll()
@@ -61,30 +75,43 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task UpdateAsync(St_History history)
         {
-            var stkprice = (from stockmaster in _dbContext.St_StockMasters
-                            where stockmaster.ItemCode == history.ItemCode
-                            select stockmaster.StockPrice).First();
-            history.Price = stkprice;
-            history.DocType = "RT";
-            history.Supplier = "";
-            history.UserId = "HICAD3";
+            //var stkprice = (from stockmaster in _dbContext.St_StockMasters
+            //                where stockmaster.ItemCode == history.ItemCode
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                //                select stockmaster.StockPrice).First();
+                try
+                {
+                    var stkprice = _dbContext.St_StockMasters.Where(x => x.ItemCode == history.ItemCode).Select(y => y.StockPrice).First();
+                    history.Price = stkprice;
+                    history.DocType = "RT";
+                    history.Supplier = "";
+                    history.UserId = "HICAD3";
 
-            await TransStoreProc(history);
+                    await TransStoreProc(history);
 
-            //var docNoParam = new SqlParameter("@docno", history.DocNo);
-            //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
-            //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
-            //var quantityParam = new SqlParameter("@quantity", history.Quantity);
-            //var priceParam = new SqlParameter("@price", stkprice);
-            //var doctypeParam = new SqlParameter("@doctype", "RT");
-            //var supcodeParam = new SqlParameter("@supcode", "");
-            //var unitcodeParam = new SqlParameter("@unitcode", history.Location);
-            //var user = new SqlParameter("@user", "HICAD3");
-            //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
-            //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
+                    //var docNoParam = new SqlParameter("@docno", history.DocNo);
+                    //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
+                    //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
+                    //var quantityParam = new SqlParameter("@quantity", history.Quantity);
+                    //var priceParam = new SqlParameter("@price", stkprice);
+                    //var doctypeParam = new SqlParameter("@doctype", "RT");
+                    //var supcodeParam = new SqlParameter("@supcode", "");
+                    //var unitcodeParam = new SqlParameter("@unitcode", history.Location);
+                    //var user = new SqlParameter("@user", "HICAD3");
+                    //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
+                    //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
 
-            //_dbContext.Update(history);
-            await _uow.CompleteAsync();
+                    //_dbContext.Update(history);
+                    transaction.Commit();
+                    await _uow.CompleteAsync();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         public async Task UpdateAsync(string itemCode)
@@ -162,9 +189,16 @@ namespace HicadStockSystem.Persistence.Repository
             var supcodeParam = new SqlParameter("@supcode", history.Supplier);
             var unitcodeParam = new SqlParameter("@unitcode", history.Location);
             var user = new SqlParameter("@user", history.UserId);
-             await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
-                docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
+            var remark = new SqlParameter("@remark", history.RemarkId);
+             await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user,@remark",
+                docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user, remark);
 
+        }
+
+        public int GetRemarkId(string remark)
+        {
+            var remarkId = _dbContext.St_Remarks.Where(x => x.Remark == remark).Select(y => y.Id).FirstOrDefault();
+            return remarkId;
         }
     }
 }

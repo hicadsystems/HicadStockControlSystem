@@ -17,5 +17,6 @@ namespace HicadStockSystem.Core.IRespository
         Task DeleteAsync(string itemCode);
         Task<IEnumerable<string>> GetStockClass();
        Task<IEnumerable<string>> GetBusinessLine();
+        string GetItemCodeByDesc(string desc);
     }
 }

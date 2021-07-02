@@ -17,11 +17,13 @@ namespace HicadStockSystem.Controllers
     {
         private readonly ISt_Requisition _requisition;
         private readonly IMapper _mapper;
+        private readonly ISt_ItemMaster _itemMaster;
 
-        public St_RequisitionController(ISt_Requisition requisition, IMapper mapper)
+        public St_RequisitionController(ISt_Requisition requisition, IMapper mapper, ISt_ItemMaster itemMaster)
         {
             _requisition = requisition;
             _mapper = mapper;
+            _itemMaster = itemMaster;
         }
 
         [HttpGet]
@@ -197,7 +199,7 @@ namespace HicadStockSystem.Controllers
                     return BadRequest();
 
                 _mapper.Map(requisitionVM, requisitioInDb);
-                requisitioInDb.ItemCode = item.ItemCode;
+                requisitioInDb.ItemCode = _itemMaster.GetItemCodeByDesc(item.ItemCode);
                 requisitioInDb.Quantity = 0;
                 requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
                 requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
@@ -239,14 +241,14 @@ namespace HicadStockSystem.Controllers
             return Ok(stockItem);
         }
 
-        [HttpGet]
-        [Route("getItemCode")]
-        public async Task<IActionResult> GetItemCode()
-        {
-            var itemCode = await _requisition.GetItemCode();
+        //[HttpGet]
+        //[Route("getItemCode")]
+        //public async Task<IActionResult> GetItemCode()
+        //{
+        //    var itemCode = await _requisition.GetItemCode();
 
-            return Ok(itemCode);
-        }
+        //    return Ok(itemCode);
+        //}
 
         [HttpGet]
         [Route("RequisitionApproval/{itemCode}")]

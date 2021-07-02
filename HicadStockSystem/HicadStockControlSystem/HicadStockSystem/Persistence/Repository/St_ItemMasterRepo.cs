@@ -69,6 +69,12 @@ namespace HicadStockSystem.Persistence.Repository
             return await _dbContext.Ac_BusinessLines.Select(sc => sc.BusinessLine).ToListAsync();
         }
 
+        public string GetItemCodeByDesc(string desc)
+        {
+            var itemcode = _dbContext.St_ItemMasters.Where(x => x.ItemDesc == desc).Select(y => y.ItemCode).FirstOrDefault();
+            return itemcode;
+        }
+
         ////V2
         //private readonly StockControlDBContext _dbContext;
         //private readonly IUnitOfWork _uow;

@@ -10,7 +10,7 @@ namespace HicadStockSystem.Core.Models
     [Table("st_itemmaster")]
     public class St_ItemMaster
     {
-        [Key]
+        //[Key]
         [StringLength(15)]
         //uniquely identify items in store
         public string ItemCode { get; set; }

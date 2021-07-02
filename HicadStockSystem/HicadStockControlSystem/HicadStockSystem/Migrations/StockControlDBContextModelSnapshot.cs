@@ -483,6 +483,15 @@ namespace HicadStockSystem.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RemarkId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("St_RemarkId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("St_RemarkRemark")
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Supplier")
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
@@ -492,6 +501,8 @@ namespace HicadStockSystem.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("ItemCode", "DocNo", "DocType");
+
+                    b.HasIndex("St_RemarkId", "St_RemarkRemark");
 
                     b.ToTable("st_history");
                 });
@@ -579,6 +590,10 @@ namespace HicadStockSystem.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("ItemDesc")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
                     b.Property<string>("BusLine")
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
@@ -592,10 +607,6 @@ namespace HicadStockSystem.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ItemDesc")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("PartNo")
                         .HasMaxLength(30)
@@ -654,7 +665,7 @@ namespace HicadStockSystem.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.HasKey("ItemCode");
+                    b.HasKey("ItemCode", "ItemDesc");
 
                     b.ToTable("st_itemmaster");
                 });
@@ -686,6 +697,29 @@ namespace HicadStockSystem.Migrations
                     b.HasKey("Code");
 
                     b.ToTable("st_recordtable");
+                });
+
+            modelBuilder.Entity("HicadStockSystem.Core.Models.St_Remark", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id", "Remark");
+
+                    b.ToTable("st_remark");
                 });
 
             modelBuilder.Entity("HicadStockSystem.Core.Models.St_Requisition", b =>
@@ -1552,6 +1586,15 @@ namespace HicadStockSystem.Migrations
                     b.HasIndex("UserId1");
 
                     b.HasDiscriminator().HasValue("UserRole");
+                });
+
+            modelBuilder.Entity("HicadStockSystem.Core.Models.St_History", b =>
+                {
+                    b.HasOne("HicadStockSystem.Core.Models.St_Remark", "St_Remark")
+                        .WithMany()
+                        .HasForeignKey("St_RemarkId", "St_RemarkRemark");
+
+                    b.Navigation("St_Remark");
                 });
 
             modelBuilder.Entity("HicadStockSystem.Models.Menu", b =>

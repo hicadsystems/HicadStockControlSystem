@@ -21,7 +21,7 @@ namespace HicadStockSystem.Core.IRespository
         Task<IEnumerable<Ac_CostCentre>> GetCostCentre();
         Task<ItemStockMasterViewModel> StockItemViewModels(string ItemCodes);
 
-        Task<IEnumerable<St_ItemMaster>> GetItemCode();
+        //Task<IEnumerable<St_ItemMaster>> GetItemCode();
         Task<RequesitionVM> RequesitionsVM(string itemCode);
         //Task<List<RequesitionVM>> RequesitionsVM(string reqNo);
         string GetDescription(string itemCode);

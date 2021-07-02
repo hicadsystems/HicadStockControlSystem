@@ -18,6 +18,7 @@ namespace HicadStockSystem.Core.IRespository
         Task DeleteAsync(string itemCode);
         string GenerateDocNo();
         string ReturnNo();
+        int GetRemarkId(string remark);
         //St_History GetDocNo(string docNo);
     }
 }

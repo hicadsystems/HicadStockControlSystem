@@ -17,11 +17,13 @@ namespace HicadStockSystem.Controllers
     {
         private readonly ISt_History _history;
         private readonly IMapper _mapper;
+        private readonly ISt_ItemMaster _itemMaster;
 
-        public St_HistoryController(ISt_History history, IMapper mapper)
+        public St_HistoryController(ISt_History history, IMapper mapper, ISt_ItemMaster itemMaster)
         {
             _history = history;
             _mapper = mapper;
+            _itemMaster = itemMaster;
         }
 
         [HttpGet]
@@ -39,24 +41,31 @@ namespace HicadStockSystem.Controllers
                 
                 var docNo = historyVM.DocNo = _history.GenerateDocNo();
                 var docNoInDb = _history.GetByDocNo(docNo);
+
                 if (docNoInDb == null)
                 {
-                    historyVM.DocType = "GR";
-                    historyVM.Location = "";
-                    historyVM.UserId = "HICAD1";
-                    if (historyVM.DocDate==null)
+                    foreach (var item in historyVM.LineItems)
                     {
-                        historyVM.DocDate = DateTime.Now;
+                        historyVM.ItemCode = _itemMaster.GetItemCodeByDesc(item.ItemCode);
+                        historyVM.Price = item.Price;
+                        historyVM.Quantity = item.Quantity;
+                        historyVM.DocType = "GR";
+                        historyVM.Location = "";
+                        historyVM.UserId = "HICAD1";
+                        if (historyVM.DocDate == null)
+                        {
+                            historyVM.DocDate = DateTime.Now;
+                        }
+                        historyVM.DocNo = docNo;
+                        historyVM.DateCreated = DateTime.Now;
+
+                        var newStockHistory = _mapper.Map<CreateSt_HistoryVM, St_History>(historyVM);
+                        //confirm if correct
+
+                        await _history.CreateAsync(newStockHistory); 
                     }
-                    historyVM.DocNo = docNo;
-                    historyVM.DateCreated = DateTime.Now;
 
-                    var newStockHistory = _mapper.Map<CreateSt_HistoryVM, St_History>(historyVM);
-                    //confirm if correct
-
-                    await _history.CreateAsync(newStockHistory);
-
-                    return Ok(newStockHistory);
+                    return Ok(/*newStockHistory*/);
                 }
               
             }
@@ -86,16 +95,22 @@ namespace HicadStockSystem.Controllers
                 //var stockHistoryInDb = _history.GetByDocNo(historyVM.DocNo);
                 if (stockHistoryInDb == null)
                 {
-                    var returns = _mapper.Map<UpdateSt_HistoryVM, St_History>(historyVM);
-                    if (historyVM.DocDate == null)
+                    foreach (var item in historyVM.LineItems)
                     {
-                        historyVM.DocDate = DateTime.Now;
-                    }
-                    historyVM.UpdatedOn = DateTime.Now;
-                    //historyVM.UserId = "HICAD3";
-                    await _history.UpdateAsync(returns);
+                        var returns = _mapper.Map<UpdateSt_HistoryVM, St_History>(historyVM);
+                        if (historyVM.DocDate == null)
+                        {
+                            historyVM.DocDate = DateTime.Now;
+                        }
+                        //returns.UpdatedOn = DateTime.Now;
+                        returns.ItemCode = _itemMaster.GetItemCodeByDesc(item.ItemCode);
+                        returns.Quantity = item.Quantity;
+                        returns.RemarkId = _history.GetRemarkId(item.Remark);
+                        //historyVM.UserId = "HICAD3";
+                        await _history.UpdateAsync(returns);
 
-                    return Ok(returns);
+                    }
+                    return Ok(); 
                 } 
             }
                 return BadRequest();

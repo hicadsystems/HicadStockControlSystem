@@ -61,6 +61,7 @@ namespace HicadStockSystem.UI
             services.AddScoped<IAc_CostCentre, Ac_CostCentreRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ISt_Remark, St_RemarkRepo>();
 
             services.AddAutoMapper(typeof(MappingProfile));
 

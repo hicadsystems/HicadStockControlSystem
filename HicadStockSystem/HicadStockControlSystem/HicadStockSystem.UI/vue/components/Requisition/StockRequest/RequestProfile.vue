@@ -292,11 +292,12 @@ export default {
               this.postBody.locationCode = "",
               this.postBody.lineItems=[]
             }
+            window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);
           });
-          window.location.reload();
+          // window.location.reload();
       // this.validate();
       // if (this.valid) {
       //   e.preventDefault();
@@ -401,7 +402,7 @@ export default {
         });
     },
     getItemCode() {
-      axios.get(`/api/requisition/getItemCode`).then((response) => {
+      axios.get(`/api/itemmaster`).then((response) => {
         this.ItemList = response.data;
       });
     },

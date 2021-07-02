@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div>
     <form @submit.prevent="checkForm()" method="post">
       <div class="p-5" id="vertical-form">
@@ -223,317 +223,317 @@
       </div>
     </form>
   </div>
-</template>
-<script>
-import Datepicker from "vuejs-datepicker";
-import VueSimpleAlert from "vue-simple-alert";
-export default {
-  components: {
-    Datepicker,
-    VueSimpleAlert,
-  },
-  data() {
-    return {
-      minReorderQty: 1,
-      errors: null,
-      responseMessage: "",
-      submitorUpdate: "Submit",
-      canProcess: true,
-      ClassList: null,
-      BusinessLineList: null,
-      postBody: {
-        itemCode: "",
-        itemDesc: "",
-        storeLoc: "",
-        storerack: "",
-        storebin: "",
-        reOrderLevel: "",
-        reOrderQty: "",
-        units: "",
-        xRef: "",
-        partNo: "",
-        class: "",
-        busLine: "",
-        isDeleted:false
-      },
+</template>-->
+// <script>
+// import Datepicker from "vuejs-datepicker";
+// import VueSimpleAlert from "vue-simple-alert";
+// export default {
+//   components: {
+//     Datepicker,
+//     VueSimpleAlert,
+//   },
+//   data() {
+//     return {
+//       minReorderQty: 1,
+//       errors: null,
+//       responseMessage: "",
+//       submitorUpdate: "Submit",
+//       canProcess: true,
+//       ClassList: null,
+//       BusinessLineList: null,
+//       postBody: {
+//         itemCode: "",
+//         itemDesc: "",
+//         storeLoc: "",
+//         storerack: "",
+//         storebin: "",
+//         reOrderLevel: "",
+//         reOrderQty: "",
+//         units: "",
+//         xRef: "",
+//         partNo: "",
+//         class: "",
+//         busLine: "",
+//         isDeleted:false
+//       },
 
-      codeblur: false,
-      itemDescblur: false,
-      stkClassblur: false,
-      busLineblur: false,
-      isAvailable: false
-    };
-  },
-  mounted() {
-    this.getBusinessLine();
-    this.getStockClass();
-  },
-  watch: {
-    "$store.state.objectToUpdate": function(newVal, oldVal) {
-      (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
-        (this.postBody.itemDesc = this.$store.state.objectToUpdate.itemDesc),
-        (this.postBody.storeLoc = this.$store.state.objectToUpdate.storeLoc),
-        (this.postBody.storerack = this.$store.state.objectToUpdate.storerack);
-      this.postBody.storebin = this.$store.state.objectToUpdate.storebin;
-      this.postBody.reOrderLevel = this.$store.state.objectToUpdate.reOrderLevel;
-      this.postBody.reOrderQty = this.$store.state.objectToUpdate.reOrderQty;
-      this.postBody.units = this.$store.state.objectToUpdate.units;
-      this.postBody.xRef = this.$store.state.objectToUpdate.xRef;
-      this.postBody.partNo = this.$store.state.objectToUpdate.partNo;
-      this.postBody.class = this.$store.state.objectToUpdate.class;
-      this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
-      this.submitorUpdate = "Update";
-    },
-  },
-  methods: {
-    checkForm: function(e) {
-      this.validate();
-      if (this.valid) {
-        // e.preventDefault();
-        this.canProcess = false;
-        this.$alert("Submit Form", "Ok", "info");
+//       codeblur: false,
+//       itemDescblur: false,
+//       stkClassblur: false,
+//       busLineblur: false,
+//       isAvailable: false
+//     };
+//   },
+//   mounted() {
+//     this.getBusinessLine();
+//     this.getStockClass();
+//   },
+//   watch: {
+//     "$store.state.objectToUpdate": function(newVal, oldVal) {
+//       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
+//         (this.postBody.itemDesc = this.$store.state.objectToUpdate.itemDesc),
+//         (this.postBody.storeLoc = this.$store.state.objectToUpdate.storeLoc),
+//         (this.postBody.storerack = this.$store.state.objectToUpdate.storerack);
+//       this.postBody.storebin = this.$store.state.objectToUpdate.storebin;
+//       this.postBody.reOrderLevel = this.$store.state.objectToUpdate.reOrderLevel;
+//       this.postBody.reOrderQty = this.$store.state.objectToUpdate.reOrderQty;
+//       this.postBody.units = this.$store.state.objectToUpdate.units;
+//       this.postBody.xRef = this.$store.state.objectToUpdate.xRef;
+//       this.postBody.partNo = this.$store.state.objectToUpdate.partNo;
+//       this.postBody.class = this.$store.state.objectToUpdate.class;
+//       this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
+//       this.submitorUpdate = "Update";
+//     },
+//   },
+//   methods: {
+//     checkForm: function(e) {
+//       this.validate();
+//       if (this.valid) {
+//         // e.preventDefault();
+//         this.canProcess = false;
+//         this.$alert("Submit Form", "Ok", "info");
 
-        this.postPost();
-      } else {
-        this.$alert("Please Fill Highlighted Fields", "missing", "error");
-        this.errors = [];
-        this.errors.push("Supply all the required field");
-      }
-    },
+//         this.postPost();
+//       } else {
+//         this.$alert("Please Fill Highlighted Fields", "missing", "error");
+//         this.errors = [];
+//         this.errors.push("Supply all the required field");
+//       }
+//     },
 
-    postPost() {
-      if (this.submitorUpdate == "Submit") {
-        axios
-          .post(`/api/itemmaster/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              this.postBody.itemCode = "";
-              this.postBody.itemDesc = "";
-              this.postBody.storeLoc = "";
-              this.postBody.storerack = "";
-              this.postBody.storebin = "";
-              this.postBody.reOrderLevel = "";
-              this.postBody.reOrderQty = "";
-              this.postBody.units = new Date();
-              (this.postBody.xRef = ""),
-                (this.postBody.partNo = ""),
-                (this.postBody.class = "");
-              this.postBody.busLine = "";
-              this.$store.stateName.objectToUpdate = "create";
-            }
-          })
-          .catch((e) => {
-            alert(this.errors.push(e));
-          });
-      }
-      if (this.submitorUpdate == "Update") {
-        // alert("Ready to Update");
-        axios
-          .put(`/api/itemmaster/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              this.submitorUpdate = "Submit";
-              this.postBody.itemCode = "";
-              this.postBody.itemDesc = "";
-              this.postBody.storeLoc = "";
-              this.postBody.storerack = "";
-              this.postBody.storebin = "";
-              this.postBody.reOrderLevel = "";
-              this.postBody.reOrderQty = "";
-              this.postBody.units = "";
-              this.postBody.xRef = "";
-              this.postBody.partNo = "";
-              this.postBody.class = "";
-              this.postBody.busLine = "";
-              this.$store.state.objectToUpdate = "update";
-            }
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
-      }
-    },
+//     postPost() {
+//       if (this.submitorUpdate == "Submit") {
+//         axios
+//           .post(`/api/itemmaster/`, this.postBody)
+//           .then((response) => {
+//             this.responseMessage = response.data.responseDescription;
+//             this.canProcess = true;
+//             if (response.data.responseCode == "200") {
+//               this.postBody.itemCode = "";
+//               this.postBody.itemDesc = "";
+//               this.postBody.storeLoc = "";
+//               this.postBody.storerack = "";
+//               this.postBody.storebin = "";
+//               this.postBody.reOrderLevel = "";
+//               this.postBody.reOrderQty = "";
+//               this.postBody.units = "";
+//               (this.postBody.xRef = ""),
+//                 (this.postBody.partNo = ""),
+//                 (this.postBody.class = "");
+//               this.postBody.busLine = "";
+//               this.$store.stateName.objectToUpdate = "create";
+//             }
+//           })
+//           .catch((e) => {
+//             alert(this.errors.push(e));
+//           });
+//       }
+//       if (this.submitorUpdate == "Update") {
+//         // alert("Ready to Update");
+//         axios
+//           .put(`/api/itemmaster/`, this.postBody)
+//           .then((response) => {
+//             this.responseMessage = response.data.responseDescription;
+//             this.canProcess = true;
+//             if (response.data.responseCode == "200") {
+//               this.submitorUpdate = "Submit";
+//               this.postBody.itemCode = "";
+//               this.postBody.itemDesc = "";
+//               this.postBody.storeLoc = "";
+//               this.postBody.storerack = "";
+//               this.postBody.storebin = "";
+//               this.postBody.reOrderLevel = "";
+//               this.postBody.reOrderQty = "";
+//               this.postBody.units = "";
+//               this.postBody.xRef = "";
+//               this.postBody.partNo = "";
+//               this.postBody.class = "";
+//               this.postBody.busLine = "";
+//               this.$store.state.objectToUpdate = "update";
+//             }
+//           })
+//           .catch((e) => {
+//             this.errors.push(e);
+//           });
+//       }
+//     },
 
-    getStockClass() {
-      axios.get(`/api/stockclass/`).then((response) => {
-        this.ClassList = response.data;
-      });
-    },
+//     getStockClass() {
+//       axios.get(`/api/stockclass/`).then((response) => {
+//         this.ClassList = response.data;
+//       });
+//     },
 
-    getBusinessLine() {
-      axios.get(`/api/ac_businessline/`).then((response) => {
-        this.BusinessLineList = response.data;
-      });
-    },
+//     getBusinessLine() {
+//       axios.get(`/api/ac_businessline/`).then((response) => {
+//         this.BusinessLineList = response.data;
+//       });
+//     },
 
-    // checkItemCode(){
-    //   var itemCode = this.postBody.itemCode.trim();
-    //   if(itemCode != ''){
-    //     axios.get(`/api/itemmaster/`, {
-    //       params:{
-    //         itemCode: itemCode
-    //       }
-    //     }).then((response)=>{
-    //       postBody.itemCode = response.data;
-    //       if(response.data==postBody.itemCode){
-    //         this.responseMessage = "Item Code is Available.";
-    //       }else{
-    //         this.responseMessage = "Item Code already exist"
-    //       }
-    //     }).catch((error)=>{
-    //       console.log(error)
-    //     })
-    //   }else{
-    //     this.responseMessage="";
-    //   }
-    // },
+//     // checkItemCode(){
+//     //   var itemCode = this.postBody.itemCode.trim();
+//     //   if(itemCode != ''){
+//     //     axios.get(`/api/itemmaster/`, {
+//     //       params:{
+//     //         itemCode: itemCode
+//     //       }
+//     //     }).then((response)=>{
+//     //       postBody.itemCode = response.data;
+//     //       if(response.data==postBody.itemCode){
+//     //         this.responseMessage = "Item Code is Available.";
+//     //       }else{
+//     //         this.responseMessage = "Item Code already exist"
+//     //       }
+//     //     }).catch((error)=>{
+//     //       console.log(error)
+//     //     })
+//     //   }else{
+//     //     this.responseMessage="";
+//     //   }
+//     // },
 
-    validate() {
-      this.codeblur = true;
-      this.itemDescblur = true;
-      this.stkClassblur = true;
-      this.busLineblur = true;
-      if (
-        this.itemCodeIsValid &&
-        this.itemDescIsValid &&
-        this.reOrderQtyIsValid &&
-        this.reOrderLevelIsValid &&
-        this.stkClassIsValid &&
-        this.busLineIsValid &&
-        this.storeLocIsValid &&
-        this.storeRackIsValid &&
-        this.storeBinIsValid &&
-        this.unitIsValid &&
-        this.XRefIsValid &&
-        this.partNoIsValid 
-        // this.checkItemCode
-      ) {
-        this.valid = true;
-      } else {
-        this.valid = false;
-        return;
-      }
-    },
-  },
+//     validate() {
+//       this.codeblur = true;
+//       this.itemDescblur = true;
+//       this.stkClassblur = true;
+//       this.busLineblur = true;
+//       if (
+//         this.itemCodeIsValid &&
+//         this.itemDescIsValid &&
+//         this.reOrderQtyIsValid &&
+//         this.reOrderLevelIsValid &&
+//         this.stkClassIsValid &&
+//         this.busLineIsValid &&
+//         this.storeLocIsValid &&
+//         this.storeRackIsValid &&
+//         this.storeBinIsValid &&
+//         this.unitIsValid &&
+//         this.XRefIsValid &&
+//         this.partNoIsValid 
+//         // this.checkItemCode
+//       ) {
+//         this.valid = true;
+//       } else {
+//         this.valid = false;
+//         return;
+//       }
+//     },
+//   },
 
-  computed: {
-    itemCodeIsValid() {
-      return (
-        this.postBody.itemCode != "" &&
-        this.postBody.itemCode.length >= 1 &&
-        this.postBody.itemCode.length <= 6 
-      );
-    },
+//   computed: {
+//     itemCodeIsValid() {
+//       return (
+//         this.postBody.itemCode != "" &&
+//         this.postBody.itemCode.length >= 1 &&
+//         this.postBody.itemCode.length <= 6 
+//       );
+//     },
 
-    itemDescIsValid() {
-      return (
-        this.postBody.itemDesc != "" &&
-        this.postBody.itemDesc.length >= 1 &&
-        this.postBody.itemDesc.length <= 40
-      );
-    },
-    storeLocIsValid() {
-      return (
-        this.postBody.storeLoc == "" ||
-        (this.postBody.storeLoc.length >= 1 &&
-          this.postBody.storeLoc.length <= 5)
-      );
-    },
-    storeRackIsValid() {
-      return (
-        this.postBody.storerack == "" ||
-        (this.postBody.storerack.length >= 1 &&
-          this.postBody.storerack.length <= 5)
-      );
-    },
-    storeBinIsValid() {
-      return (
-        this.postBody.storebin == "" ||
-        (this.postBody.storebin.length >= 1 &&
-          this.postBody.storebin.length <= 5)
-      );
-    },
-    unitIsValid() {
-      return (
-        this.postBody.units == "" ||
-        (this.postBody.units.length >= 1 && this.postBody.units.length <= 10)
-      );
-    },
-    XRefIsValid() {
-      return (
-        this.postBody.xRef == "" ||
-        (this.postBody.xRef.length >= 1 && this.postBody.xRef.length <= 12)
-      );
-    },
-    partNoIsValid() {
-      return (
-        this.postBody.partNo == "" ||
-        (this.postBody.partNo.length >= 1 && this.postBody.partNo.length <= 30)
-      );
-    },
+//     itemDescIsValid() {
+//       return (
+//         this.postBody.itemDesc != "" &&
+//         this.postBody.itemDesc.length >= 1 &&
+//         this.postBody.itemDesc.length <= 40
+//       );
+//     },
+//     storeLocIsValid() {
+//       return (
+//         this.postBody.storeLoc == "" ||
+//         (this.postBody.storeLoc.length >= 1 &&
+//           this.postBody.storeLoc.length <= 5)
+//       );
+//     },
+//     storeRackIsValid() {
+//       return (
+//         this.postBody.storerack == "" ||
+//         (this.postBody.storerack.length >= 1 &&
+//           this.postBody.storerack.length <= 5)
+//       );
+//     },
+//     storeBinIsValid() {
+//       return (
+//         this.postBody.storebin == "" ||
+//         (this.postBody.storebin.length >= 1 &&
+//           this.postBody.storebin.length <= 5)
+//       );
+//     },
+//     unitIsValid() {
+//       return (
+//         this.postBody.units == "" ||
+//         (this.postBody.units.length >= 1 && this.postBody.units.length <= 10)
+//       );
+//     },
+//     XRefIsValid() {
+//       return (
+//         this.postBody.xRef == "" ||
+//         (this.postBody.xRef.length >= 1 && this.postBody.xRef.length <= 12)
+//       );
+//     },
+//     partNoIsValid() {
+//       return (
+//         this.postBody.partNo == "" ||
+//         (this.postBody.partNo.length >= 1 && this.postBody.partNo.length <= 30)
+//       );
+//     },
 
-    stkClassIsValid() {
-      return this.postBody.class != "";
-    },
+//     stkClassIsValid() {
+//       return this.postBody.class != "";
+//     },
 
-    busLineIsValid() {
-      return this.postBody.busLine != "";
-    },
+//     busLineIsValid() {
+//       return this.postBody.busLine != "";
+//     },
 
-    reOrderQtyIsValid() {
-      return (
-        this.postBody.reOrderQty == ""  || this.postBody.reOrderQty == null ||
-        parseInt(this.postBody.reOrderQty) >= 1
-      );
-    },
+//     reOrderQtyIsValid() {
+//       return (
+//         this.postBody.reOrderQty == ""  || this.postBody.reOrderQty == null ||
+//         parseInt(this.postBody.reOrderQty) >= 1
+//       );
+//     },
 
-    reOrderLevelIsValid() {
-      return (
-        this.postBody.reOrderLevel == "" || this.postBody.reOrderLevel == null ||
-        parseInt(this.postBody.reOrderLevel) >= 1
-      );
-    },
+//     reOrderLevelIsValid() {
+//       return (
+//         this.postBody.reOrderLevel == "" || this.postBody.reOrderLevel == null ||
+//         parseInt(this.postBody.reOrderLevel) >= 1
+//       );
+//     },
 
-    // checkItemCode(){
-    //   var itemCode = this.postBody.itemCode.trim();
-    //   if(itemCode != ''){
-    //     axios.get(`/api/itemmaster/${itemCode}`, {
-    //     }).then((response)=>{
-    //      this.itemCode = response.data.itemCode;
-    //       if(response.data.itemCode!=this.itemCode){
-    //         this.responseMessage = "Item Code is Available.";
-    //       }else{
-    //         this.responseMessage = "Item Code already exist"
-    //       }
-    //     }).catch((error)=>{
-    //       console.log(error)
-    //     })
-    //   }else{
-    //     this.responseMessage="";
-    //   }
-    // },
+//     // checkItemCode(){
+//     //   var itemCode = this.postBody.itemCode.trim();
+//     //   if(itemCode != ''){
+//     //     axios.get(`/api/itemmaster/${itemCode}`, {
+//     //     }).then((response)=>{
+//     //      this.itemCode = response.data.itemCode;
+//     //       if(response.data.itemCode!=this.itemCode){
+//     //         this.responseMessage = "Item Code is Available.";
+//     //       }else{
+//     //         this.responseMessage = "Item Code already exist"
+//     //       }
+//     //     }).catch((error)=>{
+//     //       console.log(error)
+//     //     })
+//     //   }else{
+//     //     this.responseMessage="";
+//     //   }
+//     // },
 
-    setter() {
-      let objecttoedit = this.$store.state.objectToUpdate;
-      if (objecttoedit.itemCode) {
-        this.postBody.itemCode = objecttoedit.itemCode;
-        this.postBody.itemDesc = objecttoedit.itemDesc;
-        this.postBody.storeLoc = objecttoedit.storeLoc;
-        this.postBody.storerack = objecttoedit.storerack;
-        this.postBody.storebin = objecttoedit.storebin;
-        this.postBody.reOrderLevel = objecttoedit.reOrderLevel;
-        this.postBody.reOrderQty = objecttoedit.reOrderQty;
-        this.postBody.units = objecttoedit.units;
-        this.postBody.xRef = objecttoedit.xRef;
-        this.postBody.partNo = objecttoedit.partNo;
-        this.postBody.class = objecttoedit.class;
-        this.postBody.busLine = objecttoedit.busLine;
-      }
-    },
-  },
-};
-</script>
+//     setter() {
+//       let objecttoedit = this.$store.state.objectToUpdate;
+//       if (objecttoedit.itemCode) {
+//         this.postBody.itemCode = objecttoedit.itemCode;
+//         this.postBody.itemDesc = objecttoedit.itemDesc;
+//         this.postBody.storeLoc = objecttoedit.storeLoc;
+//         this.postBody.storerack = objecttoedit.storerack;
+//         this.postBody.storebin = objecttoedit.storebin;
+//         this.postBody.reOrderLevel = objecttoedit.reOrderLevel;
+//         this.postBody.reOrderQty = objecttoedit.reOrderQty;
+//         this.postBody.units = objecttoedit.units;
+//         this.postBody.xRef = objecttoedit.xRef;
+//         this.postBody.partNo = objecttoedit.partNo;
+//         this.postBody.class = objecttoedit.class;
+//         this.postBody.busLine = objecttoedit.busLine;
+//       }
+//     },
+//   },
+// };
+// </script>

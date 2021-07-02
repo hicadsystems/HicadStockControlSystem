@@ -26,6 +26,14 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_History
         [StringLength(20)]
         public string UserId { get; set; }
         public DateTime? DateCreated { get; set; }
+        public List<LineItem> LineItems { get; set; }
         //public DateTime? UpdatedOn { get; set; }
+    }
+
+    public class LineItem
+    {
+        public string ItemCode { get; set; }
+        public int Quantity { get; set; }
+        public decimal? Price { get; set; }
     }
 }

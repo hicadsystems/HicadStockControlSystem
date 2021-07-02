@@ -31,6 +31,10 @@ namespace HicadStockSystem.Core.Models
         public DateTime? DateCreated { get; set; }
         //public DateTime? UpdatedOn { get; set; }
         public bool IsDeleted { get; set; }
-        
+        public int? RemarkId { get; set; }
+        public St_Remark St_Remark { get; set; }
+
+
+
     }
 }
