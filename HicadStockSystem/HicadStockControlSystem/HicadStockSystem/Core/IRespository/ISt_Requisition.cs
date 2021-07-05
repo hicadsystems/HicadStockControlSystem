@@ -1,5 +1,6 @@
 ﻿using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,10 @@ namespace HicadStockSystem.Core.IRespository
         St_Requisition GetByItemcode(string itemCode);
         Task UpdateAsync(St_Requisition requisition);
         Task UpdateAsync(string reqNo);
-        //Task<IEnumerable<St_Requisition>> GetAll();
+        Task<IEnumerable<St_Requisition>> GetAllRequisition();
         Task<IEnumerable<string>> GetAll();
         Task DeleteAsync(string reqNo);
+        Task DeleteUnissuedRequisition(UnissuedRequisition unissued);
 
         Task<IEnumerable<Ac_CostCentre>> GetCostCentre();
         Task<ItemStockMasterViewModel> StockItemViewModels(string ItemCodes);
@@ -37,5 +39,7 @@ namespace HicadStockSystem.Core.IRespository
 
         List<St_Requisition> GetByItemCode(string requisitionNo, string itemcode);
         List<St_Requisition> GetByReqNoForApproval(string reqNo);
+        Task<IEnumerable<string>> GetUnissuedReqisition();
+
     }
 }

@@ -3,6 +3,7 @@ using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,8 @@ namespace HicadStockSystem.Controllers
 
                 var requisitionNumberInDb = _requisition.GetByReqNo(reqNo);
 
+                /*var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, CreateSt_RequisitionVM>(requisitionVM);
+                var currentBal = _requisition.CheckCurrentBal(checkCurrentBal);*/
                 //check to avoid duplicate number
                 if (requisitionNumberInDb == null)
                 {
@@ -68,7 +71,7 @@ namespace HicadStockSystem.Controllers
                         await _requisition.CreateAsync(newRequisition);
 
                         //check for the availability of requested quantity
-                       var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
+                       //var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
 
                     }
                     //requisitionVM.Description = _requisition.GetDescription(requisitionVM.Itemcode);
@@ -117,14 +120,12 @@ namespace HicadStockSystem.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM)
         {
+            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+            if (requisitioInDb == null)
+                return BadRequest();
             foreach (var item in requisitionVM.ItemLists)
             {
-                var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
-                if (requisitioInDb == null)
-                    return BadRequest();
-
                 //requisitionVM.Price = 0;
-
                 _mapper.Map(requisitionVM, requisitioInDb);
                 requisitioInDb.ItemCode = requisitionVM.ItemCode = item.ItemCode;
                 //swapping supplyqty to quantity and approved qty to supplyqty column
@@ -148,15 +149,11 @@ namespace HicadStockSystem.Controllers
         [Route("RequisitionApproval")]
         public async Task<IActionResult> RequisitionApproval([FromBody] UpdateSt_RequisitionVM requisitionVM)
         {
-            //var requisitioInDb = new St_Requisition();
+            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+            if (requisitioInDb == null)
+                return BadRequest();
             foreach (var item in requisitionVM.ItemLists)
             {
-                var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
-                //requisitionVM.ItemCode = item.ItemCode;
-                //var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
-                if (requisitioInDb == null)
-                    return BadRequest();
-
                 _mapper.Map(requisitionVM, requisitioInDb);
                 requisitioInDb.ItemCode = item.ItemCode;
                 requisitioInDb.Quantity = requisitionVM.Quantity = (float?)item.Quantity;
@@ -169,21 +166,6 @@ namespace HicadStockSystem.Controllers
                 await _requisition.RequisitioApprovalAsync(requisitioInDb);
             }
 
-                //if (requisitioInDb == null)
-                // return BadRequest();
-            //foreach (var item in requisitionVM.ItemLists)
-            //{
-            //    requisitioInDb.ItemCode = _requisition.GetByItemCode(item.ItemCode);
-            //    requisitioInDb.Quantity = (float?)item.Quantity;
-            //    requisitioInDb.Description = item.ItemDescription;
-            //    requisitioInDb.Unit = item.Unit;
-            //    requisitioInDb.UpdatedOn = DateTime.Now;
-
-            //    _mapper.Map(requisitionVM, requisitioInDb);
-            //    //requisitioInDb.ItemCode = item.ItemCode;
-            //    await _requisition.RequisitioApprovalAsync(requisitioInDb);
-
-            //}
             return Ok(/*requisitioInDb*/);
         }
 
@@ -222,6 +204,18 @@ namespace HicadStockSystem.Controllers
             await _requisition.DeleteAsync(reqNo);
 
             return Ok(requisitioInDb);
+        } 
+
+        [HttpPatch]
+        [Route("DeleteUnissuedRequisition")]
+        public IActionResult DeleteUnissuedRequisition([FromBody] UnissuedRequisition unissued)
+        {
+            if (ModelState.IsValid)
+            {
+                _requisition.DeleteUnissuedRequisition(unissued);
+            }
+
+            return Ok(/*requisitioInDb*/);
         }
 
         [HttpGet]
@@ -241,14 +235,14 @@ namespace HicadStockSystem.Controllers
             return Ok(stockItem);
         }
 
-        //[HttpGet]
-        //[Route("getItemCode")]
-        //public async Task<IActionResult> GetItemCode()
-        //{
-        //    var itemCode = await _requisition.GetItemCode();
+        [HttpGet]
+        [Route("GetUnissuedRequisitions")]
+        public async Task<IActionResult> GetUnissuedRequisitions()
+        {
+            var itemCode = await _requisition.GetUnissuedReqisition();
 
-        //    return Ok(itemCode);
-        //}
+            return Ok(itemCode);
+        }
 
         [HttpGet]
         [Route("RequisitionApproval/{itemCode}")]
@@ -269,6 +263,15 @@ namespace HicadStockSystem.Controllers
             var items =  _requisition.ItemLists(reqNo);
 
             return Ok(items);
+        } 
+
+        [HttpGet]
+        [Route("GetUnissuedReq")]
+        public IActionResult GetUnissuedReq()
+        {
+            //var items =  _requisition.ItemLists(reqNo);
+            var req = _requisition.GetAllRequisition();
+            return Ok(req);
         }
 
         [HttpGet]

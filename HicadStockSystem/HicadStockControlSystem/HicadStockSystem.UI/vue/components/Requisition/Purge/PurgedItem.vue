@@ -4,6 +4,7 @@
       <div class="p-4 ml-2">
         <div class="form-check">
           <input
+            v-model="ReqList"
             class="form-check-input"
             type="radio"
             name="exampleRadios"
@@ -17,6 +18,8 @@
         </div>
         <div class="form-check">
           <input
+            v-model="postBody.requisitionAge"
+            @click="selectDate = true"
             class="form-check-input"
             type="radio"
             name="exampleRadios"
@@ -24,11 +27,13 @@
             value="option2"
           />
           <label class="form-check-label" for="exampleRadios2">
-           Before Specific Code
+            Before Specific Date
           </label>
+          <input  v-model="postBody.requisitionAge" v-if="selectDate" type="date" class="col-4" />
         </div>
-       <div class="form-check">
+        <div class="form-check">
           <input
+            @click="selectRequisition = true"
             class="form-check-input"
             type="radio"
             name="exampleRadios"
@@ -36,10 +41,30 @@
             value="option2"
           />
           <label class="form-check-label" for="exampleRadios2">
-           Specific Requisition
+            Specific Requisition
           </label>
+          <div class="col-6" v-if="selectRequisition">
+            <select
+              class="form-control"
+              v-model="postBody.requisitionNo"
+              name="requisitionNo"
+              :class="{ 'is-invalid': !requisitionNoIsValid && reqblur }"
+              v-on:blur="reqblur = true"
+            >
+              <option>
+                --select Requisition No.--
+              </option>
+              <option
+                v-for="requisition in RequisitionList"
+                v-bind:value="requisition"
+                v-bind:key="requisition"
+              >
+                {{ requisition }}
+              </option>
+            </select>
+          </div>
         </div>
-        <div  role="group">
+        <div role="group">
           <button
             class="btn btn-submit btn-primary float-right"
             v-on:click="checkForm"
@@ -114,28 +139,20 @@ export default {
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
-      DepartmentList: null,
-      ItemList: null,
-      StockItemsList: null,
-      locationblur: false,
-      itemCodeblur: false,
-      quantityblur: false,
-      valid: false,
-      isSelected: false,
-      isAddItem: false,
+      selectDate: false,
+      selectRequisition: false,
+      reqblur: false,
+      RequisitionList: false,
+      ReqList: false,
 
       // lineItems: [],
       // locationCode: "",
       currentBal: "",
 
       postBody: {
-        // itemCode: "",
-        // quantity: "",
-        // unit: "",
-        locationCode: "",
-        lineItems: [],
-        // itemDesc: "",
-        // qtyInTransaction: 0,
+        requisitionNo: "",
+        ReqList: [],
+        requisitionAge: "",
       },
 
       newItem: {
@@ -148,8 +165,9 @@ export default {
   },
 
   mounted() {
-    this.getDepartment();
-    this.getItemCode();
+    this.getUnissuedReq();
+    this.getUnissuedReqs();
+    // this.getItemCode();
   },
   // watch: {
   //   "$store.state.objectToUpdate": function(newVal, oldVal) {
@@ -164,205 +182,111 @@ export default {
   // },
   methods: {
     checkForm() {
-      alert(this.postBody);
-      console.log(this.postBody);
-      // console.log(this.postBody.locationCode);
-      axios
-        .post(`/api/requisition/`, this.postBody)
-        .then((response) => {
-          this.responseMessage = response.data.responseDescription;
-          this.canProcess = true;
-          if (response.data.responseCode == "200") {
-            (this.postBody.locationCode = ""), (this.postBody.lineItems = []);
-          }
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
-      // this.validate();
-      // if (this.valid) {
-      //   e.preventDefault();
-      //   this.canProcess = false;
-
-      //   // axios
-      //   //   .post(`/api/requisition/`, this.postBody)
-      //   //   .then((response) => {
-      //   //     this.responseMessage = response.data.responseDescription;
-      //   //     this.canProcess = true;
-      //   //     if (response.data.responseCode == "200") {
-
-      //   //       // this.postBody.locationCode = "";
-      //   //       // this.postBody.itemCode = "";
-      //   //       // this.postBody.itemDesc = "";
-      //   //       // this.postBody.quantity = "";
-      //   //       // this.postBody.unit = "";
-      //   //       // this.$store.stateName.objectToUpdate = "create";
-      //   //       location = this.locationCode;
-      //   //       this.lineItems = [];
-      //   //     }
-      //   //     // this.document.getElementById('#requestForm').value = "";
-      //   //     // this.$refs.requestForm.reset();
-      //   //     // window.location.reload();
-      //   //   })
-      //   //   .catch((e) => {
-      //   //     if (e) this.errors.push(e);
-      //   //   });
-      //   // // this.$alert("Submit Form", "Ok", "info");
-      //   this.postPost();
-      // } else {
-      //   this.$alert("Please Fill Highlighted Fields", "missing", "error");
-      //   this.errors = [];
-      //   this.errors.push("Supply all the required field");
-      // }
-    },
-    postPost() {
-      if (this.submitorUpdate == "Submit") {
+      console.log(this.postBody.RequisitionApproval);
+      this.validate();
+      if (this.postBody) {
+        // e.preventDefault();
         axios
-          .post(`/api/requisition/`, this.postBody)
+          .patch(`/api/requisition/DeleteUnissuedRequisition`, this.postBody)
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
-              // this.postBody.locationCode = "";
-              // this.postBody.itemCode = "";
-              // this.postBody.itemDesc = "";
-              // this.postBody.quantity = "";
-              // this.postBody.unit = "";
-              // this.$store.stateName.objectToUpdate = "create";
-              location = this.locationCode;
-              this.lineItems = [];
-            }
-            // this.document.getElementById('#requestForm').value = "";
-            // this.$refs.requestForm.reset();
-            // window.location.reload();
-          })
-          .catch((e) => {
-            if (e) this.errors.push(e);
-          });
-      }
-      if (this.submitorUpdate == "Update") {
-        alert("Ready to Update");
-        axios
-          .put(`/api/requisition/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              this.submitorUpdate = "Submit";
-              this.postBody.locationCode = "";
-              this.postBody.itemCode = "";
-              this.postBody.itemDesc = "";
-              this.postBody.quantity = 0;
-              this.postBody.unit = "";
-              this.$store.state.objectToUpdate = "update";
+              this.postBody.requisitionNo = "";
+              this.postBody.requisitionAge = "";
+              this.RequisitionList = [];
             }
             window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);
           });
+        this.$alert("Submit Form", "Ok", "info");
+      } else {
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
+        this.errors = [];
+        this.errors.push("Supply all the required field");
       }
     },
-    getDepartment() {
-      axios.get(`/api/requisition/getcostcentre`).then((response) => {
-        this.DepartmentList = response.data;
+    // postPost() {
+    //   if (this.submitorUpdate == "Submit") {
+    //     axios
+    //       .post(`/api/requisition/`, this.postBody)
+    //       .then((response) => {
+    //         this.responseMessage = response.data.responseDescription;
+    //         this.canProcess = true;
+    //         if (response.data.responseCode == "200") {
+    //           // this.postBody.locationCode = "";
+    //           // this.postBody.itemCode = "";
+    //           // this.postBody.itemDesc = "";
+    //           // this.postBody.quantity = "";
+    //           // this.postBody.unit = "";
+    //           // this.$store.stateName.objectToUpdate = "create";
+    //           location = this.locationCode;
+    //           this.lineItems = [];
+    //         }
+    //         // this.document.getElementById('#requestForm').value = "";
+    //         // this.$refs.requestForm.reset();
+    //         // window.location.reload();
+    //       })
+    //       .catch((e) => {
+    //         if (e) this.errors.push(e);
+    //       });
+    //   }
+    //   if (this.submitorUpdate == "Update") {
+    //     alert("Ready to Update");
+    //     axios
+    //       .put(`/api/requisition/`, this.postBody)
+    //       .then((response) => {
+    //         this.responseMessage = response.data.responseDescription;
+    //         this.canProcess = true;
+    //         if (response.data.responseCode == "200") {
+    //           this.submitorUpdate = "Submit";
+    //           this.postBody.locationCode = "";
+    //           this.postBody.itemCode = "";
+    //           this.postBody.itemDesc = "";
+    //           this.postBody.quantity = 0;
+    //           this.postBody.unit = "";
+    //           this.$store.state.objectToUpdate = "update";
+    //         }
+    //         window.location.reload();
+    //       })
+    //       .catch((e) => {
+    //         this.errors.push(e);
+    //       });
+    //   }
+    // },
+
+    //gets the unit, currentBal of item
+
+    getUnissuedReq() {
+      axios.get(`/api/requisition/GetUnissuedRequisitions`).then((response) => {
+        this.RequisitionList = response.data;
+        this.postBody.RequisitionList = response.data;
       });
     },
-    //gets the unit, currentBal of item
-    getStockItems() {
-      // this.postBody.itemCode="1234"
-      // alert(this.postBody.itemCode);
-      axios
-        .get(`/api/requisition/getStockItems/${this.newItem.itemCode}`)
-        .then((response) => {
-          this.StockItemsList = response.data;
-          this.currentBal = response.data.currentBalance;
-          this.newItem.unit = response.data.unit;
-          // this.postBody.currentBal = response.data.currentBalance;
-          // this.postBody.unit = response.data.unit;
-        });
-    },
-    getItemCode() {
-      axios.get(`/api/requisition/getItemCode`).then((response) => {
-        this.ItemList = response.data;
+
+    getUnissuedReqs() {
+      axios.get(`/api/requisition/GetUnissuedReq`).then((response) => {
+        this.ReqList = response.data;
+        this.postBody.ReqList = response.data;
       });
     },
 
     validate() {
-      this.locationblur = true;
-      this.itemCodeblur = true;
-      this.quantityblur = true;
-      if (
-        this.departmentIsValid &&
-        this.itemCodeIsValid &&
-        this.quantityIsValid
-      ) {
+      this.reqblur = true;
+      if (this.requisitionNoIsValid) {
         this.valid = true;
       } else {
         this.valid = false;
         return;
       }
     },
-
-    /* addLineItem() {
-      this.validate();
-      if (this.valid) {
-        let newItem = {
-          itemCode: this.newItem.itemCode,
-          quantity: Number(this.newItem.quantity),
-          unit: this.newItem.unit,
-        };
-
-        //checking for duplicate item
-        let existingItems = this.postBody.lineItems.map((item) => item.itemCode);
-
-        if (existingItems.includes(newItem.itemCode)) {
-          let lineItem = this.postBody.lineItems.find(
-            (item) => item.itemCode === newItem.itemCode
-          );
-
-          let currentQuantity = Number(lineItem.quantity);
-          let updateQuantity = (currentQuantity += newItem.quantity);
-          lineItem.quantity = updateQuantity;
-        } else {
-          let result = this.postBody.lineItems.push(this.newItem);
-          console.log(result);
-        }
-
-        this.newItem = { itemCode: "", quantity: "", unit: "" };
-        // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
-        this.isAddItem = true;
-
-        // this.currentBal -= this.quantity
-      }else{
-        this.$alert("Please Fill Highlighted Fields", "missing", "error");
-      }
-      // alert(this.newItem.itemCode)
-    },
-
-    removeItem(itemCode){
-      this.lineItems.splice(this.itemCode, 1)
-    }*/
   },
 
   computed: {
-    departmentIsValid() {
-      // return this.postBody.locationCode != "";
-      return this.locationCode != "";
-    },
-
-    itemCodeIsValid() {
-      // return this.postBody.itemCode != "";
-      return this.newItem.itemCode != "";
-    },
-
-    quantityIsValid() {
-      return (
-        this.newItem.quantity != "" &&
-        (parseInt(this.newItem.quantity) >= 0 ||
-          this.newItem.quantity == null) &&
-        parseInt(this.newItem.quantity) <= parseInt(this.currentBal)
-      );
+    requisitionNoIsValid() {
+      return this.postBody.requisitionNo != "";
     },
   },
 };

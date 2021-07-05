@@ -280,8 +280,8 @@ export default {
   // },
   methods: {
     checkForm() {
-      alert(this.postBody);
-      console.log(this.postBody);
+      // alert(this.postBody);
+      // console.log(this.postBody);
       // console.log(this.postBody.locationCode);
       axios
           .post(`/api/requisition/`, this.postBody)

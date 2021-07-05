@@ -129,7 +129,7 @@
                 <th>Quantity</th>
                 <th>Unit Price</th>
                 <!--<th>Unit</th>-->
-                <th>Option</th>
+                <!--<th>Option</th>-->
               </tr>
             </thead>
             <tbody>
@@ -141,14 +141,14 @@
                 <td>{{ lineItem.quantity }}</td>
                 <td>{{ lineItem.price }}</td>
                 <!--<td>{{ lineItem.units }}</td>-->
-                <td>
+                <!--<td>
                   <button
                     @click="removeItem(lineItem.itemCode)"
                     class="btn btn-danger"
                   >
                     Remove Item
                   </button>
-                </td>
+                </td>-->
               </tr>
             </tbody>
           </table>
@@ -222,7 +222,7 @@ export default {
   },
   methods: {
     checkForm: function(e) {
-      alert(this.postBody);
+      // alert(this.postBody);
       console.log(this.postBody);
       // console.log(this.postBody.locationCode);
       axios

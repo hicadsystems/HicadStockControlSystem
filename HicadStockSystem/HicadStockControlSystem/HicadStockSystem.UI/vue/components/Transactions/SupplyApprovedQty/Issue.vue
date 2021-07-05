@@ -253,7 +253,7 @@ export default {
 
     getRequisitionApproval() {
       // this.postBody.itemCode="1234"
-      alert(this.postBody.requisitionNo);
+      // alert(this.postBody.requisitionNo);
       axios
         .get(
           `/api/requisition/RequisitionApproval/${this.postBody.requisitionNo}`

@@ -2,6 +2,7 @@
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -70,11 +71,11 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        //public async Task<IEnumerable<St_Requisition>> GetAll()
-        //{
-        //    var distinct = (from req in _dbContext.St_Requisitions select req.RequisitionNo).Distinct().ToList();
-        //    return await _dbContext.St_Requisitions.Where(sr=>sr.IsDeleted==false && sr.IsApproved==false).ToListAsync();
-        //}
+        public async Task<IEnumerable<St_Requisition>> GetAllRequisition()
+        {
+            var distinct = await _dbContext.St_Requisitions.ToListAsync();
+            return distinct;
+        }
 
         public async Task<IEnumerable<string>> GetAll()
         {
@@ -362,7 +363,61 @@ namespace HicadStockSystem.Persistence.Repository
                 }).FirstOrDefaultAsync();
             return requistion;
         }
+        public St_Requisition GetByItemcode(string itemCode)
+        {
+            return _dbContext.St_Requisitions.Where(sr => sr.ItemCode == itemCode).FirstOrDefault();
+        }
 
+        public async Task<IEnumerable<string>> GetUnissuedReqisition()
+        {
+            var distinct = await (from req in _dbContext.St_Requisitions where req.IsSupplied == false && req.IsDeleted == false select req.RequisitionNo).Distinct().ToListAsync();
+            return distinct;
+        }
+        public async Task DeleteUnissuedRequisition(UnissuedRequisition unissued)
+        {
+            if (!string.IsNullOrEmpty(unissued.RequisitionNo))
+            {
+                var requisitionInDb = GetByRequsitionNo(unissued.RequisitionNo);
+                requisitionInDb.IsDeleted = true;
+                await _uow.CompleteAsync();
+            }
+            else if (unissued.RequisitionAge==new DateTime())
+            {
+                var requisitionInDb = GetByDate(unissued.RequisitionAge);
+                foreach (var item in requisitionInDb)
+                {
+                    item.IsDeleted = true;
+                }
+                
+                await _uow.CompleteAsync();
+            }
+            else
+            {
+                //var requisitionInDb = GetByRequsitionNos(unissued.RequisitionList);
+                //foreach (var item in requisitionInDb)
+                //{
+                //    item.IsDeleted = true;
+                //}
+
+                //await _uow.CompleteAsync();
+            }
+        }
+
+        private List<St_Requisition> GetByDate(DateTime? date)
+        {
+            var unissuedReq = _dbContext.St_Requisitions.Where(req => req.IsSupplied == false && req.RequisitionDate <= date).ToList();
+            return unissuedReq;
+        }
+        //private async Task<IEnumerable<St_Requisition>> GetAllRequisition()
+        //{
+        //    var distinct = await _dbContext.St_Requisitions.ToListAsync();
+        //    return distinct;
+        //}
+        private St_Requisition GetByRequsitionNo(string reqNo)
+        {
+            var unissuedReq = _dbContext.St_Requisitions.Where(req => req.IsSupplied == false && req.RequisitionNo == reqNo).FirstOrDefault();
+            return unissuedReq;
+        }
         public List<ItemListVM> ItemLists(string reqNo)
         {
             return  (from requisition in _dbContext.St_Requisitions
@@ -380,9 +435,6 @@ namespace HicadStockSystem.Persistence.Repository
 
         }
 
-        public St_Requisition GetByItemcode(string itemCode)
-        {
-            return _dbContext.St_Requisitions.Where(sr => sr.ItemCode == itemCode).FirstOrDefault();
-        }
+        
     }
 }

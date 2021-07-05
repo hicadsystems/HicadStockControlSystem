@@ -3178,6 +3178,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3191,26 +3216,18 @@ __webpack_require__.r(__webpack_exports__);
       responseMessage: "",
       submitorUpdate: "Submit",
       canProcess: true,
-      DepartmentList: null,
-      ItemList: null,
-      StockItemsList: null,
-      locationblur: false,
-      itemCodeblur: false,
-      quantityblur: false,
-      valid: false,
-      isSelected: false,
-      isAddItem: false,
+      selectDate: false,
+      selectRequisition: false,
+      reqblur: false,
+      RequisitionList: false,
+      ReqList: false,
       // lineItems: [],
       // locationCode: "",
       currentBal: "",
       postBody: {
-        // itemCode: "",
-        // quantity: "",
-        // unit: "",
-        locationCode: "",
-        lineItems: [] // itemDesc: "",
-        // qtyInTransaction: 0,
-
+        requisitionNo: "",
+        ReqList: [],
+        requisitionAge: ""
       },
       newItem: {
         quantity: 0,
@@ -3221,8 +3238,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.getDepartment();
-    this.getItemCode();
+    this.getUnissuedReq();
+    this.getUnissuedReqs(); // this.getItemCode();
   },
   // watch: {
   //   "$store.state.objectToUpdate": function(newVal, oldVal) {
@@ -3239,185 +3256,111 @@ __webpack_require__.r(__webpack_exports__);
     checkForm: function checkForm() {
       var _this = this;
 
-      alert(this.postBody);
-      console.log(this.postBody); // console.log(this.postBody.locationCode);
+      console.log(this.postBody.RequisitionApproval);
+      this.validate();
 
-      axios.post("/api/requisition/", this.postBody).then(function (response) {
-        _this.responseMessage = response.data.responseDescription;
-        _this.canProcess = true;
-
-        if (response.data.responseCode == "200") {
-          _this.postBody.locationCode = "", _this.postBody.lineItems = [];
-        }
-      })["catch"](function (e) {
-        _this.errors.push(e);
-      }); // this.validate();
-      // if (this.valid) {
-      //   e.preventDefault();
-      //   this.canProcess = false;
-      //   // axios
-      //   //   .post(`/api/requisition/`, this.postBody)
-      //   //   .then((response) => {
-      //   //     this.responseMessage = response.data.responseDescription;
-      //   //     this.canProcess = true;
-      //   //     if (response.data.responseCode == "200") {
-      //   //       // this.postBody.locationCode = "";
-      //   //       // this.postBody.itemCode = "";
-      //   //       // this.postBody.itemDesc = "";
-      //   //       // this.postBody.quantity = "";
-      //   //       // this.postBody.unit = "";
-      //   //       // this.$store.stateName.objectToUpdate = "create";
-      //   //       location = this.locationCode;
-      //   //       this.lineItems = [];
-      //   //     }
-      //   //     // this.document.getElementById('#requestForm').value = "";
-      //   //     // this.$refs.requestForm.reset();
-      //   //     // window.location.reload();
-      //   //   })
-      //   //   .catch((e) => {
-      //   //     if (e) this.errors.push(e);
-      //   //   });
-      //   // // this.$alert("Submit Form", "Ok", "info");
-      //   this.postPost();
-      // } else {
-      //   this.$alert("Please Fill Highlighted Fields", "missing", "error");
-      //   this.errors = [];
-      //   this.errors.push("Supply all the required field");
-      // }
-    },
-    postPost: function postPost() {
-      var _this2 = this;
-
-      if (this.submitorUpdate == "Submit") {
-        axios.post("/api/requisition/", this.postBody).then(function (response) {
-          _this2.responseMessage = response.data.responseDescription;
-          _this2.canProcess = true;
+      if (this.postBody) {
+        // e.preventDefault();
+        axios.patch("/api/requisition/DeleteUnissuedRequisition", this.postBody).then(function (response) {
+          _this.responseMessage = response.data.responseDescription;
+          _this.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            // this.postBody.locationCode = "";
-            // this.postBody.itemCode = "";
-            // this.postBody.itemDesc = "";
-            // this.postBody.quantity = "";
-            // this.postBody.unit = "";
-            // this.$store.stateName.objectToUpdate = "create";
-            location = _this2.locationCode;
-            _this2.lineItems = [];
-          } // this.document.getElementById('#requestForm').value = "";
-          // this.$refs.requestForm.reset();
-          // window.location.reload();
-
-        })["catch"](function (e) {
-          if (e) _this2.errors.push(e);
-        });
-      }
-
-      if (this.submitorUpdate == "Update") {
-        alert("Ready to Update");
-        axios.put("/api/requisition/", this.postBody).then(function (response) {
-          _this2.responseMessage = response.data.responseDescription;
-          _this2.canProcess = true;
-
-          if (response.data.responseCode == "200") {
-            _this2.submitorUpdate = "Submit";
-            _this2.postBody.locationCode = "";
-            _this2.postBody.itemCode = "";
-            _this2.postBody.itemDesc = "";
-            _this2.postBody.quantity = 0;
-            _this2.postBody.unit = "";
-            _this2.$store.state.objectToUpdate = "update";
+            _this.postBody.requisitionNo = "";
+            _this.postBody.requisitionAge = "";
+            _this.RequisitionList = [];
           }
 
           window.location.reload();
         })["catch"](function (e) {
-          _this2.errors.push(e);
+          _this.errors.push(e);
         });
+        this.$alert("Submit Form", "Ok", "info");
+      } else {
+        this.$alert("Please Fill Highlighted Fields", "missing", "error");
+        this.errors = [];
+        this.errors.push("Supply all the required field");
       }
     },
-    getDepartment: function getDepartment() {
+    // postPost() {
+    //   if (this.submitorUpdate == "Submit") {
+    //     axios
+    //       .post(`/api/requisition/`, this.postBody)
+    //       .then((response) => {
+    //         this.responseMessage = response.data.responseDescription;
+    //         this.canProcess = true;
+    //         if (response.data.responseCode == "200") {
+    //           // this.postBody.locationCode = "";
+    //           // this.postBody.itemCode = "";
+    //           // this.postBody.itemDesc = "";
+    //           // this.postBody.quantity = "";
+    //           // this.postBody.unit = "";
+    //           // this.$store.stateName.objectToUpdate = "create";
+    //           location = this.locationCode;
+    //           this.lineItems = [];
+    //         }
+    //         // this.document.getElementById('#requestForm').value = "";
+    //         // this.$refs.requestForm.reset();
+    //         // window.location.reload();
+    //       })
+    //       .catch((e) => {
+    //         if (e) this.errors.push(e);
+    //       });
+    //   }
+    //   if (this.submitorUpdate == "Update") {
+    //     alert("Ready to Update");
+    //     axios
+    //       .put(`/api/requisition/`, this.postBody)
+    //       .then((response) => {
+    //         this.responseMessage = response.data.responseDescription;
+    //         this.canProcess = true;
+    //         if (response.data.responseCode == "200") {
+    //           this.submitorUpdate = "Submit";
+    //           this.postBody.locationCode = "";
+    //           this.postBody.itemCode = "";
+    //           this.postBody.itemDesc = "";
+    //           this.postBody.quantity = 0;
+    //           this.postBody.unit = "";
+    //           this.$store.state.objectToUpdate = "update";
+    //         }
+    //         window.location.reload();
+    //       })
+    //       .catch((e) => {
+    //         this.errors.push(e);
+    //       });
+    //   }
+    // },
+    //gets the unit, currentBal of item
+    getUnissuedReq: function getUnissuedReq() {
+      var _this2 = this;
+
+      axios.get("/api/requisition/GetUnissuedRequisitions").then(function (response) {
+        _this2.RequisitionList = response.data;
+        _this2.postBody.RequisitionList = response.data;
+      });
+    },
+    getUnissuedReqs: function getUnissuedReqs() {
       var _this3 = this;
 
-      axios.get("/api/requisition/getcostcentre").then(function (response) {
-        _this3.DepartmentList = response.data;
-      });
-    },
-    //gets the unit, currentBal of item
-    getStockItems: function getStockItems() {
-      var _this4 = this;
-
-      // this.postBody.itemCode="1234"
-      // alert(this.postBody.itemCode);
-      axios.get("/api/requisition/getStockItems/".concat(this.newItem.itemCode)).then(function (response) {
-        _this4.StockItemsList = response.data;
-        _this4.currentBal = response.data.currentBalance;
-        _this4.newItem.unit = response.data.unit; // this.postBody.currentBal = response.data.currentBalance;
-        // this.postBody.unit = response.data.unit;
-      });
-    },
-    getItemCode: function getItemCode() {
-      var _this5 = this;
-
-      axios.get("/api/requisition/getItemCode").then(function (response) {
-        _this5.ItemList = response.data;
+      axios.get("/api/requisition/GetUnissuedReq").then(function (response) {
+        _this3.ReqList = response.data;
+        _this3.postBody.ReqList = response.data;
       });
     },
     validate: function validate() {
-      this.locationblur = true;
-      this.itemCodeblur = true;
-      this.quantityblur = true;
+      this.reqblur = true;
 
-      if (this.departmentIsValid && this.itemCodeIsValid && this.quantityIsValid) {
+      if (this.requisitionNoIsValid) {
         this.valid = true;
       } else {
         this.valid = false;
         return;
       }
     }
-    /* addLineItem() {
-      this.validate();
-      if (this.valid) {
-        let newItem = {
-          itemCode: this.newItem.itemCode,
-          quantity: Number(this.newItem.quantity),
-          unit: this.newItem.unit,
-        };
-          //checking for duplicate item
-        let existingItems = this.postBody.lineItems.map((item) => item.itemCode);
-          if (existingItems.includes(newItem.itemCode)) {
-          let lineItem = this.postBody.lineItems.find(
-            (item) => item.itemCode === newItem.itemCode
-          );
-            let currentQuantity = Number(lineItem.quantity);
-          let updateQuantity = (currentQuantity += newItem.quantity);
-          lineItem.quantity = updateQuantity;
-        } else {
-          let result = this.postBody.lineItems.push(this.newItem);
-          console.log(result);
-        }
-          this.newItem = { itemCode: "", quantity: "", unit: "" };
-        // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
-        this.isAddItem = true;
-          // this.currentBal -= this.quantity
-      }else{
-        this.$alert("Please Fill Highlighted Fields", "missing", "error");
-      }
-      // alert(this.newItem.itemCode)
-    },
-      removeItem(itemCode){
-      this.lineItems.splice(this.itemCode, 1)
-    }*/
-
   },
   computed: {
-    departmentIsValid: function departmentIsValid() {
-      // return this.postBody.locationCode != "";
-      return this.locationCode != "";
-    },
-    itemCodeIsValid: function itemCodeIsValid() {
-      // return this.postBody.itemCode != "";
-      return this.newItem.itemCode != "";
-    },
-    quantityIsValid: function quantityIsValid() {
-      return this.newItem.quantity != "" && (parseInt(this.newItem.quantity) >= 0 || this.newItem.quantity == null) && parseInt(this.newItem.quantity) <= parseInt(this.currentBal);
+    requisitionNoIsValid: function requisitionNoIsValid() {
+      return this.postBody.requisitionNo != "";
     }
   }
 });
@@ -4215,9 +4158,9 @@ __webpack_require__.r(__webpack_exports__);
     checkForm: function checkForm() {
       var _this = this;
 
-      alert(this.postBody);
-      console.log(this.postBody); // console.log(this.postBody.locationCode);
-
+      // alert(this.postBody);
+      // console.log(this.postBody);
+      // console.log(this.postBody.locationCode);
       axios.post("/api/requisition/", this.postBody).then(function (response) {
         _this.responseMessage = response.data.responseDescription;
         _this.canProcess = true;
@@ -6033,7 +5976,7 @@ __webpack_require__.r(__webpack_exports__);
     checkForm: function checkForm(e) {
       var _this = this;
 
-      alert(this.postBody);
+      // alert(this.postBody);
       console.log(this.postBody); // console.log(this.postBody.locationCode);
 
       axios.post("/api/stockhistory/", this.postBody).then(function (response) {
@@ -6466,7 +6409,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       // this.postBody.itemCode="1234"
-      alert(this.postBody.requisitionNo);
+      // alert(this.postBody.requisitionNo);
       axios.get("/api/requisition/RequisitionApproval/".concat(this.postBody.requisitionNo)).then(function (response) {
         _this2.ItemApprovalList = response.data;
         _this2.postBody.userId = response.data.requisitionBy;
@@ -13168,11 +13111,202 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "card col-sm-6" }, [
       _c("div", { staticClass: "p-4 ml-2" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "form-check" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.ReqList,
+                expression: "ReqList"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: {
+              type: "radio",
+              name: "exampleRadios",
+              id: "exampleRadios1",
+              value: "option1",
+              checked: ""
+            },
+            domProps: { checked: _vm._q(_vm.ReqList, "option1") },
+            on: {
+              change: function($event) {
+                _vm.ReqList = "option1"
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "form-check-label",
+              attrs: { for: "exampleRadios1" }
+            },
+            [_vm._v("\n          All\n        ")]
+          )
+        ]),
         _vm._v(" "),
-        _vm._m(1),
+        _c("div", { staticClass: "form-check" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.postBody.requisitionAge,
+                expression: "postBody.requisitionAge"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: {
+              type: "radio",
+              name: "exampleRadios",
+              id: "exampleRadios2",
+              value: "option2"
+            },
+            domProps: {
+              checked: _vm._q(_vm.postBody.requisitionAge, "option2")
+            },
+            on: {
+              click: function($event) {
+                _vm.selectDate = true
+              },
+              change: function($event) {
+                return _vm.$set(_vm.postBody, "requisitionAge", "option2")
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "form-check-label",
+              attrs: { for: "exampleRadios2" }
+            },
+            [_vm._v("\n          Before Specific Date\n        ")]
+          ),
+          _vm._v(" "),
+          _vm.selectDate
+            ? _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.postBody.requisitionAge,
+                    expression: "postBody.requisitionAge"
+                  }
+                ],
+                staticClass: "col-4",
+                attrs: { type: "date" },
+                domProps: { value: _vm.postBody.requisitionAge },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.postBody,
+                      "requisitionAge",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            : _vm._e()
+        ]),
         _vm._v(" "),
-        _vm._m(2),
+        _c("div", { staticClass: "form-check" }, [
+          _c("input", {
+            staticClass: "form-check-input",
+            attrs: {
+              type: "radio",
+              name: "exampleRadios",
+              id: "exampleRadios2",
+              value: "option2"
+            },
+            on: {
+              click: function($event) {
+                _vm.selectRequisition = true
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "form-check-label",
+              attrs: { for: "exampleRadios2" }
+            },
+            [_vm._v("\n          Specific Requisition\n        ")]
+          ),
+          _vm._v(" "),
+          _vm.selectRequisition
+            ? _c("div", { staticClass: "col-6" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.postBody.requisitionNo,
+                        expression: "postBody.requisitionNo"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    class: {
+                      "is-invalid": !_vm.requisitionNoIsValid && _vm.reqblur
+                    },
+                    attrs: { name: "requisitionNo" },
+                    on: {
+                      blur: function($event) {
+                        _vm.reqblur = true
+                      },
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.postBody,
+                          "requisitionNo",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", [
+                      _vm._v(
+                        "\n              --select Requisition No.--\n            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.RequisitionList, function(requisition) {
+                      return _c(
+                        "option",
+                        { key: requisition, domProps: { value: requisition } },
+                        [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(requisition) +
+                              "\n            "
+                          )
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ])
+            : _vm._e()
+        ]),
         _vm._v(" "),
         _c("div", { attrs: { role: "group" } }, [
           _c(
@@ -13189,75 +13323,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-check" }, [
-      _c("input", {
-        staticClass: "form-check-input",
-        attrs: {
-          type: "radio",
-          name: "exampleRadios",
-          id: "exampleRadios1",
-          value: "option1",
-          checked: ""
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "label",
-        { staticClass: "form-check-label", attrs: { for: "exampleRadios1" } },
-        [_vm._v("\n          All\n        ")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-check" }, [
-      _c("input", {
-        staticClass: "form-check-input",
-        attrs: {
-          type: "radio",
-          name: "exampleRadios",
-          id: "exampleRadios2",
-          value: "option2"
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "label",
-        { staticClass: "form-check-label", attrs: { for: "exampleRadios2" } },
-        [_vm._v("\n         Before Specific Code\n        ")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-check" }, [
-      _c("input", {
-        staticClass: "form-check-input",
-        attrs: {
-          type: "radio",
-          name: "exampleRadios",
-          id: "exampleRadios2",
-          value: "option2"
-        }
-      }),
-      _vm._v(" "),
-      _c(
-        "label",
-        { staticClass: "form-check-label", attrs: { for: "exampleRadios2" } },
-        [_vm._v("\n         Specific Requisition\n        ")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -15967,26 +16033,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(lineItem.quantity))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(lineItem.price))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        on: {
-                          click: function($event) {
-                            return _vm.removeItem(lineItem.itemCode)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                  Remove Item\n                "
-                        )
-                      ]
-                    )
-                  ])
+                  _c("td", [_vm._v(_vm._s(lineItem.price))])
                 ])
               }),
               0
@@ -16068,9 +16115,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Quantity")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Unit Price")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Option")])
+        _c("th", [_vm._v("Unit Price")])
       ])
     ])
   }
