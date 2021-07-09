@@ -10,6 +10,7 @@ namespace HicadStockSystem.Core.Models
     [Table("st_history")]
     public class St_History
     {
+        //public long Id { get; set; }
         //composite key
         [StringLength(6)]
         public string ItemCode { get; set; }
@@ -33,8 +34,6 @@ namespace HicadStockSystem.Core.Models
         public bool IsDeleted { get; set; }
         public int? RemarkId { get; set; }
         public St_Remark St_Remark { get; set; }
-
-
 
     }
 }

@@ -46,7 +46,7 @@ namespace HicadStockSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var reqNo = requisitionVM.RequisitionNo = _requisition.GenerateRequisitionNo();
+                var reqNo = requisitionVM.RequisitionNo = await _requisition.GenerateRequisitionNo();
 
                 var requisitionNumberInDb = _requisition.GetByReqNo(reqNo);
 
@@ -120,29 +120,39 @@ namespace HicadStockSystem.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM)
         {
-            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
-            if (requisitioInDb == null)
-                return BadRequest();
-            foreach (var item in requisitionVM.ItemLists)
+            if (ModelState.IsValid)
             {
-                //requisitionVM.Price = 0;
-                _mapper.Map(requisitionVM, requisitioInDb);
-                requisitioInDb.ItemCode = requisitionVM.ItemCode = item.ItemCode;
-                //swapping supplyqty to quantity and approved qty to supplyqty column
-                requisitioInDb.SupplyQty = requisitionVM.SupplyQty = (decimal?)item.Requested;
-                requisitioInDb.Quantity = requisitionVM.Quantity = (float?)item.Quantity;
-                requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
-                requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
+                await _requisition.UpdateAsync(requisitionVM);
 
-                requisitioInDb.IsSupplied = true;
-                requisitioInDb.SupplyBy = "HICAD90";
-                requisitioInDb.SupplyDate = DateTime.Now;
-                requisitioInDb.UpdatedOn = DateTime.Now;
-
-                await _requisition.UpdateAsync(requisitioInDb);
-
+                //await _requisition.SupplyRequisition(requisitionVM);
             }
-            return Ok(/*requisitioInDb*/);
+            //foreach (var item in requisitionVM.ItemLists)
+            //{
+            //    try
+            //    {
+
+            //        requisitionVM.ItemCode = item.ItemCode;
+
+            //        //swapping supplyqty to quantity and approved qty to supplyqty column
+            //        requisitionVM.SupplyQty = (decimal?)item.Requested;
+            //        requisitionVM.Quantity = (float?)item.Quantity;
+
+            //        requisitionVM.UpdatedOn = DateTime.Now;
+
+            //        await _requisition.UpdateAsync(requisitionVM);
+
+            //    }
+            //    catch (Exception)
+            //    {
+
+            //        throw;
+            //    }
+
+            //}
+
+           
+
+            return Ok(requisitionVM);
         }
 
         [HttpPatch]
@@ -208,11 +218,45 @@ namespace HicadStockSystem.Controllers
 
         [HttpPatch]
         [Route("DeleteUnissuedRequisition")]
-        public IActionResult DeleteUnissuedRequisition([FromBody] UnissuedRequisition unissued)
+        public async Task<IActionResult> DeleteUnissuedRequisition([FromBody] UnissuedRequisition unissued)
         {
             if (ModelState.IsValid)
             {
-                _requisition.DeleteUnissuedRequisition(unissued);
+                if (!string.IsNullOrEmpty(unissued.RequisitionNo))
+                {
+                    var requisitionInDb = await _requisition.GetByReqNos(unissued.RequisitionNo);
+                    foreach (var item in requisitionInDb)
+                    {
+                        item.IsDeleted = true;
+                        await _requisition.DeleteUnissuedRequisition();
+                    }
+                }
+                else if (unissued.RequisitionAge != null)
+                {
+                    var requisitionInDb = await _requisition.GetByDate(unissued.RequisitionAge);
+                    foreach (var item in requisitionInDb)
+                    {
+                        item.IsDeleted = true;
+                        await _requisition.DeleteUnissuedRequisition();
+                    }
+                }
+                else
+                {
+                    foreach (var item in unissued.RequisitionList)
+                    {
+                        var requisitionInDb = await _requisition.GetByReqNos(item);
+                        if (requisitionInDb != null)
+                        {
+                            foreach (var req in requisitionInDb)
+                            {
+                                req.IsDeleted = true;
+                                await _requisition.DeleteUnissuedRequisition();
+                            }
+
+                        }
+                    }
+
+                }
             }
 
             return Ok(/*requisitioInDb*/);

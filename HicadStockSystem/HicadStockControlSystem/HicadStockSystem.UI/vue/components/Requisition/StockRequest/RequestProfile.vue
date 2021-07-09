@@ -187,7 +187,7 @@
                 <th>Item Code</th>
                 <th>Quantity</th>
                 <th>unit</th>
-                <th>Option</th>
+               <!-- <th>Option</th>-->
               </tr>
             </thead>
             <tbody>
@@ -195,9 +195,9 @@
                 <td>{{ lineItem.itemCode }}</td>
                 <td>{{ lineItem.quantity }}</td>
                 <td>{{ lineItem.unit }}</td>
-                <td>
+                <!--<td>
                 <button @click="removeItem(lineItem.itemCode)" class="btn btn-danger">Remove Item</button>
-                </td>
+                </td>-->
               </tr>
             </tbody>
           </table>
@@ -292,7 +292,7 @@ export default {
               this.postBody.locationCode = "",
               this.postBody.lineItems=[]
             }
-            window.location.reload();
+            // window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);

@@ -27,15 +27,17 @@ namespace HicadStockSystem.Persistence.Repository
         }
         public async Task CreateAsync(St_History history)
         {
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            history.DocType = "GR";
+            history.UserId = "HICAD1";
+            history.RemarkId = 0;
+
+            await TransStoreProc(history);
+
+           /* using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 try
                 {
-                    history.DocType = "GR";
-                    history.UserId = "HICAD1";
-                    history.RemarkId = 0;
-
-                    await TransStoreProc(history);
+                    
                     //var docNoParam = new SqlParameter("@docno", history.DocNo);
                     //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
                     //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
@@ -53,14 +55,14 @@ namespace HicadStockSystem.Persistence.Repository
 
 
                     transaction.Commit();
-                    await _uow.CompleteAsync();
+                    //await _uow.CompleteAsync();
                 }
                 catch (Exception)
                 {
                     transaction.Rollback();
                     throw;
                 }
-            }
+            }*/
         }
 
         public async Task<IEnumerable<St_History>> GetAll()
@@ -77,41 +79,42 @@ namespace HicadStockSystem.Persistence.Repository
         {
             //var stkprice = (from stockmaster in _dbContext.St_StockMasters
             //                where stockmaster.ItemCode == history.ItemCode
-            using (var transaction = _dbContext.Database.BeginTransaction())
-            {
-                //                select stockmaster.StockPrice).First();
-                try
-                {
-                    var stkprice = _dbContext.St_StockMasters.Where(x => x.ItemCode == history.ItemCode).Select(y => y.StockPrice).First();
-                    history.Price = stkprice;
-                    history.DocType = "RT";
-                    history.Supplier = "";
-                    history.UserId = "HICAD3";
 
-                    await TransStoreProc(history);
+            var stkprice = _dbContext.St_StockMasters.Where(x => x.ItemCode == history.ItemCode).Select(y => y.StockPrice).First();
+            history.Price = stkprice;
+            history.DocType = "RT";
+            history.Supplier = "";
+            history.UserId = "HICAD3";
 
-                    //var docNoParam = new SqlParameter("@docno", history.DocNo);
-                    //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
-                    //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
-                    //var quantityParam = new SqlParameter("@quantity", history.Quantity);
-                    //var priceParam = new SqlParameter("@price", stkprice);
-                    //var doctypeParam = new SqlParameter("@doctype", "RT");
-                    //var supcodeParam = new SqlParameter("@supcode", "");
-                    //var unitcodeParam = new SqlParameter("@unitcode", history.Location);
-                    //var user = new SqlParameter("@user", "HICAD3");
-                    //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
-                    //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
+            await TransStoreProc(history);
 
-                    //_dbContext.Update(history);
-                    transaction.Commit();
-                    await _uow.CompleteAsync();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
+            //using (var transaction = _dbContext.Database.BeginTransaction())
+            //{
+            //    //                select stockmaster.StockPrice).First();
+            //    try
+            //    {
+            //        //var docNoParam = new SqlParameter("@docno", history.DocNo);
+            //        //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
+            //        //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
+            //        //var quantityParam = new SqlParameter("@quantity", history.Quantity);
+            //        //var priceParam = new SqlParameter("@price", stkprice);
+            //        //var doctypeParam = new SqlParameter("@doctype", "RT");
+            //        //var supcodeParam = new SqlParameter("@supcode", "");
+            //        //var unitcodeParam = new SqlParameter("@unitcode", history.Location);
+            //        //var user = new SqlParameter("@user", "HICAD3");
+            //        //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
+            //        //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
+
+            //        //_dbContext.Update(history);
+            //        transaction.Commit();
+            //        await _uow.CompleteAsync();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        transaction.Rollback();
+            //        throw;
+            //    }
+            //}
         }
 
         public async Task UpdateAsync(string itemCode)
@@ -128,7 +131,7 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public string GenerateDocNo()
+        public async Task<string> GenerateDocNo()
         {
             var date = DateTime.Now.Year.ToString().Substring(2, 2);
             var docCode = "GR" + date + "00000";
@@ -147,6 +150,9 @@ namespace HicadStockSystem.Persistence.Repository
                 var newDocNo = recordTable.ReceiptNo = docNo +1;
                 genDocNo = docCode + newDocNo;
             }
+            //_recordTable.UpdateAsync(recordTable);
+            var docNoParam = new SqlParameter("@receiptno", recordTable.ReceiptNo);
+            await _dbContext.Database.ExecuteSqlRawAsync("exec sp_update_receiptno @receiptno", docNoParam);
 
             return genDocNo;
         }
@@ -170,7 +176,12 @@ namespace HicadStockSystem.Persistence.Repository
                 docNo = recordTable.ReturnsNo;
                 var newDocNo = recordTable.ReturnsNo = docNo + 1;
                 genDocNo = docCode + newDocNo;
+
+                var docNoParam = new SqlParameter("@returnno", recordTable.ReturnsNo);
+                _dbContext.Database.ExecuteSqlRaw("exec sp_update_returnno @returnno", docNoParam);
             }
+
+            
 
             return genDocNo;
         }
@@ -182,7 +193,7 @@ namespace HicadStockSystem.Persistence.Repository
             //                select stockmaster.StockPrice).First();
             var docNoParam = new SqlParameter("@docno", history.DocNo);
             var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
-            var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
+            var trandateParam = new SqlParameter("@trandate", history.DocDate);
             var quantityParam = new SqlParameter("@quantity", history.Quantity);
             var priceParam = new SqlParameter("@price", history.Price);
             var doctypeParam = new SqlParameter("@doctype", history.DocType);

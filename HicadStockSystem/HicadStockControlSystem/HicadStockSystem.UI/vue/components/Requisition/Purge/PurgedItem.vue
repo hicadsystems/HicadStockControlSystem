@@ -4,13 +4,13 @@
       <div class="p-4 ml-2">
         <div class="form-check">
           <input
-            v-model="ReqList"
+            v-model="RequisitionList"
             class="form-check-input"
             type="radio"
             name="exampleRadios"
             id="exampleRadios1"
             value="option1"
-            checked
+            
           />
           <label class="form-check-label" for="exampleRadios1">
             All
@@ -142,8 +142,8 @@ export default {
       selectDate: false,
       selectRequisition: false,
       reqblur: false,
-      RequisitionList: false,
-      ReqList: false,
+      RequisitionList: null,
+      ReqList: null,
 
       // lineItems: [],
       // locationCode: "",
@@ -151,7 +151,7 @@ export default {
 
       postBody: {
         requisitionNo: "",
-        ReqList: [],
+        RequisitionList: [],
         requisitionAge: "",
       },
 
@@ -166,7 +166,7 @@ export default {
 
   mounted() {
     this.getUnissuedReq();
-    this.getUnissuedReqs();
+    // this.getUnissuedReqs();
     // this.getItemCode();
   },
   // watch: {
@@ -182,7 +182,7 @@ export default {
   // },
   methods: {
     checkForm() {
-      console.log(this.postBody.RequisitionApproval);
+      console.log(this.ReqList);
       this.validate();
       if (this.postBody) {
         // e.preventDefault();
@@ -262,16 +262,18 @@ export default {
     getUnissuedReq() {
       axios.get(`/api/requisition/GetUnissuedRequisitions`).then((response) => {
         this.RequisitionList = response.data;
+        // console.log(this.RequisitionList);
         this.postBody.RequisitionList = response.data;
       });
     },
 
-    getUnissuedReqs() {
-      axios.get(`/api/requisition/GetUnissuedReq`).then((response) => {
-        this.ReqList = response.data;
-        this.postBody.ReqList = response.data;
-      });
-    },
+    // getUnissuedReqs() {
+    //   axios.get(`/api/requisition/GetUnissuedReq`).then((response) => {
+    //     this.ReqList = response.data.result.observer;
+    //     console.log(this.ReqList)
+    //     // this.postBody.ReqList = response.data;
+    //   });
+    // },
 
     validate() {
       this.reqblur = true;

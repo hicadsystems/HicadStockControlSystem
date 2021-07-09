@@ -32,6 +32,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_Requisition
         public string SupplyBy { get; set; }
         [StringLength(20)]
         public string ApprovedBy { get; set; }
+        public bool IsSupplied { get; set; }
 
         //public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }

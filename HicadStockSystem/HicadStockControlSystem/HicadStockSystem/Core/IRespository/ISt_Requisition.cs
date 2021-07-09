@@ -13,12 +13,12 @@ namespace HicadStockSystem.Core.IRespository
         Task CreateAsync(St_Requisition requisition);
         St_Requisition GetByReqNo(string reqNo);
         St_Requisition GetByItemcode(string itemCode);
-        Task UpdateAsync(St_Requisition requisition);
+        Task UpdateAsync(UpdateSt_RequisitionVM requisition);
         Task UpdateAsync(string reqNo);
         Task<IEnumerable<St_Requisition>> GetAllRequisition();
         Task<IEnumerable<string>> GetAll();
         Task DeleteAsync(string reqNo);
-        Task DeleteUnissuedRequisition(UnissuedRequisition unissued);
+        Task DeleteUnissuedRequisition();
 
         Task<IEnumerable<Ac_CostCentre>> GetCostCentre();
         Task<ItemStockMasterViewModel> StockItemViewModels(string ItemCodes);
@@ -27,7 +27,8 @@ namespace HicadStockSystem.Core.IRespository
         Task<RequesitionVM> RequesitionsVM(string itemCode);
         //Task<List<RequesitionVM>> RequesitionsVM(string reqNo);
         string GetDescription(string itemCode);
-        string GenerateRequisitionNo();
+        Task<string> GenerateRequisitionNo();
+        //string GenerateRequisitionNo();
         //Task<IEnumerable<St_Requisition>> GetApproved();
         Task<IEnumerable<string>> GetApproved();
         Task RequisitioApprovalAsync(St_Requisition requisition);
@@ -40,6 +41,9 @@ namespace HicadStockSystem.Core.IRespository
         List<St_Requisition> GetByItemCode(string requisitionNo, string itemcode);
         List<St_Requisition> GetByReqNoForApproval(string reqNo);
         Task<IEnumerable<string>> GetUnissuedReqisition();
+        Task<IEnumerable<St_Requisition>> GetByReqNos(string reqNo);
+        Task<IEnumerable<St_Requisition>> GetByDate(DateTime? date);
+        Task<int> SupplyRequisition(UpdateSt_RequisitionVM requisition);
 
     }
 }

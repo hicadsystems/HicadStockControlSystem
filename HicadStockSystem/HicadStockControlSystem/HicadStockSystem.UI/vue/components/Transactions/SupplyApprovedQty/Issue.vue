@@ -238,7 +238,7 @@ export default {
               this.postBody.locationCode = "";
               this.postBody.unit = "";
             }
-            window.location.reload();
+            // window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);

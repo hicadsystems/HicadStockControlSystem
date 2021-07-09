@@ -73,6 +73,7 @@
                 <div class="col-3">
                   <label for="quantity" class="mb-1">Quantity</label>
                   <input
+                  type="number"
                     class="form-control"
                     name="quantity"
                     v-model="newItem.quantity"
@@ -87,6 +88,7 @@
                 <div class="col-3">
                   <label for="price" class="mb-1">Price</label>
                   <input
+                  type="number"
                     class="form-control"
                     name="price"
                     v-model="newItem.price"

@@ -3219,14 +3219,14 @@ __webpack_require__.r(__webpack_exports__);
       selectDate: false,
       selectRequisition: false,
       reqblur: false,
-      RequisitionList: false,
-      ReqList: false,
+      RequisitionList: null,
+      ReqList: null,
       // lineItems: [],
       // locationCode: "",
       currentBal: "",
       postBody: {
         requisitionNo: "",
-        ReqList: [],
+        RequisitionList: [],
         requisitionAge: ""
       },
       newItem: {
@@ -3238,8 +3238,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.getUnissuedReq();
-    this.getUnissuedReqs(); // this.getItemCode();
+    this.getUnissuedReq(); // this.getUnissuedReqs();
+    // this.getItemCode();
   },
   // watch: {
   //   "$store.state.objectToUpdate": function(newVal, oldVal) {
@@ -3256,7 +3256,7 @@ __webpack_require__.r(__webpack_exports__);
     checkForm: function checkForm() {
       var _this = this;
 
-      console.log(this.postBody.RequisitionApproval);
+      console.log(this.ReqList);
       this.validate();
 
       if (this.postBody) {
@@ -3335,18 +3335,18 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get("/api/requisition/GetUnissuedRequisitions").then(function (response) {
-        _this2.RequisitionList = response.data;
+        _this2.RequisitionList = response.data; // console.log(this.RequisitionList);
+
         _this2.postBody.RequisitionList = response.data;
       });
     },
-    getUnissuedReqs: function getUnissuedReqs() {
-      var _this3 = this;
-
-      axios.get("/api/requisition/GetUnissuedReq").then(function (response) {
-        _this3.ReqList = response.data;
-        _this3.postBody.ReqList = response.data;
-      });
-    },
+    // getUnissuedReqs() {
+    //   axios.get(`/api/requisition/GetUnissuedReq`).then((response) => {
+    //     this.ReqList = response.data.result.observer;
+    //     console.log(this.ReqList)
+    //     // this.postBody.ReqList = response.data;
+    //   });
+    // },
     validate: function validate() {
       this.reqblur = true;
 
@@ -4167,9 +4167,8 @@ __webpack_require__.r(__webpack_exports__);
 
         if (response.data.responseCode == "200") {
           _this.postBody.locationCode = "", _this.postBody.lineItems = [];
-        }
+        } // window.location.reload();
 
-        window.location.reload();
       })["catch"](function (e) {
         _this.errors.push(e);
       }); // window.location.reload();
@@ -5924,6 +5923,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6392,9 +6393,8 @@ __webpack_require__.r(__webpack_exports__);
             _this.postBody.supplyQty = "";
             _this.postBody.locationCode = "";
             _this.postBody.unit = "";
-          }
+          } // window.location.reload();
 
-          window.location.reload();
         })["catch"](function (e) {
           _this.errors.push(e);
         });
@@ -13117,8 +13117,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.ReqList,
-                expression: "ReqList"
+                value: _vm.RequisitionList,
+                expression: "RequisitionList"
               }
             ],
             staticClass: "form-check-input",
@@ -13126,13 +13126,12 @@ var render = function() {
               type: "radio",
               name: "exampleRadios",
               id: "exampleRadios1",
-              value: "option1",
-              checked: ""
+              value: "option1"
             },
-            domProps: { checked: _vm._q(_vm.ReqList, "option1") },
+            domProps: { checked: _vm._q(_vm.RequisitionList, "option1") },
             on: {
               change: function($event) {
-                _vm.ReqList = "option1"
+                _vm.RequisitionList = "option1"
               }
             }
           }),
@@ -14156,22 +14155,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(lineItem.quantity))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(lineItem.unit))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        on: {
-                          click: function($event) {
-                            return _vm.removeItem(lineItem.itemCode)
-                          }
-                        }
-                      },
-                      [_vm._v("Remove Item")]
-                    )
-                  ])
+                  _c("td", [_vm._v(_vm._s(lineItem.unit))])
                 ])
               }),
               0
@@ -14253,9 +14237,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Quantity")]),
         _vm._v(" "),
-        _c("th", [_vm._v("unit")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Option")])
+        _c("th", [_vm._v("unit")])
       ])
     ])
   }
@@ -15941,7 +15923,7 @@ var render = function() {
                     class: {
                       "is-invalid": !_vm.quantityIsValid && _vm.quantityblur
                     },
-                    attrs: { name: "quantity" },
+                    attrs: { type: "number", name: "quantity" },
                     domProps: { value: _vm.newItem.quantity },
                     on: {
                       blur: function($event) {
@@ -15979,7 +15961,7 @@ var render = function() {
                     ],
                     staticClass: "form-control",
                     class: { "is-invalid": !_vm.priceIsValid && _vm.priceblur },
-                    attrs: { name: "price" },
+                    attrs: { type: "number", name: "price" },
                     domProps: { value: _vm.newItem.price },
                     on: {
                       blur: function($event) {

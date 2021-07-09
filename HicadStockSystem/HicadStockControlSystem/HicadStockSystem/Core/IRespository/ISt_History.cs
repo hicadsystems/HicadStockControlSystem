@@ -13,10 +13,10 @@ namespace HicadStockSystem.Core.IRespository
         Task UpdateAsync(St_History issueApprove);
         Task UpdateAsync(string itemCode);
         Task<IEnumerable<St_History>> GetAll();
-
+        Task<string> GenerateDocNo();
         //IQueryable<St_History> GetAll();
         Task DeleteAsync(string itemCode);
-        string GenerateDocNo();
+        //string GenerateDocNo();
         string ReturnNo();
         int GetRemarkId(string remark);
         //St_History GetDocNo(string docNo);

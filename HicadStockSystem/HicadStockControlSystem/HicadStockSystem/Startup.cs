@@ -48,6 +48,7 @@ namespace HicadStockSystem
                                     {
                                         NamingStrategy = new CamelCaseNamingStrategy()
                                     };
+                                    //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                                 }); 
             //Entities and there Interfaces
             services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();

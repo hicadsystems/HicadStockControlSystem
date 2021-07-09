@@ -73,7 +73,7 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task<IEnumerable<St_Requisition>> GetAllRequisition()
         {
-            var distinct = await _dbContext.St_Requisitions.ToListAsync();
+            var distinct = await _dbContext.St_Requisitions.Where(x=>x.IsSupplied==false && x.IsDeleted==false).ToListAsync();
             return distinct;
         }
 
@@ -98,7 +98,8 @@ namespace HicadStockSystem.Persistence.Repository
 
         public St_Requisition GetByReqNo(string reqNo)
         {
-            return _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted==false).FirstOrDefault();
+            var response = _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted==false).FirstOrDefault();
+            return response;
         }
 
         public List<St_Requisition> GetByItemCode(string requisitionNo, string itemcode)
@@ -113,85 +114,64 @@ namespace HicadStockSystem.Persistence.Repository
             return _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted == false).ToList();
         }
 
-        public async Task UpdateAsync(St_Requisition requisition)
+        public async Task UpdateAsync(UpdateSt_RequisitionVM requisition)
         {
-            //var stkprice = (from stockmaster in _dbContext.St_StockMasters
-            //                where stockmaster.ItemCode == requisition.ItemCode
-            //                select stockmaster.StockPrice).First();
-            var stkprice = _dbContext.St_StockMasters
-                .Where(x => x.ItemCode == requisition.ItemCode)
-                .Select(y => y.StockPrice)
-                .First();
-
-            requisition.Price = stkprice;
-
-            var reqNo = new SqlParameter("@reqNo", requisition.RequisitionNo);
-            var itemcode = new SqlParameter("@itemcode", requisition.ItemCode);
-            var qty = new SqlParameter("@qty", requisition.Quantity);
-            var desct = new SqlParameter("@desct", requisition.Description);
-            var isAppved = new SqlParameter("@isAppved", requisition.IsApproved);
-            var appvedBy = new SqlParameter("@appvedBy", requisition.ApprovedBy);
-            var unitcode = new SqlParameter("@unitcode", requisition.LocationCode);
-            var price = new SqlParameter("@price", stkprice);
-            var supplyqty = new SqlParameter("@supplyqty", requisition.SupplyQty);
-            var supplyby = new SqlParameter("@supplyby", requisition.SupplyBy);
-            var supplydate = new SqlParameter("@supplydate", requisition.SupplyDate);
-            var issupplied = new SqlParameter("@issupplied", requisition.IsSupplied);
-            var unit = new SqlParameter("@unit", requisition.Unit);
-            await _dbContext.Database.ExecuteSqlRawAsync(@"exec sp_UpdateRequisitionIssued @reqNo,@itemcode,@qty,@desct,@isAppved,@appvedBy,@unitcode,
-                                                            @price,@supplyqty,@supplyby,@supplydate,@issupplied,@unit",
-                                                            reqNo, itemcode, qty, desct, isAppved, appvedBy, unitcode, price, supplyqty, supplyby
-                                                            , supplydate, issupplied, unit);
-            //_dbContext.Update(requisition);
-
-            var docNoParam = new SqlParameter("@docno", requisition.RequisitionNo);
-            var itemcodeParam = new SqlParameter("@itemcode", requisition.ItemCode);
-            var trandateParam = new SqlParameter("@trandate", requisition.SupplyDate.ToString());
-            var quantityParam = new SqlParameter("@quantity", requisition.Quantity);
-            var priceParam = new SqlParameter("@price", stkprice);
-            var doctypeParam = new SqlParameter("@doctype", "IS");
-            var supcodeParam = new SqlParameter("@supcode", "");
-            var unitcodeParam = new SqlParameter("@unitcode", requisition.LocationCode);
-            var user = new SqlParameter("@user", requisition.SupplyBy);
-            var remark = new SqlParameter("@remark", "0");
-            await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_update_transactions @docno, @itemcode, @trandate, @quantity, 
-                                                           @price,@doctype, @supcode, @unitcode, @user,@remark",
-                docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user, remark);
-
-            /*using (var transaction = _dbContext.Database.BeginTransaction())
+            try
             {
-                try
-                {
-                    transaction.Commit();
-                    await _uow.CompleteAsync();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }*/
 
-            //requisition.Price = stkprice;
+                foreach (var item in requisition.ItemLists)
+                {
+                         requisition.ItemCode = item.ItemCode;
 
-            //await _dbContext.St_Requisitions.AddAsync(requisition);
-            //await _dbContext.Database.ExecuteSqlRawAsync("exec st_supply_requisition @requisitionno, @user", reqNo, user /*date*/);
+                        //swapping supplyqty to quantity and approved qty to supplyqty column
+                        requisition.SupplyQty = (decimal?)item.Requested;
+                        requisition.Quantity = (float?)item.Quantity;
+
+                        requisition.UpdatedOn = DateTime.Now;
+
+                        requisition.IsSupplied = true;
+                        requisition.SupplyBy = "HICAD90";
+                        requisition.SupplyDate = DateTime.Now;
+
+
+                        var reqNo = new SqlParameter("@reqNo", requisition.RequisitionNo);
+                        var itemcode = new SqlParameter("@itemcode", requisition.ItemCode);
+                        var qty = new SqlParameter("@qty", requisition.Quantity);
+                        var supplyqty = new SqlParameter("@supplyqty", requisition.SupplyQty);
+                        var supplyby = new SqlParameter("@supplyby", requisition.SupplyBy);
+                        var supplydate = new SqlParameter("@supplydate", requisition.SupplyDate);
+                        var issupplied = new SqlParameter("@issupplied", requisition.IsSupplied);
+
+                        await _dbContext.Database.ExecuteSqlRawAsync(@"exec sp_UpdateRequisitionIssued @reqNo,@itemcode,@qty,
+                                                               @supplyqty,@supplyby,@supplydate,@issupplied",
+                                                                        reqNo, itemcode, qty, supplyqty, supplyby
+                                                                        , supplydate, issupplied);
+                        //await _uow.CompleteAsync();
+                    }
+
+                var reqNo2 = new SqlParameter("@requisitionno", requisition.RequisitionNo);
+                var user = new SqlParameter("@user", requisition.SupplyBy);
+
+                await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_supply_requisition @requisitionno, @user", reqNo2, user);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             //_dbContext.Update(requisition);
+            //_uow.CompleteAsync();
 
-            //var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
-            //                          where stockmaster.ItemCode == requisition.ItemCode
-            //                          select stockmaster).FirstOrDefault();
-            //updateQtyInTransit.QtyInTransaction += requisition.Quantity;
 
-            //await _uow.CompleteAsync();
+
         }
 
         public async Task RequisitioApprovalAsync(St_Requisition requisition)
         {
-            var stkprice = (from stockmaster in _dbContext.St_StockMasters
+            /*var stkprice = (from stockmaster in _dbContext.St_StockMasters
                             where stockmaster.ItemCode == requisition.ItemCode
-                            select stockmaster.StockPrice).First();
-
+                            select stockmaster.StockPrice).First();*/
+            var stkprice = GetStockItemPrice(requisition.ItemCode);
             requisition.Price = stkprice;
 
             if (!requisition.IsDeleted)
@@ -281,7 +261,7 @@ namespace HicadStockSystem.Persistence.Repository
         }
 
         //generating requisitionNo.
-        public string GenerateRequisitionNo()
+        public async Task<string> GenerateRequisitionNo()
         {
             var dd = DateTime.Now.Year.ToString().Substring(2, 2);
             var requisitionCode = "RN" + dd + "00000";
@@ -301,7 +281,9 @@ namespace HicadStockSystem.Persistence.Repository
                 requisitionno = recordTable.RequsitionNo;
                 var newReqNo = recordTable.RequsitionNo = requisitionno + 1;
                 genCode = requisitionCode + newReqNo;
-                //_recordTable.UpdateAsync(recordTable);
+
+                var docNoParam = new SqlParameter("@receiptno", recordTable.ReceiptNo);
+                await _dbContext.Database.ExecuteSqlRawAsync("exec sp_update_receiptno @receiptno", docNoParam);
             }
 
             return genCode;
@@ -373,51 +355,23 @@ namespace HicadStockSystem.Persistence.Repository
             var distinct = await (from req in _dbContext.St_Requisitions where req.IsSupplied == false && req.IsDeleted == false select req.RequisitionNo).Distinct().ToListAsync();
             return distinct;
         }
-        public async Task DeleteUnissuedRequisition(UnissuedRequisition unissued)
+        public async Task DeleteUnissuedRequisition()
         {
-            if (!string.IsNullOrEmpty(unissued.RequisitionNo))
-            {
-                var requisitionInDb = GetByRequsitionNo(unissued.RequisitionNo);
-                requisitionInDb.IsDeleted = true;
-                await _uow.CompleteAsync();
-            }
-            else if (unissued.RequisitionAge==new DateTime())
-            {
-                var requisitionInDb = GetByDate(unissued.RequisitionAge);
-                foreach (var item in requisitionInDb)
-                {
-                    item.IsDeleted = true;
-                }
-                
-                await _uow.CompleteAsync();
-            }
-            else
-            {
-                //var requisitionInDb = GetByRequsitionNos(unissued.RequisitionList);
-                //foreach (var item in requisitionInDb)
-                //{
-                //    item.IsDeleted = true;
-                //}
-
-                //await _uow.CompleteAsync();
-            }
+            await _uow.CompleteAsync();
         }
 
-        private List<St_Requisition> GetByDate(DateTime? date)
+        public async Task<IEnumerable<St_Requisition>> GetByDate(DateTime? date)
         {
-            var unissuedReq = _dbContext.St_Requisitions.Where(req => req.IsSupplied == false && req.RequisitionDate <= date).ToList();
+            var unissuedReq = await _dbContext.St_Requisitions.Where(req => req.IsSupplied == false && req.RequisitionDate <= date && req.IsDeleted==false).ToListAsync();
             return unissuedReq;
         }
-        //private async Task<IEnumerable<St_Requisition>> GetAllRequisition()
-        //{
-        //    var distinct = await _dbContext.St_Requisitions.ToListAsync();
-        //    return distinct;
-        //}
-        private St_Requisition GetByRequsitionNo(string reqNo)
+        
+        public async Task<IEnumerable<St_Requisition>> GetByReqNos(string reqNo)
         {
-            var unissuedReq = _dbContext.St_Requisitions.Where(req => req.IsSupplied == false && req.RequisitionNo == reqNo).FirstOrDefault();
-            return unissuedReq;
+            var requisitions = await _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted == false && sr.IsSupplied==false).ToListAsync();
+            return requisitions;
         }
+
         public List<ItemListVM> ItemLists(string reqNo)
         {
             return  (from requisition in _dbContext.St_Requisitions
@@ -435,6 +389,32 @@ namespace HicadStockSystem.Persistence.Repository
 
         }
 
-        
+        private decimal? GetStockItemPrice(string itemcode)
+        {
+            try
+            {
+
+                var stkprice = _dbContext.St_StockMasters
+                   .Where(x => x.ItemCode == itemcode)
+                   .Select(y => y.StockPrice)
+                   .First();
+
+                return stkprice;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<int> SupplyRequisition(UpdateSt_RequisitionVM requisition)
+        {
+            var reqNo = new SqlParameter("@requisitionno", requisition.RequisitionNo);
+            var user = new SqlParameter("@user", requisition.SupplyBy);
+
+            var result = await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_supply_requisition @requisitionno, @user", reqNo, user);
+            return result;
+        }
     }
 }

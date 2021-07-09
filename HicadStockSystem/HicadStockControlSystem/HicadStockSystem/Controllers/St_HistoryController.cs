@@ -39,7 +39,8 @@ namespace HicadStockSystem.Controllers
             if (ModelState.IsValid)
             {
                 
-                var docNo = historyVM.DocNo = _history.GenerateDocNo();
+                var docNo = historyVM.DocNo = await _history.GenerateDocNo();
+
                 var docNoInDb = _history.GetByDocNo(docNo);
 
                 if (docNoInDb == null)
