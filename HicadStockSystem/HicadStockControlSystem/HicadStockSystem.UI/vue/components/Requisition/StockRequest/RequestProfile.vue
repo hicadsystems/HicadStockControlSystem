@@ -297,42 +297,7 @@ export default {
           .catch((e) => {
             this.errors.push(e);
           });
-          // window.location.reload();
-      // this.validate();
-      // if (this.valid) {
-      //   e.preventDefault();
-      //   this.canProcess = false;
 
-      //   // axios
-      //   //   .post(`/api/requisition/`, this.postBody)
-      //   //   .then((response) => {
-      //   //     this.responseMessage = response.data.responseDescription;
-      //   //     this.canProcess = true;
-      //   //     if (response.data.responseCode == "200") {
-
-      //   //       // this.postBody.locationCode = "";
-      //   //       // this.postBody.itemCode = "";
-      //   //       // this.postBody.itemDesc = "";
-      //   //       // this.postBody.quantity = "";
-      //   //       // this.postBody.unit = "";
-      //   //       // this.$store.stateName.objectToUpdate = "create";
-      //   //       location = this.locationCode;
-      //   //       this.lineItems = [];
-      //   //     }
-      //   //     // this.document.getElementById('#requestForm').value = "";
-      //   //     // this.$refs.requestForm.reset();
-      //   //     // window.location.reload();
-      //   //   })
-      //   //   .catch((e) => {
-      //   //     if (e) this.errors.push(e);
-      //   //   });
-      //   // // this.$alert("Submit Form", "Ok", "info");
-      //   this.postPost();
-      // } else {
-      //   this.$alert("Please Fill Highlighted Fields", "missing", "error");
-      //   this.errors = [];
-      //   this.errors.push("Supply all the required field");
-      // }
     },
     postPost() {
       if (this.submitorUpdate == "Submit") {
@@ -400,6 +365,7 @@ export default {
           // this.postBody.currentBal = response.data.currentBalance;
           // this.postBody.unit = response.data.unit;
         });
+        
     },
     getItemCode() {
       axios.get(`/api/itemmaster`).then((response) => {
@@ -448,7 +414,7 @@ export default {
           console.log(result);
         }
 
-        this.newItem = { itemCode: "", quantity: "", unit: "" };
+        this.newItem = { itemCode: "", quantity: "", /*unit: ""*/ };
         // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
         this.isAddItem = true;
 

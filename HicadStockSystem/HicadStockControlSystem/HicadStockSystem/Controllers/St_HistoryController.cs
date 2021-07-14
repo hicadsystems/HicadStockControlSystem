@@ -66,7 +66,7 @@ namespace HicadStockSystem.Controllers
                         await _history.CreateAsync(newStockHistory); 
                     }
 
-                    return Ok(/*newStockHistory*/);
+                    return Ok(docNo);
                 }
               
             }
@@ -128,6 +128,14 @@ namespace HicadStockSystem.Controllers
             await _history.DeleteAsync(docNo);
 
             return Ok(stockHistoryInDb);
+        }
+
+        [HttpGet]
+        [Route("GetReceipts")]
+        public async Task<IActionResult> GetReceipts()
+        {
+            var receipt = await _history.GetAllReceipt();
+            return Ok(receipt);
         }
     }
 }

@@ -15,8 +15,8 @@ namespace HicadStockSystem.Core.IRespository
         St_Requisition GetByItemcode(string itemCode);
         Task UpdateAsync(UpdateSt_RequisitionVM requisition);
         Task UpdateAsync(string reqNo);
-        Task<IEnumerable<St_Requisition>> GetAllRequisition();
-        Task<IEnumerable<string>> GetAll();
+        IEnumerable<St_Requisition> GetAllRequisition();
+        IEnumerable<string> GetAll();
         Task DeleteAsync(string reqNo);
         Task DeleteUnissuedRequisition();
 
@@ -24,26 +24,27 @@ namespace HicadStockSystem.Core.IRespository
         Task<ItemStockMasterViewModel> StockItemViewModels(string ItemCodes);
 
         //Task<IEnumerable<St_ItemMaster>> GetItemCode();
-        Task<RequesitionVM> RequesitionsVM(string itemCode);
+        RequesitionVM RequesitionsVM(string itemCode);
         //Task<List<RequesitionVM>> RequesitionsVM(string reqNo);
         string GetDescription(string itemCode);
         Task<string> GenerateRequisitionNo();
         //string GenerateRequisitionNo();
         //Task<IEnumerable<St_Requisition>> GetApproved();
-        Task<IEnumerable<string>> GetApproved();
+        IEnumerable<string> GetApproved();
         Task RequisitioApprovalAsync(St_Requisition requisition);
 
         //float? CheckCurrentBal(St_Requisition requisition);
         //Task<IEnumerable<string>> GetAllByReqNo(string reqno);
         float? CheckCurrentBal(CreateSt_RequisitionVM requisition);
-        List<ItemListVM> ItemLists(string reqNo);
+        List<ItemViewModel> ItemLists(string reqNo);
 
         List<St_Requisition> GetByItemCode(string requisitionNo, string itemcode);
         List<St_Requisition> GetByReqNoForApproval(string reqNo);
         Task<IEnumerable<string>> GetUnissuedReqisition();
-        Task<IEnumerable<St_Requisition>> GetByReqNos(string reqNo);
+        IEnumerable<St_Requisition> GetByReqNos(string reqNo);
         Task<IEnumerable<St_Requisition>> GetByDate(DateTime? date);
-        Task<int> SupplyRequisition(UpdateSt_RequisitionVM requisition);
-
+        //Task<int> SupplyRequisition(UpdateSt_RequisitionVM requisition);
+        St_Requisition GetReqNo(string reqNo);
+        Task<string> GetReqNo();
     }
 }

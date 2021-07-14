@@ -61,7 +61,7 @@
                 readonly="readonly"
                 v-model="postBody.department"
               />
-              <input
+              <!--<input
                 type="hidden"
                 name="locationCode"
                 class="form-control"
@@ -84,7 +84,7 @@
                 name="requisitionDate"
                 class="form-control"
                 :value="postBody.unit"
-              />
+              />-->
             </div>
           </div>
           <br />
@@ -221,22 +221,23 @@ export default {
       if (this.valid) {
         // e.preventDefault();
         axios
-          .put(`/api/requisition/`, this.postBody)
+          .post(`/api/requisition/issue/`, this.postBody)
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
               this.postBody.requisitionNo = "";
-              this.postBody.userId = "";
+              /*this.postBody.userId = "";
               this.postBody.requisitionDate = "";
-              this.postBody.createdOn = "";
+              this.postBody.createdOn = "";*/
               // this.postBody.itemCode = "";
               // this.postBody.description = "";
               // this.postBody.quantity = 0;
-              this.postBody.approvedBy = "";
-              this.postBody.supplyQty = "";
-              this.postBody.locationCode = "";
-              this.postBody.unit = "";
+              // this.postBody.approvedBy = "";
+              // this.postBody.supplyQty = "";
+              // this.postBody.locationCode = "";
+              // this.postBody.unit = "";
+              this.postBody.ItemLists=[];
             }
             // window.location.reload();
           })

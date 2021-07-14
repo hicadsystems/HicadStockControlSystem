@@ -1,5 +1,6 @@
 ﻿using HicadStockSystem.Core;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Data;
 using HicadStockSystem.Models;
 using HicadStockSystem.Persistence.Repository;
@@ -58,6 +59,35 @@ namespace HicadStockSystem.Persistence
             var stockMasterInDb = GetByItemCode(itemCode);
             stockMasterInDb.IsDeleted=true;
             await _uow.CompleteAsync();
+        }
+
+        public async Task<IEnumerable<StockPositionVM>> StockPositions()
+        {
+            var values =  await _dbContext.St_StockMasters.Where(x => x.IsDeleted == false)
+                .Join(_dbContext.St_ItemMasters, stk => stk.ItemCode, item => item.ItemCode, (stk, item) => new { stk, item })
+                .Select(y => new StockPositionVM
+                {
+                    ItemCode = y.stk.ItemCode,
+                    ItemDesc = y.stk.Description,
+                    PartNo = y.item.PartNo,
+                    OpenBalance = y.stk.OpenBalance,
+                    Receipts = y.stk.Receipts,
+                    Issues = y.stk.Issues,
+                    CurrentBalance = y.stk.OpenBalance + y.stk.Receipts - y.stk.Issues,
+                    Price = y.stk.StockPrice,
+                    Value = y.stk.StockPrice * (decimal?)y.stk.Receipts,
+                    //Total =  Total(y.stk.StockPrice * (decimal?)y.stk.Receipts),
+                }).ToListAsync();
+
+            return values;
+        }
+
+        private static decimal? Total(decimal? value)
+        {
+            decimal? subtotal = 0.0m;
+            decimal? total = (subtotal += value);
+            return total;
+            
         }
     }
 }

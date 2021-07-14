@@ -7,6 +7,12 @@ namespace HicadStockSystem.Core
 {
     public class ItemListVM
     {
+        //public string RequisitionNo { get; set; }
+        public string LocationCode { get; set; }
+        public string SupplyBy { get; set; }
+        public decimal? SupplyQty { get; set; }
+        public DateTime? SupplyDate { get; set; }
+        public bool IsSupplied { get; set; }
         public string ItemCode { get; set; }
         public float? Requested { get; set; }
         public string Unit { get; set; }

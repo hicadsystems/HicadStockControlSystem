@@ -71,28 +71,33 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public async Task<IEnumerable<St_Requisition>> GetAllRequisition()
+        public IEnumerable<St_Requisition> GetAllRequisition()
         {
-            var distinct = await _dbContext.St_Requisitions.Where(x=>x.IsSupplied==false && x.IsDeleted==false).ToListAsync();
+            var distinct = _dbContext.St_Requisitions.Where(x=>x.IsSupplied==false && x.IsDeleted==false).ToList();
             return distinct;
         }
 
-        public async Task<IEnumerable<string>> GetAll()
+        public IEnumerable<string> GetAll()
         {
-            var distinct = await (from req in _dbContext.St_Requisitions where req.IsApproved==false && req.IsDeleted==false  select req.RequisitionNo).Distinct().ToListAsync();
+            var distinct = (from req in _dbContext.St_Requisitions where req.IsApproved==false && req.IsDeleted==false  select req.RequisitionNo).Distinct().ToList();
+            return distinct;
+        }
+        public St_Requisition GetReqNo(string reqNo)
+        {
+            var distinct =  _dbContext.St_Requisitions.Where(x => x.RequisitionNo == reqNo).FirstOrDefault();
             return distinct;
         }
 
-        public async Task<IEnumerable<string>> GetApproved()
+        public IEnumerable<string> GetApproved()
         {
             //return await _dbContext.St_Requisitions.Where(sr => sr.IsDeleted == false && sr.IsApproved == true && sr.IsSupplied==false).Distinct().ToListAsync();
             //return await(from req in _dbContext.St_Requisitions where req.IsApproved == true && req.IsDeleted == false && req.IsSupplied==false select req.RequisitionNo).Distinct().ToListAsync();
 
-            var reqNos = await _dbContext.St_Requisitions
+            var reqNos = _dbContext.St_Requisitions
                 .Where(req => req.IsApproved == true && req.IsDeleted == false && req.IsSupplied == false)
                 .Select(y => y.RequisitionNo)
                 .Distinct()
-                .ToListAsync();
+                .ToList();
             return reqNos;
         }
 
@@ -118,41 +123,42 @@ namespace HicadStockSystem.Persistence.Repository
         {
             try
             {
+                //var reqNo = new SqlParameter("@reqNo", requisition.RequisitionNo);
+                //var itemcode = new SqlParameter("@itemcode", requisition.ItemCode);
+                //var qty = new SqlParameter("@qty", requisition.Quantity);
+                //var supplyqty = new SqlParameter("@supplyqty", requisition.SupplyQty);
+                //var supplyby = new SqlParameter("@supplyby", requisition.SupplyBy);
+                //var supplydate = new SqlParameter("@supplydate", requisition.SupplyDate);
+                //var issupplied = new SqlParameter("@issupplied", requisition.IsSupplied);
 
-                foreach (var item in requisition.ItemLists)
+                //await _dbContext.Database.ExecuteSqlRawAsync(@"exec sp_UpdateRequisitionIssued @reqNo,@itemcode,@qty,
+                //                                               @supplyqty,@supplyby,@supplydate,@issupplied",
+                //                                                reqNo, itemcode, qty, supplyqty, supplyby
+                //                                                , supplydate, issupplied);
+
+                /*foreach (var item in requisition.ItemLists)
                 {
-                         requisition.ItemCode = item.ItemCode;
+                    requisition.ItemCode = item.ItemCode;
 
-                        //swapping supplyqty to quantity and approved qty to supplyqty column
-                        requisition.SupplyQty = (decimal?)item.Requested;
-                        requisition.Quantity = (float?)item.Quantity;
+                    //swapping supplyqty to quantity and approved qty to supplyqty column
+                    requisition.SupplyQty = (decimal?)item.Requested;
+                    requisition.Quantity = (float?)item.Quantity;
 
-                        requisition.UpdatedOn = DateTime.Now;
+                    requisition.UpdatedOn = DateTime.Now;
 
-                        requisition.IsSupplied = true;
-                        requisition.SupplyBy = "HICAD90";
-                        requisition.SupplyDate = DateTime.Now;
+                    requisition.IsSupplied = true;
+                    requisition.SupplyBy = "HICAD90";
+                    requisition.SupplyDate = DateTime.Now;
 
 
-                        var reqNo = new SqlParameter("@reqNo", requisition.RequisitionNo);
-                        var itemcode = new SqlParameter("@itemcode", requisition.ItemCode);
-                        var qty = new SqlParameter("@qty", requisition.Quantity);
-                        var supplyqty = new SqlParameter("@supplyqty", requisition.SupplyQty);
-                        var supplyby = new SqlParameter("@supplyby", requisition.SupplyBy);
-                        var supplydate = new SqlParameter("@supplydate", requisition.SupplyDate);
-                        var issupplied = new SqlParameter("@issupplied", requisition.IsSupplied);
-
-                        await _dbContext.Database.ExecuteSqlRawAsync(@"exec sp_UpdateRequisitionIssued @reqNo,@itemcode,@qty,
-                                                               @supplyqty,@supplyby,@supplydate,@issupplied",
-                                                                        reqNo, itemcode, qty, supplyqty, supplyby
-                                                                        , supplydate, issupplied);
-                        //await _uow.CompleteAsync();
-                    }
+                   
+                    //await _uow.CompleteAsync();
+                }
 
                 var reqNo2 = new SqlParameter("@requisitionno", requisition.RequisitionNo);
                 var user = new SqlParameter("@user", requisition.SupplyBy);
 
-                await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_supply_requisition @requisitionno, @user", reqNo2, user);
+                await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_supply_requisition @requisitionno, @user", reqNo2, user);*/
             }
             catch (Exception)
             {
@@ -290,9 +296,9 @@ namespace HicadStockSystem.Persistence.Repository
         }
 
         //incomplete
-        public async Task<IEnumerable<St_ItemMaster>> GetItemCode()
+        public IEnumerable<St_ItemMaster> GetItemCode()
         {
-            return await _dbContext.St_ItemMasters.ToListAsync();
+            return _dbContext.St_ItemMasters.ToList();
         }
 
         public string GetDescription(string itemCode)
@@ -300,7 +306,7 @@ namespace HicadStockSystem.Persistence.Repository
             return _dbContext.St_ItemMasters.Where(c => c.ItemCode == itemCode).Select(c => c.ItemDesc).FirstOrDefault();
         }
 
-        public async Task<RequesitionVM> RequesitionsVM(string reqNo)
+        public RequesitionVM RequesitionsVM(string reqNo)
         {
             //var code = GetByReqNo(reqNo);
             /*var formatdate = new DateTime().ToString("MM/dd/yyyy HH:mm:ss");
@@ -325,7 +331,7 @@ namespace HicadStockSystem.Persistence.Repository
                                   ApprovedBy = requisition.ApprovedBy,
                                   Unit = item.Units
                               }).FirstOrDefaultAsync();*/
-            var requistion = await _dbContext.St_Requisitions.Where(x => x.RequisitionNo == reqNo && x.IsDeleted == false && x.IsSupplied == false)
+            var requistion = _dbContext.St_Requisitions.Where(x => x.RequisitionNo == reqNo && x.IsDeleted == false && x.IsSupplied == false)
                 .Join(_dbContext.St_ItemMasters, req => req.ItemCode, item => item.ItemCode, (req, item) => new { req, item })
                 .Join(_dbContext.Ac_CostCentres, reqs => reqs.req.LocationCode, cc => cc.UnitCode, (reqs, cc) => new { reqs, cc })
                 .Select(y => new RequesitionVM 
@@ -335,14 +341,14 @@ namespace HicadStockSystem.Persistence.Repository
                     Department = y.cc.UnitDesc,
                     CostLocCode = y.reqs.req.LocationCode,
                     DateAndTime = y.reqs.req.RequisitionDate.ToString(),
-                    ItemCode = y.reqs.item.ItemCode,
-                    ItemDescription = y.reqs.item.ItemDesc,
-                    Requested = y.reqs.req.Quantity,
+                    //ItemCode = y.reqs.item.ItemCode,
+                    //ItemDescription = y.reqs.item.ItemDesc,
+                    //Requested = y.reqs.req.Quantity,
                     ItemLists = ItemLists(reqNo),
                     DateCreated = y.reqs.req.CreatedOn.ToString(),
-                    ApprovedBy = y.reqs.req.ApprovedBy,
+                    //ApprovedBy = y.reqs.req.ApprovedBy,
                     Unit = y.reqs.item.Units
-                }).FirstOrDefaultAsync();
+                }).FirstOrDefault();
             return requistion;
         }
         public St_Requisition GetByItemcode(string itemCode)
@@ -366,15 +372,29 @@ namespace HicadStockSystem.Persistence.Repository
             return unissuedReq;
         }
         
-        public async Task<IEnumerable<St_Requisition>> GetByReqNos(string reqNo)
+        public IEnumerable<St_Requisition> GetByReqNos(string reqNo)
         {
-            var requisitions = await _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted == false && sr.IsSupplied==false).ToListAsync();
+            var requisitions = _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted == false && sr.IsSupplied==false).ToList();
             return requisitions;
         }
 
-        public List<ItemListVM> ItemLists(string reqNo)
+        public List<ItemViewModel> ItemLists(string reqNo)
         {
-            return  (from requisition in _dbContext.St_Requisitions
+            var result = _dbContext.St_Requisitions.Where(x => x.RequisitionNo == reqNo && x.IsDeleted == false)
+                .Join(_dbContext.St_StockMasters, req => req.ItemCode, stk => stk.ItemCode, (req, stk) => new { req, stk })
+                .Select(y => new ItemViewModel
+                {
+                    ItemCode=y.req.ItemCode,
+                    ItemDescription = y.req.Description,
+                    Requested = y.req.Quantity,
+                    Unit = y.req.Unit,
+                    //Quantity=y.req.SupplyQty,
+                    currentBalance = (y.stk.OpenBalance + y.stk.Receipts - y.stk.Issues) - y.stk.QtyInTransaction
+                }).ToList();
+
+            return result;
+
+            /*return  (from requisition in _dbContext.St_Requisitions
                      join stock in _dbContext.St_StockMasters on requisition.ItemCode equals stock.ItemCode
                           where requisition.RequisitionNo == reqNo && requisition.IsDeleted==false
                           select new ItemListVM
@@ -385,7 +405,7 @@ namespace HicadStockSystem.Persistence.Repository
                               Unit = requisition.Unit,
                               Quantity = requisition.SupplyQty,
                               currentBalance = (stock.OpenBalance + stock.Receipts - stock.Issues) - stock.QtyInTransaction
-                          }).ToList();
+                          }).ToList();*/
 
         }
 
@@ -408,13 +428,18 @@ namespace HicadStockSystem.Persistence.Repository
             }
         }
 
-        public async Task<int> SupplyRequisition(UpdateSt_RequisitionVM requisition)
-        {
-            var reqNo = new SqlParameter("@requisitionno", requisition.RequisitionNo);
-            var user = new SqlParameter("@user", requisition.SupplyBy);
+        //public async Task<int> SupplyRequisition(UpdateSt_RequisitionVM requisition)
+        //{
+        //    //var reqNo = new SqlParameter("@requisitionno", requisition.RequisitionNo);
+        //    //var user = new SqlParameter("@user", requisition.SupplyBy);
 
-            var result = await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_supply_requisition @requisitionno, @user", reqNo, user);
-            return result;
+        //    //var result = await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_supply_requisition @requisitionno, @user", reqNo, user);
+        //    //return result;
+        //}
+
+        public Task<string> GetReqNo()
+        {
+            throw new NotImplementedException();
         }
     }
 }

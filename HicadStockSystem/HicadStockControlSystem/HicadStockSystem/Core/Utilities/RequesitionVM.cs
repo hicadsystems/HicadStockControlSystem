@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HicadStockSystem.Core.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace HicadStockSystem.Core
         public float? Requested { get; set; }
         public string ApprovedBy { get; set; }
         public string Unit { get; set; }
-        public List<ItemListVM> ItemLists { get; set; }
+        public List<ItemViewModel> ItemLists { get; set; }
 
     }
 

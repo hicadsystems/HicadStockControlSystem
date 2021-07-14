@@ -1,0 +1,79 @@
+﻿
+@model  IEnumerable<HicadStockSystem.Core.Utilities.StockPositionVM>
+@using Microsoft.AspNetCore.Http;
+
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+@*<h1 class="text-center">Stock Position</h1>*@
+
+ <div>
+    
+    <h1 style="text-align:center">HICAD SYSTEM LTD</h1>
+    <h3 style="text-align:center">39 OSOLO-WAY, AJAO ESTATE, LAGOS</h3>
+    <h4 style="text-align:center">Stock Position</h4>
+<br /><br />
+<a class="btn btn-primary" asp-controller="" asp-action="">print</a>
+
+    <table class="table table-striped">
+
+        <tr>
+            <th>Item Code</th>
+            <th>Item Desc</th>
+            <th>PartNo</th>
+            <th>Open Balance</th>
+            <th>Receipts</th>
+            <th>Issues</th>
+            <th>Current Ballance</th>
+            <th>Price</th>
+            <th>Value</th>
+            @*<th>Discrepancy</th>*@
+        </tr>
+        @foreach (var a in Model)
+        {
+            
+    <tr>
+        <td> @a.ItemCode </td>
+        <td> @a.ItemDesc </td>
+        <td> @a.PartNo</td>
+        <td> @a.OpenBalance </td>
+        <td> @a.Receipts</td>
+        <td> @a.Issues </td>
+        <td> @a.CurrentBalance</td>
+        <td> @a.Price </td>
+        <td> @a.Value </td>
+        @*<td> @Math.Round(a.amountowned, 2) </td>*@
+    </tr>
+    }
+        <tr><td>Total</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>@Math.Round((decimal)Model.ToList().Sum(x => x.Value),2)</td>
+        
+    </table>
+  
+    <h6 style="text-align:center">RETRICTED</h6>
+</div>
+
+
+
+
+
+
+@*
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Stock Position</h1>
+
+<a class="btn btn-primary" asp-controller="" asp-action="">print</a>
+<br /><br />
+ <div>
+    <stock-position></stock-position>
+</div>*@
+

@@ -1,5 +1,6 @@
 ﻿using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace HicadStockSystem.Core
         Task UpdateAsync(string itemCode);
         Task Delete(string itemCode);
         Task<IEnumerable<St_StockMaster>> GetAll();
+        Task<IEnumerable<StockPositionVM>> StockPositions();
     }
 }

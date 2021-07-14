@@ -252,14 +252,14 @@ export default {
             this.canProcess = true;
             if (response.data.responseCode == "200") {
               this.postBody.requisitionNo = "";
-              this.postBody.userId = "";
-              this.postBody.requisitionDate = "";
-              this.postBody.createdOn = "";
+              // this.postBody.userId = "";
+              // this.postBody.requisitionDate = "";
+              // this.postBody.createdOn = "";
               // this.postBody.itemCode = "";
               // this.postBody.description = "";
               // this.postBody.quantity = 0;
-              this.postBody.quantity = "";
-              this.postBody.locationCode = "";
+              // this.postBody.quantity = "";
+              // this.postBody.locationCode = "";
               // this.postBody.unit = "";
               this.postBody.itemLists = [];
             }

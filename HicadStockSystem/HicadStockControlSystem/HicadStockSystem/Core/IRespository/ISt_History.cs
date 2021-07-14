@@ -19,6 +19,7 @@ namespace HicadStockSystem.Core.IRespository
         //string GenerateDocNo();
         string ReturnNo();
         int GetRemarkId(string remark);
+        Task<IEnumerable<St_History>> GetAllReceipt();
         //St_History GetDocNo(string docNo);
     }
 }

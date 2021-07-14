@@ -211,5 +211,11 @@ namespace HicadStockSystem.Persistence.Repository
             var remarkId = _dbContext.St_Remarks.Where(x => x.Remark == remark).Select(y => y.Id).FirstOrDefault();
             return remarkId;
         }
+
+        public async Task<IEnumerable<St_History>> GetAllReceipt()
+        {
+            var result = await _dbContext.St_Histories.Where(x => x.DocType == "GR").ToListAsync();
+            return result;
+        }
     }
 }

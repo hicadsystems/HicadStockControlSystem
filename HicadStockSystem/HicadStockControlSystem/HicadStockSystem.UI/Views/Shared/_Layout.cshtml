@@ -69,6 +69,7 @@
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Receipts</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_RequisitionUI" asp-action="ApprovedRequisitions">Issues</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="ProcessReturns">Returns</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="ProcessReturns">Receipt Reversal</a></li>
                           </ul>
                       </li>
 
@@ -78,11 +79,18 @@
                               <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Reports</span>
                           </a>
                           <ul id="reports" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">List Stock Items</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Stock Position</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">List Of Receipts</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">List Of Requisition</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_StockMasterUI" asp-action="Index">Stock Position</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_ItemMasterUI" asp-action="GetAllItems">Stock Ledger</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Receipts Analysis</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Issues to Department/Cost centers</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Buyers Guide</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Stock Consumption</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Order Request</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Slow Moving Stock Items</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Document Search</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Requsition Enquiry</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Proposed Reorder List</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">List of Undelivered Requisition</a></li>
                           </ul>
                       </li>
 
@@ -93,12 +101,13 @@
                           </a>
                           <ul id="utilities" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Month End Processing</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Year End Processing</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Physical Count Processing</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Month End Book Closure</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Print Physical Count Sheet</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Physical Count Input/Upload</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Discrepancy Report</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Physical Count List</a></li>
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Variance Analysis</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Overwrite Book Stock</a></li>
+                              @*<li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Year End Processing</a></li>*@
                           </ul>
                       </li>
 
