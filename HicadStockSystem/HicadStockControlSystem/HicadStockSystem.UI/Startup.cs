@@ -64,12 +64,18 @@ namespace HicadStockSystem.UI
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISt_Remark, St_RemarkRepo>();
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
 
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddDbContext<StockControlDBContext>(options =>
              options.UseSqlServer(
                  Configuration.GetConnectionString("DefaultConnection")));
+
+           
 
         }
 
@@ -92,7 +98,6 @@ namespace HicadStockSystem.UI
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

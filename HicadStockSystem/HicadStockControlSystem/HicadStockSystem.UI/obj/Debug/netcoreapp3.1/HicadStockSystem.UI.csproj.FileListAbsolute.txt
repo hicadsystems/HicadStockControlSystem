@@ -185,12 +185,12 @@ E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\HicadStockSystem.UI.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\HicadStockSystem.UI.pdb
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\HicadStockSystem.UI.genruntimeconfig.cache
-E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\St_StockMasterUI\Index.cshtml.g.cs
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\WKHtmlToPdf\wkhtmltoimage.exe
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\WKHtmlToPdf\wkhtmltopdf.exe
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\RotativaCore.dll
-E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\St_StockMasterUI\Index1.cshtml.g.cs
-E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\St_StockMasterUI\PrintStockPosition.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\StockReport\Index.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\StockReport\StockPositionPdf.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\St_HistoryUI\ReceiptReversal.cshtml.g.cs

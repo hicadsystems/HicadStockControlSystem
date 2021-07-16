@@ -23,6 +23,7 @@ namespace HicadStockSystem.Repository.IRepository
         Task<IEnumerable<AccChart>> GetCreditorCode();
         Task<IEnumerable<AccChart>> GetGLCode();
         Task<IEnumerable<AccChart>> GetExpenseCode();
+        St_StkSystem GetSingle();
 
     }
 }

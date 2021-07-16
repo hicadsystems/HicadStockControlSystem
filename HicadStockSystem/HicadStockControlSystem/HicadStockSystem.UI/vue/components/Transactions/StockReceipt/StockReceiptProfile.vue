@@ -244,52 +244,7 @@ export default {
         });
       // window.location.reload();
     },
-    // postPost() {
-    //   if (this.submitorUpdate == "Submit") {
-    //     axios
-    //       .post(`/api/stockhistory/`, this.postBody)
-    //       .then((response) => {
-    //         this.responseMessage = response.data.responseDescription;
-    //         this.canProcess = true;
-    //         if (response.data.responseCode == "200") {
-    //           this.postBody.itemCode = "";
-    //           this.postBody.docDate = "";
-    //           this.postBody.supplier = "";
-    //           this.postBody.price = "";
-    //           this.postBody.quantity = "";
-    //           this.$store.stateName.objectToUpdate = "create";
-    //         }
-    //         // this.$alert("Submit Form", "Ok", "info");
-    //         window.location.reload();
-    //       })
-    //       .catch((e) => {
-    //         this.errors.push(e);
-    //       });
-    //   }
-    //   if (this.submitorUpdate == "Update") {
-    //     alert("Ready to Update");
-    //     axios
-    //       .put(`/api/stockhistory/`, this.postBody)
-    //       .then((response) => {
-    //         this.responseMessage = response.data.responseDescription;
-    //         this.canProcess = true;
-    //         if (response.data.responseCode == "200") {
-    //           this.submitorUpdate = "Submit";
-    //           this.postBody.itemCode = "";
-    //           this.postBody.docDate = "";
-    //           this.postBody.supplier = "";
-    //           this.postBody.price = "";
-    //           this.postBody.quantity = "";
-    //           this.$store.state.objectToUpdate = "update";
-    //         }
-    //         window.location.reload();
-    //       })
-    //       .catch((e) => {
-    //         this.errors.push(e);
-    //       });
-    //   }
-    // },
-
+    
     getStockItem() {
       axios.get(`/api/itemmaster/`).then((response) => {
         this.itemList = response.data;

@@ -5889,6 +5889,190 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      errors: null,
+      valid: false,
+      receiptblur: false,
+      responseMessage: "",
+      submitorUpdate: "Submit",
+      canProcess: true,
+      receiptList: null,
+      itemList: null,
+      isSelected: false,
+      postBody: {
+        itemCode: "",
+        docNo: ""
+      }
+    };
+  },
+  mounted: function mounted() {
+    // this.getStockItem();
+    this.getReceipt();
+  },
+  methods: {
+    checkForm: function checkForm(e) {
+      var _this = this;
+
+      // alert(this.postBody);
+      console.log(this.postBody); // console.log(this.postBody.locationCode);
+
+      axios.post("/api/stockhistory/receiptreversal", this.postBody).then(function (response) {
+        _this.responseMessage = response.data.responseDescription;
+        _this.canProcess = true;
+
+        if (response.data.responseCode == "200") {
+          _this.postBody.docNo = "";
+          _this.postBody.itemCode = "";
+        } //   window.location.reload();
+
+      })["catch"](function (e) {
+        _this.errors.push(e);
+      }); // window.location.reload();
+    },
+    getStockItem: function getStockItem() {
+      var _this2 = this;
+
+      axios.get("/api/stockhistory/getbyreceiptno/".concat(this.postBody.docNo)).then(function (response) {
+        _this2.itemList = response.data;
+      });
+    },
+    getReceipt: function getReceipt() {
+      var _this3 = this;
+
+      axios.get("/api/stockhistory/receiptsno/").then(function (response) {
+        _this3.receiptList = response.data;
+      });
+    },
+    validate: function validate() {
+      this.codeblur = true;
+      this.receiptblur = true;
+
+      if (this.receiptIsValid) {
+        this.valid = true;
+      } else {
+        this.valid = false;
+        return;
+      }
+    }
+  },
+  computed: {
+    receiptIsValid: function receiptIsValid() {
+      return this.postBody.docNo != "" && this.postBody.docNo.length >= 1;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Transactions/StockReceipt/StockReceiptList.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./vue/components/Transactions/StockReceipt/StockReceiptList.vue?vue&type=script&lang=js& ***!
@@ -6240,51 +6424,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.errors.push(e);
       }); // window.location.reload();
     },
-    // postPost() {
-    //   if (this.submitorUpdate == "Submit") {
-    //     axios
-    //       .post(`/api/stockhistory/`, this.postBody)
-    //       .then((response) => {
-    //         this.responseMessage = response.data.responseDescription;
-    //         this.canProcess = true;
-    //         if (response.data.responseCode == "200") {
-    //           this.postBody.itemCode = "";
-    //           this.postBody.docDate = "";
-    //           this.postBody.supplier = "";
-    //           this.postBody.price = "";
-    //           this.postBody.quantity = "";
-    //           this.$store.stateName.objectToUpdate = "create";
-    //         }
-    //         // this.$alert("Submit Form", "Ok", "info");
-    //         window.location.reload();
-    //       })
-    //       .catch((e) => {
-    //         this.errors.push(e);
-    //       });
-    //   }
-    //   if (this.submitorUpdate == "Update") {
-    //     alert("Ready to Update");
-    //     axios
-    //       .put(`/api/stockhistory/`, this.postBody)
-    //       .then((response) => {
-    //         this.responseMessage = response.data.responseDescription;
-    //         this.canProcess = true;
-    //         if (response.data.responseCode == "200") {
-    //           this.submitorUpdate = "Submit";
-    //           this.postBody.itemCode = "";
-    //           this.postBody.docDate = "";
-    //           this.postBody.supplier = "";
-    //           this.postBody.price = "";
-    //           this.postBody.quantity = "";
-    //           this.$store.state.objectToUpdate = "update";
-    //         }
-    //         window.location.reload();
-    //       })
-    //       .catch((e) => {
-    //         this.errors.push(e);
-    //       });
-    //   }
-    // },
     getStockItem: function getStockItem() {
       var _this2 = this;
 
@@ -16052,6 +16191,239 @@ var staticRenderFns = [
         _c("th", [_vm._v("Quantity")]),
         _vm._v(" "),
         _c("th", [_vm._v("Remarks")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=template&id=7d88ed71&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=template&id=7d88ed71& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", [
+          _c("div", { staticClass: "p-2", attrs: { id: "vertical-form" } }, [
+            _c("div", { staticClass: "preview" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-6" }, [
+                  _c(
+                    "label",
+                    { staticClass: "mb-1", attrs: { for: "supplier" } },
+                    [_vm._v("Receipt No")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.postBody.docNo,
+                          expression: "postBody.docNo"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      class: {
+                        "is-invalid": !_vm.receiptIsValid && _vm.receiptblur
+                      },
+                      attrs: { name: "supplier", disabled: _vm.isSelected },
+                      on: {
+                        blur: function($event) {
+                          _vm.receiptblur = true
+                        },
+                        change: [
+                          function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.postBody,
+                              "docNo",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                          function($event) {
+                            ;(_vm.isSelected = true), _vm.getStockItem()
+                          }
+                        ]
+                      }
+                    },
+                    _vm._l(_vm.receiptList, function(receipt) {
+                      return _c(
+                        "option",
+                        { key: receipt, domProps: { value: receipt } },
+                        [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(receipt) +
+                              "\n                  "
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _vm._m(0)
+                ])
+              ]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-6" }, [
+                  _c(
+                    "label",
+                    { staticClass: "mb-1", attrs: { for: "itemCode" } },
+                    [_vm._v("Item Code")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.postBody.itemCode,
+                          expression: "postBody.itemCode"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "itemCode" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.postBody,
+                            "itemCode",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    _vm._l(_vm.itemList, function(item) {
+                      return _c(
+                        "option",
+                        {
+                          key: item.itemCode,
+                          domProps: { value: item.itemCode }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(item.itemCode) +
+                              "\n                  "
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _vm._m(1)
+                ])
+              ]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-2" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-submit btn-primary float-right",
+                      attrs: { type: "submit" },
+                      on: { click: _vm.checkForm }
+                    },
+                    [_vm._v("\n                  Reverse\n                ")]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("br")
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "invalid-feedback" }, [
+      _c("span", { staticClass: "text-danger h5" }, [
+        _vm._v("Please select supplier")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "invalid-feedback" }, [
+      _c("span", { staticClass: "text-danger h5" }, [
+        _vm._v("Please select Item")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-6" }, [
+      _c("p", [
+        _vm._v(
+          "\n                  Partial reversal of receipt is allowed\n                  "
+        ),
+        _c("br"),
+        _vm._v("\n                  i.e if a receipt has many item on it "),
+        _c("br"),
+        _vm._v("one item shall be\n                  reversed at a time "),
+        _c("br"),
+        _vm._v(
+          "otherwise select the receipt No.\n                  and reverse\n                "
+        )
       ])
     ])
   }
@@ -35593,6 +35965,7 @@ var map = {
 	"./components/StockClassList.vue": "./vue/components/StockClassList.vue",
 	"./components/Test.vue": "./vue/components/Test.vue",
 	"./components/Transactions/ReturnsFromDept/StockReturns.vue": "./vue/components/Transactions/ReturnsFromDept/StockReturns.vue",
+	"./components/Transactions/StockReceipt/ReceiptReversal.vue": "./vue/components/Transactions/StockReceipt/ReceiptReversal.vue",
 	"./components/Transactions/StockReceipt/StockReceiptList.vue": "./vue/components/Transactions/StockReceipt/StockReceiptList.vue",
 	"./components/Transactions/StockReceipt/StockReceiptProfile.vue": "./vue/components/Transactions/StockReceipt/StockReceiptProfile.vue",
 	"./components/Transactions/SupplyApprovedQty/Issue.vue": "./vue/components/Transactions/SupplyApprovedQty/Issue.vue",
@@ -36964,6 +37337,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StockReturns_vue_vue_type_template_id_437d87bc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StockReturns_vue_vue_type_template_id_437d87bc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./vue/components/Transactions/StockReceipt/ReceiptReversal.vue":
+/*!**********************************************************************!*\
+  !*** ./vue/components/Transactions/StockReceipt/ReceiptReversal.vue ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ReceiptReversal_vue_vue_type_template_id_7d88ed71___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReceiptReversal.vue?vue&type=template&id=7d88ed71& */ "./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=template&id=7d88ed71&");
+/* harmony import */ var _ReceiptReversal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReceiptReversal.vue?vue&type=script&lang=js& */ "./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ReceiptReversal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ReceiptReversal_vue_vue_type_template_id_7d88ed71___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ReceiptReversal_vue_vue_type_template_id_7d88ed71___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "vue/components/Transactions/StockReceipt/ReceiptReversal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************!*\
+  !*** ./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptReversal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptReversal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptReversal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=template&id=7d88ed71&":
+/*!*****************************************************************************************************!*\
+  !*** ./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=template&id=7d88ed71& ***!
+  \*****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptReversal_vue_vue_type_template_id_7d88ed71___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReceiptReversal.vue?vue&type=template&id=7d88ed71& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./vue/components/Transactions/StockReceipt/ReceiptReversal.vue?vue&type=template&id=7d88ed71&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptReversal_vue_vue_type_template_id_7d88ed71___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReceiptReversal_vue_vue_type_template_id_7d88ed71___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

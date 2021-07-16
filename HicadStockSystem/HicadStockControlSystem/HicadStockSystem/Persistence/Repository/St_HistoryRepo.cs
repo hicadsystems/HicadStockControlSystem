@@ -70,9 +70,10 @@ namespace HicadStockSystem.Persistence.Repository
             return await _dbContext.St_Histories.Where(h=>h.IsDeleted==false).ToListAsync();
         }
 
-        public St_History GetByDocNo(string docNo)
+        public IEnumerable<St_History> GetByReceiptNo(string docNo)
         {
-            return _dbContext.St_Histories.Where(h => h.DocNo == docNo && h.IsDeleted==false).FirstOrDefault();
+            var doc = _dbContext.St_Histories.Where(h => h.DocNo == docNo && h.IsDeleted==false).ToList();
+            return doc;
         }
 
         public async Task UpdateAsync(St_History history)
@@ -216,6 +217,48 @@ namespace HicadStockSystem.Persistence.Repository
         {
             var result = await _dbContext.St_Histories.Where(x => x.DocType == "GR").ToListAsync();
             return result;
+        }
+
+        public IEnumerable<string> GetAllReceiptNo()
+        {
+            var receipts = _dbContext.St_Histories.Where(x => x.IsDeleted == false && x.DocType == "GR" && !x.DocNo.EndsWith("R")).Select(y => y.DocNo).Distinct().ToList();
+            return receipts;
+        }
+
+        public IEnumerable<St_History> GetItemByReceiptNo(string receiptNo)
+        {
+            var item = _dbContext.St_Histories.Where(x => x.IsDeleted == false && x.DocNo == receiptNo).ToList();
+            return item;
+        }
+
+        public St_History GetByDocNo(string docNo)
+        {
+            var doc = _dbContext.St_Histories.Where(h => h.DocNo == docNo && h.IsDeleted == false).FirstOrDefault();
+            return doc;
+        }
+
+        public St_History ReverseByItemCode(string docNo, string itemcode)
+        {
+            var doc = _dbContext.St_Histories.Where(h => h.DocNo == docNo && h.IsDeleted == false && h.ItemCode==itemcode).FirstOrDefault();
+            return doc;
+        }
+
+        public async Task DeleteReversedReceiptByDocNo(string docNo)
+        {
+            var receipt = GetByReceiptNo(docNo);
+            foreach (var item in receipt)
+            {
+                item.IsDeleted = true;
+            }
+            await _uow.CompleteAsync();
+
+        }
+
+        public async Task DeleteReversedItem(string docNo, string itemcode)
+        {
+            var item = ReverseByItemCode(docNo, itemcode);
+            item.IsDeleted = true;
+            await _uow.CompleteAsync();
         }
     }
 }

@@ -34,6 +34,10 @@ namespace HicadStockSystem.Persistence
         {
             return _dbContext.St_StkSystems.Where(stk => stk.CompanyCode == compcode && stk.IsDeleted==false).FirstOrDefault();
         }
+        public St_StkSystem GetSingle()
+        {
+            return _dbContext.St_StkSystems.Where(stk => stk.IsDeleted==false).FirstOrDefault();
+        }
 
         public async Task UpdateAsync(St_StkSystem stkSystem)
         {

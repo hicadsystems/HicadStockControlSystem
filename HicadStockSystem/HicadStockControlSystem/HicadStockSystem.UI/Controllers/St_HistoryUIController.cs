@@ -28,5 +28,9 @@ namespace HicadStockSystem.UI.Controllers
         {
             return View();
         }
+        public IActionResult ReceiptReversal()
+        {
+            return View();
+        }
     }
 }

@@ -197,6 +197,7 @@ export default {
               this.RequisitionList = [];
             }
             window.location.reload();
+            
           })
           .catch((e) => {
             this.errors.push(e);

@@ -10,6 +10,7 @@ namespace HicadStockSystem.Core.IRespository
     {
         Task CreateAsync(St_History issueApprove);
         St_History GetByDocNo(string docNo);
+        IEnumerable<St_History> GetByReceiptNo(string docNo);
         Task UpdateAsync(St_History issueApprove);
         Task UpdateAsync(string itemCode);
         Task<IEnumerable<St_History>> GetAll();
@@ -21,5 +22,10 @@ namespace HicadStockSystem.Core.IRespository
         int GetRemarkId(string remark);
         Task<IEnumerable<St_History>> GetAllReceipt();
         //St_History GetDocNo(string docNo);
+        IEnumerable<string> GetAllReceiptNo();
+        IEnumerable<St_History> GetItemByReceiptNo(string receiptNo);
+        St_History ReverseByItemCode(string docNo, string itemcode);
+        Task DeleteReversedReceiptByDocNo(string docNo);
+        Task DeleteReversedItem(string docNo, string Itemcode);
     }
 }

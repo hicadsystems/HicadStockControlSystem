@@ -33,6 +33,7 @@ namespace HicadStockSystem.Controllers
             return Ok(stockHistory);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> CreateIssueReq([FromBody] CreateSt_HistoryVM historyVM)
         {
@@ -69,6 +70,79 @@ namespace HicadStockSystem.Controllers
                     return Ok(docNo);
                 }
               
+            }
+
+            return BadRequest();
+        }
+
+        [Route("receiptreversal")]
+        [HttpPost]
+        public async Task<IActionResult> CreateReceiptReversal([FromBody] CreateSt_HistoryVM historyVM)
+        {
+            if (ModelState.IsValid)
+            {
+
+                //var docNo = historyVM.DocNo = await _history.GenerateDocNo();
+
+                var docNoInDb = _history.GetItemByReceiptNo(historyVM.DocNo);
+                var docNo = historyVM.DocNo + "R";
+
+                if (!string.IsNullOrEmpty(historyVM.DocNo) && string.IsNullOrEmpty(historyVM.ItemCode))
+                {
+                       await _history.DeleteReversedReceiptByDocNo(historyVM.DocNo);
+                    if (docNoInDb != null)
+                    {
+                        foreach (var item in docNoInDb)
+                        {
+                            historyVM.ItemCode = item.ItemCode;
+                            historyVM.Price = item.Price;
+                            historyVM.Quantity = -item.Quantity;
+                            historyVM.DocType = "GR";
+                            historyVM.Location = "";
+                            historyVM.UserId = "HICAD1";
+                            historyVM.Supplier = item.Supplier;
+                            if (historyVM.DocDate == null)
+                            {
+                                historyVM.DocDate = DateTime.Now;
+                            }
+                            historyVM.DocNo = docNo;
+                            historyVM.DateCreated = DateTime.Now;
+                            
+
+                            var newStockHistory = _mapper.Map<CreateSt_HistoryVM, St_History>(historyVM);
+                            //confirm if correct
+
+                            await _history.CreateAsync(newStockHistory);
+                        }
+                        
+
+                        return Ok(docNo);
+                    } 
+                }
+                else
+                {
+                    var docNoInDb1 = _history.ReverseByItemCode(historyVM.DocNo, historyVM.ItemCode);
+
+                    historyVM.ItemCode = docNoInDb1.ItemCode;
+                    historyVM.Price = docNoInDb1.Price;
+                    historyVM.Quantity = -docNoInDb1.Quantity;
+                    historyVM.DocType = "GR";
+                    historyVM.Location = "";
+                    historyVM.UserId = "HICAD1";
+                    historyVM.Supplier = docNoInDb1.Supplier;
+                    if (historyVM.DocDate == null)
+                    {
+                        historyVM.DocDate = DateTime.Now;
+                    }
+                    historyVM.DocNo = docNo;
+                    historyVM.DateCreated = DateTime.Now;
+
+                    var newStockHistory = _mapper.Map<CreateSt_HistoryVM, St_History>(historyVM);
+                    //confirm if correct
+
+                    await _history.CreateAsync(newStockHistory);
+                }
+
             }
 
             return BadRequest();
@@ -130,11 +204,26 @@ namespace HicadStockSystem.Controllers
             return Ok(stockHistoryInDb);
         }
 
-        [HttpGet]
         [Route("GetReceipts")]
+        [HttpGet]
         public async Task<IActionResult> GetReceipts()
         {
             var receipt = await _history.GetAllReceipt();
+            return Ok(receipt);
+        }
+
+        [Route("receiptsno")]
+        [HttpGet]
+        public IActionResult GetReceiptsNo()
+        {
+            var receipt = _history.GetAllReceiptNo();
+            return Ok(receipt);
+        }
+        [Route("getbyreceiptno/{receiptNo}")]
+        [HttpGet]
+        public IActionResult GetItemByReceiptNo(string receiptNo)
+        {
+            var receipt = _history.GetItemByReceiptNo(receiptNo);
             return Ok(receipt);
         }
     }
