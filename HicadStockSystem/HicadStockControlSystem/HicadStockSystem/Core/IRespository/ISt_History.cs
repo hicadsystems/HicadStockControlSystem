@@ -1,4 +1,5 @@
 ﻿using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,8 @@ namespace HicadStockSystem.Core.IRespository
         St_History ReverseByItemCode(string docNo, string itemcode);
         Task DeleteReversedReceiptByDocNo(string docNo);
         Task DeleteReversedItem(string docNo, string Itemcode);
+        Task<IEnumerable<ReceiptAnalysisVM>> ReceiptAnalysis();
+        //Task<IEnumerable<StockLedgerVM>> StockLedgers();
+        IEnumerable<StockLedgerVM> StockLedgers();
     }
 }

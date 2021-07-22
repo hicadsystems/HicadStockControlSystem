@@ -86,7 +86,7 @@ namespace HicadStockSystem.Controllers
 
                 var docNoInDb = _history.GetItemByReceiptNo(historyVM.DocNo);
                 var docNo = historyVM.DocNo + "R";
-
+               
                 if (!string.IsNullOrEmpty(historyVM.DocNo) && string.IsNullOrEmpty(historyVM.ItemCode))
                 {
                        await _history.DeleteReversedReceiptByDocNo(historyVM.DocNo);

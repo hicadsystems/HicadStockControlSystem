@@ -324,6 +324,7 @@ export default {
             if (e) this.errors.push(e);
           });
       }
+      
       if (this.submitorUpdate == "Update") {
         alert("Ready to Update");
         axios

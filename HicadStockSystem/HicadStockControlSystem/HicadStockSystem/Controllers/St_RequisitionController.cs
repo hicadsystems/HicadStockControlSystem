@@ -322,46 +322,52 @@ namespace HicadStockSystem.Controllers
         [Route("RequisitionApproval")]
         public IActionResult RequisitionApproval([FromBody] UpdateSt_RequisitionVM requisitionVM)
         {
-            lock (this)
+            var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
+            if (requisitioInDb == null)
             {
-                var requisitioInDb = _requisition.GetByReqNo(requisitionVM.RequisitionNo);
-                if (requisitioInDb == null)
-                    return BadRequest();
-                foreach (var item in requisitionVM.ItemLists)
-                {
-                    using (SqlConnection sqlcon = new SqlConnection(connectionstring))
-                    {
-
-                        using (SqlCommand cmd = new SqlCommand("sp_UpdateRequisitionForApproval", sqlcon))
-                        {
-                            cmd.CommandTimeout = 1200;
-                            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                            cmd.Parameters.Add(new SqlParameter("@reqNo", requisitionVM.RequisitionNo));
-                            cmd.Parameters.Add(new SqlParameter("@itemcode", item.ItemCode));
-                            cmd.Parameters.Add(new SqlParameter("@qty", item.Quantity));
-                            cmd.Parameters.Add(new SqlParameter("@isapproved", true));
-                            cmd.Parameters.Add(new SqlParameter("@approvedby", "HICAD"));
-
-
-                            sqlcon.Open();
-                            cmd.ExecuteNonQuery();
-
-                        }
-                    }
-                    /*_mapper.Map(requisitionVM, requisitioInDb);
-                    requisitioInDb.ItemCode = item.ItemCode;
-                    requisitioInDb.Quantity = requisitionVM.Quantity = (float?)item.Quantity;
-                    requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
-                    requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
-                    requisitioInDb.UpdatedOn = DateTime.Now;*/
-
-
-                    //requisitioInDb.ItemCode = item.ItemCode;
-                    _requisition.RequisitioApprovalAsync(requisitioInDb);
-                }
-
-                return Ok(/*requisitioInDb*/); 
+                return NotFound();
             }
+            foreach (var item in requisitionVM.ItemLists)
+            {
+                using (SqlConnection sqlcon = new SqlConnection(connectionstring))
+                {
+
+                    using (SqlCommand cmd = new SqlCommand("sp_UpdateRequisitionForApproval", sqlcon))
+                    {
+                        cmd.CommandTimeout = 1200;
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@reqNo", requisitionVM.RequisitionNo));
+                        cmd.Parameters.Add(new SqlParameter("@itemcode", item.ItemCode));
+                        cmd.Parameters.Add(new SqlParameter("@qty", item.Quantity));
+                        cmd.Parameters.Add(new SqlParameter("@isapproved", true));
+                        cmd.Parameters.Add(new SqlParameter("@approvedby", "HICAD"));
+
+
+                        sqlcon.Open();
+                        cmd.ExecuteNonQuery();
+
+                    }
+                }
+                /*_mapper.Map(requisitionVM, requisitioInDb);
+                requisitioInDb.ItemCode = item.ItemCode;
+                requisitioInDb.Quantity = requisitionVM.Quantity = (float?)item.Quantity;
+                requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
+                requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
+                requisitioInDb.UpdatedOn = DateTime.Now;*/
+
+
+                //requisitioInDb.ItemCode = item.ItemCode;
+                _requisition.RequisitioApprovalAsync(requisitioInDb);
+
+                return Ok(requisitioInDb);
+            }
+            return Ok(/*requisitioInDb*/);
+            //lock (this)
+            //{
+               
+
+                
+            //}
         }
 
         [HttpPatch]
@@ -477,7 +483,7 @@ namespace HicadStockSystem.Controllers
         [Route("RequisitionApproval/{itemCode}")]
         public async Task<IActionResult> RequisitionApproval(string itemCode)
         {
-            var approval = _requisition.RequesitionsVM(itemCode); 
+            var approval =  _requisition.RequesitionsVM(itemCode); 
 
             //RequisitionApprovalItems(itemCode);
 

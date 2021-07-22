@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Core.Utilities
 {
-    public class StockPositionReportVM
+    public class ReportVM
     {
         public IEnumerable<StockPositionVM> StockPosition { get; set; }
         public St_StkSystem StkSystems { get; set; }
         //public StockPositionVM Stock { get; set; }
+        public IEnumerable<ReceiptAnalysisVM> Receipts { get; set; }
+        public IEnumerable<StockLedgerVM> StockLedgers { get; set; }
+
     }
 }

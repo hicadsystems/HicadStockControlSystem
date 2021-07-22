@@ -1,0 +1,60 @@
+﻿@model  HicadStockSystem.Core.Utilities.ReportVM
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewBag.Title = "AnalysisPdf";
+}
+@{
+	Layout = null;
+
+}
+<!DOCTYPE html>
+<html>
+<body>
+	 <h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+	 <h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+
+	 <br />
+	@*<h3 style="text-align:center">REPORTS</h3>
+		<h4 style="text-align:center">Stock Position</h4>*@
+
+	 <h3>Stock Position Report: Produce On @DateTime.Now</h3>
+	 <table border="2" cellpadding="2" cellspacing="0" width="100%">
+		  <tr style="text-align:center">
+				<th>Supplier Code</th>
+				<th>Name</th>
+				<th>Document No.</th>
+				<th>Date</th>
+				<th>Item Descrption</th>
+				<th>Quantity</th>
+				<th>Price</th>
+				<th>Amount</th>
+		  </tr>
+			@foreach (var a in Model.Receipts)
+			{
+				<tr style="text-align:center">
+					<td> @a.SupplierCode </td>
+					<td> @a.SupplierName </td>
+					<td> @a.DocNo</td>
+					<td> @a.Date.ToString()</td>
+					<td> @a.ItemDescription</td>
+					<td> @a.Quantity</td>
+					<td>@Math.Round((decimal)(a.Price),2)</td>
+					<td>@Math.Round((decimal)(a.Amount),2)</td>
+				</tr>
+
+
+			}
+
+		  <tr>
+			   <td><span><b>Total</b></span></td><td></td><td></td><td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td style="text-align:center"><span><b>@Math.Round((decimal)Model.Receipts.ToList().Sum(x=>x.Amount),2)</b></span></td>
+		  </tr>
+
+	 </table>
+
+	@*<h6 style="text-align:center">RETRICTED</h6>*@
+</body>
+</html>

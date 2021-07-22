@@ -263,7 +263,7 @@ export default {
               // this.postBody.unit = "";
               this.postBody.itemLists = [];
             }
-            window.location.reload();
+            // window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);

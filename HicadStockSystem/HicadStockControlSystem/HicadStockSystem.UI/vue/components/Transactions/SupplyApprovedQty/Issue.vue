@@ -238,6 +238,7 @@ export default {
               // this.postBody.locationCode = "";
               // this.postBody.unit = "";
               this.postBody.ItemLists=[];
+              
             }
             // window.location.reload();
           })

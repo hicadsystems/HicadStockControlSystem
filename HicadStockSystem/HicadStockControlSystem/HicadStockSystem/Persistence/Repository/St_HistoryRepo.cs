@@ -1,6 +1,7 @@
 ﻿using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -260,5 +262,89 @@ namespace HicadStockSystem.Persistence.Repository
             item.IsDeleted = true;
             await _uow.CompleteAsync();
         }
+
+        public async Task<IEnumerable<ReceiptAnalysisVM>> ReceiptAnalysis()
+        {
+            var values = await _dbContext.St_Histories.Where(x => x.IsDeleted == false && x.DocType == "GR" && !x.DocNo.EndsWith("R"))
+                .Join(_dbContext.St_ItemMasters, his => his.ItemCode, item => item.ItemCode, (his, item) => new { his, item })
+                .Join(_dbContext.St_Suppliers, hist => hist.his.Supplier, sup => sup.SupplierCode, (hist, sup) => new { hist, sup })
+                .Select(y => new ReceiptAnalysisVM
+                {
+                    SupplierCode = y.hist.his.Supplier,
+                    SupplierName = y.sup.Name,
+                    DocNo = y.hist.his.DocNo,
+                    Date = string.Format("{0:MM/dd/yyyy}", y.hist.his.DocDate) ,
+                    ItemDescription = y.hist.item.ItemDesc,
+                    Quantity = y.hist.his.Quantity,
+                    Price = y.hist.his.Price,
+                    Amount = y.hist.his.Quantity * y.hist.his.Price
+                }).ToListAsync();
+
+            return values;
+        }
+
+        public IEnumerable<StockLedgerVM> StockLedgers()
+        {
+            //float? curentQty = 0;
+            var op = (from his in _dbContext.St_Histories
+                      join stk in _dbContext.St_StockMasters on his.ItemCode equals stk.ItemCode
+                      where his.IsDeleted == false && !his.DocNo.EndsWith("R")
+                      select new StockLedgerVM
+                      {
+                          ItemCode = stk.ItemCode,
+                          ItemDesc = stk.Description,
+                          TransDate = string.Format("{0:MM/dd/yyyy}", his.DocDate),
+                          TransactionNo = his.DocNo,
+                          TransQty = his.Quantity,
+                          DocType = his.DocType,
+                          //CurrentQty = curentQty += his.Quantity,
+                          Price = his.Price,
+                          //Value = stk.StockPrice * (decimal)((stk.OpenBalance + stk.Receipts) - stk.Issues)
+                          Value = his.Price * his.Quantity
+                      });
+            return op;
+           /* var ledger = new List<StockLedgerVM>();
+
+            var gettotal = op.GroupBy(x => x.ItemCode)
+                .Select(g => new StockLedgerVM
+                {
+                    TransQty = g.Sum(s => s.TransQty),
+                    Value = g.Sum(s => s.Value),
+                    ItemCode = g.First().ItemCode,
+                    ItemDesc = g.First().ItemDesc
+                }).OrderBy(g => g.ItemCode);
+
+            return gettotal;*/
+
+            /*var result = await _dbContext.St_Histories.Where(x => x.IsDeleted == false && !x.DocNo.EndsWith("R"))
+                .Join(_dbContext.St_StockMasters, his => his.ItemCode, sup => sup.ItemCode, (his, sup) => new { his, sup })
+                .Select(y => new StockLedgerVM
+                {
+                    ItemCode = y.sup.ItemCode,
+                    ItemDesc = y.sup.Description,
+                    TransDate = string.Format("{0:MM/dd/yyyy}", y.his.DocDate),
+                    TransactionNo = y.his.DocNo,
+                    TransQty = y.his.Quantity,
+                    CurrentQty = (y.sup.OpenBalance + y.sup.Receipts) - y.sup.Issues,
+                    Price = y.his.Price,
+                    Value = y.sup.StockPrice * (decimal)((y.sup.OpenBalance + y.sup.Receipts) - y.sup.Issues)
+                }).OrderBy(y=>y.ItemCode).ToListAsync();
+
+            return (IEnumerable<StockLedgerVM>)result;*/
+        }
+
+        private  IEnumerable<St_History> Stocks()
+        {
+            var items = _dbContext.St_Histories.Where(x => x.IsDeleted == false && !x.DocNo.EndsWith("R"))
+                .OrderBy(y=>y.ItemCode)
+                .ToList();
+            return items;
+        }
+        //private static DateTime DateOnly(DateTime? dateTime)
+        //{
+        //    DateTime dateTime1 = DateTime.Now;
+        //    dateTime1.ToString("MM/dd/yyyy");
+        //    return dateTime1;
+        //}
     }
 }

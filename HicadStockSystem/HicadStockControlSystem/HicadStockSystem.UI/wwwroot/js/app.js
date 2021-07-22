@@ -4019,9 +4019,8 @@ __webpack_require__.r(__webpack_exports__);
             // this.postBody.unit = "";
 
             _this.postBody.itemLists = [];
-          }
+          } // window.location.reload();
 
-          window.location.reload();
         })["catch"](function (e) {
           _this.errors.push(e);
         });
