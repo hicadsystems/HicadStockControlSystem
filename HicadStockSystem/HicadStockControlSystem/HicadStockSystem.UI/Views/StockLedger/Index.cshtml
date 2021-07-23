@@ -6,6 +6,7 @@
 	ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 	int currentQty = 0;
+	decimal? value = 0;
 }
 
 
@@ -44,12 +45,12 @@
 								{
 									 @*currentQty += a.TransQty;*@
 								<tr style="text-align:center">
-								   <td> @a.ItemCode.First() </td>
-								   <td> @a.ItemDesc.First() </td>
+								   <td> @a.ItemCode</td>
+								   <td> @a.ItemDesc </td>
 								   <td> @a.TransDate</td>
 								   <td> @a.TransactionNo </td>
 								   <td> @a.TransQty</td>
-								    <td> @Math.Round((decimal) a.Price,2)</td>
+								    <td>@Math.Round((decimal) a.Price,2)</td>
 								    <td>
 										@if (a.DocType.Equals("GR"))
 										{
@@ -57,11 +58,25 @@
 									
 										}else if(a.DocType.Equals("IS")){
 											@(currentQty -= a.TransQty)
-										}
+									}else if (a.DocType.Equals("RT"))
+									{
+										@(currentQty += a.TransQty)
+									}
 										@*@(currentQty += a.TransQty)*@
 									</td>
 									<td>@(Math.Round((decimal)((currentQty + (a.Price * a.TransQty))/a.TransQty),2))</td>
-								   <td> @Math.Round((decimal) a.Value, 2)</td>
+								   <td>
+									@if (a.DocType.Equals("GR"))
+									{
+										@Math.Round((decimal)(value += (a.Price * a.TransQty)),2)
+									}else if(a.DocType.Equals("IS")){
+										@Math.Round((decimal)(value -= (a.Price * a.TransQty)),2)
+									}else if (a.DocType.Equals("RT"))
+									{
+										@Math.Round((decimal)(value += (a.Price * a.TransQty)),2)
+									}
+			   
+									</td>
 								   @*<td> @a.Quantity</td>*@
 								   @*<td>@Math.Round((decimal)(a.Price),2)</td>
 								   <td>@Math.Round((decimal)(a.Amount),2)</td>*@

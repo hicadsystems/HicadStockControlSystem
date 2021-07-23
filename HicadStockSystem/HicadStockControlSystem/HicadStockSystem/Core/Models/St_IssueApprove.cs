@@ -13,6 +13,7 @@ namespace HicadStockSystem.Core.Models
     {
         //is approved property would be appropriate for duplicate check
         [StringLength(12)]
+
         public string RequisitionNo { get; set; }
         [StringLength(15)]
         public string ItemCode { get; set; }

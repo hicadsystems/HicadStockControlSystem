@@ -31,5 +31,7 @@ namespace HicadStockSystem.Core.IRespository
         Task<IEnumerable<ReceiptAnalysisVM>> ReceiptAnalysis();
         //Task<IEnumerable<StockLedgerVM>> StockLedgers();
         IEnumerable<StockLedgerVM> StockLedgers();
+        IEnumerable<StockLedgerVM> GroupByItemCode();
+        IEnumerable<StockLedgerVM> StockLedger();
     }
 }

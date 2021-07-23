@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Core.Utilities
 {
-    public class StockLedgerVM
+    public class StockLedgerGroupVM
     {
         public string ItemCode { get; set; }
         public string ItemDesc { get; set; }
@@ -17,7 +17,5 @@ namespace HicadStockSystem.Core.Utilities
         public decimal? Price { get; set; }
         public decimal? Value { get; set; }
         public DateTime? DateCreated { get; set; }
-
-
     }
 }
