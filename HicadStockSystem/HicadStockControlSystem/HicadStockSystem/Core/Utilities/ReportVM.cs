@@ -14,6 +14,7 @@ namespace HicadStockSystem.Core.Utilities
         //public StockPositionVM Stock { get; set; }
         public IEnumerable<ReceiptAnalysisVM> Receipts { get; set; }
         public IEnumerable<StockLedgerVM> StockLedgers { get; set; }
+        public IEnumerable<StockLedgerVM> StockLedgers2 { get; set; }
 
     }
 }

@@ -5,6 +5,7 @@ using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -286,11 +287,19 @@ namespace HicadStockSystem.Persistence.Repository
         public IEnumerable<StockLedgerVM> StockLedger()
         {
             var stocks = new List<StockLedgerVM>();
-            
-            var itemcode = _dbContext.St_Histories.Where(x => x.IsDeleted == false && !x.DocNo.EndsWith("R")).Select(x => x.ItemCode).Distinct().ToList();
-            var des = _dbContext.St_StockMasters.Where(x => x.ItemCode == itemcode.First()).Select(x => x.Description).Distinct().ToList();
-            foreach (var code in itemcode)
-            {
+            //stocks = _dbContext.St_Histories.Where(x => x.IsDeleted == false && !x.DocType.Equals("R"))
+            //    .Join(_dbContext.St_StockMasters, x => x.ItemCode, stk => stk.ItemCode, (hist, stk) => new { hist, stk })
+            //    .Select(y => new StockLedgerVM
+            //    {
+            //        ItemCode = y.stk.ItemCode,
+            //        ItemDesc = y.stk.Description,
+            //        TransDate = string.Format("{0:MM/dd/yyyy}", y.hist.DocDate),
+            //        TransactionNo = y.hist.DocNo,
+            //        TransQty = y.hist.Quantity,
+            //        DocType = y.hist.DocType,
+            //        Price = y.hist.Price
+            //    }).OrderBy(x=>x.TransDate).ToListAsync();
+
                stocks =  (from his in _dbContext.St_Histories
                  join stk in _dbContext.St_StockMasters on his.ItemCode equals stk.ItemCode
                  where his.IsDeleted == false && !his.DocNo.EndsWith("R") 
@@ -302,25 +311,29 @@ namespace HicadStockSystem.Persistence.Repository
                      TransactionNo = his.DocNo,
                      TransQty = his.Quantity,
                      DocType = his.DocType,
-                     //CurrentQty = curentQty += his.Quantity,
                      Price = his.Price,
                      DateCreated = his.DateCreated
-                     //Value = stk.StockPrice * (decimal)((stk.OpenBalance + stk.Receipts) - stk.Issues)
-                     //Value = his.Price * his.Quantity
                  }).ToList();
-            }
+           
             return stocks;
         }
         public IEnumerable<StockLedgerVM> GroupByItemCode()
         {
+            decimal? currentQty =0m;
+            decimal? value = 0m;
+            decimal? stockqty=0m;
             List<StockLedgerVM> stkgrp = new List<StockLedgerVM>();
             //var lg = new StockLedgerVM();
-            var grp = StockLedger().OrderBy(x => x.TransDate).GroupBy(x => x.ItemCode);
+            var grp = StockLedger().OrderBy(x => x.TransDate).GroupBy(x => x.ItemCode).ToList();
+            
             foreach (var g in grp)
             {
+                currentQty = 0;
+                value = 0;
                 
-                foreach(var gr in g)
+                foreach (var gr in g)
                 {
+                    
                     stkgrp.Add(new StockLedgerVM
                     {
                         ItemCode = gr.ItemCode,
@@ -329,68 +342,86 @@ namespace HicadStockSystem.Persistence.Repository
                         Price = gr.Price,
                         TransQty = gr.TransQty,
                         DocType = gr.DocType,
-                        TransDate = gr.TransDate
+                        TransDate = gr.TransDate,
+                        //StockPrice = currentQty + ((gr.Price * gr.TransQty) / gr.TransQty),
+                        StockQuantity = stockqty = gr.DocType.Equals("GR") || gr.DocType.Equals("RT") ? currentQty += gr.TransQty : currentQty -= gr.TransQty,
+                        Value = gr.DocType.Equals("GR") || gr.DocType.Equals("RT") ? value += (gr.Price * gr.TransQty) : value -= (gr.Price * gr.TransQty),
+                        StockPrice = value/stockqty
                     });
-                   
-
+                    
                 }
+                //if (itemcodes != stkgrp.FirstOrDefault().ItemCode)
+                //{
+                //    currentQty = 0;
+                //}
 
             }
           
             return stkgrp;
         }
-        public IEnumerable<StockLedgerVM> StockLedgers()
+       /* public decimal? getStockPrice(string doctType,decimal? price,int transqty, decimal? currentQty)
         {
-           
-            //float? curentQty = 0;
-            var op = (from his in _dbContext.St_Histories
-                      join stk in _dbContext.St_StockMasters on his.ItemCode equals stk.ItemCode
-                      where his.IsDeleted == false && !his.DocNo.EndsWith("R")
-                      select new StockLedgerVM
-                      {
-                          ItemCode = stk.ItemCode,
-                          ItemDesc = stk.Description,
-                          TransDate = string.Format("{0:MM/dd/yyyy}", his.DocDate),
-                          TransactionNo = his.DocNo,
-                          TransQty = his.Quantity,
-                          DocType = his.DocType,
-                          //CurrentQty = curentQty += his.Quantity,
-                          Price = his.Price,
-                          DateCreated = his.DateCreated
-                          //Value = stk.StockPrice * (decimal)((stk.OpenBalance + stk.Receipts) - stk.Issues)
-                          //Value = his.Price * his.Quantity
-                      });
+            //currentQty = 0m;
+            //decimal? value = 0;
+            decimal? result = 0M;
+            if (doctType == "GR" || doctType == "RT")
+            {
+              result= currentQty += (price * transqty) / transqty;
+               
+            }
+            else if (doctType.Equals("IS"))
+            {
+                result = currentQty -= (price * transqty) / transqty;
+            }
+            return result;
+        }*/
+        
+        public IEnumerable<StockLedgerVM> GroupByLastItemCode()
+        {
+            List<StockLedgerVM> stkgrp = new List<StockLedgerVM>();
+            //var lg = new StockLedgerVM();
+            var grp = StockLedger().OrderBy(x => x.TransDate).DistinctBy(x => x.ItemCode);
             
-            return op;
-            /* var ledger = new List<StockLedgerVM>();
+            foreach (var g in grp)
+            {
+                 
+             
+                    stkgrp.Add(new StockLedgerVM
+                    {
+                        ItemCode = g.ItemCode,
+                        ItemDesc = g.ItemDesc,
+                        TransactionNo = g.TransactionNo,
+                        Price = g.Price,
+                        TransQty = g.TransQty,
+                        DocType = g.DocType,
+                        TransDate = g.TransDate
+                    });
 
-             var gettotal = op.GroupBy(x => x.ItemCode)
-                 .Select(g => new StockLedgerVM
-                 {
-                     TransQty = g.Sum(s => s.TransQty),
-                     Value = g.Sum(s => s.Value),
-                     ItemCode = g.First().ItemCode,
-                     ItemDesc = g.First().ItemDesc
-                 }).OrderBy(g => g.ItemCode);
+            }
 
-             return gettotal;*/
-
-            /*var result = await _dbContext.St_Histories.Where(x => x.IsDeleted == false && !x.DocNo.EndsWith("R"))
-                .Join(_dbContext.St_StockMasters, his => his.ItemCode, sup => sup.ItemCode, (his, sup) => new { his, sup })
-                .Select(y => new StockLedgerVM
-                {
-                    ItemCode = y.sup.ItemCode,
-                    ItemDesc = y.sup.Description,
-                    TransDate = string.Format("{0:MM/dd/yyyy}", y.his.DocDate),
-                    TransactionNo = y.his.DocNo,
-                    TransQty = y.his.Quantity,
-                    CurrentQty = (y.sup.OpenBalance + y.sup.Receipts) - y.sup.Issues,
-                    Price = y.his.Price,
-                    Value = y.sup.StockPrice * (decimal)((y.sup.OpenBalance + y.sup.Receipts) - y.sup.Issues)
-                }).OrderBy(y=>y.ItemCode).ToListAsync();
-
-            return (IEnumerable<StockLedgerVM>)result;*/
+            return stkgrp;
         }
+        //public IEnumerable<StockLedgerVM> StockLedgers()
+        //{
+           
+        //    var op = (from his in _dbContext.St_Histories
+        //              join stk in _dbContext.St_StockMasters on his.ItemCode equals stk.ItemCode
+        //              where his.IsDeleted == false && !his.DocNo.EndsWith("R")
+        //              select new StockLedgerVM
+        //              {
+        //                  ItemCode = stk.ItemCode,
+        //                  ItemDesc = stk.Description,
+        //                  TransDate = string.Format("{0:MM/dd/yyyy}", his.DocDate),
+        //                  TransactionNo = his.DocNo,
+        //                  TransQty = his.Quantity,
+        //                  DocType = his.DocType,
+        //                  Price = his.Price,
+        //                  DateCreated = his.DateCreated
+        //              });
+            
+        //    return op;
+           
+        //}
 
         private  IEnumerable<St_History> Stocks()
         {
@@ -399,11 +430,6 @@ namespace HicadStockSystem.Persistence.Repository
                 .ToList();
             return items;
         }
-        //private static DateTime DateOnly(DateTime? dateTime)
-        //{
-        //    DateTime dateTime1 = DateTime.Now;
-        //    dateTime1.ToString("MM/dd/yyyy");
-        //    return dateTime1;
-        //}
+        
     }
 }

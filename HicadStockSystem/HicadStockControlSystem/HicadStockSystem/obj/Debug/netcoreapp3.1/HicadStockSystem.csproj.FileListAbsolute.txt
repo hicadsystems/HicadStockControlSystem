@@ -80,3 +80,4 @@ E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem\bin\Debug\netcoreapp3.1\RotativaCore.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem\obj\Debug\netcoreapp3.1\HicadStockSystem.MvcApplicationPartsAssemblyInfo.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem\bin\Debug\netcoreapp3.1\MoreLinq.dll

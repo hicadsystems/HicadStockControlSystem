@@ -30,8 +30,9 @@ namespace HicadStockSystem.Core.IRespository
         Task DeleteReversedItem(string docNo, string Itemcode);
         Task<IEnumerable<ReceiptAnalysisVM>> ReceiptAnalysis();
         //Task<IEnumerable<StockLedgerVM>> StockLedgers();
-        IEnumerable<StockLedgerVM> StockLedgers();
+        //IEnumerable<StockLedgerVM> StockLedgers();
         IEnumerable<StockLedgerVM> GroupByItemCode();
+        IEnumerable<StockLedgerVM> GroupByLastItemCode();
         IEnumerable<StockLedgerVM> StockLedger();
     }
 }

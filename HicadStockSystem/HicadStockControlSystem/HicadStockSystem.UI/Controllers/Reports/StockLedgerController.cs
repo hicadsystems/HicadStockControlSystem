@@ -25,9 +25,9 @@ namespace HicadStockSystem.UI.Controllers.Reports
             var ledger = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                //StockLedgers = _history.StockLedgers().ToList()
-                //StockLedgers = _history.StockLedger()
-                StockLedgers = _history.GroupByItemCode().ToList()
+                StockLedgers = _history.GroupByItemCode().ToList(),
+                StockLedgers2 = _history.GroupByLastItemCode().ToList()
+              
             };
             return View(ledger);
         }
@@ -37,7 +37,8 @@ namespace HicadStockSystem.UI.Controllers.Reports
             var ledger = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                StockLedgers = _history.StockLedgers()
+                StockLedgers = _history.GroupByItemCode().ToList(),
+                StockLedgers2 = _history.GroupByLastItemCode().ToList()
             };
             return View(ledger);
         }
