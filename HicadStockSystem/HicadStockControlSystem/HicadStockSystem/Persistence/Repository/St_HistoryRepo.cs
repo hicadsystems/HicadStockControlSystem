@@ -36,36 +36,6 @@ namespace HicadStockSystem.Persistence.Repository
 
             await TransStoreProc(history);
 
-           /* using (var transaction = _dbContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    
-                    //var docNoParam = new SqlParameter("@docno", history.DocNo);
-                    //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
-                    //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
-                    //var quantityParam = new SqlParameter("@quantity", history.Quantity);
-                    //var priceParam = new SqlParameter("@price",history.Price);
-                    //var doctypeParam = new SqlParameter("@doctype", history.DocType);
-                    //var supcodeParam = new SqlParameter("@supcode", history.Supplier);
-                    //var unitcodeParam = new SqlParameter("@unitcode", history.Location);
-                    //var user = new SqlParameter("@user", history.UserId);
-                    //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
-                    //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
-
-                    //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
-                    //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
-
-
-                    transaction.Commit();
-                    //await _uow.CompleteAsync();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }*/
         }
 
         public async Task<IEnumerable<St_History>> GetAll()
@@ -81,8 +51,7 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task UpdateAsync(St_History history)
         {
-            //var stkprice = (from stockmaster in _dbContext.St_StockMasters
-            //                where stockmaster.ItemCode == history.ItemCode
+          
 
             var stkprice = _dbContext.St_StockMasters.Where(x => x.ItemCode == history.ItemCode).Select(y => y.StockPrice).First();
             history.Price = stkprice;
@@ -92,33 +61,7 @@ namespace HicadStockSystem.Persistence.Repository
 
             await TransStoreProc(history);
 
-            //using (var transaction = _dbContext.Database.BeginTransaction())
-            //{
-            //    //                select stockmaster.StockPrice).First();
-            //    try
-            //    {
-            //        //var docNoParam = new SqlParameter("@docno", history.DocNo);
-            //        //var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
-            //        //var trandateParam = new SqlParameter("@trandate", history.DocDate.ToString());
-            //        //var quantityParam = new SqlParameter("@quantity", history.Quantity);
-            //        //var priceParam = new SqlParameter("@price", stkprice);
-            //        //var doctypeParam = new SqlParameter("@doctype", "RT");
-            //        //var supcodeParam = new SqlParameter("@supcode", "");
-            //        //var unitcodeParam = new SqlParameter("@unitcode", history.Location);
-            //        //var user = new SqlParameter("@user", "HICAD3");
-            //        //await _dbContext.Database.ExecuteSqlRawAsync("exec st_update_transactions @docno, @itemcode, @trandate, @quantity, @price,@doctype, @supcode, @unitcode, @user",
-            //        //    docNoParam, itemcodeParam, trandateParam, quantityParam, priceParam, doctypeParam, supcodeParam, unitcodeParam, user);
-
-            //        //_dbContext.Update(history);
-            //        transaction.Commit();
-            //        await _uow.CompleteAsync();
-            //    }
-            //    catch (Exception)
-            //    {
-            //        transaction.Rollback();
-            //        throw;
-            //    }
-            //}
+            
         }
 
         public async Task UpdateAsync(string itemCode)
@@ -192,9 +135,7 @@ namespace HicadStockSystem.Persistence.Repository
 
         private async Task TransStoreProc(St_History history)
         {
-            //var stkprice = (from stockmaster in _dbContext.St_StockMasters
-            //                where stockmaster.ItemCode == history.ItemCode
-            //                select stockmaster.StockPrice).First();
+          
             var docNoParam = new SqlParameter("@docno", history.DocNo);
             var itemcodeParam = new SqlParameter("@itemcode", history.ItemCode);
             var trandateParam = new SqlParameter("@trandate", history.DocDate);
@@ -264,101 +205,10 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        public async Task<IEnumerable<ReceiptAnalysisVM>> ReceiptAnalysis()
-        {
-            var values = await _dbContext.St_Histories.Where(x => x.IsDeleted == false && x.DocType == "GR" && !x.DocNo.EndsWith("R"))
-                .Join(_dbContext.St_ItemMasters, his => his.ItemCode, item => item.ItemCode, (his, item) => new { his, item })
-                .Join(_dbContext.St_Suppliers, hist => hist.his.Supplier, sup => sup.SupplierCode, (hist, sup) => new { hist, sup })
-                .Select(y => new ReceiptAnalysisVM
-                {
-                    SupplierCode = y.hist.his.Supplier,
-                    SupplierName = y.sup.Name,
-                    DocNo = y.hist.his.DocNo,
-                    Date = string.Format("{0:MM/dd/yyyy}", y.hist.his.DocDate) ,
-                    ItemDescription = y.hist.item.ItemDesc,
-                    Quantity = y.hist.his.Quantity,
-                    Price = y.hist.his.Price,
-                    Amount = y.hist.his.Quantity * y.hist.his.Price
-                }).ToListAsync();
+       
 
-            return values;
-        }
-
-        public IEnumerable<StockLedgerVM> StockLedger()
-        {
-            var stocks = new List<StockLedgerVM>();
-            //stocks = _dbContext.St_Histories.Where(x => x.IsDeleted == false && !x.DocType.Equals("R"))
-            //    .Join(_dbContext.St_StockMasters, x => x.ItemCode, stk => stk.ItemCode, (hist, stk) => new { hist, stk })
-            //    .Select(y => new StockLedgerVM
-            //    {
-            //        ItemCode = y.stk.ItemCode,
-            //        ItemDesc = y.stk.Description,
-            //        TransDate = string.Format("{0:MM/dd/yyyy}", y.hist.DocDate),
-            //        TransactionNo = y.hist.DocNo,
-            //        TransQty = y.hist.Quantity,
-            //        DocType = y.hist.DocType,
-            //        Price = y.hist.Price
-            //    }).OrderBy(x=>x.TransDate).ToListAsync();
-
-               stocks =  (from his in _dbContext.St_Histories
-                 join stk in _dbContext.St_StockMasters on his.ItemCode equals stk.ItemCode
-                 where his.IsDeleted == false && !his.DocNo.EndsWith("R") 
-                 select new StockLedgerVM 
-                 {
-                     ItemCode = stk.ItemCode,
-                     ItemDesc = stk.Description,
-                     TransDate = string.Format("{0:MM/dd/yyyy}", his.DocDate),
-                     TransactionNo = his.DocNo,
-                     TransQty = his.Quantity,
-                     DocType = his.DocType,
-                     Price = his.Price,
-                     DateCreated = his.DateCreated
-                 }).ToList();
-           
-            return stocks;
-        }
-        public IEnumerable<StockLedgerVM> GroupByItemCode()
-        {
-            decimal? currentQty =0m;
-            decimal? value = 0m;
-            decimal? stockqty=0m;
-            List<StockLedgerVM> stkgrp = new List<StockLedgerVM>();
-            //var lg = new StockLedgerVM();
-            var grp = StockLedger().OrderBy(x => x.TransDate).GroupBy(x => x.ItemCode).ToList();
-            
-            foreach (var g in grp)
-            {
-                currentQty = 0;
-                value = 0;
-                
-                foreach (var gr in g)
-                {
-                    
-                    stkgrp.Add(new StockLedgerVM
-                    {
-                        ItemCode = gr.ItemCode,
-                        ItemDesc = gr.ItemDesc,
-                        TransactionNo = gr.TransactionNo,
-                        Price = gr.Price,
-                        TransQty = gr.TransQty,
-                        DocType = gr.DocType,
-                        TransDate = gr.TransDate,
-                        //StockPrice = currentQty + ((gr.Price * gr.TransQty) / gr.TransQty),
-                        StockQuantity = stockqty = gr.DocType.Equals("GR") || gr.DocType.Equals("RT") ? currentQty += gr.TransQty : currentQty -= gr.TransQty,
-                        Value = gr.DocType.Equals("GR") || gr.DocType.Equals("RT") ? value += (gr.Price * gr.TransQty) : value -= (gr.Price * gr.TransQty),
-                        StockPrice = value/stockqty
-                    });
-                    
-                }
-                //if (itemcodes != stkgrp.FirstOrDefault().ItemCode)
-                //{
-                //    currentQty = 0;
-                //}
-
-            }
-          
-            return stkgrp;
-        }
+      
+       
        /* public decimal? getStockPrice(string doctType,decimal? price,int transqty, decimal? currentQty)
         {
             //currentQty = 0m;
@@ -376,52 +226,9 @@ namespace HicadStockSystem.Persistence.Repository
             return result;
         }*/
         
-        public IEnumerable<StockLedgerVM> GroupByLastItemCode()
-        {
-            List<StockLedgerVM> stkgrp = new List<StockLedgerVM>();
-            //var lg = new StockLedgerVM();
-            var grp = StockLedger().OrderBy(x => x.TransDate).DistinctBy(x => x.ItemCode);
-            
-            foreach (var g in grp)
-            {
-                 
-             
-                    stkgrp.Add(new StockLedgerVM
-                    {
-                        ItemCode = g.ItemCode,
-                        ItemDesc = g.ItemDesc,
-                        TransactionNo = g.TransactionNo,
-                        Price = g.Price,
-                        TransQty = g.TransQty,
-                        DocType = g.DocType,
-                        TransDate = g.TransDate
-                    });
-
-            }
-
-            return stkgrp;
-        }
-        //public IEnumerable<StockLedgerVM> StockLedgers()
-        //{
-           
-        //    var op = (from his in _dbContext.St_Histories
-        //              join stk in _dbContext.St_StockMasters on his.ItemCode equals stk.ItemCode
-        //              where his.IsDeleted == false && !his.DocNo.EndsWith("R")
-        //              select new StockLedgerVM
-        //              {
-        //                  ItemCode = stk.ItemCode,
-        //                  ItemDesc = stk.Description,
-        //                  TransDate = string.Format("{0:MM/dd/yyyy}", his.DocDate),
-        //                  TransactionNo = his.DocNo,
-        //                  TransQty = his.Quantity,
-        //                  DocType = his.DocType,
-        //                  Price = his.Price,
-        //                  DateCreated = his.DateCreated
-        //              });
-            
-        //    return op;
-           
-        //}
+        
+       
+      
 
         private  IEnumerable<St_History> Stocks()
         {

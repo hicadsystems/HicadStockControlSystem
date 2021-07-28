@@ -28,11 +28,7 @@ namespace HicadStockSystem.Core.IRespository
         St_History ReverseByItemCode(string docNo, string itemcode);
         Task DeleteReversedReceiptByDocNo(string docNo);
         Task DeleteReversedItem(string docNo, string Itemcode);
-        Task<IEnumerable<ReceiptAnalysisVM>> ReceiptAnalysis();
-        //Task<IEnumerable<StockLedgerVM>> StockLedgers();
-        //IEnumerable<StockLedgerVM> StockLedgers();
-        IEnumerable<StockLedgerVM> GroupByItemCode();
-        IEnumerable<StockLedgerVM> GroupByLastItemCode();
-        IEnumerable<StockLedgerVM> StockLedger();
+        
+       
     }
 }

@@ -11,7 +11,7 @@ namespace HicadStockSystem.Core.Utilities
         public string ItemDesc { get; set; }
         public string TransDate { get; set; }
         public string TransactionNo { get; set; }
-        public int TransQty { get; set; }
+        public int? TransQty { get; set; }
         public int CurrentQty { get; set; }
         public string DocType { get; set; }
         public decimal? Price { get; set; }

@@ -70,13 +70,9 @@ namespace HicadStockSystem.Persistence
                     ItemCode = y.stk.ItemCode,
                     ItemDesc = y.stk.Description,
                     PartNo = y.item.PartNo,
-                    //OpenBalance = y.stk.OpenBalance,
-                    //Receipts = y.stk.Receipts,
-                    //Issues = y.stk.Issues,
                     CurrentBalance = y.stk.OpenBalance + y.stk.Receipts - y.stk.Issues,
                     Price = y.stk.StockPrice,
-                    Value = y.stk.StockPrice * (decimal)(y.stk.OpenBalance + y.stk.Receipts - y.stk.Issues),
-                    //Total =  Total(y.stk.StockPrice * (decimal?)y.stk.Receipts),
+                    Value = y.stk.StockPrice * (decimal)(y.stk.OpenBalance + y.stk.Receipts - y.stk.Issues)
                 }).ToListAsync();
 
             return values;

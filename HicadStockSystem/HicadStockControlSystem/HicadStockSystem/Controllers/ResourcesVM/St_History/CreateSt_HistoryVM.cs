@@ -17,7 +17,7 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_History
         public DateTime? DocDate { get; set; }
         [StringLength(6)]
         public string Period { get; set; }
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
         public decimal? Price { get; set; }
         [StringLength(15)]
         public string Supplier { get; set; }

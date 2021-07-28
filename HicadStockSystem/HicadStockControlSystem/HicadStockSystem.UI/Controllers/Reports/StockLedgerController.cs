@@ -1,4 +1,5 @@
 ﻿using HicadStockSystem.Core.IRespository;
+using HicadStockSystem.Core.IRespository.IReport;
 using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -12,21 +13,24 @@ namespace HicadStockSystem.UI.Controllers.Reports
 {
     public class StockLedgerController : Controller
     {
+
         private readonly ISt_History _history;
         private readonly ISt_StkSystem _system;
+        private readonly IReports _reports;
 
-        public StockLedgerController(ISt_History history, ISt_StkSystem system)
+        public StockLedgerController(ISt_StkSystem system, IReports reports)
         {
-            _history = history;
+
             _system = system;
+            _reports = reports;
         }
         public IActionResult Index()
         {
             var ledger = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                StockLedgers = _history.GroupByItemCode().ToList(),
-                StockLedgers2 = _history.GroupByLastItemCode().ToList()
+                StockLedgers = _reports.GroupByItemCode().ToList(),
+                StockLedgers2 = _reports.GroupByLastItemCode().ToList()
               
             };
             return View(ledger);
@@ -37,8 +41,8 @@ namespace HicadStockSystem.UI.Controllers.Reports
             var ledger = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                StockLedgers = _history.GroupByItemCode().ToList(),
-                StockLedgers2 = _history.GroupByLastItemCode().ToList()
+                StockLedgers = _reports.GroupByItemCode().ToList(),
+                StockLedgers2 = _reports.GroupByLastItemCode().ToList()
             };
             return View(ledger);
         }

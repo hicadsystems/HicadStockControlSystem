@@ -1,4 +1,5 @@
 ﻿using HicadStockSystem.Core.IRespository;
+using HicadStockSystem.Core.IRespository.IReport;
 using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -14,28 +15,32 @@ namespace HicadStockSystem.UI.Controllers.Reports
     {
         private readonly ISt_History _history;
         private readonly ISt_StkSystem _system;
+        private readonly IReports _reports;
 
-        public ReceiptAnalysisController(ISt_History history, ISt_StkSystem system)
+        public ReceiptAnalysisController(ISt_StkSystem system, IReports reports)
         {
-            _history = history;
+           
             _system = system;
+            _reports = reports;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var analysis = new ReportVM
             {
-                Receipts = await _history.ReceiptAnalysis(),
+                Receipts = _reports.GroupReceiptBySupplier(),
+                Receipts2 = _reports.GroupReceiptbySum(),
                 StkSystems = _system.GetSingle()
             };
             return View(analysis);
         }
 
-        public async Task<IActionResult> AnalysisPdf()
+        public IActionResult AnalysisPdf()
         {
             var analysis = new ReportVM
             {
-                Receipts = await _history.ReceiptAnalysis(),
+                Receipts = _reports.GroupReceiptBySupplier(),
+                Receipts2 = _reports.GroupReceiptbySum(),
                 StkSystems = _system.GetSingle()
             };
             return View(analysis);

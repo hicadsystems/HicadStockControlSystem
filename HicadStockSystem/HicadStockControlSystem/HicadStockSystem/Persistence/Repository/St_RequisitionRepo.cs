@@ -346,7 +346,7 @@ namespace HicadStockSystem.Persistence.Repository
                     //Requested = y.reqs.req.Quantity,
                     ItemLists = ItemLists(reqNo),
                     DateCreated = y.reqs.req.CreatedOn.ToString(),
-                    //ApprovedBy = y.reqs.req.ApprovedBy,
+                    ApprovedBy = y.reqs.req.ApprovedBy,
                     Unit = y.reqs.item.Units
                 }).FirstOrDefault();
             return requistion;

@@ -21,7 +21,7 @@
  
 					<br />
 					<h3 style="text-align:center">REPORTS</h3>
-					<h4 style="text-align:center">Stock Position</h4>
+					<h4 style="text-align:center">Stock Ledger</h4>
 					<br /><br />
 					<a class="btn btn-primary" asp-controller="StockLedger" asp-action="PrintStockLedger">print</a>
 					<div class="row">
@@ -33,8 +33,8 @@
 							{
 								<tr>
 									<td><span><b>Item Code:</b></span> @b.ItemCode</td>
-									<td><span><b>Description:</b></span> @b.ItemDesc</td>
 									<td></td>
+									<td><span><b>Description:</b></span> @b.ItemDesc</td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -89,8 +89,6 @@
 								</tr>
 							 }
 						 </table> <br />
-						
-	 
 					</div>
 
 				@*<h6 style="text-align:center">RETRICTED</h6>*@

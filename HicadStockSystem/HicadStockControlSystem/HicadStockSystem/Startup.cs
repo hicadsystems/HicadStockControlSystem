@@ -25,6 +25,8 @@ using HicadStockSystem.Mapping;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Persistence.Repository;
+using HicadStockSystem.Core.IRespository.IReport;
+using HicadStockSystem.Persistence.Repository.Reports;
 
 namespace HicadStockSystem
 {
@@ -69,6 +71,7 @@ namespace HicadStockSystem
             services.AddScoped<IAc_BusinessLine, Ac_BusinessLineRepo>();
             services.AddScoped<IAc_CostCentre, Ac_CostCentreRepo>();
             services.AddScoped<ISt_Remark, St_RemarkRepo>();
+            services.AddScoped<IReports, ReportRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

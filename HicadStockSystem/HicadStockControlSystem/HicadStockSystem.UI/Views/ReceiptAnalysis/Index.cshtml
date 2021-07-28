@@ -9,7 +9,6 @@
 
 
 
-
 <div class="row">
 	 <div class="col-md-12 grid-margin">
 		  <div class="card">
@@ -20,41 +19,73 @@
  
 					<br />
 					<h3 style="text-align:center">REPORTS</h3>
-					<h4 style="text-align:center">Stock Position</h4>
+					<h4 style="text-align:center">Receipt Analysis</h4>
 					<br /><br />
-					<a class="btn btn-primary" asp-controller="StockReport" asp-action="PrintStockPosition">print</a>
+					<a class="btn btn-primary" asp-controller="ReceiptAnalysis" asp-action="AnalysisPdf">print</a>
 					<div class="row">
 						 <table class="table table-striped" style="text-align:center">
 							  <tr  style="text-align:center">
-							   <th>Item Code</th>
-							   <th>Item Desc</th>
-							   <th>PartNo</th>
-							   <th>Current Quantity</th>
-							   <th>Price</th>
-							   <th>Value</th>
-													@*<th>Discrepancy</th>*@
+							 
 							  </tr>
-								@foreach (var a in Model.StockPosition)
-								{
-									<tr style="text-align:center">
-								   <td> @a.ItemCode </td>
-								   <td> @a.ItemDesc </td>
-								   <td> @a.PartNo</td>
-								   <td> @a.CurrentBalance</td>
-								   <td> @Math.Round((decimal)(a.Price),2) </td>
-								   <td> @Math.Round((decimal)(a.Value),2) </td>
-								  </tr>
-
-
-								}
-							  <tr>	
-									<td><span><b>Total</b></span></td><td></td><td></td><td></td>
+						   @foreach (var b in Model.Receipts2)
+							{
+								<tr>
+									<td><span><b>Supplier Code:</b></span> @b.SupplierCode</td>
 									<td></td>
-									<td style="text-align:center"><span><b>@Math.Round((decimal)Model.StockPosition.ToList().Sum(x=>x.Value),2)</b></span></td>
-							 </tr>
+									<td><span><b>Supplier Name:</b></span> @b.SupplierName</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									
+								    @*<td>Description: @b.ItemDesc</td>*@
+								</tr>
+								
+								<tr>	
+								   <th>Date</th>
+								   <th>Receipt Number</th>
+								   <th>Item Description</th>
+								   <th>Quantity</th>
+								   <th>Price</th>
+								   <th>Amount</th>
+								   @*<th>Value</th>*@
+								</tr>
+
+								@foreach (var a in Model.Receipts.Where(x=>x.SupplierCode==b.SupplierCode))
+								{
+								<tr style="text-align:center">
+								   <td> @a.Date</td>
+								   <td> @a.DocNo </td>
+								   <td> @a.ItemDescription</td>
+								    <td>@Math.Round((decimal) a.Quantity,2)</td>
+								    <td>
+										@Math.Round((decimal)a.Price,2)
+									</td>
+									<td>@Math.Round((decimal)a.Amount,2)</td>
+								  @* <td>
+										@Math.Round((decimal)a.Value,2)
+									</td>*@
+								  </tr>
+							     }							
+							     <tr>	
+									<td><span><b>Total</b></span></td>
+									<td></td>
+									<td></td>
+									<td style="text-align:center"></td>
+									<td style="text-align:center"></td>
+									<td style="text-align:center"><span><b>@Math.Round((decimal)Model.Receipts.Where(x=>x.SupplierCode==b.SupplierCode).ToList().Sum(x=>x.Amount),2)</b></span></td>
+								</tr>
+								<tr>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+								    @*<td>Description: @b.ItemDesc</td>*@
+								</tr>
+							}
 						 </table> <br />
-						
-	 
 					</div>
 
 				@*<h6 style="text-align:center">RETRICTED</h6>*@

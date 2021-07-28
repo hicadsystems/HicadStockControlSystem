@@ -1,10 +1,12 @@
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
+using HicadStockSystem.Core.IRespository.IReport;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
 using HicadStockSystem.Mapping;
 using HicadStockSystem.Persistence;
 using HicadStockSystem.Persistence.Repository;
+using HicadStockSystem.Persistence.Repository.Reports;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -61,6 +63,7 @@ namespace HicadStockSystem.UI
 
             services.AddScoped<IAc_BusinessLine, Ac_BusinessLineRepo>();
             services.AddScoped<IAc_CostCentre, Ac_CostCentreRepo>();
+            services.AddScoped<IReports, ReportRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISt_Remark, St_RemarkRepo>();
