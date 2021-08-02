@@ -89,12 +89,12 @@ namespace HicadStockSystem.Controllers
             return Ok(stockMasterInDb);
         }
 
-        [Route("stockposition")]
-        [HttpGet]
-        public async Task<IActionResult> GetStockPosition()
-        {
-            var stkposition = await _stockMaster.StockPositions();
-            return Ok(stkposition);
-        }
+        //[Route("stockposition")]
+        //[HttpGet]
+        //public async Task<IActionResult> GetStockPosition()
+        //{
+        //    var stkposition = await _stockMaster.StockPositions();
+        //    return Ok(stkposition);
+        //}
     }
 }

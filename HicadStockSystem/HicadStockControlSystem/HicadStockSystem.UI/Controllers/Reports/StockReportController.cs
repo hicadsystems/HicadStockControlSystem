@@ -1,4 +1,5 @@
 ﻿using HicadStockSystem.Core;
+using HicadStockSystem.Core.IRespository.IReport;
 using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -12,19 +13,19 @@ namespace HicadStockSystem.UI.Controllers.Reports
 {
     public class StockReportController : Controller
     {
-        private readonly ISt_StockMaster _stockMaster;
+        private readonly IStockPosition _stockPosition;
         private readonly ISt_StkSystem _system;
 
-        public StockReportController(ISt_StockMaster stockMaster, ISt_StkSystem system)
+        public StockReportController(IStockPosition stockPosition, ISt_StkSystem system)
         {
-            _stockMaster = stockMaster;
+            _stockPosition = stockPosition;
             _system = system;
         }
         public async Task<IActionResult> Index(/*int? pageNumber*/)
         {
             var position = new ReportVM()
             {
-                StockPosition = await _stockMaster.StockPositions(),
+                StockPosition = await _stockPosition.StockPositions(),
                 StkSystems = _system.GetSingle()
             };
             //var position = await _stockMaster.StockPositions();
@@ -36,7 +37,7 @@ namespace HicadStockSystem.UI.Controllers.Reports
         {
             var position = new ReportVM()
             {
-                StockPosition = await _stockMaster.StockPositions(),
+                StockPosition = await _stockPosition.StockPositions(),
                 StkSystems = _system.GetSingle()
             };
             //var position =  await _stockMaster.StockPositions();

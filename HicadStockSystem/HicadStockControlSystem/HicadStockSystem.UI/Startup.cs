@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wkhtmltopdf.NetCore;
 
 namespace HicadStockSystem.UI
 {
@@ -42,10 +43,11 @@ namespace HicadStockSystem.UI
                     NamingStrategy = new CamelCaseNamingStrategy()
                 };
                 //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            }); 
+            });
 
 
             //Entities and there Interfaces
+            services.AddWkhtmltopdf("WKHtmlToPdf");
             services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();
             services.AddScoped<ISt_StockMaster, St_StockMasterRepo>();
             services.AddScoped<ISt_StockClass, St_StockClassRepo>();
@@ -63,7 +65,10 @@ namespace HicadStockSystem.UI
 
             services.AddScoped<IAc_BusinessLine, Ac_BusinessLineRepo>();
             services.AddScoped<IAc_CostCentre, Ac_CostCentreRepo>();
-            services.AddScoped<IReports, ReportRepo>();
+            //services.AddScoped<IReports, ReportRepo>();
+            services.AddScoped<IStockPosition, StockPositionRepo>();
+            services.AddScoped<IStockLedger, StockLedgerRepo>();
+            services.AddScoped<IReceiptAnalysis, ReceiptAnalysisRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISt_Remark, St_RemarkRepo>();

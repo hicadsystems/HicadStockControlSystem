@@ -59,11 +59,12 @@ namespace HicadStockSystem.Persistence
             var stockMasterInDb = GetByItemCode(itemCode);
             stockMasterInDb.IsDeleted=true;
             await _uow.CompleteAsync();
+            
         }
 
         public async Task<IEnumerable<StockPositionVM>> StockPositions()
         {
-            var values =  await _dbContext.St_StockMasters.Where(x => x.IsDeleted == false)
+            var values = await _dbContext.St_StockMasters.Where(x => x.IsDeleted == false)
                 .Join(_dbContext.St_ItemMasters, stk => stk.ItemCode, item => item.ItemCode, (stk, item) => new { stk, item })
                 .Select(y => new StockPositionVM
                 {

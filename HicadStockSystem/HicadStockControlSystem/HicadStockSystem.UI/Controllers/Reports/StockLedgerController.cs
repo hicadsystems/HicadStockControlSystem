@@ -14,23 +14,22 @@ namespace HicadStockSystem.UI.Controllers.Reports
     public class StockLedgerController : Controller
     {
 
-        private readonly ISt_History _history;
         private readonly ISt_StkSystem _system;
-        private readonly IReports _reports;
+        private readonly IStockLedger _ledger;
 
-        public StockLedgerController(ISt_StkSystem system, IReports reports)
+        public StockLedgerController(ISt_StkSystem system, IStockLedger ledger)
         {
 
             _system = system;
-            _reports = reports;
+            _ledger = ledger;
         }
         public IActionResult Index()
         {
             var ledger = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                StockLedgers = _reports.GroupByItemCode().ToList(),
-                StockLedgers2 = _reports.GroupByLastItemCode().ToList()
+                StockLedgers = _ledger.GroupByItemCode().ToList(),
+                StockLedgers2 = _ledger.GroupByLastItemCode().ToList()
               
             };
             return View(ledger);
@@ -41,8 +40,8 @@ namespace HicadStockSystem.UI.Controllers.Reports
             var ledger = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                StockLedgers = _reports.GroupByItemCode().ToList(),
-                StockLedgers2 = _reports.GroupByLastItemCode().ToList()
+                StockLedgers = _ledger.GroupByItemCode().ToList(),
+                StockLedgers2 = _ledger.GroupByLastItemCode().ToList()
             };
             return View(ledger);
         }
