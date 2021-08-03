@@ -29,7 +29,7 @@
           <label class="form-check-label" for="exampleRadios2">
             Before Specific Date
           </label>
-          <input  v-model="postBody.requisitionAge" v-if="selectDate" type="date" class="col-4" />
+          <input  v-model="postBody.requisitionAge" v-if="selectDate" type="date" class="form-control col-4" />
         </div>
         <div class="form-check">
           <input

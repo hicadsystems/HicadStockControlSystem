@@ -466,3 +466,5 @@ E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\Wkhtmltopdf.NetCore.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\WKHtmlToPdf\Windows\wkhtmltoimage.exe
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\WKHtmlToPdf\Windows\wkhtmltopdf.exe
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\IssuesToDepartment\Index.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\IssuesToDepartment\PrintIssue.cshtml.g.cs

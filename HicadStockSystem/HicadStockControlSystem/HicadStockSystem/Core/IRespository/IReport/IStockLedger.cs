@@ -8,8 +8,8 @@ namespace HicadStockSystem.Core.IRespository.IReport
 {
     public interface IStockLedger
     {
-        IEnumerable<StockLedgerVM> StockLedger();
-        IEnumerable<StockLedgerVM> GroupByItemCode();
-        IEnumerable<StockLedgerVM> GroupByLastItemCode();
+        IEnumerable<StockLedgerVM> StockLedger(DateTime? startDate, DateTime? endDate);
+        IEnumerable<StockLedgerVM> GroupByItemCode(DateTime? startDate, DateTime? endDate);
+        IEnumerable<StockLedgerVM> GroupByLastItemCode(DateTime? startDate, DateTime? endDate);
     }
 }

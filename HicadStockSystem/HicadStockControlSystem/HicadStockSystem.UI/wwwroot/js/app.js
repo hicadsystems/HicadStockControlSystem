@@ -13791,7 +13791,7 @@ var render = function() {
                     expression: "postBody.requisitionAge"
                   }
                 ],
-                staticClass: "col-4",
+                staticClass: "form-control col-4",
                 attrs: { type: "date" },
                 domProps: { value: _vm.postBody.requisitionAge },
                 on: {

@@ -75,6 +75,7 @@ namespace HicadStockSystem
             services.AddScoped<IStockPosition, StockPositionRepo>();
             services.AddScoped<IStockLedger, StockLedgerRepo>();
             services.AddScoped<IReceiptAnalysis, ReceiptAnalysisRepo>();
+            services.AddScoped<IIssueToDepartment, IssueToDepartmentRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

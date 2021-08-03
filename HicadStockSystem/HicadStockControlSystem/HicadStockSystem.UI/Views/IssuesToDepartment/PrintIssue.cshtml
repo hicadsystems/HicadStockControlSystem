@@ -1,7 +1,7 @@
 ﻿@model  HicadStockSystem.Core.Utilities.ReportVM
 @using Microsoft.AspNetCore.Http;
 @{
-	ViewBag.Title = "AnalysisPdf";
+	ViewBag.Title = "PrintIssue";
 }
 @{
 	Layout = null;
@@ -17,13 +17,13 @@
 	@*<h3 style="text-align:center">REPORTS</h3>
 		<h4 style="text-align:center">Stock Position</h4>*@
 
-	 <h3>Receipt Analysis Report: Produce On @DateTime.Now</h3>
+	 <h3>Issues To Department: Produce On @DateTime.Now</h3>
 	 <table border="2" cellpadding="2" cellspacing="0" width="100%">
-		   @foreach (var b in Model.Receipts2)
+		   @foreach (var b in Model.Issues2)
 		   {
 				<tr>
-					<td><span><b>Supplier Code:</b></span> @b.SupplierCode</td>
-					<td><span><b>Supplier Name:</b></span> @b.SupplierName</td>
+					<td><span><b>Department Code:</b></span> @b.DepartmentCode</td>
+					<td><span><b>Department Name:</b></span> @b.DepartmentName</td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -32,7 +32,7 @@
 								
 				<tr>	
 				   <th>Date</th>
-				   <th>Receipt Number</th>
+				   <th>Document Number</th>
 				   <th>Item Description</th>
 				   <th>Quantity</th>
 				   <th>Price</th>
@@ -40,10 +40,10 @@
 				   @*<th>Value</th>*@
 				</tr>
 
-				@foreach (var a in Model.Receipts.Where(x=>x.SupplierCode==b.SupplierCode))
+				@foreach (var a in Model.Issues.Where(x=>x.DepartmentCode==b.DepartmentCode))
 				{
 				<tr style="text-align:center">
-				   <td> @a.Date</td>
+				   <td> @a.DocDate</td>
 				   <td> @a.DocNo </td>
 				   <td> @a.ItemDescription</td>
 				    <td>@Math.Round((decimal) a.Quantity,2)</td>
@@ -62,7 +62,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><span><b>@Math.Round((decimal)Model.Receipts.Where(x=>x.SupplierCode==b.SupplierCode).ToList().Sum(x=>x.Amount),2)</b></span></td>
+					<td><span><b>@Math.Round((decimal)Model.Issues.Where(x=>x.DepartmentCode==b.DepartmentCode).ToList().Sum(x=>x.Amount),2)</b></span></td>
 				</tr>
 				<tr>
 					<th></th>

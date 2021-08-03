@@ -18,7 +18,7 @@
 		<h4 style="text-align:center">Stock Position</h4>*@
 
 	 <h3>Stock Ledger Report: Produce On @DateTime.Now</h3>
-	<table class="table table-striped" style="text-align:center">
+	<table border="2" cellpadding="2" cellspacing="0" width="100%">
 							  <tr  style="text-align:center">
 							 
 							  </tr>
@@ -27,6 +27,11 @@
 								<tr>
 									<td><span><b>Item Code:</b></span> @b.ItemCode</td>
 									<td><span><b>Description:</b></span> @b.ItemDesc</td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
 								    @*<td>Description: @b.ItemDesc</td>*@
 								</tr>
 								
@@ -54,9 +59,9 @@
 								   <td>
 										@Math.Round((decimal)a.Value,2)
 									</td>
+								   @*<td> </td>
 								   <td> </td>
-								   <td> </td>
-								   <td> </td>
+								   <td> </td>*@
 								  </tr>
 							     }							
 							     <tr>	
@@ -69,6 +74,11 @@
 									<td><span><b> @Math.Round((decimal)Model.StockLedgers.Where(x=>x.ItemCode==b.ItemCode).Select(x=>x.Value).LastOrDefault(),2)</b></span></td>
 								</tr>
 								<tr>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th></th>
 									<th></th>
 									<th></th>
 								    @*<td>Description: @b.ItemDesc</td>*@

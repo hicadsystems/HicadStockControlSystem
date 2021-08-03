@@ -16,7 +16,8 @@ namespace HicadStockSystem.Core.Utilities
         public string DocType { get; set; }
         public decimal? Price { get; set; }
         public decimal? Value { get; set; }
-        public DateTime? DateCreated { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public decimal? StockPrice { get; set; }
         public decimal? StockQuantity { get; set; }
 

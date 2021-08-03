@@ -7,8 +7,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
 <div class="row">
 	 <div class="col-md-12 grid-margin">
 		  <div class="card">
@@ -19,21 +17,21 @@
  
 					<br />
 					<h3 style="text-align:center">REPORTS</h3>
-					<h4 style="text-align:center">Receipt Analysis</h4>
+					<h4 style="text-align:center">Issues To Department</h4>
 					<br /><br />
-					<form method="post" enctype="multipart/form-data" asp-action="AnalysisPdf">
+					<form method="post" enctype="multipart/form-data" asp-action="PrintIssue">
 						<div class="row">
 							<div  class="col-md-2">
-								<label asp-for="ReceiptsAnalysis.StartDate"></label>
+								<label asp-for="IssuesToDept.StartDate"></label>
 							</div>
 							<div class="form-group col-md-4">
-								<input asp-for="ReceiptsAnalysis.StartDate" name="startDate" class="form-control"  />
+								<input asp-for="IssuesToDept.StartDate" name="startDate" class="form-control"  />
 							</div>
 							<div class="col-md-2">
-								<label asp-for="ReceiptsAnalysis.EndDate"></label>
+								<label asp-for="IssuesToDept.EndDate"></label>
 							</div>
 								<div class="col-md-4">
-							<input asp-for="ReceiptsAnalysis.EndDate" name="endDate" class="form-control" />
+							<input asp-for="IssuesToDept.EndDate" name="endDate" class="form-control" />
 							</div>
 						<div class="col-md-2">
 							<button type="submit" class="btn btn-primary">Print</button>
@@ -48,12 +46,12 @@
 							  <tr  style="text-align:center">
 							 
 							  </tr>
-						   @foreach (var b in Model.Receipts2)
+						   @foreach (var b in Model.Issues2)
 							{
 								<tr>
-									<td><span><b>Supplier Code:</b></span> @b.SupplierCode</td>
+									<td><span><b>Department Code:</b></span> @b.DepartmentCode</td>
 									<td></td>
-									<td><span><b>Supplier Name:</b></span> @b.SupplierName</td>
+									<td><span><b>Department Name:</b></span> @b.DepartmentName</td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -71,10 +69,10 @@
 								   @*<th>Value</th>*@
 								</tr>
 
-								@foreach (var a in Model.Receipts.Where(x=>x.SupplierCode==b.SupplierCode))
+								@foreach (var a in Model.Issues.Where(x=>x.DepartmentCode==b.DepartmentCode))
 								{
 								<tr style="text-align:center">
-								   <td> @a.Date</td>
+								   <td> @a.DocDate</td>
 								   <td> @a.DocNo </td>
 								   <td> @a.ItemDescription</td>
 								    <td>@Math.Round((decimal) a.Quantity,2)</td>
@@ -93,7 +91,7 @@
 									<td></td>
 									<td style="text-align:center"></td>
 									<td style="text-align:center"></td>
-									<td style="text-align:center"><span><b>@Math.Round((decimal)Model.Receipts.Where(x=>x.SupplierCode==b.SupplierCode).ToList().Sum(x=>x.Amount),2)</b></span></td>
+									<td style="text-align:center"><span><b>@Math.Round((decimal)Model.Issues.Where(x=>x.DepartmentCode==b.DepartmentCode).ToList().Sum(x=>x.Amount),2)</b></span></td>
 								</tr>
 								<tr>
 									<th></th>

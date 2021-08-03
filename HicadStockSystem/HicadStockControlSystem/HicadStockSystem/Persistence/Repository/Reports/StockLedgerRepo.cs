@@ -18,12 +18,12 @@ namespace HicadStockSystem.Persistence.Repository.Reports
         {
             _dbContext = dbContext;
         }
-        public IEnumerable<StockLedgerVM> StockLedger()
+        public IEnumerable<StockLedgerVM> StockLedger(DateTime? startDate, DateTime? endDate)
         {
             var stocks = new List<StockLedgerVM>();
             stocks = (from his in _dbContext.St_Histories
                       join stk in _dbContext.St_StockMasters on his.ItemCode equals stk.ItemCode
-                      where his.IsDeleted == false && !his.DocNo.EndsWith("R")
+                      where his.IsDeleted == false && !his.DocNo.EndsWith("R") && his.DocDate >= startDate && his.DocDate <= endDate
                       select new StockLedgerVM
                       {
                           ItemCode = stk.ItemCode,
@@ -33,20 +33,20 @@ namespace HicadStockSystem.Persistence.Repository.Reports
                           TransQty = his.Quantity,
                           DocType = his.DocType,
                           Price = his.Price,
-                          DateCreated = his.DateCreated
+                          //DateCreated = his.DateCreated
                       }).ToList();
 
             return stocks;
         }
 
-        public IEnumerable<StockLedgerVM> GroupByItemCode()
+        public IEnumerable<StockLedgerVM> GroupByItemCode(DateTime? startDate, DateTime? endDate)
         {
             decimal? currentQty = 0m;
             decimal? value = 0m;
             decimal? stockqty = 0m;
             List<StockLedgerVM> stkgrp = new List<StockLedgerVM>();
             //var lg = new StockLedgerVM();
-            var grp = StockLedger().OrderBy(x => x.TransDate).GroupBy(x => x.ItemCode).ToList();
+            var grp = StockLedger(startDate, endDate).OrderBy(x => x.TransDate).GroupBy(x => x.ItemCode).ToList();
 
             foreach (var g in grp)
             {
@@ -81,11 +81,11 @@ namespace HicadStockSystem.Persistence.Repository.Reports
             return stkgrp;
         }
 
-        public IEnumerable<StockLedgerVM> GroupByLastItemCode()
+        public IEnumerable<StockLedgerVM> GroupByLastItemCode(DateTime? startDate, DateTime? endDate)
         {
             List<StockLedgerVM> stkgrp = new List<StockLedgerVM>();
             //var lg = new StockLedgerVM();
-            var grp = StockLedger().OrderBy(x => x.TransDate).DistinctBy(x => x.ItemCode);
+            var grp = StockLedger(startDate, endDate).OrderBy(x => x.TransDate).DistinctBy(x => x.ItemCode);
 
             foreach (var g in grp)
             {

@@ -38,17 +38,18 @@ namespace HicadStockSystem.UI.Controllers.Reports
             return View(analysis);
         }
 
-        //public async Task<IActionResult> AnalysisPdf(DateTime startDate, DateTime endDate)
-        public IActionResult AnalysisPdf(DateTime startDate, DateTime endDate)
+        public async Task<IActionResult> AnalysisPdf(DateTime startDate, DateTime endDate)
         {
+            if (startDate == null && endDate == null)
+                return BadRequest("Date is Required");
             var analysis = new ReportVM
             {
                 Receipts = _analysis.GroupReceiptBySupplier(startDate, endDate),
                 Receipts2 = _analysis.GroupReceiptbySum(startDate, endDate),
                 StkSystems = _system.GetSingle()
             };
-            //return await _generatePdf.GetPdf("Views/ReceiptAnalysis/AnalysisPdf.cshtml", analysis);
-            return View(analysis);
+            return await _generatePdf.GetPdf("Views/ReceiptAnalysis/AnalysisPdf.cshtml", analysis);
+            //return View(analysis);
         }
 
         public IActionResult PrintAnalysis()
