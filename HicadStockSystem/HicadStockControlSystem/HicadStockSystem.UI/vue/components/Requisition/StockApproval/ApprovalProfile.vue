@@ -26,13 +26,6 @@
                   >
                     {{ requisition }}
                   </option>
-                  <!-- <option
-                  v-for="requisition in RequisitionList"
-                  v-bind:value="requisition.index"
-                  v-bind:key="requisition.index"
-                >
-                  {{ requisition.requisitionNo }}
-                </option>-->
                 </select>
                 <div class="invalid-feedback">
                   <span class="text-danger h5">Select requisition number</span>
@@ -207,18 +200,8 @@ export default {
         userId: "",
         department: "",
         requisitionDate: "",
-        // itemCode: "",
-        // description: "",
         quantity: "",
-        // Requestedquantity: "",
         createdOn: "",
-        // itemList: {
-        //   itemCode: "",
-        //   description: "",
-        //   Requestedquantity: "",
-        //   unit: "",
-        // },
-        // unit:"",
         itemLists: [],
         unapprovedItems: [],
       },
@@ -252,15 +235,6 @@ export default {
             this.canProcess = true;
             if (response.data.responseCode == "200") {
               this.postBody.requisitionNo = "";
-              // this.postBody.userId = "";
-              // this.postBody.requisitionDate = "";
-              // this.postBody.createdOn = "";
-              // this.postBody.itemCode = "";
-              // this.postBody.description = "";
-              // this.postBody.quantity = 0;
-              // this.postBody.quantity = "";
-              // this.postBody.locationCode = "";
-              // this.postBody.unit = "";
               this.postBody.itemLists = [];
             }
             // window.location.reload();
@@ -289,29 +263,13 @@ export default {
           this.postBody.department = response.data.department;
           this.postBody.requisitionDate = response.data.dateAndTime;
           this.postBody.requisitionNo = response.data.requisitionNo;
-          // this.postBody.itemCode = response.data.itemCode;
-          // this.postBody.description = response.data.itemDescription;
-          // this.postBody.Requestedquantity = response.data.requested;
           this.postBody.createdOn = response.data.dateCreated;
           this.postBody.locationCode = response.data.costLocCode;
-          // this.postBody.unit = response.data.unit;
           this.postBody.itemLists = response.data.itemLists;
         });
     },
 
-    // getRequisitionApprovalItems() {
-    //   axios
-    //     .get(
-    //       `/api/requisition/RequisitionApprovalItems/${this.postBody.requisitionNo}`
-    //     )
-    //     .then((response) => {
-    //       this.ItemApprovalList = response.data;
-    //       this.postBody.itemCode = response.data.itemCode;
-    //       this.postBody.description = response.data.itemDescription;
-    //       this.postBody.Requestedquantity = response.data.requested;
-    //       this.postBody.unit = response.data.unit;
-    //     });
-    // },
+    
     getRequisition() {
       axios.get(`/api/requisition/`).then((response) => {
         this.RequisitionList = response.data;
@@ -379,15 +337,7 @@ export default {
         );
       });
     },
-    // setter() {
-    //   let objecttoedit = this.$store.state.objectToUpdate;
-    //   if (objecttoedit.supplierCode) {
-    //     this.postBody.locationCode = objecttoedit.locationCode;
-    //     this.postBody.itemCode = objecttoedit.itemCode;
-    //     this.postBody.quantity = objecttoedit.quantity;
-    //     this.postBody.unit = objecttoedit.unit;
-    //   }
-    // },
+  
   },
 };
 </script>

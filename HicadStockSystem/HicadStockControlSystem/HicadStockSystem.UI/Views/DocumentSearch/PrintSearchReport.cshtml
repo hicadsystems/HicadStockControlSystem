@@ -1,0 +1,67 @@
+﻿@model  HicadStockSystem.Core.Utilities.ReportVM
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewBag.Title = "PrintSearchReport";
+}
+@{
+	Layout = null;
+	
+
+}
+<!DOCTYPE html>
+<html>
+<body>
+	 <h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+	 <h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+	 <br />
+	 <h3>Document Search Report: Produce On @DateTime.Now</h3>
+	 <br />
+	 <div>
+		 <h4>Document Date: @Model.DocumentSearch.DocumentDate</h4>  
+		 <h4>Document No.: @Model.DocumentSearch.DocumentNo</h4> 
+		 <h4>Document Type: @Model.DocumentSearch.DocumentType</h4>
+		 <h4>Processed By: @Model.DocumentSearch.UserId</h4>
+	 </div>
+	 <table border="2" cellpadding="2" cellspacing="0" width="100%">
+		  <tr style="text-align:center">
+			   <th>Item Code</th>
+			   <th>Item Description</th>
+			   <th>Quantity</th>
+			   <th>Price</th>
+			   <th>Value</th>
+		  </tr>
+			@foreach (var a in Model.DocumentSearch.ListOfItems)
+			{
+			  <tr style="text-align:center">
+			   <td> @a.ItemCode </td>
+			   <td> @a.ItemDesc </td>
+			   <td> @a.Quantity</td>
+			   <td> @Math.Round((decimal)(a.Price),2)</td>
+			   <td> @Math.Round((decimal)(a.Value),2)</td>
+			  </tr>
+			}
+			<tr>	
+				<td><span><b>Total</b></span></td><td></td><td></td><td></td>
+				<td style="text-align:center"><span><b>@Math.Round((decimal)Model.DocumentSearch.ListOfItems.ToList().Sum(x=>x.Value),2)</b></span></td>
+			</tr>
+	 </table>
+	 @if(Model.DocumentSearch.DocumentType=="Receipt")
+	 {
+		 <div>
+			 <h3>Supplier Details</h3>
+			 <h4>Supplier Code: @Model.DocumentSearch.Supplier.SupplierCode</h4>
+			 <h4>Name: @Model.DocumentSearch.Supplier.Name</h4>
+			 <h4>Contact: @Model.DocumentSearch.Supplier.Contact</h4>
+			 <h4>Phone: @Model.DocumentSearch.Supplier.Phone</h4>
+		 </div>
+	}else if (Model.DocumentSearch.DocumentType.Equals("Requisition") || Model.DocumentSearch.DocumentType.Equals("Return"))
+	{
+		<div>
+			<h3>Department Details</h3>
+			<h4>Location Code: @Model.DocumentSearch.Location.LocationCode</h4>
+			<h4>Location Name: @Model.DocumentSearch.Location.LocationName</h4>
+		</div>
+	}
+	@*<h6 style="text-align:center">RETRICTED</h6>*@
+</body>
+</html>

@@ -33,5 +33,15 @@ namespace HicadStockSystem.UI.Controllers.Reports
 
             return View(consumption);
         }
+
+        public async Task<IActionResult> PrintStockConsumption()
+        {
+            var consumption = new ReportVM
+            {
+                StkSystems = _system.GetSingle(),
+                Consumptions = await _consumption.Consumptions()
+            };
+            return await _generatePdf.GetPdf("Views/StockConsumption/PrintStockConsumption.cshtml", consumption);
+        }
     }
 }

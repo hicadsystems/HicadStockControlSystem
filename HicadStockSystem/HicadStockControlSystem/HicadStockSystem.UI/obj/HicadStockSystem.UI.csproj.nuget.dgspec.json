@@ -155,6 +155,10 @@
               "target": "Package",
               "version": "[2.2.0, )"
             },
+            "Wkhtmltopdf.NetCore": {
+              "target": "Package",
+              "version": "[3.0.2, )"
+            },
             "morelinq": {
               "target": "Package",
               "version": "[3.3.2, )"

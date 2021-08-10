@@ -1,0 +1,153 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    <buyers-guide></buyers-guide>
+</div>
+@*
+<div class="row">
+	 <div class="col-md-12 grid-margin">
+		  <div class="card">
+			   <div class="card-body">
+
+					<h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+					<h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+ 
+					<br />
+					<h3 style="text-align:center">REPORTS</h3>
+					<h4 style="text-align:center">Stock Position</h4>
+					<br /><br />
+                    <div class="col-md-4">
+                        <label class="control-label">State of Origin</label>
+                         <select asp-for="Guide.ItemCode" class="form-control" asp-items="ViewBag.buyersGuide" id="dditem">
+                            <option selected>--- Select Employee ---</option>
+                        </select>
+                    </div>
+                    <br /><br />
+					<a class="btn btn-primary" asp-controller="StockReport" asp-action="StockPositionPdf">print</a>
+
+					<div class="row">
+						 <table class="table table-striped" style="text-align:center">
+                            <tr>
+                                <td>
+                                    <div id="UpdatePanel">
+ 
+                                    </div>
+                                </td>
+                            </tr>
+						 </table> <br />
+					</div>
+
+				@*<h6 style="text-align:center">RETRICTED</h6>*@
+@*			   </div>
+		  </div>
+	 </div>
+</div>*@
+
+@*  @section Scripts{
+      <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script>
+                $(document).ready(function () {
+                    // This is for Get All Data
+                  
+ 
+                    // this will use for Get Data based on parameter
+                    $("#dditem").change(function () {
+                        var itemCode = (this).val
+                        alert(this.itemCode)
+                        $.ajax({
+                            url: '/BuyersGuide/GetGuide',
+                            data: { itemCode: itemCode },
+                            type: "GET",
+                            dataType: "json",
+                            success: function (data) {
+                                loadData(data);
+                                console.log(data)
+                            },
+                            error: function () {
+                                alert("Failed! Please try again.");
+                            }
+                        });
+                    });
+ 
+                    function loadData(data) {
+                        // Here we will format & load/show data 
+                        var tab = $('<table class="myTable"></table>');
+                        var thead = $('<thead></thead>');
+                        thead.append('<th>User ID</th>');
+                        thead.append('<th>Username</th>');
+                        thead.append('<th>Full Name</th>');
+                        thead.append('<th>Email ID</th>');
+                        thead.append('<th>Is Active</th>');
+ 
+                        tab.append(thead);
+                        $.each(data, function (i, val) {
+                            // Append database data here
+                            var trow = $('<tr></tr>');
+                            trow.append('<td>' + val.UserID + '</td>');
+                            trow.append('<td>' + val.Username + '</td>');
+                            trow.append('<td>' + val.FullName + '</td>');
+                            trow.append('<td>' + val.EmailID + '</td>');
+                            trow.append('<td>' + val.IsActive + '</td>');
+                            tab.append(trow);
+                        });
+                        $("tr:odd", tab).css('background-color', '#C4C4C4');
+                        $("#UpdatePanel").html(tab);
+                    };
+ 
+                });
+            </script>
+        }*@
+
+    @* <script>
+        $(document).ready(function () {
+            var itemid = $('#dditem');
+            stateid.append($("<option></option>").val('').html('select state'));
+            $.ajax({
+                url: '/PersonalInfo/GetState',
+                dataType: 'json',
+                type: 'Get',
+                success: function (d) {
+                    $.each(d, function (i, item) {
+                        itemid.append($("<option></option>").val(item.itemCode).html(item.ItemDesc));
+                    });
+                },
+                error: function () {
+                    alert('Error');
+                }
+            });
+
+            $("#dditem").change(function () {
+                var ItemId = (this).val();
+
+                if (ItemId != "") {
+                    var supplier = $("#ddlocalGovt");
+                    localgovt.empty();
+                    localgovt.append($("<option></option>").val('').html('Please Wait....'));
+                    debugger;
+                    $.ajax({
+                        url: '/PersonalInfo/GetLGA',
+                        type: 'Get',
+                        dataType: 'json',
+                        data: { StateId: StateId },
+                        success: function (d) {
+                            localgovt.empty();
+                            localgovt.append($("<option></option>").val('').html('Select LGA'));
+                            $.each(d, function (i, lga) {
+
+                                localgovt.append($("<option></option>").val(lga.Id).html(lga.lgaName));
+                            });
+
+                        },
+                        error: function () {
+                            alert('Error');
+                        }
+                    });
+                }
+            });
+        });
+        </script>*@

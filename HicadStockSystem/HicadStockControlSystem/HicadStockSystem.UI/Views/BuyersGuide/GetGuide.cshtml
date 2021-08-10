@@ -1,0 +1,76 @@
+﻿@model  HicadStockSystem.Core.Utilities.ReportVM
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewBag.Title = "GetGuide";
+}
+@{
+	Layout = null;
+
+}
+<!DOCTYPE html>
+<html>
+<body>
+	 <h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+	 <h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+
+	 <br />
+	@*<h3 style="text-align:center">REPORTS</h3>
+		<h4 style="text-align:center">Stock Position</h4>*@
+
+	 <h3>Buyers Guide Report: Produce On @DateTime.Now</h3>
+       <div class="row">
+          <div class="col-4">
+            <h4>Item Code: @Model.Guide.ItemCode</h4>
+          </div>
+          <div class="col-6">
+            <h4>Item Description: @Model.Guide.ItemDesc</h4>
+          </div>
+        </div>
+	 <table border="2" cellpadding="2" cellspacing="0" width="100%">
+         <thead>
+		  <tr>
+			   <th>Supplier Code</th>
+				<th>Supplier Name</th>
+				<th>Contact</th>
+				<th>Phone</th>
+		  </tr>
+          </thead>
+		  <tbody>
+            <tr>
+              <td>@Model.Guide.Suppliers.Supplier1.SupplierCode</td>
+              <td>@Model.Guide.Suppliers.Supplier1.Name</td>
+              <td>@Model.Guide.Suppliers.Supplier1.Contact</td>
+              <td>@Model.Guide.Suppliers.Supplier1.Phone</td>
+              <!--<td>{{ postBody.supplier5 }}</td>-->
+            </tr>
+            <tr>
+              <td>@Model.Guide.Suppliers.Supplier2.SupplierCode</td>
+              <td>@Model.Guide.Suppliers.Supplier2.Name</td>
+              <td>@Model.Guide.Suppliers.Supplier2.Contact</td>
+              <td>@Model.Guide.Suppliers.Supplier2.Phone</td>
+            </tr>
+            <tr>
+              <td>@Model.Guide.Suppliers.Supplier3.SupplierCode</td>
+              <td>@Model.Guide.Suppliers.Supplier3.Name</td>
+              <td>@Model.Guide.Suppliers.Supplier3.Contact</td>
+              <td>@Model.Guide.Suppliers.Supplier3.Phone</td>
+            </tr>
+            <tr>
+              <td>@Model.Guide.Suppliers.Supplier4.SupplierCode</td>
+              <td>@Model.Guide.Suppliers.Supplier4.Name</td>
+              <td>@Model.Guide.Suppliers.Supplier4.Contact</td>
+              <td>@Model.Guide.Suppliers.Supplier4.Phone</td>
+            </tr>
+            <tr>
+              <td>@Model.Guide.Suppliers.Supplier5.SupplierCode</td>
+              <td>@Model.Guide.Suppliers.Supplier5.Name</td>
+              <td>@Model.Guide.Suppliers.Supplier5.Contact</td>
+              <td>@Model.Guide.Suppliers.Supplier5.Phone</td>
+            </tr>
+          </tbody>
+
+	 </table>
+
+	@*<h6 style="text-align:center">RETRICTED</h6>*@
+</body>
+</html>

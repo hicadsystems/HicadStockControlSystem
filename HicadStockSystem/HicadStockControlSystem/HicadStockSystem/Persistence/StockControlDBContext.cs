@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Data
 {
-    public class StockControlDBContext:IdentityDbContext<User,Role,int>
+    public  class StockControlDBContext:IdentityDbContext<User,Role,int>
     {
         public StockControlDBContext(DbContextOptions<StockControlDBContext>options):base(options)
         {

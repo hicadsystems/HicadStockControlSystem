@@ -340,6 +340,7 @@ namespace HicadStockSystem.Controllers
                         cmd.Parameters.Add(new SqlParameter("@itemcode", item.ItemCode));
                         cmd.Parameters.Add(new SqlParameter("@qty", item.Quantity));
                         cmd.Parameters.Add(new SqlParameter("@isapproved", true));
+                        cmd.Parameters.Add(new SqlParameter("@isdeleted", false));
                         cmd.Parameters.Add(new SqlParameter("@approvedby", "HICAD"));
 
 
@@ -357,9 +358,8 @@ namespace HicadStockSystem.Controllers
 
 
                 //requisitioInDb.ItemCode = item.ItemCode;
-                _requisition.RequisitioApprovalAsync(requisitioInDb);
-
-                return Ok(requisitioInDb);
+               
+                //return Ok(requisitioInDb);
             }
             return Ok(/*requisitioInDb*/);
             //lock (this)
@@ -481,7 +481,7 @@ namespace HicadStockSystem.Controllers
 
         [HttpGet]
         [Route("RequisitionApproval/{itemCode}")]
-        public async Task<IActionResult> RequisitionApproval(string itemCode)
+        public IActionResult RequisitionApproval(string itemCode)
         {
             var approval =  _requisition.RequesitionsVM(itemCode); 
 

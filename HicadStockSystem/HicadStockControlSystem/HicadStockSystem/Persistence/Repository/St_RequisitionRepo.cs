@@ -7,6 +7,7 @@ using HicadStockSystem.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,14 @@ namespace HicadStockSystem.Persistence.Repository
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
         private readonly ISt_RecordTable _recordTable;
+        private readonly string connectionString;
 
-        public St_RequisitionRepo(StockControlDBContext dbContext, IUnitOfWork uow, ISt_RecordTable recordTable)
+        public St_RequisitionRepo(StockControlDBContext dbContext, IUnitOfWork uow, ISt_RecordTable recordTable, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _uow = uow;
             _recordTable = recordTable;
+            connectionString = configuration.GetConnectionString("DefaultConnection");
         }
         /*V1*/
         //public float? CheckCurrentBal(St_Requisition requisition)
@@ -174,48 +177,24 @@ namespace HicadStockSystem.Persistence.Repository
 
         public async Task RequisitioApprovalAsync(St_Requisition requisition)
         {
-            /*var stkprice = (from stockmaster in _dbContext.St_StockMasters
-                            where stockmaster.ItemCode == requisition.ItemCode
-                            select stockmaster.StockPrice).First();*/
-            var stkprice = GetStockItemPrice(requisition.ItemCode);
-            requisition.Price = stkprice;
-
-            if (!requisition.IsDeleted)
+            using (SqlConnection sqlcon = new SqlConnection(connectionString))
             {
-                requisition.IsApproved = true; 
+
+                using (SqlCommand cmd = new SqlCommand("sp_UpdateRequisitionForApproval", sqlcon))
+                {
+                    cmd.CommandTimeout = 1200;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@reqNo", requisition.RequisitionNo));
+                    cmd.Parameters.Add(new SqlParameter("@itemcode", requisition.ItemCode));
+                    cmd.Parameters.Add(new SqlParameter("@qty", requisition.Quantity));
+                    cmd.Parameters.Add(new SqlParameter("@isapproved", true));
+                    cmd.Parameters.Add(new SqlParameter("@isdeleted", true));
+
+                    sqlcon.Open();
+                    await cmd.ExecuteNonQueryAsync();
+
+                }
             }
-            else
-            {
-                requisition.IsApproved = false; 
-            }
-            requisition.ApprovedBy = "HICAD99";
-
-            //_dbContext.Update(requisition);
-
-            var reqNo = new SqlParameter("@reqNo", requisition.RequisitionNo);
-            var itemcode = new SqlParameter("@itemcode", requisition.ItemCode);
-            var desc = new SqlParameter("@desc", requisition.Description);
-            var locationcode = new SqlParameter("@locationcode", requisition.LocationCode);
-            var qty = new SqlParameter("@qty", requisition.Quantity);
-            var reqDate = new SqlParameter("@requsitiondate", requisition.RequisitionDate);
-            var unit = new SqlParameter("@unit", requisition.Unit);
-            var price = new SqlParameter("@price", stkprice);
-            var userId = new SqlParameter("@userId", requisition.UserId);
-            var isapproved = new SqlParameter("@isapproved", requisition.IsApproved);
-            var isdeleted = new SqlParameter("@isdeleted", requisition.IsDeleted);
-            var approvedby = new SqlParameter("@approvedby", requisition.ApprovedBy);
-
-            await _dbContext.Database.ExecuteSqlRawAsync("exec sp_UpdateRequisitionForApproval @reqNo,@itemcode,@desc,@locationcode,@qty,@requsitiondate,@unit,@price,@userId,@isapproved,@isdeleted,@approvedby"
-                                                            , reqNo, itemcode, desc, locationcode, qty, reqDate, unit, price, userId, isapproved, isdeleted, approvedby);
-
-           
-
-            //var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
-            //                          where stockmaster.ItemCode == requisition.ItemCode
-            //                          select stockmaster).FirstOrDefault();
-            //updateQtyInTransit.QtyInTransaction += requisition.Quantity;
-
-            //await _uow.CompleteAsync();
         }
 
         public async Task UpdateAsync(string reqNo)
@@ -308,29 +287,7 @@ namespace HicadStockSystem.Persistence.Repository
 
         public RequesitionVM RequesitionsVM(string reqNo)
         {
-            //var code = GetByReqNo(reqNo);
-            /*var formatdate = new DateTime().ToString("MM/dd/yyyy HH:mm:ss");
-                return await (from requisition in _dbContext.St_Requisitions
-                              join item in _dbContext.St_ItemMasters on requisition.ItemCode equals item.ItemCode
-                              join costCenter in _dbContext.Ac_CostCentres on requisition.LocationCode equals costCenter.UnitCode
-                              where requisition.RequisitionNo == reqNo && requisition.IsDeleted == false && requisition.IsSupplied==false
-
-                              select new RequesitionVM
-                              {
-                                  RequisitionNo = requisition.RequisitionNo,
-                                  RequisitionBy = requisition.UserId,
-                                  //Department = requisition.LocationCode,
-                                  Department = costCenter.UnitDesc,
-                                  CostLocCode = requisition.LocationCode,
-                                  DateAndTime = requisition.RequisitionDate.ToString(),
-                                  ItemCode = item.ItemCode,
-                                  ItemDescription = item.ItemDesc,
-                                  Requested = requisition.Quantity,
-                                  ItemLists = ItemLists(reqNo),
-                                  DateCreated = requisition.CreatedOn.ToString(),
-                                  ApprovedBy = requisition.ApprovedBy,
-                                  Unit = item.Units
-                              }).FirstOrDefaultAsync();*/
+           
             var requistion = _dbContext.St_Requisitions.Where(x => x.RequisitionNo == reqNo && x.IsDeleted == false && x.IsSupplied == false)
                 .Join(_dbContext.St_ItemMasters, req => req.ItemCode, item => item.ItemCode, (req, item) => new { req, item })
                 .Join(_dbContext.Ac_CostCentres, reqs => reqs.req.LocationCode, cc => cc.UnitCode, (reqs, cc) => new { reqs, cc })

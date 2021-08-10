@@ -1,0 +1,46 @@
+﻿@model  HicadStockSystem.Core.Utilities.ReportVM
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewBag.Title = "PrintReport";
+}
+@{
+	Layout = null;
+
+}
+<!DOCTYPE html>
+<html>
+<body>
+	 <h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+	 <h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+
+	 <br />
+	@*<h3 style="text-align:center">REPORTS</h3>
+		<h4 style="text-align:center">Stock Position</h4>*@
+
+	 <h3>Slow Moving Items Report: Produce On @DateTime.Now</h3>
+	 <table border="2" cellpadding="2" cellspacing="0" width="100%">
+		  <tr style="text-align:center">
+			   <th>Requisition Number</th>
+			   <th>Date</th>
+			   <th>Item Desc</th>
+			   <th>Quantity</th>
+			   <th>Requsted By</th>
+			   <th>Approved By</th>
+		  </tr>
+			@foreach (var a in Model.OrderRequests)
+			{
+			  <tr style="text-align:center">
+			   <td> @a.RequisitionNo </td>
+			   <td> @a.Date </td>
+			   <td> @a.ItemDesc</td>
+			   <td> @a.Quantity</td>
+			   <td> @a.RequestedBy</td>
+			   <td> @a.ApprovedBy</td>
+			  </tr>
+			}
+
+	 </table>
+
+	@*<h6 style="text-align:center">RETRICTED</h6>*@
+</body>
+</html>

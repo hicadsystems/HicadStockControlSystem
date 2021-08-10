@@ -52,6 +52,7 @@ namespace HicadStockSystem
                                     };
                                     //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                                 }); 
+
             //Entities and there Interfaces
             services.AddScoped<ISt_StkSystem, St_StkSystemRepo>();
             services.AddScoped<ISt_StockMaster, St_StockMasterRepo>();
@@ -76,6 +77,11 @@ namespace HicadStockSystem
             services.AddScoped<IStockLedger, StockLedgerRepo>();
             services.AddScoped<IReceiptAnalysis, ReceiptAnalysisRepo>();
             services.AddScoped<IIssueToDepartment, IssueToDepartmentRepo>();
+            services.AddScoped<IStockConsumption, StockConsumptionRepo>();
+            services.AddScoped<IBuyersGuide, BuyersGuideRepo>();
+            services.AddScoped<ISlowMovingItems, SlowMovingItemsRepo>();
+            services.AddScoped<IOrderRequest, OrderRequestRepo>();
+            services.AddScoped<IDocumentSearch, DocumentSearchRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

@@ -1,8 +1,62 @@
-﻿
+﻿@using HicadStockSystem.Core.Utilities;
+@using Microsoft.AspNetCore.Http;
+@using HicadStockSystem.UI.Models;
+@model  ReportVM
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
 
+<div class="row">
+	 <div class="col-md-12 grid-margin">
+		  <div class="card">
+			   <div class="card-body">
+
+					<h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+					<h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+ 
+					<br />
+					<h3 style="text-align:center">REPORTS</h3>
+					<h4 style="text-align:center">Stock Consumption</h4>
+					<br /><br />
+					<a class="btn btn-primary" asp-controller="StockConsumption" asp-action="PrintStockConsumption">print</a>
+					<div class="row">
+						 <table class="table table-striped" style="text-align:center">
+							  <tr  style="text-align:center">
+							   <th>Stock Code</th>
+							   <th>Stock Description</th>
+							   <th>Reorder Level</th>
+							   <th>Reorder Quantity</th>
+							   <th>Issues</th>
+							   <th>Stock Position</th>
+													@*<th>Discrepancy</th>*@
+							  </tr>
+								@foreach (var a in Model.Consumptions)
+								{
+									<tr style="text-align:center">
+								   <td> @a.StockCode </td>
+								   <td> @a.StockDescription </td>
+								   <td> @a.ReorderLevel</td>
+								   <td> @a.ReorderQuantity</td>
+								   <td> @Math.Round((decimal)(a.Issues),2) </td>
+								   <td> @Math.Round((decimal)(a.StockPosition),2) </td>
+								  </tr>
+
+
+								}
+							@*  <tr>	
+									<td><span><b>Total</b></span></td><td></td><td></td><td></td>
+									<td></td>
+									<td style="text-align:center"><span><b>@Math.Round((decimal)Model.StockPosition.ToList().Sum(x=>x.Value),2)</b></span></td>
+							 </tr>*@
+						 </table> <br />
+						
+	 
+					</div>
+
+				@*<h6 style="text-align:center">RETRICTED</h6>*@
+			   </div>
+		  </div>
+	 </div>
+</div>

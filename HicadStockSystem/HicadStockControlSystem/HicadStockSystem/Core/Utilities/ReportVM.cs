@@ -1,5 +1,7 @@
 ﻿using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities.Report;
 using HicadStockSystem.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,11 @@ namespace HicadStockSystem.Core.Utilities
         public IEnumerable<IssuesToDepartment> Issues2 { get; set; }
         public IssuesToDepartment IssuesToDept { get; set; }
         public IEnumerable<StockConsumption> Consumptions { get; set; }
-
-
+        public IEnumerable<BuyersGuide> BuyersGuide { get; set; }
+        public BuyersGuide Guide { get; set; }
+        public IEnumerable<SelectListItem> SelectLists { get; set; }
+        public IEnumerable<SlowMovingItemsVM> SlowMovingItems { get; set; }
+        public IEnumerable<OrderRequestVM> OrderRequests { get; set; }
+        public DocumentSearchVM DocumentSearch { get; set; }
     }
 }

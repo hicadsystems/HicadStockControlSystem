@@ -3636,6 +3636,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.5",
           "Newtonsoft.Json": "13.0.1",
           "RotativaCore": "2.2.0",
+          "Wkhtmltopdf.NetCore": "3.0.2",
           "morelinq": "3.3.2"
         },
         "compile": {

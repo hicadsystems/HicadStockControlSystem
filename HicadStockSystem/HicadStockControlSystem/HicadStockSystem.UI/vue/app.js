@@ -3,6 +3,11 @@ window.Vue=require('vue');
 import store from './store'
 import Vuelidate from 'vuelidate';
 import VueSimpleAlert from "vue-simple-alert";
+import jsPDF  from "jspdf";
+import html2canvas from 'html2canvas';
+
+Vue.use(jsPDF);
+Vue.use(html2canvas);
 
 Vue.use(VueSimpleAlert);
 

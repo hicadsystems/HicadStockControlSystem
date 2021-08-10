@@ -1,0 +1,56 @@
+﻿@model  HicadStockSystem.Core.Utilities.ReportVM
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewBag.Title = "PrintStockConsumption";
+}
+@{
+	Layout = null;
+
+}
+<!DOCTYPE html>
+<html>
+<body>
+	 <h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+	 <h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+
+	 <br />
+	@*<h3 style="text-align:center">REPORTS</h3>
+		<h4 style="text-align:center">Stock Position</h4>*@
+
+	 <h3>Stock Consumption Report: Produce On @DateTime.Now</h3>
+	 <table border="2" cellpadding="2" cellspacing="0" width="100%">
+		  <tr style="text-align:center">
+			   <th>Stock Code</th>
+				<th>Stock Description</th>
+				<th>Reorder Level</th>
+				<th>Reorder Quantity</th>
+				<th>Issues</th>
+				<th>Stock Position</th>
+		  </tr>
+			@foreach (var a in Model.Consumptions)
+			{
+			  <tr style="text-align:center">
+			    <td> @a.StockCode </td>
+				<td> @a.StockDescription </td>
+				<td> @a.ReorderLevel</td>
+				<td> @a.ReorderQuantity</td>
+				<td> @Math.Round((decimal)(a.Issues),2) </td>
+				<td> @Math.Round((decimal)(a.StockPosition),2) </td>
+			  </tr>
+			}
+
+		  <tr>
+
+			   @*<td><span><b>Total</b></span></td>
+			   <td></td>
+			   <td></td>
+			   <td></td>
+			   <td></td>
+			   <td style="text-align:center"><span><b>@Math.Round((decimal)Model.StockPosition.ToList().Sum(x=>x.Value),2)</b></span></td>*@
+		  </tr>
+
+	 </table>
+
+	@*<h6 style="text-align:center">RETRICTED</h6>*@
+</body>
+</html>

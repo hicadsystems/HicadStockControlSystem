@@ -20,7 +20,7 @@ namespace HicadStockSystem.Persistence.Repository.Reports
         }
         public async Task<IEnumerable<StockConsumption>> Consumptions()
         {
-            var result = await _context.St_StockMasters.Where(x => x.IsDeleted == false && x.Issues > 0)
+            var result = await _context.St_StockMasters.Where(x => x.IsDeleted == false)
                 .Join(_context.St_ItemMasters, stock => stock.ItemCode, item => item.ItemCode, (stock, item) => new { stock, item })
                 .Select(y => new StockConsumption
                 {

@@ -143,6 +143,14 @@ namespace HicadStockSystem.Controllers
         {
             var busLine = await _systemRepo.GetBusLine();
             return Ok(busLine);
+        } 
+
+        [HttpGet]
+        [Route("system")]
+        public IActionResult GetSystem()
+        {
+            var system = _systemRepo.GetSingle();
+            return Ok(system);
         }
     }
 }

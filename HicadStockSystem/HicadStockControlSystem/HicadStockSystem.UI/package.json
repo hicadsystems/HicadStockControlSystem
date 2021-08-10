@@ -17,6 +17,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
+    "html2canvas": "^1.2.1",
+    "jspdf": "^2.3.1",
     "vue": "^2.6.12",
     "vue-simple-alert": "^1.1.1",
     "vuejs-datepicker": "^1.6.2",

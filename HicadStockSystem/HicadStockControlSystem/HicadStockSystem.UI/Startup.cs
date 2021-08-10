@@ -70,6 +70,11 @@ namespace HicadStockSystem.UI
             services.AddScoped<IStockLedger, StockLedgerRepo>();
             services.AddScoped<IReceiptAnalysis, ReceiptAnalysisRepo>();
             services.AddScoped<IIssueToDepartment, IssueToDepartmentRepo>();
+            services.AddScoped<IStockConsumption, StockConsumptionRepo>();
+            services.AddScoped<IBuyersGuide, BuyersGuideRepo>();
+            services.AddScoped<ISlowMovingItems, SlowMovingItemsRepo>();
+            services.AddScoped<IOrderRequest, OrderRequestRepo>();
+            services.AddScoped<IDocumentSearch, DocumentSearchRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISt_Remark, St_RemarkRepo>();
