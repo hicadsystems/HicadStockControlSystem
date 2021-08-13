@@ -1,0 +1,51 @@
+﻿@model  HicadStockSystem.Core.Utilities.ReportVM
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewBag.Title = "PrintReorderList";
+}
+@{
+	Layout = null;
+
+}
+<!DOCTYPE html>
+<html>
+<body>
+	 <h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+	 <h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+
+	 <br />
+	@*<h3 style="text-align:center">REPORTS</h3>
+		<h4 style="text-align:center">Stock Position</h4>*@
+
+	 <h3>List Of Undelivered Requisitions Report: Produce On @DateTime.Now</h3>
+	 <table border="2" cellpadding="2" cellspacing="0" width="100%">
+		  <tr style="text-align:center">
+			   <th>Item Code</th>
+			   <th>Description</th>
+			   <th>Quantity</th>
+			   <th>Reorder Level</th>
+			   <th>Reorder Quantity</th>
+			   <th>Price</th>
+			   <th>Value</th>
+		  </tr>
+			@foreach (var a in Model.ReorderLists)
+			{
+			  <tr style="text-align:center">
+			   <td> @a.ItemCode </td>
+			   <td> @a.ItemDesc </td>
+			   <td> @a.Quantity</td>
+			   <td> @a.ReorderLevel</td>
+			   <td> @a.ReorderQuantity</td>
+			   <td> @Math.Round((decimal)(a.Price),2)</td>
+			   <td> @Math.Round((decimal)(a.Value),2)</td>
+			  </tr>
+			}
+			<tr>
+				<td>Total</td><td></td><td></td><td></td><td></td><td></td>
+				<td style="text-align:center"><span><b>@Math.Round((decimal)Model.ReorderLists.ToList().Sum(x=>x.Value),2)</b></span></td>
+			</tr>
+	 </table>
+
+	@*<h6 style="text-align:center">RETRICTED</h6>*@
+</body>
+</html>

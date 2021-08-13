@@ -14,10 +14,23 @@
           <br /><br />
           <div class="row">
             <div class="col-md-4">
-              <label for="unit" class="mb-1">Select Date</label>
+              <label for="unit" class="form-check-label mb-1">Select Date</label>
               <input class="form-control" type="date" v-model="postBody.selectedDate" name="selectedDate">
             </div>
-            <br><br>
+            
+            <div class="col-md-4">
+             <input
+              @click="enterItemCode = true"
+              class="form-check-input"
+              type="radio"
+              name="exampleRadios"
+              id="exampleRadios2"
+              value="option2"
+              />
+              <label for="unit" class="mb-1">Enter Item Code</label>
+              <input v-if="enterItemCode" class="form-control" type="text" v-model="postBody.itemCode" name="itemCode">
+            </div>
+            <br><br><br>
             <div role="group">
               <button
                 class="btn btn-submit btn-primary"
@@ -43,9 +56,11 @@ export default {
   data() {
     return {
       system: null,
+      enterItemCode: null,
       responseMessage: "",
       postBody: {
         selectedDate: "",
+        itemCode: "",
         companyName: "",
         companyAddress: "",
         
@@ -64,7 +79,11 @@ export default {
   },
   methods: {
     generateReport(){
-       window.open(`/SlowMovingItems/PrintReport/${this.postBody.selectedDate}/`, "_blank")
+      if(this.postBody.itemCode){
+       window.open(`/SlowMovingItems/PrintSingleItemReport/${this.postBody.selectedDate}/${this.postBody.itemCode}/`, "_blank")
+      }else{
+        window.open(`/SlowMovingItems/PrintReport/${this.postBody.selectedDate}/`, "_blank")
+      }
     }
 
    

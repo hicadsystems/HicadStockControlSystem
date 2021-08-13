@@ -28,7 +28,11 @@ namespace HicadStockSystem.Core.Utilities
         public BuyersGuide Guide { get; set; }
         public IEnumerable<SelectListItem> SelectLists { get; set; }
         public IEnumerable<SlowMovingItemsVM> SlowMovingItems { get; set; }
+        public SlowMovingItemsVM SlowMovingItem { get; set; }
         public IEnumerable<OrderRequestVM> OrderRequests { get; set; }
+        public IEnumerable<UndeliveredItemsVM> UndeliveredItems { get; set; }
         public DocumentSearchVM DocumentSearch { get; set; }
+        public RequisitionEnquiryVM RequisitionEnquiry { get; set; }
+        public IEnumerable<ReorderList> ReorderLists { get; set; }
     }
 }

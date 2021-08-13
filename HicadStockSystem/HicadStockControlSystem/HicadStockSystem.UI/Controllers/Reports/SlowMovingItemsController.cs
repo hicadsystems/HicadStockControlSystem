@@ -32,6 +32,18 @@ namespace HicadStockSystem.UI.Controllers.Reports
         }
 
 
+        [Route("SlowMovingItems/PrintSingleItemReport/{selectedDate}/{itemCode}")]
+        public async Task<IActionResult> PrintSingleItemReport(DateTime? selectedDate, string itemCode)
+        {
+            var model = new ReportVM
+            {
+                StkSystems = _system.GetSingle(),
+                SlowMovingItem = _slowMoving.GetItem(selectedDate, itemCode)
+            };
+            return await _generatePdf.GetPdf("Views/SlowMovingItems/PrintSingleItemReport.cshtml", model);
+            //return View("Views/BuyersGuide/GetGuide.cshtml", model);
+        } 
+        
         [Route("SlowMovingItems/PrintReport/{selectedDate}")]
         public async Task<IActionResult> PrintReport(DateTime? selectedDate)
         {

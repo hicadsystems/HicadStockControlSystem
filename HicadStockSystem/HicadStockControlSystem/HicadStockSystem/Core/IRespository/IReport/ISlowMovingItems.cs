@@ -9,5 +9,6 @@ namespace HicadStockSystem.Core.IRespository.IReport
     public interface ISlowMovingItems
     {
         IEnumerable<SlowMovingItemsVM> GetItems(DateTime? selectedDate);
+        SlowMovingItemsVM GetItem(DateTime? selectedDate, string itemCode);
     }
 }

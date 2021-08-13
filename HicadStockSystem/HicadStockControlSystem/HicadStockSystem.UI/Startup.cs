@@ -75,6 +75,9 @@ namespace HicadStockSystem.UI
             services.AddScoped<ISlowMovingItems, SlowMovingItemsRepo>();
             services.AddScoped<IOrderRequest, OrderRequestRepo>();
             services.AddScoped<IDocumentSearch, DocumentSearchRepo>();
+            services.AddScoped<IRequisitionEnquiry, RequisitionEnquiryRepo>();
+            services.AddScoped<IUndeliveredItems, UndeliveredItemsRepo>();
+            services.AddScoped<IReorderList, ReorderListRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISt_Remark, St_RemarkRepo>();

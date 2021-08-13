@@ -10,7 +10,7 @@
           <h3 style="text-align:center">{{ postBody.companyAddress }}</h3>
           <br />
           <h3 style="text-align:center">REPORTS</h3>
-          <h4 style="text-align:center">Slow Moving Items</h4>
+          <h4 style="text-align:center">List Of Undelivered Requisitions</h4>
           <br /><br />
           <div class="row">
             <!--<div class="col-md-4">
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     generateReport(){
-       window.open(`/OrderRequest/PrintReport/`, "_blank")
+       window.open(`/UndeliveredItems/PrintReport/`, "_blank")
     }
 
    

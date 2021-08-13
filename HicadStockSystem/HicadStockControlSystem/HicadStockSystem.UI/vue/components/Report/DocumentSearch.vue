@@ -66,8 +66,6 @@ export default {
     generateReport(){
        window.open(`/DocumentSearch/PrintSearchReport/${this.postBody.DocNo}/`, "_blank")
     }
-
-   
   },
 };
 </script>
