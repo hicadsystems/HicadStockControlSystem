@@ -136,7 +136,7 @@ export default {
             // this.canProcess = true;
             // if (response.data.responseCode == "200") {
             // }
-            // window.location.reload();
+            window.location.reload();
           })
         //   .catch((e) => {
         //     this.errors.push(e);

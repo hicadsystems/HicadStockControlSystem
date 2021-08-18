@@ -490,3 +490,5 @@ E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\PhysicalCountSheet\PhysicalCount.cshtml.g.cs
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\PhysicalCountSheet\Index.cshtml.g.cs
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\PhysicalCountInput\Index.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\PhysicalCountList\GetPhysicalCount.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\PhysicalCountList\Index.cshtml.g.cs

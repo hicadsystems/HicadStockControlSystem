@@ -128,45 +128,10 @@ namespace HicadStockSystem.Controllers
             var reqNo = requisition.RequisitionNo;
             try
             {
-                //List<ItemListVM> list = new List<ItemListVM>();
-                ////{
-                ////    new ItemListVM (){}
-                ////}
-
-                //foreach (var item in requisition.ItemLists)
-                //{
-                //    list = new List<ItemListVM>()
-                //    {
-                //        new ItemListVM
-                //        {
-                //            RequisitionNo = requisition.RequisitionNo,
-                //            ItemCode = item.ItemCode,
-                //            IsSupplied = true,
-                //            Quantity = item.Quantity,
-                //            SupplyQty = (decimal?)item.Requested,
-                //            SupplyBy="HICAD",
-                //            SupplyDate=DateTime.Now
-
-                //        }
-                //    };
-                //}
-                
 
                 foreach (var item in requisition.ItemLists)
                 {
-                    /*requisition.ItemCode = item.ItemCode;
-
-                    //swapping supplyqty to quantity and approved qty to supplyqty column
-                    requisition.SupplyQty = (decimal?)item.Requested;
-                    requisition.Quantity = (float?)item.Quantity;
-                    
-                    
-                    requisition.UpdatedOn = DateTime.Now;
-
-                    requisition.IsSupplied = true;
-                    requisition.SupplyBy = "HICAD90";
-                    requisition.SupplyDate = DateTime.Now;*/
-                    //item.RequisitionNo = requisition.RequisitionNo;
+                   
                     using (SqlConnection sqlcon = new SqlConnection(connectionstring))
                     {
 
@@ -187,31 +152,6 @@ namespace HicadStockSystem.Controllers
 
                         }
                     }
-
-                    //using (SqlConnection sqlcon = new SqlConnection(connectionstring))
-                    //{
-
-                    //    using (SqlCommand cmd = new SqlCommand("st_update_transactions", sqlcon))
-                    //    {
-                    //        cmd.CommandTimeout = 1200;
-                    //        cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    //        cmd.Parameters.Add(new SqlParameter("@docno", requisition.RequisitionNo));
-                    //        cmd.Parameters.Add(new SqlParameter("@itemcode", requisition.ItemCode));
-                    //        cmd.Parameters.Add(new SqlParameter("@trandate", requisition.SupplyDate));
-                    //        cmd.Parameters.Add(new SqlParameter("@quantity", requisition.Quantity));
-                    //        cmd.Parameters.Add(new SqlParameter("@price", 0));
-                    //        cmd.Parameters.Add(new SqlParameter("@doctype", "IS"));
-                    //        cmd.Parameters.Add(new SqlParameter("@supcode", ""));
-                    //        cmd.Parameters.Add(new SqlParameter("@unitcode", requisition.LocationCode));
-                    //        cmd.Parameters.Add(new SqlParameter("@user", requisition.SupplyBy));
-                    //        cmd.Parameters.Add(new SqlParameter("@remark", 0));
-
-                    //        await sqlcon.OpenAsync();
-                    //        await cmd.ExecuteNonQueryAsync();
-                    //    }
-                    //}
-
-
 
                 }
             }
@@ -349,25 +289,10 @@ namespace HicadStockSystem.Controllers
 
                     }
                 }
-                /*_mapper.Map(requisitionVM, requisitioInDb);
-                requisitioInDb.ItemCode = item.ItemCode;
-                requisitioInDb.Quantity = requisitionVM.Quantity = (float?)item.Quantity;
-                requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
-                requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
-                requisitioInDb.UpdatedOn = DateTime.Now;*/
-
-
-                //requisitioInDb.ItemCode = item.ItemCode;
-               
-                //return Ok(requisitioInDb);
+              
             }
             return Ok(/*requisitioInDb*/);
-            //lock (this)
-            //{
-               
-
-                
-            //}
+           
         }
 
         [HttpPatch]

@@ -28,5 +28,19 @@ namespace HicadStockSystem.Persistence.Repository.MonthEndProcess
                 }).ToList();
             return sheet;
         }
+        
+        public List<PhysicalCountSheetVM> GetPhysicalCount()
+        {
+            var sheet = _context.St_StockMasters.Where(x => x.IsDeleted == false)
+                .Select(y => new PhysicalCountSheetVM
+                {
+                    ItemCode = y.ItemCode,
+                    ItemDesc = y.Description,
+                    //Location = y.StoreLoc + "-" + y.Storerack + "-" + y.Storebin,
+                    Quantity = y.Physical
+                    
+                }).ToList();
+            return sheet;
+        }
     }
 }

@@ -1,0 +1,37 @@
+﻿@model  HicadStockSystem.Core.Utilities.ReportVM
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewBag.Title = "PrintSearchReport";
+}
+@{
+	Layout = null;
+	
+
+}
+<!DOCTYPE html>
+<html>
+<body>
+	 <h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+	 <h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+	 <br />
+	 <h3>Physical Count List: Produce On @DateTime.Now</h3>
+	 <br />
+	 <table border="2" cellpadding="1" cellspacing="0" width="100%">
+		  <tr style="text-align:center">
+			   <th>Item Code</th>
+			   <th>Item Description</th>
+			   <th>Location</th>
+			   <th>Quantity</th>
+		  </tr>
+			@foreach (var a in Model.PhysicalCountSheets)
+			{
+			  <tr style="text-align:center">
+			   <td> @a.ItemCode </td>
+			   <td> @a.ItemDesc </td>
+			   <td> @a.Quantity</td>
+			   <td></td>
+			  </tr>
+			}
+	 </table>
+</body>
+</html>
