@@ -1,4 +1,5 @@
 ﻿using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities.MonthEndProcessing;
 using HicadStockSystem.Core.Utilities.Report;
 using HicadStockSystem.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -34,5 +35,6 @@ namespace HicadStockSystem.Core.Utilities
         public DocumentSearchVM DocumentSearch { get; set; }
         public RequisitionEnquiryVM RequisitionEnquiry { get; set; }
         public IEnumerable<ReorderList> ReorderLists { get; set; }
+        public IEnumerable<MonthEndBookClosureVM> MonthEndBookClosure { get; set; }
     }
 }

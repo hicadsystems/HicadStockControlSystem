@@ -27,6 +27,8 @@ using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Persistence.Repository;
 using HicadStockSystem.Core.IRespository.IReport;
 using HicadStockSystem.Persistence.Repository.Reports;
+using HicadStockSystem.Core.IRespository.IMonthEndProcessing;
+using HicadStockSystem.Persistence.Repository.MonthEndProcess;
 
 namespace HicadStockSystem
 {
@@ -84,6 +86,7 @@ namespace HicadStockSystem
             services.AddScoped<IDocumentSearch, DocumentSearchRepo>();
             services.AddScoped<IRequisitionEnquiry, RequisitionEnquiryRepo>();
             services.AddScoped<IUndeliveredItems, UndeliveredItemsRepo>();
+            services.AddScoped<IMonthEndBookClosure, MonthEndBookClosureRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

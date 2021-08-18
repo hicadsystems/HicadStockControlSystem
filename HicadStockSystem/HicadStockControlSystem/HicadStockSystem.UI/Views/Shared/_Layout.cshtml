@@ -97,11 +97,11 @@
                       @*Utilities*@
                       <li class="sidebar-item">
                           <a data-target="#utilities" data-toggle="collapse" class="sidebar-link collapsed">
-                              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Utilities</span>
+                              <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Month End Processing</span>
                           </a>
                           <ul id="utilities" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Month End Processing</a></li>
-                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Month End Book Closure</a></li>
+                              @*<li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Month End Processing</a></li>*@
+                              <li class="sidebar-item"><a class="sidebar-link" asp-controller="MonthEndBookClosure" asp-action="Index">Month End Book Closure</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Print Physical Count Sheet</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Physical Count Input/Upload</a></li>
                               <li class="sidebar-item"><a class="sidebar-link" asp-controller="St_HistoryUI" asp-action="Index">Physical Count List</a></li>
