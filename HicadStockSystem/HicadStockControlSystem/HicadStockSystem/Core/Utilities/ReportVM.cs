@@ -36,5 +36,6 @@ namespace HicadStockSystem.Core.Utilities
         public RequisitionEnquiryVM RequisitionEnquiry { get; set; }
         public IEnumerable<ReorderList> ReorderLists { get; set; }
         public IEnumerable<MonthEndBookClosureVM> MonthEndBookClosure { get; set; }
+        public IEnumerable<PhysicalCountSheetVM>  PhysicalCountSheets { get; set; }
     }
 }

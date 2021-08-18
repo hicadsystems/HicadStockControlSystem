@@ -10,11 +10,11 @@
           <h3 style="text-align:center">{{ postBody.companyAddress }}</h3>
           <br />
           <h3 style="text-align:center">REPORTS</h3>
-          <h4 style="text-align:center">Month End Book Closure</h4>
+          <h4 style="text-align:center">Physical Count Sheet</h4>
           <br /><br />
           <div class="row">
             <div class="col-md-6">
-              <h6>Process Book Closure</h6>
+              <h6>Print Physical Count Sheet</h6>
             </div>
             <br><br>
             <div role="group">
@@ -25,9 +25,6 @@
               >
                 Print
               </button>
-            </div>
-            <div class="col-4">
-            <p><b>Note:</b>this process is irreversible</p>
             </div>
           </div>
         </div>
@@ -66,7 +63,7 @@ export default {
   },
   methods: {
     generateReport(){
-       window.open(`/MonthEndBookClosure/BookClosure/`, "_blank")
+       window.open(`/PhysicalCountSheet/PhysicalCount/`, "_blank")
     }
   },
 };
