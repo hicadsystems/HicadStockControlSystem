@@ -9,7 +9,7 @@
           </h1>
           <h3 style="text-align:center">{{ postBody.companyAddress }}</h3>
           <br />
-          <h3 style="text-align:center">REPORTS</h3>
+          <h3 style="text-align:center">Month End Processing</h3>
           <h4 style="text-align:center">Month End Book Closure</h4>
           <br /><br />
           <div class="row">
@@ -27,7 +27,7 @@
               </button>
             </div>
             <div class="col-4">
-            <p><b>Note:</b>this process is irreversible</p>
+            <p><b>NOTE:</b> this process is irreversible</p>
             </div>
           </div>
         </div>

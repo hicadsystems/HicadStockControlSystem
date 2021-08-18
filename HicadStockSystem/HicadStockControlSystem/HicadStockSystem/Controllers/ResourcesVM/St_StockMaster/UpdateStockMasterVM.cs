@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HicadStockSystem.Core.Utilities.MonthEndProcessing;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +9,6 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StockMaster
 {
     public class UpdateStockMasterVM
     {
-        [Required]
         //remember to input stringLength at ViewModel api resource
         [StringLength(15)]
         public string ItemCode { get; set; }
@@ -25,5 +25,6 @@ namespace HicadStockSystem.Controllers.ResourcesVM.St_StockMaster
         public DateTime? LastPhysicalDate { get; set; }
         public float? QtyInTransaction { get; set; }
         public DateTime? UpdatedOn { get; set; }
+        public List<PhysicalCountSheetVM> PhysicalCountSheet { get; set; }
     }
 }

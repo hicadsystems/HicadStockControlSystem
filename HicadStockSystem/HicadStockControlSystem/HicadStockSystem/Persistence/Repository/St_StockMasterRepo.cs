@@ -1,6 +1,7 @@
 ﻿using HicadStockSystem.Core;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Core.Utilities;
+using HicadStockSystem.Core.Utilities.MonthEndProcessing;
 using HicadStockSystem.Data;
 using HicadStockSystem.Models;
 using HicadStockSystem.Persistence.Repository;
@@ -85,6 +86,18 @@ namespace HicadStockSystem.Persistence
             decimal? total = (subtotal += value);
             return total;
             
+        }
+
+        public async Task<IEnumerable<PhysicalCountSheetVM>> PhysicalCounts()
+        {
+            var sheet = await _dbContext.St_StockMasters.Where(x => x.IsDeleted == false)
+                .Select(y => new PhysicalCountSheetVM
+                {
+                    ItemCode = y.ItemCode,
+                    ItemDesc = y.Description
+                }).ToListAsync();
+
+            return sheet;
         }
     }
 }

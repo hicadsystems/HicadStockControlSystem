@@ -2,7 +2,10 @@
 using HicadStockSystem.Controllers.ResourcesVM.St_StockMaster;
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities.MonthEndProcessing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +19,13 @@ namespace HicadStockSystem.Controllers
     {
         private readonly ISt_StockMaster _stockMaster;
         private readonly IMapper _mapper;
+        private readonly string connectionString;
 
-        public St_StockMasterController(ISt_StockMaster stockMaster, IMapper mapper)
+        public St_StockMasterController(ISt_StockMaster stockMaster, IMapper mapper, IConfiguration configuration)
         {
             _stockMaster = stockMaster;
             _mapper = mapper;
+            connectionString = configuration.GetConnectionString("DefaultConnection");
         }
        
         [HttpGet]
@@ -89,12 +94,37 @@ namespace HicadStockSystem.Controllers
             return Ok(stockMasterInDb);
         }
 
-        //[Route("stockposition")]
-        //[HttpGet]
-        //public async Task<IActionResult> GetStockPosition()
-        //{
-        //    var stkposition = await _stockMaster.StockPositions();
-        //    return Ok(stkposition);
-        //}
+        [Route("physicalcount")]
+        [HttpGet]
+        public async Task<IActionResult> GetCountSheet()
+        {
+            var stkposition = await _stockMaster.PhysicalCounts();
+            return Ok(stkposition);
+        }
+
+        [Route("UpdatePhysicalCount")]
+        [HttpPut]
+        public IActionResult UpdatePhysicalCount([FromBody] PhysicalCountVM physicalCount)
+        {
+            foreach (var item in physicalCount.PhysicalCountSheet)
+            {
+
+                using (SqlConnection sqlcon = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_updatephysicalcount", sqlcon))
+                    {
+                        cmd.CommandTimeout = 1200;
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@itemcode", item.ItemCode));
+                        cmd.Parameters.Add(new SqlParameter("@quantity", item.Quantity));
+
+                        sqlcon.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                } 
+            }
+
+            return Ok(/*stockMasterInDb*/);
+        }
     }
 }

@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <div class="card-body">
-      <form @submit.prevent="checkForm" method="post">
+      
         <div class="p-5" id="vertical-form">
           <div class="preview">
             <div class="row">
@@ -167,7 +167,7 @@
             <br />
           </div>
         </div>
-      </form>
+      
       </div>
       
     </div>

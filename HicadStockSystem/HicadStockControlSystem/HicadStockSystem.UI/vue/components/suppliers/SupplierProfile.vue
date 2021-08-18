@@ -1,6 +1,5 @@
 <template>
   <div>
-    <form @submit.prevent="checkForm" method="post">
       <div class="p-5" id="vertical-form">
         <div class="preview">
           <div class="row">
@@ -129,7 +128,6 @@
           </div>
         </div>
       </div>
-    </form>
   </div>
 </template>
 <script>

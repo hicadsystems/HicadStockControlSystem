@@ -1,6 +1,7 @@
 ﻿using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Core.Utilities;
+using HicadStockSystem.Core.Utilities.MonthEndProcessing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace HicadStockSystem.Core
         Task Delete(string itemCode);
         Task<IEnumerable<St_StockMaster>> GetAll();
         Task<IEnumerable<StockPositionVM>> StockPositions();
+        Task<IEnumerable<PhysicalCountSheetVM>> PhysicalCounts();
     }
 }
