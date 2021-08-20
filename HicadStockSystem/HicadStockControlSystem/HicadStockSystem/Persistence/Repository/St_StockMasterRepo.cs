@@ -6,7 +6,9 @@ using HicadStockSystem.Data;
 using HicadStockSystem.Models;
 using HicadStockSystem.Persistence.Repository;
 using HicadStockSystem.Repository.IRepository;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +20,14 @@ namespace HicadStockSystem.Persistence
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
+        private readonly string connectionString;
 
-        public St_StockMasterRepo(StockControlDBContext dbContext, IUnitOfWork uow)
+        public St_StockMasterRepo(StockControlDBContext dbContext, IUnitOfWork uow, IConfiguration configuration)
         {
 
             _dbContext = dbContext;
             _uow = uow;
+            connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public async Task CreateAsync(St_StockMaster stockMaster)
@@ -98,6 +102,27 @@ namespace HicadStockSystem.Persistence
                 }).ToListAsync();
 
             return sheet;
+        }
+        
+        public async Task UpdateWithExcelFile(List<PhysicalCountSheetVM> physicalCount)
+        {
+            foreach (var item in physicalCount)
+            {
+
+                using (SqlConnection sqlcon = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_updatephysicalcount", sqlcon))
+                    {
+                        cmd.CommandTimeout = 1200;
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@itemcode", item.ItemCode));
+                        cmd.Parameters.Add(new SqlParameter("@quantity", item.Quantity));
+
+                        sqlcon.Open();
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
         }
     }
 }

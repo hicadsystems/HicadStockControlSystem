@@ -115,5 +115,13 @@ namespace HicadStockSystem.Controllers
 
             return Ok(busLine);
         }
+
+        [HttpGet]
+        [Route("getitemcodes")]
+        public IActionResult GetAllItemCode()
+        {
+            var itemMaster = _itemMaster.GetItemCodes();
+            return Ok(itemMaster);
+        }
     }
 }

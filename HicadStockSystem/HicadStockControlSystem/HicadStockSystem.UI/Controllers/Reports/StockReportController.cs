@@ -24,18 +24,18 @@ namespace HicadStockSystem.UI.Controllers.Reports
             _system = system;
             _generatePdf = generatePdf;
         }
-        public async Task<IActionResult> Index(/*int? pageNumber*/)
+        public async Task<IActionResult> Index()
         {
             var position = new ReportVM()
             {
                 StockPosition = await _stockPosition.StockPositions(),
                 StkSystems = _system.GetSingle()
             };
-            //var position = await _stockMaster.StockPositions();
-            //int pageSize = 4;
-            return View(position/*, Pagination<ReportVM>.Create((IList<ReportVM>)position, pageNumber ?? 1, pageSize)*/);
+           
+            return View(position);
         }
 
+        [Route("StockReport/StockPositionPdf")]
         public async Task<IActionResult> StockPositionPdf()
         {
             var position = new ReportVM()

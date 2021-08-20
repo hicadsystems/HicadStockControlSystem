@@ -88,7 +88,7 @@ export default {
       });
     },
     getStockItems() {
-      axios.get("/api/buyersguide/").then((response) => {
+      axios.get("/api/itemmaster/getitemcodes/").then((response) => {
         this.itemList = response.data;
       });
     },

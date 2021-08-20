@@ -78,29 +78,7 @@ namespace HicadStockSystem.Controllers
                        //var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
 
                     }
-                    //requisitionVM.Description = _requisition.GetDescription(requisitionVM.Itemcode);
-
-                    //check for the availability of requested quantity 
-                    //var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
-
-                    /*var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, CreateSt_RequisitionVM>(requisitionVM);
-                    var currentBal = _requisition.CheckCurrentBal(checkCurrentBal);*/
-
-                    //if (requisitionVM.Quantity >= currentBal)
-                    //{
-                    //    return BadRequest();
-                    //}
-
-                    //logged in user
-                    //requisitionVM.UserId = "HICAD1";
-
-                    //var newRequisition = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
-
-                    //newRequisition.CreatedOn = DateTime.Now;
-
-                    //newRequisition.RequisitionDate = DateTime.Now;
-
-                    //await _requisition.CreateAsync(newRequisition);
+                   
 
                     return Ok(reqNo);
                 }
@@ -177,86 +155,7 @@ namespace HicadStockSystem.Controllers
             return Ok();
         }
 
-        //v1
-        /*[HttpPut]
-        public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM)
-        {
-            var reqNo = _requisition.GetReqNo(requisitionVM.RequisitionNo);
-            if (reqNo == null)
-                return NotFound();
-            foreach (var item in requisitionVM.ItemLists)
-            {
-                requisitionVM.ItemCode = item.ItemCode;
-                requisitionVM.Quantity = (float?)item.Quantity;
-                requisitionVM.SupplyQty = (decimal?)item.Requested;
-                requisitionVM.IsSupplied = true;
-                requisitionVM.SupplyBy = "HICAD99";
-                requisitionVM.SupplyDate = DateTime.Now;
-
-                await _requisition.UpdateAsync(requisitionVM);
-            }
-            await _requisition.SupplyRequisition(requisitionVM);
-            return Ok();
-        }*/
-
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateRequisition([FromBody] UpdateSt_RequisitionVM requisitionVM)
-        //{
-        //    var requisitionNo = _requisition.GetReqNo(requisitionVM.RequisitionNo);
-
-        //    if (requisitionNo==null)
-        //        return NotFound();
-
-        //    foreach (var item in requisitionVM.ItemLists)
-        //    {
-        //        requisitionVM.ItemCode = item.ItemCode;
-
-        //        //swapping supplyqty to quantity and approved qty to supplyqty column
-        //        requisitionVM.SupplyQty = (decimal?)item.Requested;
-        //        requisitionVM.Quantity = (float?)item.Quantity;
-
-        //        requisitionVM.UpdatedOn = DateTime.Now;
-
-        //        await _requisition.UpdateAsync(requisitionVM);
-        //    }
-
-        //    await _requisition.SupplyRequisition(requisitionVM);
-
-        //    /*if (ModelState.IsValid)
-        //    {
-        //        await _requisition.UpdateAsync(requisitionVM);
-
-        //        //await _requisition.SupplyRequisition(requisitionVM);
-        //    }*/
-
-        //    /*foreach (var item in requisitionVM.ItemLists)
-        //    {
-        //        try
-        //        {
-
-        //            requisitionVM.ItemCode = item.ItemCode;
-
-        //            //swapping supplyqty to quantity and approved qty to supplyqty column
-        //            requisitionVM.SupplyQty = (decimal?)item.Requested;
-        //            requisitionVM.Quantity = (float?)item.Quantity;
-
-        //            requisitionVM.UpdatedOn = DateTime.Now;
-
-        //            await _requisition.UpdateAsync(requisitionVM);
-
-        //        }
-        //        catch (Exception)
-        //        {
-
-        //            throw;
-        //        }
-
-        //    }*/
-
-
-
-        //    return Ok(requisitionVM);
-        //}
+     
 
         [HttpPatch]
         [Route("RequisitionApproval")]

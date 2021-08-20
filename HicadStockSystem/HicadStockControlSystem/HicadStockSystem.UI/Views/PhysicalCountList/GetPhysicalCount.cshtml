@@ -20,7 +20,6 @@
 		  <tr style="text-align:center">
 			   <th>Item Code</th>
 			   <th>Item Description</th>
-			   <th>Location</th>
 			   <th>Quantity</th>
 		  </tr>
 			@foreach (var a in Model.PhysicalCountSheets)
@@ -29,7 +28,6 @@
 			   <td> @a.ItemCode </td>
 			   <td> @a.ItemDesc </td>
 			   <td> @a.Quantity</td>
-			   <td></td>
 			  </tr>
 			}
 	 </table>

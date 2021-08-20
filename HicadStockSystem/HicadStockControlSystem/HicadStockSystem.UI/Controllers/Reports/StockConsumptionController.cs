@@ -34,6 +34,7 @@ namespace HicadStockSystem.UI.Controllers.Reports
             return View(consumption);
         }
 
+        [Route("StockConsumption/PrintStockConsumption")]
         public async Task<IActionResult> PrintStockConsumption()
         {
             var consumption = new ReportVM

@@ -34,7 +34,7 @@ namespace HicadStockSystem.UI.Controllers.MonthEndProcessing
             var model = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                PhysicalCountSheets = _countSheet.GetCountSheet()
+                PhysicalCountSheets = _countSheet.GetPhysicalCount()
             };
             //return RedirectToAction("Index");
             return await _generatePdf.GetPdf("Views/PhysicalCountList/GetPhysicalCount.cshtml", model);

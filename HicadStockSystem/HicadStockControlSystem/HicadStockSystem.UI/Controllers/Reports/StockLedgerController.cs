@@ -38,6 +38,7 @@ namespace HicadStockSystem.UI.Controllers.Reports
             return View(ledger);
         }
 
+        [Route("StockLedger/StockLedgerPdf/{startDate}/{endDate}")]
         public async Task<IActionResult> StockLedgerPdf(DateTime? startDate, DateTime? endDate)
         {
             if (startDate == null && endDate == null)

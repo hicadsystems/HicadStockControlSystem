@@ -19,5 +19,6 @@ namespace HicadStockSystem.Core
         Task<IEnumerable<St_StockMaster>> GetAll();
         Task<IEnumerable<StockPositionVM>> StockPositions();
         Task<IEnumerable<PhysicalCountSheetVM>> PhysicalCounts();
+        Task UpdateWithExcelFile(List<PhysicalCountSheetVM> physicalCount);
     }
 }

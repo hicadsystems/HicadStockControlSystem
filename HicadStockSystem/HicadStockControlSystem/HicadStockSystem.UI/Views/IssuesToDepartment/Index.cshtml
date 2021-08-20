@@ -7,7 +7,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
+<issue-to-department></issue-to-department>
+
+@*<div class="row">
 	 <div class="col-md-12 grid-margin">
 		  <div class="card">
 			   <div class="card-body">
@@ -40,7 +42,6 @@
 					</form>
 					<br /><br />
 					<br /><br />
-					@*<a class="btn btn-primary" asp-controller="ReceiptAnalysis" asp-action="AnalysisPdf">print</a>*@
 					<div class="row">
 						 <table class="table table-striped" style="text-align:center">
 							  <tr  style="text-align:center">
@@ -56,7 +57,6 @@
 									<td></td>
 									<td></td>
 									
-								    @*<td>Description: @b.ItemDesc</td>*@
 								</tr>
 								
 								<tr>	
@@ -66,7 +66,6 @@
 								   <th>Quantity</th>
 								   <th>Price</th>
 								   <th>Amount</th>
-								   @*<th>Value</th>*@
 								</tr>
 
 								@foreach (var a in Model.Issues.Where(x=>x.DepartmentCode==b.DepartmentCode))
@@ -80,9 +79,7 @@
 										@Math.Round((decimal)a.Price,2)
 									</td>
 									<td>@Math.Round((decimal)a.Amount,2)</td>
-								  @* <td>
-										@Math.Round((decimal)a.Value,2)
-									</td>*@
+								 
 								  </tr>
 							     }							
 							     <tr>	
@@ -101,15 +98,13 @@
 									<th></th>
 									<th></th>
 									<th></th>
-								    @*<td>Description: @b.ItemDesc</td>*@
 								</tr>
 							}
 						 </table> <br />
 					</div>
 					<div></div>
 
-				@*<h6 style="text-align:center">RETRICTED</h6>*@
 			   </div>
 		  </div>
 	 </div>
-</div>
+</div>*@

@@ -9,5 +9,6 @@ namespace HicadStockSystem.Core.IRespository.IMonthEndProcessing
     public interface IPhysicalCountSheet
     {
         List<PhysicalCountSheetVM> GetCountSheet();
+        List<PhysicalCountSheetVM> GetPhysicalCount();
     }
 }

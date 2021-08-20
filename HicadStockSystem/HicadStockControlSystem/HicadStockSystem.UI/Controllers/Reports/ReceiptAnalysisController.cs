@@ -38,6 +38,7 @@ namespace HicadStockSystem.UI.Controllers.Reports
             return View(analysis);
         }
 
+        [Route("ReceiptAnalysis/AnalysisPdf/{startDate}/{endDate}")]
         public async Task<IActionResult> AnalysisPdf(DateTime startDate, DateTime endDate)
         {
             if (startDate == null && endDate == null)

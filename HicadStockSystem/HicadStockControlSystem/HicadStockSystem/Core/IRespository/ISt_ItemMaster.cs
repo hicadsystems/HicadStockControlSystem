@@ -18,5 +18,6 @@ namespace HicadStockSystem.Core.IRespository
         Task<IEnumerable<string>> GetStockClass();
        Task<IEnumerable<string>> GetBusinessLine();
         string GetItemCodeByDesc(string desc);
+        List<St_ItemMaster> GetItemCodes();
     }
 }

@@ -35,6 +35,7 @@ namespace HicadStockSystem.UI.Controllers.Reports
             return View(issue);
         }
 
+        [Route("IssuesToDepartment/PrintIssue/{startDate}/{endDate}")]
         public async Task<IActionResult> PrintIssue(DateTime? startDate, DateTime? endDate)
         {
             if (startDate == null && endDate == null)
