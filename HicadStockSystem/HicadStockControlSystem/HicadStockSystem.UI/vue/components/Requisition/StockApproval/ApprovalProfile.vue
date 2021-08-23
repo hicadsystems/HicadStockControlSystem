@@ -237,7 +237,7 @@ export default {
               this.postBody.requisitionNo = "";
               this.postBody.itemLists = [];
             }
-            // window.location.reload();
+            window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);

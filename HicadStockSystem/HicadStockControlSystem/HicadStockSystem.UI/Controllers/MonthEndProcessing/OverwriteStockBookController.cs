@@ -28,8 +28,8 @@ namespace HicadStockSystem.UI.Controllers.MonthEndProcessing
         }
 
 
-        [Route("OverwriteStockBook/BookClosure")]
-        public async Task<IActionResult> BookClosure()
+        [Route("OverwriteStockBook/OverwriteStockBookPdf")]
+        public async Task<IActionResult> OverwriteStockBookPdf()
         {
             _overwrite.OverwriteStockBook();
             var model = new ReportVM
@@ -38,7 +38,7 @@ namespace HicadStockSystem.UI.Controllers.MonthEndProcessing
                 MonthEndBookClosure = _overwrite.OverwriteStock()
             };
             //return RedirectToAction("Index");
-            return await _generatePdf.GetPdf("Views/MonthEndBookClosure/BookClosure.cshtml", model);
+            return await _generatePdf.GetPdf("Views/OverwriteStockBook/OverwriteStockBookPdf.cshtml", model);
         }
     }
 

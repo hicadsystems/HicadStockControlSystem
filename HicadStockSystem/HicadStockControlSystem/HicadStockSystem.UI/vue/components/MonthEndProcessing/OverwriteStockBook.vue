@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     generateReport(){
-       window.open(`/OverwriteStockBook/BookClosure/`, "_blank")
+       window.open(`/OverwriteStockBook/OverwriteStockBookPdf/`, "_blank")
     }
   },
 };

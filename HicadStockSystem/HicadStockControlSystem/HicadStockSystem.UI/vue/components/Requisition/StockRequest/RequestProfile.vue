@@ -240,18 +240,12 @@ export default {
       isSelected: false,
       isAddItem: false,
 
-      // lineItems: [],
-      // locationCode: "",
+     
       currentBal: "",
 
       postBody: {
-        // itemCode: "",
-        // quantity: "",
-        // unit: "",
         locationCode: "",
         lineItems: [],
-        // itemDesc: "",
-        // qtyInTransaction: 0,
       },
 
       newItem: {
@@ -299,55 +293,7 @@ export default {
           });
 
     },
-    postPost() {
-      if (this.submitorUpdate == "Submit") {
-        axios
-          .post(`/api/requisition/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              // this.postBody.locationCode = "";
-              // this.postBody.itemCode = "";
-              // this.postBody.itemDesc = "";
-              // this.postBody.quantity = "";
-              // this.postBody.unit = "";
-              // this.$store.stateName.objectToUpdate = "create";
-              location = this.locationCode;
-              this.lineItems = [];
-            }
-            // this.document.getElementById('#requestForm').value = "";
-            // this.$refs.requestForm.reset();
-            // window.location.reload();
-          })
-          .catch((e) => {
-            if (e) this.errors.push(e);
-          });
-      }
-      
-      if (this.submitorUpdate == "Update") {
-        alert("Ready to Update");
-        axios
-          .put(`/api/requisition/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              this.submitorUpdate = "Submit";
-              this.postBody.locationCode = "";
-              this.postBody.itemCode = "";
-              this.postBody.itemDesc = "";
-              this.postBody.quantity = 0;
-              this.postBody.unit = "";
-              this.$store.state.objectToUpdate = "update";
-            }
-            window.location.reload();
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
-      }
-    },
+  
     getDepartment() {
       axios.get(`/api/requisition/getcostcentre`).then((response) => {
         this.DepartmentList = response.data;

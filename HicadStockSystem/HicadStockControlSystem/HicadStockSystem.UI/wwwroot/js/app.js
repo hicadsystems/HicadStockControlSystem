@@ -3175,7 +3175,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     generateReport: function generateReport() {
-      window.open("/OverwriteStockBook/BookClosure/", "_blank");
+      window.open("/OverwriteStockBook/OverwriteStockBookPdf/", "_blank");
     }
   }
 });
@@ -3191,6 +3191,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3288,22 +3290,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       system: null,
       statusList: null,
       isFormVisible: false,
       responseMessage: "",
-      file: "",
-      postBody: {
-        companyName: "",
-        companyAddress: "",
-        quantity: "",
-        physicalCountSheet: [] // ItemCode: "",
-        // ItemDesc: "",
-        // Quantity: "",
+      file: ""
+    }, _defineProperty(_ref, "file", ""), _defineProperty(_ref, "postBody", {
+      companyName: "",
+      companyAddress: "",
+      quantity: "",
+      physicalCountSheet: [] // ItemCode: "",
+      // ItemDesc: "",
+      // Quantity: "",
 
-      }
-    };
+    }), _ref;
   },
   mounted: function mounted() {
     var _this = this;
@@ -3345,14 +3348,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     uploadFile: function uploadFile() {
       var formData = new FormData();
-      formData.append('file', this.file);
+      formData.append('file', this.file); // console.log(formData);
+
       axios.put("/api/stockmaster/updatephysicalcountexcel/", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      }).then(function (response) {
-        console.log('SUCCESS!!');
-        window.location.reload();
+      }).then(function (data) {
+        console.log(data.data);
       });
     },
     handleFileUpload: function handleFileUpload() {
@@ -5315,8 +5318,9 @@ __webpack_require__.r(__webpack_exports__);
           if (response.data.responseCode == "200") {
             _this.postBody.requisitionNo = "";
             _this.postBody.itemLists = [];
-          } // window.location.reload();
+          }
 
+          window.location.reload();
         })["catch"](function (e) {
           _this.errors.push(e);
         });
@@ -5667,17 +5671,10 @@ __webpack_require__.r(__webpack_exports__);
       valid: false,
       isSelected: false,
       isAddItem: false,
-      // lineItems: [],
-      // locationCode: "",
       currentBal: "",
       postBody: {
-        // itemCode: "",
-        // quantity: "",
-        // unit: "",
         locationCode: "",
-        lineItems: [] // itemDesc: "",
-        // qtyInTransaction: 0,
-
+        lineItems: []
       },
       newItem: {
         quantity: 0,
@@ -5721,79 +5718,31 @@ __webpack_require__.r(__webpack_exports__);
         _this.errors.push(e);
       });
     },
-    postPost: function postPost() {
+    getDepartment: function getDepartment() {
       var _this2 = this;
 
-      if (this.submitorUpdate == "Submit") {
-        axios.post("/api/requisition/", this.postBody).then(function (response) {
-          _this2.responseMessage = response.data.responseDescription;
-          _this2.canProcess = true;
-
-          if (response.data.responseCode == "200") {
-            // this.postBody.locationCode = "";
-            // this.postBody.itemCode = "";
-            // this.postBody.itemDesc = "";
-            // this.postBody.quantity = "";
-            // this.postBody.unit = "";
-            // this.$store.stateName.objectToUpdate = "create";
-            location = _this2.locationCode;
-            _this2.lineItems = [];
-          } // this.document.getElementById('#requestForm').value = "";
-          // this.$refs.requestForm.reset();
-          // window.location.reload();
-
-        })["catch"](function (e) {
-          if (e) _this2.errors.push(e);
-        });
-      }
-
-      if (this.submitorUpdate == "Update") {
-        alert("Ready to Update");
-        axios.put("/api/requisition/", this.postBody).then(function (response) {
-          _this2.responseMessage = response.data.responseDescription;
-          _this2.canProcess = true;
-
-          if (response.data.responseCode == "200") {
-            _this2.submitorUpdate = "Submit";
-            _this2.postBody.locationCode = "";
-            _this2.postBody.itemCode = "";
-            _this2.postBody.itemDesc = "";
-            _this2.postBody.quantity = 0;
-            _this2.postBody.unit = "";
-            _this2.$store.state.objectToUpdate = "update";
-          }
-
-          window.location.reload();
-        })["catch"](function (e) {
-          _this2.errors.push(e);
-        });
-      }
-    },
-    getDepartment: function getDepartment() {
-      var _this3 = this;
-
       axios.get("/api/requisition/getcostcentre").then(function (response) {
-        _this3.DepartmentList = response.data;
+        _this2.DepartmentList = response.data;
       });
     },
     //gets the unit, currentBal of item
     getStockItems: function getStockItems() {
-      var _this4 = this;
+      var _this3 = this;
 
       // this.postBody.itemCode="1234"
       // alert(this.postBody.itemCode);
       axios.get("/api/requisition/getStockItems/".concat(this.newItem.itemCode)).then(function (response) {
-        _this4.StockItemsList = response.data;
-        _this4.currentBal = response.data.currentBalance;
-        _this4.newItem.unit = response.data.unit; // this.postBody.currentBal = response.data.currentBalance;
+        _this3.StockItemsList = response.data;
+        _this3.currentBal = response.data.currentBalance;
+        _this3.newItem.unit = response.data.unit; // this.postBody.currentBal = response.data.currentBalance;
         // this.postBody.unit = response.data.unit;
       });
     },
     getItemCode: function getItemCode() {
-      var _this5 = this;
+      var _this4 = this;
 
       axios.get("/api/itemmaster").then(function (response) {
-        _this5.ItemList = response.data;
+        _this4.ItemList = response.data;
       });
     },
     validate: function validate() {

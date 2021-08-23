@@ -102,6 +102,7 @@ export default {
       isFormVisible: false,
       responseMessage: "",
       file:"",
+      file:"",
       postBody: {
         companyName: "",
         companyAddress: "",
@@ -153,16 +154,15 @@ export default {
     uploadFile() {
       let formData = new FormData();
       formData.append('file', this.file);
-
+      // console.log(formData);
       axios
         .put(`/api/stockmaster/updatephysicalcountexcel/`, formData,{
             headers:{
                 'Content-Type': 'multipart/form-data'
             }
         })
-        .then((response) => {
-         console.log('SUCCESS!!')
-          window.location.reload();
+        .then(function(data){
+          console.log(data.data)
         });
     },
 
