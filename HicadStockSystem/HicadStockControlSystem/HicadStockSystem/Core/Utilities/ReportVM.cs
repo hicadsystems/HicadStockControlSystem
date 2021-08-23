@@ -37,5 +37,7 @@ namespace HicadStockSystem.Core.Utilities
         public IEnumerable<ReorderList> ReorderLists { get; set; }
         public IEnumerable<MonthEndBookClosureVM> MonthEndBookClosure { get; set; }
         public IEnumerable<PhysicalCountSheetVM>  PhysicalCountSheets { get; set; }
+        public IEnumerable<VarianceAnalysisVM> VarianceAnalyses { get; set; }
+
     }
 }

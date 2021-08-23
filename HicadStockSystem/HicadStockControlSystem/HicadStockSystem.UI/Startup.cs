@@ -82,6 +82,8 @@ namespace HicadStockSystem.UI
             services.AddScoped<IReorderList, ReorderListRepo>();
             services.AddScoped<IMonthEndBookClosure, MonthEndBookClosureRepo>();
             services.AddScoped<IPhysicalCountSheet, PhysicalCountSheetRepo>();
+            services.AddScoped<IVarianceAnalysis, VarianceAnalysisRepo>();
+            services.AddScoped<IOverwriteStockBook, OverwriteStockBookRepo>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISt_Remark, St_RemarkRepo>();

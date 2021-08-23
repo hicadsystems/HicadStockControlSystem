@@ -88,6 +88,9 @@ namespace HicadStockSystem
             services.AddScoped<IUndeliveredItems, UndeliveredItemsRepo>();
             services.AddScoped<IMonthEndBookClosure, MonthEndBookClosureRepo>();
             services.AddScoped<IPhysicalCountSheet, PhysicalCountSheetRepo>();
+            services.AddScoped<IVarianceAnalysis, VarianceAnalysisRepo>();
+            services.AddScoped<IOverwriteStockBook, OverwriteStockBookRepo>();
+
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

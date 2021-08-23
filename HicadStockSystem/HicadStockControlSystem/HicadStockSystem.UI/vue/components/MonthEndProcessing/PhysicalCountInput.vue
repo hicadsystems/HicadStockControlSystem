@@ -155,7 +155,7 @@ export default {
       formData.append('file', this.file);
 
       axios
-        .put(`/api/stockmaster/updatephysicalcountexcel`, formData,{
+        .put(`/api/stockmaster/updatephysicalcountexcel/`, formData,{
             headers:{
                 'Content-Type': 'multipart/form-data'
             }
