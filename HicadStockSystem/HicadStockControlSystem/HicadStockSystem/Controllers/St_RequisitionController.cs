@@ -74,14 +74,13 @@ namespace HicadStockSystem.Controllers
 
                         await _requisition.CreateAsync(newRequisition);
 
-                        //check for the availability of requested quantity
-                       //var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, St_Requisition>(requisitionVM);
-
                     }
-                   
 
-                    return Ok(reqNo);
+                    var req = _requisition.GetByReqNo(reqNo);
+                    return Ok(req);
                 }
+
+
 
 
             }
