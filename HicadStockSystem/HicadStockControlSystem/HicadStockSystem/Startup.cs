@@ -29,6 +29,8 @@ using HicadStockSystem.Core.IRespository.IReport;
 using HicadStockSystem.Persistence.Repository.Reports;
 using HicadStockSystem.Core.IRespository.IMonthEndProcessing;
 using HicadStockSystem.Persistence.Repository.MonthEndProcess;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 namespace HicadStockSystem
 {
@@ -45,6 +47,7 @@ namespace HicadStockSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
             services.AddControllers()
                                 .AddNewtonsoftJson(options =>
                                 {

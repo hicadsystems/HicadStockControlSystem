@@ -5688,24 +5688,15 @@ __webpack_require__.r(__webpack_exports__);
     this.getDepartment();
     this.getItemCode();
   },
-  // watch: {
-  //   "$store.state.objectToUpdate": function(newVal, oldVal) {
-  //     (this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode),
-  //       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
-  //       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemDesc),
-  //       (this.postBody.qtyInTransaction = this.$store.state.objectToUpdate.qtyInTransaction),
-  //       (this.postBody.quantity = this.$store.state.objectToUpdate.quantity);
-  //     this.postBody.unit = this.$store.state.objectToUpdate.unit;
-  //     this.submitorUpdate = "Update";
-  //   },
-  // },
   methods: {
+    // checkForm() {
+    //   console.log(this.postBody.lineItems)
+    //   window.open(`/St_RequisitionUI/StockRequisition/${this.postBody.locationCode}/${this.postBody.lineItems}`, "_blank")
+    // },
+    //api code do not remove
     checkForm: function checkForm() {
       var _this = this;
 
-      // alert(this.postBody);
-      // console.log(this.postBody);
-      // console.log(this.postBody.locationCode);
       axios.post("/api/requisition/", this.postBody).then(function (response) {
         _this.responseMessage = response.data.responseDescription;
         _this.canProcess = true;

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "w76WRyg+W6tBpjXfZU0tYIHRXmg+AZfz32tJ11YxmKfcjZBEGJ80SwTzUXRYzVoveA7Wc0SRDnplMD6QfXw6JA==",
+  "dgSpecHash": "dTF+zDz7XLhhwx3sWnO6bWmirY8VeRF6YHFSSLQqeiz78545fPVAFHqdsjMV2CUGCX+WDG1yUqmsBiVnoEcJ4Q==",
   "success": true,
   "projectFilePath": "E:\\ProjectsTom\\HicadStockControlSystem\\HicadStockControlSystem\\HicadStockSystem\\HicadStockControlSystem\\HicadStockSystem.UI\\HicadStockSystem.UI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HICADB\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
+    "C:\\Users\\HICADB\\.nuget\\packages\\dinktopdf\\1.0.8\\dinktopdf.1.0.8.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\epplus\\5.7.3\\epplus.5.7.3.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.0.0\\microsoft.aspnetcore.antiforgery.2.0.0.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.0.0\\microsoft.aspnetcore.authentication.2.0.0.nupkg.sha512",
@@ -234,6 +235,7 @@
     "C:\\Users\\HICADB\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.3\\system.threading.tasks.extensions.4.5.3.nupkg.sha512",
+    "C:\\Users\\HICADB\\.nuget\\packages\\system.threading.thread\\4.0.0\\system.threading.thread.4.0.0.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
     "C:\\Users\\HICADB\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",

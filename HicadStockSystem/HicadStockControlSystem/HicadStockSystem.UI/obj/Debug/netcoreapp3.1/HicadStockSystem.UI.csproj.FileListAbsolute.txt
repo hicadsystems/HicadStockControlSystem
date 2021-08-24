@@ -502,3 +502,8 @@ E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\VarianceAnalysis\VarianceAnalysisPdf.cshtml.g.cs
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\OverwriteStockBook\Index.cshtml.g.cs
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\OverwriteStockBook\OverwriteStockBookPdf.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\St_RequisitionUI\StockRequisition.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\wkhtmltoimage.exe
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\wkhtmltopdf.exe
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\DinkToPdf.dll
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\libwkhtmltox.dll

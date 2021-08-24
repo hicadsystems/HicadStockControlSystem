@@ -165,7 +165,6 @@ export default {
           console.log(data.data)
         });
     },
-
     handleFileUpload(){
         this.file = this.$refs.file.files[0];
     }

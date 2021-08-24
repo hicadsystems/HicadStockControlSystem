@@ -1,16 +1,22 @@
-﻿using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
+﻿using DinkToPdf;
+using DinkToPdf.Contracts;
+using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Core.Utilities;
+using HicadStockSystem.Core.Utilities.PdfConverter;
 using HicadStockSystem.Data;
+using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence.Repository
@@ -20,13 +26,17 @@ namespace HicadStockSystem.Persistence.Repository
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
         private readonly ISt_RecordTable _recordTable;
+        private readonly IConverter _converter;
         private readonly string connectionString;
-
-        public St_RequisitionRepo(StockControlDBContext dbContext, IUnitOfWork uow, ISt_RecordTable recordTable, IConfiguration configuration)
+        private readonly ISt_StkSystem _system;
+        public St_RequisitionRepo(StockControlDBContext dbContext, IUnitOfWork uow, 
+            ISt_RecordTable recordTable, IConfiguration configuration, IConverter converter, ISt_StkSystem system)
         {
             _dbContext = dbContext;
             _uow = uow;
             _recordTable = recordTable;
+            _converter = converter;
+            _system = system;
             connectionString = configuration.GetConnectionString("DefaultConnection");
         }
         /*V1*/
@@ -345,7 +355,7 @@ namespace HicadStockSystem.Persistence.Repository
                     ItemDescription = y.req.Description,
                     Requested = y.req.Quantity,
                     Unit = y.req.Unit,
-                    //Quantity=y.req.SupplyQty,
+                    Quantity = (decimal)y.req.Quantity,
                     currentBalance = (y.stk.OpenBalance + y.stk.Receipts - y.stk.Issues) - y.stk.QtyInTransaction
                 }).ToList();
 
@@ -398,5 +408,139 @@ namespace HicadStockSystem.Persistence.Repository
         {
             throw new NotImplementedException();
         }
+
+        //public Task ProcessRequest()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public byte[] CreatePdf(string reqno)
+        {
+            var globalSettings = new GlobalSettings
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4,
+                Margins = new MarginSettings { Top = 10 },
+                DocumentTitle = "PDF format",
+                //for local storage
+                /*Out = @"E:\ProjectsTom\GeneratePdf\Requisition.pdf"*/
+            };
+
+            var objectSettings = new ObjectSettings
+            {
+                PagesCount = true,
+                HtmlContent = GetHTMLString(reqno),
+                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "styles.css") },
+                HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+                FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Report Footer" }
+            };
+
+            var pdf = new HtmlToPdfDocument
+            {
+                GlobalSettings = globalSettings,
+                Objects = { objectSettings }
+            };
+
+            var file = _converter.Convert(pdf);
+
+            return file;
+        }
+
+
+        public string GetHTMLString(string reqno)
+        {
+            var requisition = RequesitionsVM(reqno);
+            var system = _system.GetSingle();
+
+            var sb = new StringBuilder();
+
+            sb.Append(@"
+                <html>
+                    <head></head>
+                    <body>
+                       <div class='header'>
+                         <h1></h1>
+                         <h2></h2>
+                       </div>
+                        <table align='center'>
+                            <tr>
+                                <th>Item Code</th>
+                                <th>Description</th>
+                                <th>unit</th>
+                                <th>Quantity</th>
+                ");
+            sb.AppendFormat(@"<div class='header'>
+                                <h1>{0}</h1>
+                                <h2>{1}</h2>
+                              </div>",
+                              system.CompanyName, system.CompanyAddress);
+            sb.AppendFormat(@"
+                           <div>
+                            <h3>Requisition No.: {0}</h3>
+                            <h3>Requisition Date: {1}</h3>
+                            <h3>Requistioned by: {2}</h3>
+                            <h3>Department: {3}</h3>
+                           </div>", reqno, requisition.DateAndTime, requisition.RequisitionBy, requisition.Department);
+            foreach (var item in requisition.ItemLists)
+            {
+                sb.AppendFormat(@"<tr>
+                                    <td>{0}</td>
+                                    <td>{1}</td>
+                                    <td>{2}</td>
+                                    <td>{3}</td>
+                                  </tr>", item.ItemCode, item.ItemDescription, item.Unit, item.Quantity);
+            }
+            sb.Append(@"
+                        </table>
+                       </body>
+                    </html>");
+            return sb.ToString();
+        }
+        //public string ProcessRequest(string locationcode, IEnumerable<ItemListViewModel> processRequisition)
+        //{
+        //    var reqNo = GenerateRequisitionNo();
+        //    var location = locationcode;
+
+        //    foreach (var item in processRequisition)
+        //    {
+        //        var description = GetDescription(item.Itemcode);
+
+        //        var stockprice = (from stockmaster in _dbContext.St_StockMasters
+        //                          where stockmaster.ItemCode == item.Itemcode
+        //                          select stockmaster.StockPrice).First();
+
+        //        var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
+        //                                  where stockmaster.ItemCode == item.Itemcode
+        //                                  select stockmaster).FirstOrDefault();
+
+        //        var qtyintrans = updateQtyInTransit.QtyInTransaction += item.Quantity;
+
+
+        //        using (SqlConnection sqlcon = new SqlConnection(connectionString))
+        //        {
+        //            using (SqlCommand cmd = new SqlCommand("sp_stockrequest", sqlcon))
+        //            {
+        //                cmd.CommandTimeout = 1200;
+        //                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //                cmd.Parameters.Add(new SqlParameter("@requisitionNo", reqNo));
+        //                cmd.Parameters.Add(new SqlParameter("@itemCode", item.Itemcode));
+        //                cmd.Parameters.Add(new SqlParameter("@description", description));
+        //                cmd.Parameters.Add(new SqlParameter("@locationCode", location));
+        //                cmd.Parameters.Add(new SqlParameter("@quantity", item.Quantity));
+        //                cmd.Parameters.Add(new SqlParameter("@requisitionDate", DateTime.Now));
+        //                cmd.Parameters.Add(new SqlParameter("@unit", item.Unit));
+        //                cmd.Parameters.Add(new SqlParameter("@price", stockprice));
+        //                cmd.Parameters.Add(new SqlParameter("@userId", "HICAD"));
+        //                cmd.Parameters.Add(new SqlParameter("@isApproved", false));
+        //                cmd.Parameters.Add(new SqlParameter("@isDeleted", false));
+        //                cmd.Parameters.Add(new SqlParameter("@isSupplied", false));
+        //                cmd.Parameters.Add(new SqlParameter("@qtyIntransit", qtyintrans));
+        //            }
+        //        }
+        //    }
+
+        //    return reqNo;
+        //}
     }
 }

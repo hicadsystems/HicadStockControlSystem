@@ -67,6 +67,7 @@ export default {
   methods: {
     generateReport(){
        window.open(`/MonthEndBookClosure/BookClosure/`, "_blank")
+       
     }
   },
 };

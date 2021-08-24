@@ -46,5 +46,8 @@ namespace HicadStockSystem.Core.IRespository
         //Task<int> SupplyRequisition(UpdateSt_RequisitionVM requisition);
         St_Requisition GetReqNo(string reqNo);
         Task<string> GetReqNo();
+        //Task ProcessRequest();
+        byte[] CreatePdf(string reqno);
+        string GetHTMLString(string reqno);
     }
 }

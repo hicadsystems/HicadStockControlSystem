@@ -1,4 +1,5 @@
-﻿using HicadStockSystem.Core.IRespository;
+﻿using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
+using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -51,13 +52,14 @@ namespace HicadStockSystem.UI.Controllers
             return View();
         }
 
-        [Route("St_RequisitionUI/StockRequisition/{reqno}")]
-        public async Task<IActionResult> StockRequisition(string reqno)
+        [Route("St_RequisitionUI/StockRequisition/{locationCode}/{lineItems}")]
+        public async Task<IActionResult> StockRequisition(string locationCode, IEnumerable<ItemListViewModel> lineItems)
         {
+            //var reqno = _requisition.ProcessRequest(locationCode, lineItems);
             var model = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                Requesition = _requisition.RequesitionsVM(reqno)
+                //Requesition = _requisition.RequesitionsVM(reqno)
             };
             //return RedirectToAction("Index");
             return await _generatePdf.GetPdf("Views/St_RequisitionUI/StockRequisition.cshtml", model);

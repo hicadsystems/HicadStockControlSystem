@@ -1,4 +1,6 @@
 ﻿    using AutoMapper;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
@@ -9,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,13 +24,15 @@ namespace HicadStockSystem.Controllers
         private readonly ISt_Requisition _requisition;
         private readonly IMapper _mapper;
         private readonly ISt_ItemMaster _itemMaster;
+        private readonly IConverter _converter;
         private readonly string connectionstring;
 
-        public St_RequisitionController(ISt_Requisition requisition, IMapper mapper, ISt_ItemMaster itemMaster, IConfiguration configuration)
+        public St_RequisitionController(ISt_Requisition requisition, IMapper mapper, ISt_ItemMaster itemMaster, IConfiguration configuration, IConverter converter)
         {
             _requisition = requisition;
             _mapper = mapper;
             _itemMaster = itemMaster;
+            _converter = converter;
             connectionstring = configuration.GetConnectionString("DefaultConnection");
         }
 
@@ -76,8 +81,34 @@ namespace HicadStockSystem.Controllers
 
                     }
 
-                    var req = _requisition.GetByReqNo(reqNo);
-                    return Ok(req);
+                    var globalSettings = new GlobalSettings
+                    {
+                        ColorMode = ColorMode.Color,
+                        Orientation = Orientation.Portrait,
+                        PaperSize = PaperKind.A4,
+                        Margins = new MarginSettings { Top = 10 },
+                        DocumentTitle = "PDF format",
+                        //for local storage
+                        /*Out = @"E:\ProjectsTom\GeneratePdf\Requisition.pdf"*/
+                    };
+
+                    var objectSettings = new ObjectSettings
+                    {
+                        PagesCount = true,
+                        HtmlContent = _requisition.GetHTMLString(reqNo),
+                        WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "styles.css") },
+                        HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+                        FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Report Footer" }
+                    };
+
+                    var pdf = new HtmlToPdfDocument
+                    {
+                        GlobalSettings = globalSettings,
+                        Objects = { objectSettings }
+                    };
+
+                    var file = _converter.Convert(pdf);
+                    return File(file, "application/pdf", "Requisition.pdf");
                 }
 
 
