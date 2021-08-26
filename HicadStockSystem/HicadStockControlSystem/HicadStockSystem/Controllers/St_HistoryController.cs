@@ -67,8 +67,9 @@ namespace HicadStockSystem.Controllers
                         await _history.CreateAsync(newStockHistory); 
                     }
 
-                    return Ok(docNo);
                 }
+
+                return Ok();
               
             }
 

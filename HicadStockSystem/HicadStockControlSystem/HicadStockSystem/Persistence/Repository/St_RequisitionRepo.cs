@@ -1,6 +1,4 @@
-﻿using DinkToPdf;
-using DinkToPdf.Contracts;
-using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
+﻿using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
@@ -26,16 +24,14 @@ namespace HicadStockSystem.Persistence.Repository
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;
         private readonly ISt_RecordTable _recordTable;
-        private readonly IConverter _converter;
         private readonly string connectionString;
         private readonly ISt_StkSystem _system;
         public St_RequisitionRepo(StockControlDBContext dbContext, IUnitOfWork uow, 
-            ISt_RecordTable recordTable, IConfiguration configuration, IConverter converter, ISt_StkSystem system)
+            ISt_RecordTable recordTable, IConfiguration configuration, ISt_StkSystem system)
         {
             _dbContext = dbContext;
             _uow = uow;
             _recordTable = recordTable;
-            _converter = converter;
             _system = system;
             connectionString = configuration.GetConnectionString("DefaultConnection");
         }
@@ -50,17 +46,10 @@ namespace HicadStockSystem.Persistence.Repository
         //    return currentBal;
         //}
 
-        public float? CheckCurrentBal(CreateSt_RequisitionVM requisition)
+        public float? CheckCurrentBal(string itemcode)
         {
-            float? currentBal=0;
-            foreach (var item in requisition.LineItems)
-            {
-                var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
-                                          where stockmaster.ItemCode == item.Itemcode
-                                          select stockmaster).FirstOrDefault();
-                currentBal = (updateQtyInTransit.OpenBalance + updateQtyInTransit.Receipts - updateQtyInTransit.Issues) - updateQtyInTransit.QtyInTransaction;
-
-            }
+            var currentBal = _dbContext.St_StockMasters.Where(x => x.IsDeleted == false && x.ItemCode == itemcode)
+                .Select(y => y.OpenBalance + y.Receipts - y.Issues).FirstOrDefault();
             return currentBal;
         }
         public async Task CreateAsync(St_Requisition requisition)
@@ -414,39 +403,7 @@ namespace HicadStockSystem.Persistence.Repository
         //    throw new NotImplementedException();
         //}
 
-        public byte[] CreatePdf(string reqno)
-        {
-            var globalSettings = new GlobalSettings
-            {
-                ColorMode = ColorMode.Color,
-                Orientation = Orientation.Portrait,
-                PaperSize = PaperKind.A4,
-                Margins = new MarginSettings { Top = 10 },
-                DocumentTitle = "PDF format",
-                //for local storage
-                /*Out = @"E:\ProjectsTom\GeneratePdf\Requisition.pdf"*/
-            };
-
-            var objectSettings = new ObjectSettings
-            {
-                PagesCount = true,
-                HtmlContent = GetHTMLString(reqno),
-                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "styles.css") },
-                HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
-                FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Report Footer" }
-            };
-
-            var pdf = new HtmlToPdfDocument
-            {
-                GlobalSettings = globalSettings,
-                Objects = { objectSettings }
-            };
-
-            var file = _converter.Convert(pdf);
-
-            return file;
-        }
-
+      
 
         public string GetHTMLString(string reqno)
         {
@@ -459,20 +416,17 @@ namespace HicadStockSystem.Persistence.Repository
                 <html>
                     <head></head>
                     <body>
-                       <div class='header'>
-                         <h1></h1>
-                         <h2></h2>
-                       </div>
-                        <table align='center'>
+                      
+                        <table border='2' cellpadding='2' cellspacing='0' width='100%'>
                             <tr>
                                 <th>Item Code</th>
                                 <th>Description</th>
                                 <th>unit</th>
                                 <th>Quantity</th>
                 ");
-            sb.AppendFormat(@"<div class='header'>
-                                <h1>{0}</h1>
-                                <h2>{1}</h2>
+            sb.AppendFormat(@"<div class='header' style='margin-top:30px;'>
+                                <h1 style='text-align:center;'>{0}</h1>
+                                <h2 style='text-align:center;'>{1}</h2>
                               </div>",
                               system.CompanyName, system.CompanyAddress);
             sb.AppendFormat(@"

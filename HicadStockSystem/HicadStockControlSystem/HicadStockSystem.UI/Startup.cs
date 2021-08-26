@@ -1,10 +1,9 @@
-using DinkToPdf;
-using DinkToPdf.Contracts;
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.IRespository.IMonthEndProcessing;
 using HicadStockSystem.Core.IRespository.IReport;
 using HicadStockSystem.Core.Models;
+using HicadStockSystem.Core.Utilities.PdfConverter;
 using HicadStockSystem.Data;
 using HicadStockSystem.Mapping;
 using HicadStockSystem.Persistence;
@@ -22,6 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Wkhtmltopdf.NetCore;
@@ -40,7 +40,7 @@ namespace HicadStockSystem.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+           
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver

@@ -1,6 +1,4 @@
-﻿    using AutoMapper;
-using DinkToPdf;
-using DinkToPdf.Contracts;
+﻿ using AutoMapper;
 using HicadStockSystem.Controllers.ResourcesVM.St_Requisition;
 using HicadStockSystem.Core;
 using HicadStockSystem.Core.IRespository;
@@ -9,6 +7,7 @@ using HicadStockSystem.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,15 +23,15 @@ namespace HicadStockSystem.Controllers
         private readonly ISt_Requisition _requisition;
         private readonly IMapper _mapper;
         private readonly ISt_ItemMaster _itemMaster;
-        private readonly IConverter _converter;
+     
         private readonly string connectionstring;
 
-        public St_RequisitionController(ISt_Requisition requisition, IMapper mapper, ISt_ItemMaster itemMaster, IConfiguration configuration, IConverter converter)
+        public St_RequisitionController(ISt_Requisition requisition, IMapper mapper, ISt_ItemMaster itemMaster, 
+            IConfiguration configuration)
         {
             _requisition = requisition;
             _mapper = mapper;
             _itemMaster = itemMaster;
-            _converter = converter;
             connectionstring = configuration.GetConnectionString("DefaultConnection");
         }
 
@@ -40,13 +39,7 @@ namespace HicadStockSystem.Controllers
         public IActionResult GetAllRequistion()
         {
             var requisition = _requisition.GetAll();
-            //foreach (var item in requisition)
-            //{
-            //    if (item.RequisitionNo.Max()>1)
-            //    {
-
-            //    }
-            //}
+            
             return Ok(requisition);
         }
 
@@ -66,6 +59,15 @@ namespace HicadStockSystem.Controllers
                 {
                     foreach (var item in requisitionVM.LineItems)
                     {
+                        var currentbal = _requisition.CheckCurrentBal(item.Itemcode);
+                        if (item.Quantity > currentbal || item.Quantity < 0)
+                        {
+                            return BadRequest("Your Request Is Invalid");
+                        }
+                    }
+                    foreach (var item in requisitionVM.LineItems)
+                    {
+
                         requisitionVM.UserId = "HICAD1";
 
                         requisitionVM.Itemcode = item.Itemcode;
@@ -81,39 +83,9 @@ namespace HicadStockSystem.Controllers
 
                     }
 
-                    var globalSettings = new GlobalSettings
-                    {
-                        ColorMode = ColorMode.Color,
-                        Orientation = Orientation.Portrait,
-                        PaperSize = PaperKind.A4,
-                        Margins = new MarginSettings { Top = 10 },
-                        DocumentTitle = "PDF format",
-                        //for local storage
-                        /*Out = @"E:\ProjectsTom\GeneratePdf\Requisition.pdf"*/
-                    };
-
-                    var objectSettings = new ObjectSettings
-                    {
-                        PagesCount = true,
-                        HtmlContent = _requisition.GetHTMLString(reqNo),
-                        WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "styles.css") },
-                        HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
-                        FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Report Footer" }
-                    };
-
-                    var pdf = new HtmlToPdfDocument
-                    {
-                        GlobalSettings = globalSettings,
-                        Objects = { objectSettings }
-                    };
-
-                    var file = _converter.Convert(pdf);
-                    return File(file, "application/pdf", "Requisition.pdf");
+                    
+                    return Ok(reqNo);
                 }
-
-
-
-
             }
 
             return BadRequest("Requisition already exist.. please try later");
@@ -136,10 +108,18 @@ namespace HicadStockSystem.Controllers
             var reqNo = requisition.RequisitionNo;
             try
             {
+                foreach (var item in requisition.ItemLists)
+                {
+                    var currentbal = _requisition.CheckCurrentBal(item.ItemCode);
+                    if (item.Quantity > (decimal?)currentbal || item.Quantity > (decimal?)item.Requested ||  item.Quantity < 0)
+                    {
+                        return BadRequest("Your Request Is Invalid");
+                    }
+                }
 
                 foreach (var item in requisition.ItemLists)
                 {
-                   
+
                     using (SqlConnection sqlcon = new SqlConnection(connectionstring))
                     {
 
@@ -182,7 +162,7 @@ namespace HicadStockSystem.Controllers
                 }
             }
 
-            return Ok();
+            return Ok("Record Create Succesfully");
         }
 
      
@@ -198,6 +178,15 @@ namespace HicadStockSystem.Controllers
             }
             foreach (var item in requisitionVM.ItemLists)
             {
+                var currentbal = _requisition.CheckCurrentBal(item.ItemCode);
+                if (item.Quantity > (decimal)currentbal || item.Quantity < 0)
+                {
+                    return BadRequest("Your Request Is Invalid");
+                }
+            }
+            foreach (var item in requisitionVM.ItemLists)
+            {
+                
                 using (SqlConnection sqlcon = new SqlConnection(connectionstring))
                 {
 
@@ -337,10 +326,8 @@ namespace HicadStockSystem.Controllers
         [Route("RequisitionApproval/{itemCode}")]
         public IActionResult RequisitionApproval(string itemCode)
         {
-            var approval =  _requisition.RequesitionsVM(itemCode); 
-
-            //RequisitionApprovalItems(itemCode);
-
+            var approval =  _requisition.RequesitionsVM(itemCode);
+            
             return Ok(approval);
 
         }

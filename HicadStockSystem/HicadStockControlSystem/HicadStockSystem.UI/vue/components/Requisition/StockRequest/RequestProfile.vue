@@ -72,7 +72,9 @@
                   name="itemCode"
                   placeholder="item code"
                   @change="getStockItems"
-                  :class="{ 'is-invalid': !itemCodeIsValid && itemCodeblur && isAddItem }"
+                  :class="{
+                    'is-invalid': !itemCodeIsValid && itemCodeblur && isAddItem,
+                  }"
                   v-on:blur="itemCodeblur = true"
                 >
                   <option>
@@ -124,7 +126,9 @@
                   class="form-control"
                   name="quantity"
                   v-model="newItem.quantity"
-                  :class="{ 'is-invalid': !quantityIsValid && quantityblur && isAddItem}"
+                  :class="{
+                    'is-invalid': !quantityIsValid && quantityblur && isAddItem,
+                  }"
                   v-on:blur="quantityblur = true"
                 />
                 {{ quantityIsValid }}
@@ -187,11 +191,14 @@
                 <th>Item Code</th>
                 <th>Quantity</th>
                 <th>unit</th>
-               <!-- <th>Option</th>-->
+                <!-- <th>Option</th>-->
               </tr>
             </thead>
             <tbody>
-              <tr v-for="lineItem in postBody.lineItems" :key="lineItem.itemCode">
+              <tr
+                v-for="lineItem in postBody.lineItems"
+                :key="lineItem.itemCode"
+              >
                 <td>{{ lineItem.itemCode }}</td>
                 <td>{{ lineItem.quantity }}</td>
                 <td>{{ lineItem.unit }}</td>
@@ -240,7 +247,6 @@ export default {
       isSelected: false,
       isAddItem: false,
 
-     
       currentBal: "",
 
       postBody: {
@@ -261,15 +267,11 @@ export default {
     this.getDepartment();
     this.getItemCode();
   },
-  
+
   methods: {
-    // checkForm() {
-    //   console.log(this.postBody.lineItems)
-    //   window.open(`/St_RequisitionUI/StockRequisition/${this.postBody.locationCode}/${this.postBody.lineItems}`, "_blank")
-    // },
-    //api code do not remove
+   
     checkForm() {
-      
+     
       axios
           .post(`/api/requisition/`, this.postBody)
           .then((response) => {
@@ -279,14 +281,15 @@ export default {
               this.postBody.locationCode = "",
               this.postBody.lineItems=[]
             }
-            // window.location.reload();
+            var reqNo = response.data
+             window.open(`/St_RequisitionUI/StockRequisition/${reqNo}`, "_blank")
+            
           })
           .catch((e) => {
             this.errors.push(e);
           });
-
     },
-  
+
     getDepartment() {
       axios.get(`/api/requisition/getcostcentre`).then((response) => {
         this.DepartmentList = response.data;
@@ -305,7 +308,6 @@ export default {
           // this.postBody.currentBal = response.data.currentBalance;
           // this.postBody.unit = response.data.unit;
         });
-        
     },
     getItemCode() {
       axios.get(`/api/itemmaster`).then((response) => {
@@ -339,7 +341,9 @@ export default {
         };
 
         //checking for duplicate item
-        let existingItems = this.postBody.lineItems.map((item) => item.itemCode);
+        let existingItems = this.postBody.lineItems.map(
+          (item) => item.itemCode
+        );
 
         if (existingItems.includes(newItem.itemCode)) {
           let lineItem = this.postBody.lineItems.find(
@@ -354,20 +358,20 @@ export default {
           console.log(result);
         }
 
-        this.newItem = { itemCode: "", quantity: "", /*unit: ""*/ };
+        this.newItem = { itemCode: "", quantity: "" /*unit: ""*/ };
         // this.newItem = [{ itemCode: "", quantity: "", unit: "" }];
         this.isAddItem = true;
 
         // this.currentBal -= this.quantity
-      }else{
+      } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
       }
       // alert(this.newItem.itemCode)
     },
 
-    removeItem(itemCode){
-      this.lineItems.splice(this.itemCode, 1)
-    }
+    removeItem(itemCode) {
+      this.lineItems.splice(this.itemCode, 1);
+    },
   },
   computed: {
     departmentIsValid() {
@@ -383,7 +387,8 @@ export default {
     quantityIsValid() {
       return (
         this.newItem.quantity != "" &&
-       ( parseInt(this.newItem.quantity) >= 0 || this.newItem.quantity == null) &&
+        (parseInt(this.newItem.quantity) >= 0 ||
+          this.newItem.quantity == null) &&
         parseInt(this.newItem.quantity) <= parseInt(this.currentBal)
       );
     },

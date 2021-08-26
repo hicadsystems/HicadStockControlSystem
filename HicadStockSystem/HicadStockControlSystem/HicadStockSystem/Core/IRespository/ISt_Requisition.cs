@@ -35,7 +35,7 @@ namespace HicadStockSystem.Core.IRespository
 
         //float? CheckCurrentBal(St_Requisition requisition);
         //Task<IEnumerable<string>> GetAllByReqNo(string reqno);
-        float? CheckCurrentBal(CreateSt_RequisitionVM requisition);
+        float? CheckCurrentBal(string itemcode);
         List<ItemViewModel> ItemLists(string reqNo);
 
         List<St_Requisition> GetByItemCode(string requisitionNo, string itemcode);
@@ -47,7 +47,6 @@ namespace HicadStockSystem.Core.IRespository
         St_Requisition GetReqNo(string reqNo);
         Task<string> GetReqNo();
         //Task ProcessRequest();
-        byte[] CreatePdf(string reqno);
         string GetHTMLString(string reqno);
     }
 }

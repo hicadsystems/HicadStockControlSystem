@@ -94,6 +94,7 @@
   </div>
 </template>
 <script>
+import XLSX from "xlsx";
 export default {
   data() {
     return {
@@ -101,7 +102,6 @@ export default {
       statusList: null,
       isFormVisible: false,
       responseMessage: "",
-      file:"",
       file:"",
       postBody: {
         companyName: "",
@@ -156,18 +156,43 @@ export default {
       formData.append('file', this.file);
       // console.log(formData);
       axios
-        .put(`/api/stockmaster/updatephysicalcountexcel/`, formData,{
+        .post(`/api/stockmaster/updatephysicalcountexcel/`, formData,{
             headers:{
                 'Content-Type': 'multipart/form-data'
             }
         })
-        .then(function(data){
-          console.log(data.data)
+        .then((response) => {
+            this.responseMessage = response.data.responseDescription;
+            this.canProcess = true;
+            if (response.data.responseCode == "200") {
+             this.file = ""
+            }
         });
     },
-    handleFileUpload(){
-        this.file = this.$refs.file.files[0];
-    }
+    handleFileUpload(e){
+      this.file = this.$refs.file.files[0];
+        // this.file = e.target.files[0];
+    },
+
+    // handleFileUpload(e){
+    //    this.file = event.target.files ? event.target.files[0] : null;
+    //   if (this.file) {
+    //     const reader = new FileReader();
+
+    //     reader.onload = (e) => {
+    //       /* Parse data */
+    //       const bstr = e.target.result;
+    //       const wb = XLSX.read(bstr, { type: 'binary' });
+    //       /* Get first worksheet */
+    //       const wsname = wb.SheetNames[0];
+    //       const ws = wb.Sheets[wsname];
+    //       /* Convert array of arrays */
+    //       const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+    //     }
+
+    //     reader.readAsBinaryString(this.file);
+    //   }
+    // }
   },
 };
 </script>

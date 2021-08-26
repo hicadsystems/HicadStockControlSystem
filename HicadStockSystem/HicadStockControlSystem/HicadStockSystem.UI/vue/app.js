@@ -5,9 +5,11 @@ import Vuelidate from 'vuelidate';
 import VueSimpleAlert from "vue-simple-alert";
 import jsPDF  from "jspdf";
 import html2canvas from 'html2canvas';
+import XLSX from "xlsx";
 
 Vue.use(jsPDF);
 Vue.use(html2canvas);
+Vue.use(XLSX);
 
 Vue.use(VueSimpleAlert);
 

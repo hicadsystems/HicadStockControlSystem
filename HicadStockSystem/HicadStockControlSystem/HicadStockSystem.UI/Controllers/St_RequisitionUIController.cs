@@ -52,14 +52,14 @@ namespace HicadStockSystem.UI.Controllers
             return View();
         }
 
-        [Route("St_RequisitionUI/StockRequisition/{locationCode}/{lineItems}")]
-        public async Task<IActionResult> StockRequisition(string locationCode, IEnumerable<ItemListViewModel> lineItems)
+        [Route("St_RequisitionUI/StockRequisition/{reqNo}")]
+        public async Task<IActionResult> StockRequisition(string reqNo)
         {
             //var reqno = _requisition.ProcessRequest(locationCode, lineItems);
             var model = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                //Requesition = _requisition.RequesitionsVM(reqno)
+                Requesition = _requisition.RequesitionsVM(reqNo)
             };
             //return RedirectToAction("Index");
             return await _generatePdf.GetPdf("Views/St_RequisitionUI/StockRequisition.cshtml", model);

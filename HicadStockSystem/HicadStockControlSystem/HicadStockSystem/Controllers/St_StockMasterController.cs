@@ -133,10 +133,10 @@ namespace HicadStockSystem.Controllers
 
         //excel upload
         [Route("updatephysicalcountexcel")]
-        [HttpPut]
-        public async Task<IActionResult> UpdatePhysicalCount(IFormFile formFile, CancellationToken cancellationToken)
+        [HttpPost]
+        public async Task<IActionResult> UpdatePhysicalCount(IFormFile file, CancellationToken cancellationToken)
         {
-            if (formFile == null || formFile.Length <= 0)
+            if (file == null || file.Length <= 0)
             {
                 //TempData["message"] = "No File Uploaded";
                 //return BadRequest("File not an Excel Format");
@@ -144,7 +144,7 @@ namespace HicadStockSystem.Controllers
                 return BadRequest("No File Uploaded");
             }
 
-            if (!Path.GetExtension(formFile.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+            if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
             {
                 //TempData["message"] = "File not an Excel Format";
                 return BadRequest("File not an Excel Format");
@@ -156,7 +156,7 @@ namespace HicadStockSystem.Controllers
 
             using (var stream = new MemoryStream())
             {
-                await formFile.CopyToAsync(stream, cancellationToken);
+                await file.CopyToAsync(stream, cancellationToken);
 
                 using (var package = new ExcelPackage(stream))
                 {
@@ -195,17 +195,18 @@ namespace HicadStockSystem.Controllers
 
                         string itemcode = String.IsNullOrEmpty(worksheet.Cells[row, 1].Value.ToString()) ? "" : worksheet.Cells[row, 1].Value.ToString().Trim();
                         string itemDesc = String.IsNullOrEmpty(worksheet.Cells[row, 2].Value.ToString()) ? "" : worksheet.Cells[row, 2].Value.ToString().Trim();
-                        int quantity = ((int)worksheet.Cells[row, 3].Value).Equals(null) ? 0 : (int)worksheet.Cells[row, 3].Value;
+                        string quantity = String.IsNullOrEmpty(worksheet.Cells[row, 3].Value.ToString()) ? "" : worksheet.Cells[row, 3].Value.ToString().Trim();
+                        //float quantity = String.IsNullOrEmpty(worksheet.Cells[row, 3].Value.ToString()) ? float.Parse("0") : (float)worksheet.Cells[row, 3].Value;
                        
 
-                        if (String.IsNullOrEmpty(worksheet.Cells[row, 1].Value.ToString()) || 
+                        if (String.IsNullOrEmpty(worksheet.Cells[row, 1].Value.ToString()) && 
                             String.IsNullOrEmpty(worksheet.Cells[row, 3].Value.ToString()))
                         {
                             listapplicationofrecordnotavailable.Add(new PhysicalCountSheetVM
                             {
                                 ItemCode = itemcode,
                                 ItemDesc = itemDesc,
-                                Quantity = quantity,
+                                Quantity = float.Parse(quantity),
                                 
                             });
 
@@ -217,7 +218,7 @@ namespace HicadStockSystem.Controllers
                             {
                                 ItemCode = itemcode,
                                 ItemDesc = itemDesc,
-                                Quantity = quantity,
+                                Quantity = float.Parse(quantity),
                             });
                         }
 

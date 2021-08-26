@@ -62,30 +62,6 @@
                 readonly="readonly"
                 v-model="postBody.department"
               />
-              <!--<input
-                type="hidden"
-                name="locationCode"
-                class="form-control"
-                :value="postBody.locationCode"
-              />
-              <input
-                type="hidden"
-                name="createdOn"
-                class="form-control"
-                :value="postBody.createdOn"
-              />
-              <input
-                type="hidden"
-                name="requisitionDate"
-                class="form-control"
-                :value="postBody.requisitionDate"
-              />
-              <input
-                type="hidden"
-                name="requisitionDate"
-                class="form-control"
-                :value="postBody.unit"
-              />-->
             </div>
           </div>
           <br />
@@ -227,14 +203,18 @@ export default {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
-              this.postBody.requisitionNo = "";
-              this.postBody.ItemLists=[];
-              
+              window.open(`/ResponseErrorUI/Index/${response.data}`, "_blank")
+              // this.postBody.requisitionNo = "";
+              // this.postBody.ItemLists=[];
+            }else if(response.data.responseCode != "200"){
+              console.log(response.data)
+              window.open(`/ResponseErrorUI/Index/${response.data}`, "_blank")
             }
             // window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);
+            //  window.open(`/MonthEndBookClosure/BookClosure/${response.data}`, "_blank")
           });
         this.$alert("Submit Form", "Ok", "info");
       } else {
