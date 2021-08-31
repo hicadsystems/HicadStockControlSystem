@@ -370,18 +370,20 @@ export default {
       this.$store.state.objectToUpdate = Status;
     },
     processDelete: function(itemCode) {
-      alert(itemCode);
-      axios
-        .patch(`/api/itemmaster/${itemCode}`)
-        .then((response) => {
-          if (response.data.responseCode == "200") {
-            alert("company successfully deleted");
-            // this.getAllStockItems();
-          }
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+      this.$confirm("Are you sure?").then(() => {
+        axios
+          .patch(`/api/itemmaster/${itemCode}`)
+          .then((response) => {
+            if (response.data.responseCode == "200") {
+              alert("company successfully deleted");
+              this.getAllStockItems();
+            }
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+      });
+      // alert(itemCode);
     },
     getAllStockItems: function() {
       axios
@@ -396,12 +398,14 @@ export default {
     checkForm: function(e) {
       this.validate();
       if (this.valid) {
-        e.preventDefault();
-        this.canProcess = false;
-        // this.$alert("Submit Form", "Ok", "info");
-        this.isFormVisible = false;
-        this.postPost();
-        // this.$refs.itemForm.reset();
+        this.$confirm("Create Item").then(() => {
+          e.preventDefault();
+          this.canProcess = false;
+          // this.$alert("Submit Form", "Ok", "info");
+          this.isFormVisible = false;
+          this.postPost();
+          // this.$refs.itemForm.reset();
+        });
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];

@@ -191,7 +191,7 @@
                 <th>Item Code</th>
                 <th>Quantity</th>
                 <th>unit</th>
-                <!-- <th>Option</th>-->
+                <!--<th>Option</th>-->
               </tr>
             </thead>
             <tbody>
@@ -203,7 +203,12 @@
                 <td>{{ lineItem.quantity }}</td>
                 <td>{{ lineItem.unit }}</td>
                 <!--<td>
-                <button @click="removeItem(lineItem.itemCode)" class="btn btn-danger">Remove Item</button>
+                  <button
+                    @click="removeItem(lineItem.itemCode)"
+                    class="btn btn-danger"
+                  >
+                    Remove Item
+                  </button>
                 </td>-->
               </tr>
             </tbody>
@@ -269,25 +274,26 @@ export default {
   },
 
   methods: {
-   
     checkForm() {
-     
-      axios
+      this.$confirm("Confirm Request").then(() => {
+        axios
           .post(`/api/requisition/`, this.postBody)
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
-              this.postBody.locationCode = "",
-              this.postBody.lineItems=[]
+              (this.postBody.locationCode = ""), (this.postBody.lineItems = []);
             }
-            var reqNo = response.data
-             window.open(`/St_RequisitionUI/StockRequisition/${reqNo}`, "_blank")
-            
+            var reqNo = response.data;
+            window.open(
+              `/St_RequisitionUI/StockRequisition/${reqNo}`,
+              "_blank"
+            );
           })
           .catch((e) => {
             this.errors.push(e);
           });
+      });
     },
 
     getDepartment() {
@@ -370,7 +376,7 @@ export default {
     },
 
     removeItem(itemCode) {
-      this.lineItems.splice(this.itemCode, 1);
+      this.postBody.lineItems.splice(this.itemCode, 1);
     },
   },
   computed: {

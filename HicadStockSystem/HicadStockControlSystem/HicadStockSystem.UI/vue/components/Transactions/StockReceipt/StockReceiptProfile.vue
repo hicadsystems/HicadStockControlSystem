@@ -38,7 +38,7 @@
                     v-model="postBody.docDate"
                     :class="{ 'is-invalid': !dateIsValid && dateblur }"
                     v-on:bind="dateblur = true"
-                     @change="isSelectedDate = true"
+                    @change="isSelectedDate = true"
                     v-bind:disabled="isSelectedDate"
                   />
                 </div>
@@ -73,12 +73,12 @@
                 <div class="col-3">
                   <label for="quantity" class="mb-1">Quantity</label>
                   <input
-                  type="number"
+                    type="number"
                     class="form-control"
                     name="quantity"
                     v-model="newItem.quantity"
-                    :class="{ 'is-invalid': !quantityIsValid && quantityblur}"
-                    v-on:blur="quantityblur=true"
+                    :class="{ 'is-invalid': !quantityIsValid && quantityblur }"
+                    v-on:blur="quantityblur = true"
                   />
                   <div class="invalid-feedback">
                     <span class="text-danger h5">Invalid Entry</span>
@@ -88,12 +88,12 @@
                 <div class="col-3">
                   <label for="price" class="mb-1">Price</label>
                   <input
-                  type="number"
+                    type="number"
                     class="form-control"
                     name="price"
                     v-model="newItem.price"
-                    :class="{ 'is-invalid': !priceIsValid && priceblur}"
-                    v-on:blur="priceblur=true"
+                    :class="{ 'is-invalid': !priceIsValid && priceblur }"
+                    v-on:blur="priceblur = true"
                   />
                   <div class="invalid-feedback">
                     <span class="text-danger h5">Invalid Entry</span>
@@ -224,27 +224,27 @@ export default {
   },
   methods: {
     checkForm: function(e) {
-      // alert(this.postBody);
       console.log(this.postBody);
-      // console.log(this.postBody.locationCode);
-      axios
-        .post(`/api/stockhistory/`, this.postBody)
-        .then((response) => {
-          this.responseMessage = response.data.responseDescription;
-          this.canProcess = true;
-          if (response.data.responseCode == "200") {
-            (this.postBody.docDate = ""),
-              (this.postBody.supplier = ""),
-              (this.postBody.lineItems = []);
-          }
-          window.location.reload();
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
-      // window.location.reload();
+      this.$confirm("Are you sure?").then(() => {
+        axios
+          .post(`/api/stockhistory/`, this.postBody)
+          .then((response) => {
+            this.responseMessage = response.data.responseDescription;
+            this.canProcess = true;
+            if (response.data.responseCode == "200") {
+              (this.postBody.docDate = ""),
+                (this.postBody.supplier = ""),
+                (this.postBody.lineItems = []);
+            }
+            window.location.reload();
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+        // window.location.reload();
+      });
     },
-    
+
     getStockItem() {
       axios.get(`/api/itemmaster/`).then((response) => {
         this.itemList = response.data;

@@ -2499,6 +2499,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2516,7 +2519,7 @@ __webpack_require__.r(__webpack_exports__);
       maxDay: 7,
       errors: null,
       responseMessage: "",
-      submitorUpdate: "Submit",
+      submitorUpdate: "Update",
       canProcess: true,
       stateList: null,
       writeoffLocList: null,
@@ -2524,6 +2527,7 @@ __webpack_require__.r(__webpack_exports__);
       GLCodeList: null,
       CreditorCodeList: null,
       ExpenseCodeList: null,
+      companylist: null,
       isCrCode: false,
       isGLCode: false,
       isExpenseCode: false,
@@ -2536,7 +2540,7 @@ __webpack_require__.r(__webpack_exports__);
         stateName: "",
         city: "",
         // datepicker
-        installDate: new Date(),
+        installDate: "",
         glCode: "",
         serialNumber: "",
         processYear: 0,
@@ -2559,39 +2563,46 @@ __webpack_require__.r(__webpack_exports__);
     this.getStates();
     this.getWriteOffLoc();
     this.getBusinessLine();
-    this.getAccChart(); // this.getCreditorCode();
+    this.getAccChart();
+    this.getSystemDetails(); // this.getCreditorCode();
     // this.getExpenseCode();
     // this.getGLCode();
   },
-  watch: {
-    "$store.state.objectToUpdate": function $storeStateObjectToUpdate(newVal, oldVal) {
-      this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode, this.postBody.companyName = this.$store.state.objectToUpdate.companyName, this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress, this.postBody.phone = this.$store.state.objectToUpdate.phone;
-      this.postBody.email = this.$store.state.objectToUpdate.email;
-      this.postBody.stateName = this.$store.state.objectToUpdate.stateName;
-      this.postBody.city = this.$store.state.objectToUpdate.city;
-      this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
-      this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
-      this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
-      this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
-      this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
-      this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
-      this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
-      this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
-      this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
-      this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
-      this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
-      this.submitorUpdate = "Update";
-    }
-  },
+  // watch: {
+  //   "$store.state.objectToUpdate": function(newVal, oldVal) {
+  //     (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),
+  //       (this.postBody.companyName = this.$store.state.objectToUpdate.companyName),
+  //       (this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress),
+  //       (this.postBody.phone = this.$store.state.objectToUpdate.phone);
+  //     this.postBody.email = this.$store.state.objectToUpdate.email;
+  //     this.postBody.stateName = this.$store.state.objectToUpdate.stateName;
+  //     this.postBody.city = this.$store.state.objectToUpdate.city;
+  //     this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
+  //     this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
+  //     this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
+  //     this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
+  //     this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
+  //     this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
+  //     this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
+  //     this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
+  //     this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
+  //     this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
+  //     this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
+  //     this.submitorUpdate = "Update";
+  //   },
+  // },
   methods: {
     checkForm: function checkForm(e) {
+      var _this = this;
+
       this.validate();
 
       if (this.valid) {
-        // e.preventDefault();
-        this.canProcess = false;
-        this.$alert("Submit Form", "Ok", "info");
-        this.postPost();
+        this.$confirm("Submit Form").then(function () {
+          _this.canProcess = false; // this.$alert("Submit Form", "Ok", "info");
+
+          _this.postPost();
+        }); // e.preventDefault();
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -2599,66 +2610,66 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     postPost: function postPost() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.submitorUpdate == "Submit") {
         axios.post("/api/st_stksystem/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
+          _this2.responseMessage = response.data.responseDescription;
+          _this2.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            _this.postBody.companyCode = "";
-            _this.postBody.companyName = "";
-            _this.postBody.companyAddress = "";
-            _this.postBody.phone = "";
-            _this.postBody.email = "";
-            _this.postBody.stateName = "";
-            _this.postBody.city = "";
-            _this.postBody.installDate = new Date();
-            _this.postBody.glCode = "", _this.postBody.processYear = "";
-            _this.postBody.processMonth = "";
-            _this.postBody.expenseCode = "";
-            _this.postBody.writeoffLoc = "";
-            _this.postBody.creditorsCode = "";
-            _this.postBody.busLine = "";
-            _this.postBody.holdDays = "";
-            _this.postBody.approvedDay = "";
-            _this.$store.stateName.objectToUpdate = "create";
+            _this2.postBody.companyCode = "";
+            _this2.postBody.companyName = "";
+            _this2.postBody.companyAddress = "";
+            _this2.postBody.phone = "";
+            _this2.postBody.email = "";
+            _this2.postBody.stateName = "";
+            _this2.postBody.city = "";
+            _this2.postBody.installDate = new Date();
+            _this2.postBody.glCode = "", _this2.postBody.processYear = "";
+            _this2.postBody.processMonth = "";
+            _this2.postBody.expenseCode = "";
+            _this2.postBody.writeoffLoc = "";
+            _this2.postBody.creditorsCode = "";
+            _this2.postBody.busLine = "";
+            _this2.postBody.holdDays = "";
+            _this2.postBody.approvedDay = "";
+            _this2.$store.stateName.objectToUpdate = "create";
           }
         })["catch"](function (e) {
-          _this.errors.push(e);
+          _this2.errors.push(e);
         });
       }
 
       if (this.submitorUpdate == "Update") {
         alert("Raedy to Update");
         axios.put("/api/st_stksystem/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
+          _this2.responseMessage = response.data.responseDescription;
+          _this2.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            _this.submitorUpdate = "Submit";
-            _this.postBody.companyCode = "";
-            _this.postBody.companyName = "";
-            _this.postBody.companyAddress = "";
-            _this.postBody.phone = "";
-            _this.postBody.email = "";
-            _this.postBody.stateName = "";
-            _this.postBody.city = "";
-            _this.postBody.installDate = "";
-            _this.postBody.glCode = "";
-            _this.postBody.processYear = "";
-            _this.postBody.processMonth = "";
-            _this.postBody.expenseCode = "";
-            _this.postBody.writeoffLoc = "";
-            _this.postBody.creditorsCode = "";
-            _this.postBody.busLine = "";
-            _this.postBody.holdDays = "";
-            _this.postBody.approvedDay = "";
-            _this.$store.state.objectToUpdate = "update";
+            _this2.submitorUpdate = "Submit";
+            _this2.postBody.companyCode = "";
+            _this2.postBody.companyName = "";
+            _this2.postBody.companyAddress = "";
+            _this2.postBody.phone = "";
+            _this2.postBody.email = "";
+            _this2.postBody.stateName = "";
+            _this2.postBody.city = "";
+            _this2.postBody.installDate = "";
+            _this2.postBody.glCode = "";
+            _this2.postBody.processYear = "";
+            _this2.postBody.processMonth = "";
+            _this2.postBody.expenseCode = "";
+            _this2.postBody.writeoffLoc = "";
+            _this2.postBody.creditorsCode = "";
+            _this2.postBody.busLine = "";
+            _this2.postBody.holdDays = "";
+            _this2.postBody.approvedDay = "";
+            _this2.$store.state.objectToUpdate = "update";
           }
         })["catch"](function (e) {
-          _this.errors.push(e);
+          _this2.errors.push(e);
         });
       }
     },
@@ -2667,33 +2678,62 @@ __webpack_require__.r(__webpack_exports__);
       return !isNaN(parseFloat(n)) && isFinite(n);
     },
     getStates: function getStates() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/api/st_stksystem/getstates").then(function (response) {
-        _this2.stateList = response.data;
+        _this3.stateList = response.data;
       });
     },
     getWriteOffLoc: function getWriteOffLoc() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/api/st_stksystem/GetWriteOffLoc").then(function (response) {
-        _this3.writeoffLocList = response.data;
+        _this4.writeoffLocList = response.data;
       });
     },
     getBusinessLine: function getBusinessLine() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("/api/st_stksystem/GetBusinessLine").then(function (response) {
-        _this4.BusinessLineList = response.data;
+        _this5.BusinessLineList = response.data;
       });
     },
     getAccChart: function getAccChart() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get("/api/st_stksystem/GetAccChart").then(function (response) {
-        _this5.GLCodeList = response.data;
-        _this5.CreditorCodeList = response.data;
-        _this5.ExpenseCodeList = response.data;
+        _this6.GLCodeList = response.data;
+        _this6.CreditorCodeList = response.data;
+        _this6.ExpenseCodeList = response.data;
+      });
+    },
+    getSystemDetails: function getSystemDetails() {
+      var _this7 = this;
+
+      axios.get("/api/st_stksystem/").then(function (response) {
+        _this7.companylist = response.data.response;
+        console.log(_this7.companylist);
+        console.log(_this7.companylist.companyCode);
+        _this7.postBody.companyCode = _this7.companylist.companyCode;
+        alert(_this7.postBody.companyCode);
+        _this7.postBody.companyName = _this7.companylist.companyName;
+        _this7.postBody.companyAddress = _this7.companylist.companyAddress;
+        _this7.postBody.phone = _this7.companylist.phone;
+        _this7.postBody.email = _this7.companylist.email;
+        _this7.postBody.stateName = _this7.companylist.stateName;
+        _this7.postBody.city = _this7.companylist.city;
+        _this7.postBody.installDate = _this7.companylist.installDate;
+        _this7.postBody.glCode = _this7.companylist.glCode;
+        _this7.postBody.processYear = _this7.companylist.processYear;
+        _this7.postBody.processMonth = _this7.companylist.processMonth;
+        _this7.postBody.expenseCode = _this7.companylist.expenseCode;
+        _this7.postBody.writeoffLoc = _this7.companylist.writeoffLoc;
+        _this7.postBody.creditorsCode = _this7.companylist.creditorsCode;
+        _this7.postBody.busLine = _this7.companylist.busLine;
+        _this7.postBody.holdDays = _this7.companylist.holdDays;
+        _this7.postBody.approvedDay = _this7.companylist.approvedDay;
+        _this7.submitorUpdate == "Update";
+        alert(_this7.submitorUpdate);
       });
     },
     //validation functions
@@ -2721,12 +2761,21 @@ __webpack_require__.r(__webpack_exports__);
     companyAddressIsValid: function companyAddressIsValid() {
       return this.postBody.companyAddress != "" && this.postBody.companyAddress.length >= 1 && this.postBody.companyAddress.length <= 60;
     },
-    processYearIsValid: function processYearIsValid() {
-      return this.postBody.processYear == "" || this.postBody.processYear.length == this.numLength && parseInt(this.postBody.processYear) >= this.minYear;
-    },
-    processMonthIsValid: function processMonthIsValid() {
-      return this.postBody.processMonth == "" || this.postBody.processMonth.length >= 1 && parseInt(this.postBody.processMonth) >= this.minMonth && parseInt(this.postBody.processMonth) <= this.maxMonth;
-    },
+    // processYearIsValid() {
+    //   return (
+    //     this.postBody.processYear == "" ||
+    //     (this.postBody.processYear.length == this.numLength &&
+    //       parseInt(this.postBody.processYear) >= this.minYear)
+    //   );
+    // },
+    // processMonthIsValid() {
+    //   return (
+    //     this.postBody.processMonth == "" ||
+    //     (this.postBody.processMonth.length >= 1 &&
+    //       parseInt(this.postBody.processMonth) >= this.minMonth &&
+    //       parseInt(this.postBody.processMonth) <= this.maxMonth)
+    //   );
+    // },
     holdDaysIsValid: function holdDaysIsValid() {
       return this.postBody.holdDays == "" || this.postBody.holdDays.length >= 1 && this.postBody.holdDays.length <= 2 && parseInt(this.postBody.holdDays) >= this.minDay && parseInt(this.postBody.holdDays) <= this.maxDay;
     },
@@ -5281,8 +5330,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5334,21 +5381,23 @@ __webpack_require__.r(__webpack_exports__);
       this.validate();
 
       if (this.valid) {
-        // e.preventDefault();
-        axios.patch("/api/requisition/RequisitionApproval", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
+        this.$confirm("Confirm Approval").then(function () {
+          axios.patch("/api/requisition/RequisitionApproval", _this.postBody).then(function (response) {
+            _this.responseMessage = response.data.responseDescription;
+            _this.canProcess = true;
 
-          if (response.data.responseCode == "200") {
-            _this.postBody.requisitionNo = "";
-            _this.postBody.itemLists = [];
-          }
+            if (response.data.responseCode == "200") {
+              _this.postBody.requisitionNo = "";
+              _this.postBody.itemLists = [];
+            }
 
-          window.location.reload();
-        })["catch"](function (e) {
-          _this.errors.push(e);
+            window.location.reload();
+          })["catch"](function (e) {
+            _this.errors.push(e);
+          });
+
+          _this.$alert("Submit Form", "Ok", "info");
         });
-        this.$alert("Submit Form", "Ok", "info");
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -5680,6 +5729,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5723,18 +5777,20 @@ __webpack_require__.r(__webpack_exports__);
     checkForm: function checkForm() {
       var _this = this;
 
-      axios.post("/api/requisition/", this.postBody).then(function (response) {
-        _this.responseMessage = response.data.responseDescription;
-        _this.canProcess = true;
+      this.$confirm("Confirm Request").then(function () {
+        axios.post("/api/requisition/", _this.postBody).then(function (response) {
+          _this.responseMessage = response.data.responseDescription;
+          _this.canProcess = true;
 
-        if (response.data.responseCode == "200") {
-          _this.postBody.locationCode = "", _this.postBody.lineItems = [];
-        }
+          if (response.data.responseCode == "200") {
+            _this.postBody.locationCode = "", _this.postBody.lineItems = [];
+          }
 
-        var reqNo = response.data;
-        window.open("/St_RequisitionUI/StockRequisition/".concat(reqNo), "_blank");
-      })["catch"](function (e) {
-        _this.errors.push(e);
+          var reqNo = response.data;
+          window.open("/St_RequisitionUI/StockRequisition/".concat(reqNo), "_blank");
+        })["catch"](function (e) {
+          _this.errors.push(e);
+        });
       });
     },
     getDepartment: function getDepartment() {
@@ -5816,7 +5872,7 @@ __webpack_require__.r(__webpack_exports__);
 
     },
     removeItem: function removeItem(itemCode) {
-      this.lineItems.splice(this.itemCode, 1);
+      this.postBody.lineItems.splice(this.itemCode, 1);
     }
   },
   computed: {
@@ -7262,17 +7318,19 @@ __webpack_require__.r(__webpack_exports__);
       // alert(this.postBody);
       console.log(this.postBody); // console.log(this.postBody.locationCode);
 
-      axios.post("/api/stockhistory/receiptreversal", this.postBody).then(function (response) {
-        _this.responseMessage = response.data.responseDescription;
-        _this.canProcess = true;
+      this.$confirm("Confirm Reversal").then(function () {
+        axios.post("/api/stockhistory/receiptreversal", _this.postBody).then(function (response) {
+          _this.responseMessage = response.data.responseDescription;
+          _this.canProcess = true;
 
-        if (response.data.responseCode == "200") {
-          _this.postBody.docNo = "";
-          _this.postBody.itemCode = "";
-        } //   window.location.reload();
+          if (response.data.responseCode == "200") {
+            _this.postBody.docNo = "";
+            _this.postBody.itemCode = "";
+          } //   window.location.reload();
 
-      })["catch"](function (e) {
-        _this.errors.push(e);
+        })["catch"](function (e) {
+          _this.errors.push(e);
+        });
       }); // window.location.reload();
     },
     getStockItem: function getStockItem() {
@@ -7645,21 +7703,21 @@ __webpack_require__.r(__webpack_exports__);
     checkForm: function checkForm(e) {
       var _this = this;
 
-      // alert(this.postBody);
-      console.log(this.postBody); // console.log(this.postBody.locationCode);
+      console.log(this.postBody);
+      this.$confirm("Are you sure?").then(function () {
+        axios.post("/api/stockhistory/", _this.postBody).then(function (response) {
+          _this.responseMessage = response.data.responseDescription;
+          _this.canProcess = true;
 
-      axios.post("/api/stockhistory/", this.postBody).then(function (response) {
-        _this.responseMessage = response.data.responseDescription;
-        _this.canProcess = true;
+          if (response.data.responseCode == "200") {
+            _this.postBody.docDate = "", _this.postBody.supplier = "", _this.postBody.lineItems = [];
+          }
 
-        if (response.data.responseCode == "200") {
-          _this.postBody.docDate = "", _this.postBody.supplier = "", _this.postBody.lineItems = [];
-        }
-
-        window.location.reload();
-      })["catch"](function (e) {
-        _this.errors.push(e);
-      }); // window.location.reload();
+          window.location.reload();
+        })["catch"](function (e) {
+          _this.errors.push(e);
+        }); // window.location.reload();
+      });
     },
     getStockItem: function getStockItem() {
       var _this2 = this;
@@ -7929,8 +7987,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -7976,24 +8032,26 @@ __webpack_require__.r(__webpack_exports__);
       this.validate();
 
       if (this.valid) {
-        // e.preventDefault();
-        axios.post("/api/requisition/issue/", this.postBody).then(function (response) {
-          _this.responseMessage = response.data.responseDescription;
-          _this.canProcess = true;
+        this.$confirm("Confirm Supply").then(function () {
+          axios.post("/api/requisition/issue/", _this.postBody).then(function (response) {
+            _this.responseMessage = response.data.responseDescription;
+            _this.canProcess = true;
 
-          if (response.data.responseCode == "200") {
-            window.open("/ResponseErrorUI/Index/".concat(response.data), "_blank"); // this.postBody.requisitionNo = "";
-            // this.postBody.ItemLists=[];
-          } else if (response.data.responseCode != "200") {
-            console.log(response.data);
-            window.open("/ResponseErrorUI/Index/".concat(response.data), "_blank");
-          } // window.location.reload();
+            if (response.data.responseCode == "200") {
+              window.open("/ResponseErrorUI/Index/".concat(response.data), "_blank"); // this.postBody.requisitionNo = "";
+              // this.postBody.ItemLists=[];
+            } else if (response.data.responseCode != "200") {
+              console.log(response.data);
+              window.open("/ResponseErrorUI/Index/".concat(response.data), "_blank");
+            } // window.location.reload();
 
-        })["catch"](function (e) {
-          _this.errors.push(e); //  window.open(`/MonthEndBookClosure/BookClosure/${response.data}`, "_blank")
+          })["catch"](function (e) {
+            _this.errors.push(e); //  window.open(`/MonthEndBookClosure/BookClosure/${response.data}`, "_blank")
 
+          });
+
+          _this.$alert("Submit Form", "Ok", "info");
         });
-        this.$alert("Submit Form", "Ok", "info");
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -8003,21 +8061,15 @@ __webpack_require__.r(__webpack_exports__);
     getRequisitionApproval: function getRequisitionApproval() {
       var _this2 = this;
 
-      // this.postBody.itemCode="1234"
-      // alert(this.postBody.requisitionNo);
       axios.get("/api/requisition/RequisitionApproval/".concat(this.postBody.requisitionNo)).then(function (response) {
         _this2.ItemApprovalList = response.data;
         _this2.postBody.userId = response.data.requisitionBy;
         _this2.postBody.approvedBy = response.data.approvedBy;
         _this2.postBody.department = response.data.department;
         _this2.postBody.requisitionDate = response.data.dateAndTime;
-        _this2.postBody.requisitionNo = response.data.requisitionNo; // this.postBody.itemCode = response.data.itemCode;
-        // this.postBody.description = response.data.itemDescription;
-        // this.postBody.quantity = response.data.requested;
-
+        _this2.postBody.requisitionNo = response.data.requisitionNo;
         _this2.postBody.createdOn = response.data.dateCreated;
-        _this2.postBody.locationCode = response.data.costLocCode; // this.postBody.unit = response.data.unit;
-
+        _this2.postBody.locationCode = response.data.costLocCode;
         _this2.postBody.itemLists = response.data.itemLists;
       });
     },
@@ -8969,14 +9021,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     processDelete: function processDelete(itemCode) {
       var _this = this;
 
-      alert(itemCode);
-      axios.patch("/api/itemmaster/".concat(itemCode)).then(function (response) {
-        if (response.data.responseCode == "200") {
-          alert("company successfully deleted"); // this.getAllStockItems();
-        }
-      })["catch"](function (e) {
-        _this.errors.push(e);
-      });
+      this.$confirm("Are you sure?").then(function () {
+        axios.patch("/api/itemmaster/".concat(itemCode)).then(function (response) {
+          if (response.data.responseCode == "200") {
+            alert("company successfully deleted");
+
+            _this.getAllStockItems();
+          }
+        })["catch"](function (e) {
+          _this.errors.push(e);
+        });
+      }); // alert(itemCode);
     },
     getAllStockItems: function getAllStockItems() {
       var _this2 = this;
@@ -8990,14 +9045,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     // Input form methods
     checkForm: function checkForm(e) {
+      var _this3 = this;
+
       this.validate();
 
       if (this.valid) {
-        e.preventDefault();
-        this.canProcess = false; // this.$alert("Submit Form", "Ok", "info");
+        this.$confirm("Create Item").then(function () {
+          e.preventDefault();
+          _this3.canProcess = false; // this.$alert("Submit Form", "Ok", "info");
 
-        this.isFormVisible = false;
-        this.postPost(); // this.$refs.itemForm.reset();
+          _this3.isFormVisible = false;
+
+          _this3.postPost(); // this.$refs.itemForm.reset();
+
+        });
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -9005,28 +9066,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     postPost: function postPost() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.submitorUpdate == "Submit") {
         axios.post("/api/itemmaster/", this.postBody).then(function (response) {
-          _this3.responseMessage = response.data.responseDescription;
-          _this3.canProcess = true;
+          _this4.responseMessage = response.data.responseDescription;
+          _this4.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            _this3.postBody.itemCode = "";
-            _this3.postBody.itemDesc = "";
-            _this3.postBody.storeLoc = "";
-            _this3.postBody.storerack = "";
-            _this3.postBody.storebin = "";
-            _this3.postBody.reOrderLevel = "";
-            _this3.postBody.reOrderQty = "";
-            _this3.postBody.units = new Date();
-            _this3.postBody.xRef = "", _this3.postBody.partNo = "", _this3.postBody["class"] = "";
-            _this3.postBody.busLine = "";
-            _this3.$store.stateName.objectToUpdate = "create";
+            _this4.postBody.itemCode = "";
+            _this4.postBody.itemDesc = "";
+            _this4.postBody.storeLoc = "";
+            _this4.postBody.storerack = "";
+            _this4.postBody.storebin = "";
+            _this4.postBody.reOrderLevel = "";
+            _this4.postBody.reOrderQty = "";
+            _this4.postBody.units = new Date();
+            _this4.postBody.xRef = "", _this4.postBody.partNo = "", _this4.postBody["class"] = "";
+            _this4.postBody.busLine = "";
+            _this4.$store.stateName.objectToUpdate = "create";
           }
 
-          _this3.getAllStockItems(); // this.$alert("Submit Form", "Ok", "info");
+          _this4.getAllStockItems(); // this.$alert("Submit Form", "Ok", "info");
 
 
           window.location.reload();
@@ -9040,27 +9101,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.submitorUpdate == "Update") {
         // alert("Ready to Update");
         axios.put("/api/itemmaster/", this.postBody).then(function (response) {
-          _this3.responseMessage = response.data.responseDescription;
-          _this3.canProcess = true;
+          _this4.responseMessage = response.data.responseDescription;
+          _this4.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            _this3.submitorUpdate = "Submit";
-            _this3.postBody.itemCode = "";
-            _this3.postBody.itemDesc = "";
-            _this3.postBody.storeLoc = "";
-            _this3.postBody.storerack = "";
-            _this3.postBody.storebin = "";
-            _this3.postBody.reOrderLevel = "";
-            _this3.postBody.reOrderQty = "";
-            _this3.postBody.units = "";
-            _this3.postBody.xRef = "";
-            _this3.postBody.partNo = "";
-            _this3.postBody["class"] = "";
-            _this3.postBody.busLine = "";
-            _this3.$store.state.objectToUpdate = "update";
+            _this4.submitorUpdate = "Submit";
+            _this4.postBody.itemCode = "";
+            _this4.postBody.itemDesc = "";
+            _this4.postBody.storeLoc = "";
+            _this4.postBody.storerack = "";
+            _this4.postBody.storebin = "";
+            _this4.postBody.reOrderLevel = "";
+            _this4.postBody.reOrderQty = "";
+            _this4.postBody.units = "";
+            _this4.postBody.xRef = "";
+            _this4.postBody.partNo = "";
+            _this4.postBody["class"] = "";
+            _this4.postBody.busLine = "";
+            _this4.$store.state.objectToUpdate = "update";
           }
 
-          _this3.getAllStockItems();
+          _this4.getAllStockItems();
 
           window.location.reload();
         })["catch"](function (error) {
@@ -9071,17 +9132,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     getStockClass: function getStockClass() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("/api/stockclass/").then(function (response) {
-        _this4.ClassList = response.data;
+        _this5.ClassList = response.data;
       });
     },
     getBusinessLine: function getBusinessLine() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get("/api/ac_businessline/").then(function (response) {
-        _this5.BusinessLineList = response.data;
+        _this6.BusinessLineList = response.data;
       });
     },
     validate: function validate() {
@@ -9760,7 +9821,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     processRetrieve: function processRetrieve(Status) {
-      alert(Status.supplierCode);
+      // alert(Status.supplierCode);
       this.$store.state.objectToUpdate = Status;
       this.isFormVisible = true;
       this.isEdit = true; // if ((this.$store.state.objectToUpdate = Status)) {
@@ -9770,13 +9831,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     processDelete: function processDelete(supplierCode) {
       var _this = this;
 
-      alert(supplierCode);
-      axios.patch("/api/supplier/".concat(supplierCode)).then(function (response) {
-        if (response.data.responseCode == "200") {
-          alert("Supplier successfully deleted"); // this.getAllSuppliers();
-        }
-      })["catch"](function (e) {
-        _this.errors.push(e);
+      // alert(supplierCode);
+      this.$confirm("Are you sure?").then(function () {
+        axios.patch("/api/supplier/".concat(supplierCode)).then(function (response) {
+          if (response.data.responseCode == "200") {
+            alert("Supplier successfully deleted"); // this.getAllSuppliers();
+          }
+
+          _this.getAllSuppliers(); // window.location.reload();
+
+        })["catch"](function (e) {
+          _this.errors.push(e);
+        });
       });
     },
     getAllSuppliers: function getAllSuppliers() {
@@ -9794,15 +9860,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //  window.location.reload();
     },
     checkForm: function checkForm(e) {
+      var _this3 = this;
+
       this.validate();
 
       if (this.valid) {
-        // e.preventDefault();
-        this.canProcess = false;
-        this.postPost(); // this.$alert("Submit Form", "Ok", "info");
+        this.$confirm("Are you sure?").then(function () {
+          _this3.canProcess = false;
 
-        this.isFormVisible = false; // window.location.reload()
-        // this.$refs.supplierForm.reset();
+          _this3.postPost();
+
+          _this3.isFormVisible = false; // window.location.reload()
+          // this.$refs.supplierForm.reset();
+        });
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -9811,59 +9881,59 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     },
     postPost: function postPost() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.submitorUpdate == "Submit") {
         axios.post("/api/supplier/", this.postBody).then(function (response) {
-          _this3.responseMessage = response.data.responseDescription;
-          _this3.canProcess = true;
+          _this4.responseMessage = response.data.responseDescription;
+          _this4.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            _this3.postBody.supplierCode = "";
-            _this3.postBody.name = "";
-            _this3.postBody.address = "";
-            _this3.postBody.email = "";
-            _this3.postBody.contact = "";
-            _this3.postBody.phone = "";
-            _this3.postBody.sup_Last_Num = "";
-            _this3.postBody.sup_Last_Num = "";
-            _this3.$store.stateName.objectToUpdate = "create";
+            _this4.postBody.supplierCode = "";
+            _this4.postBody.name = "";
+            _this4.postBody.address = "";
+            _this4.postBody.email = "";
+            _this4.postBody.contact = "";
+            _this4.postBody.phone = "";
+            _this4.postBody.sup_Last_Num = "";
+            _this4.postBody.sup_Last_Num = "";
+            _this4.$store.stateName.objectToUpdate = "create";
           }
 
-          _this3.getAllSuppliers();
+          _this4.getAllSuppliers();
 
           window.location.reload(); // this.resetForm();
           // this.$refs.supplierForm.reset();
         })["catch"](function (e) {
-          _this3.errors.push(e);
+          _this4.errors.push(e);
         });
       }
 
       if (this.submitorUpdate == "Update") {
         alert("Ready to Update");
         axios.put("/api/supplier/", this.postBody).then(function (response) {
-          _this3.responseMessage = response.data.responseDescription;
-          _this3.canProcess = true;
+          _this4.responseMessage = response.data.responseDescription;
+          _this4.canProcess = true;
 
           if (response.data.responseCode == "200") {
-            _this3.submitorUpdate = "Submit";
-            _this3.postBody.supplierCode = "";
-            _this3.postBody.name = "";
-            _this3.postBody.address = "";
-            _this3.postBody.email = "";
-            _this3.postBody.contact = "";
-            _this3.postBody.phone = "";
-            _this3.postBody.sup_Last_Num = "";
-            _this3.postBody.sup_Last_Num = "";
-            _this3.$store.state.objectToUpdate = "update";
+            _this4.submitorUpdate = "Submit";
+            _this4.postBody.supplierCode = "";
+            _this4.postBody.name = "";
+            _this4.postBody.address = "";
+            _this4.postBody.email = "";
+            _this4.postBody.contact = "";
+            _this4.postBody.phone = "";
+            _this4.postBody.sup_Last_Num = "";
+            _this4.postBody.sup_Last_Num = "";
+            _this4.$store.state.objectToUpdate = "update";
           }
 
-          _this3.getAllSuppliers(); // this.$refs.supplierForm.reset();
+          _this4.getAllSuppliers(); // this.$refs.supplierForm.reset();
 
 
           window.location.reload();
         })["catch"](function (e) {
-          _this3.errors.push(e);
+          _this4.errors.push(e);
         });
       }
     },
@@ -25653,10 +25723,6 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  class: {
-                    "form-control": true,
-                    "is-invalid": !_vm.processYearIsValid
-                  },
                   attrs: { type: "number", id: "processYear" },
                   domProps: { value: _vm.postBody.processYear },
                   on: {
@@ -25667,9 +25733,7 @@ var render = function() {
                       _vm.$set(_vm.postBody, "processYear", $event.target.value)
                     }
                   }
-                }),
-                _vm._v(" "),
-                _vm._m(5)
+                })
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-6" }, [
@@ -25689,10 +25753,6 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  class: {
-                    "form-control": true,
-                    "is-invalid": !_vm.processMonthIsValid
-                  },
                   attrs: { type: "number", id: "processMonth" },
                   domProps: { value: _vm.postBody.processMonth },
                   on: {
@@ -25709,7 +25769,7 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(6)
+                _vm._m(5)
               ])
             ]),
             _vm._v(" "),
@@ -25960,7 +26020,7 @@ var render = function() {
             _c("br"),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
-              _vm._m(7),
+              _vm._m(6),
               _vm._v(" "),
               _c("div", { staticClass: "col-1" }, [
                 _c("input", {
@@ -25989,12 +26049,12 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(8)
+                _vm._m(7)
               ]),
               _vm._v(" "),
-              _vm._m(9),
+              _vm._m(8),
               _vm._v(" "),
-              _vm._m(10),
+              _vm._m(9),
               _vm._v(" "),
               _c("div", { staticClass: "col-1" }, [
                 _c("input", {
@@ -26023,10 +26083,10 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm._m(11)
+                _vm._m(10)
               ]),
               _vm._v(" "),
-              _vm._m(12)
+              _vm._m(11)
             ]),
             _vm._v(" "),
             _c("br"),
@@ -26105,14 +26165,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "invalid-feedback" }, [
       _c("span", { staticClass: "text-danger h5" }, [_vm._v("invalid Email")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "invalid-feedback" }, [
-      _c("span", { staticClass: "text-danger h5" }, [_vm._v("invalid Year")])
     ])
   },
   function() {
@@ -84940,15 +84992,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************************************************!*\
   !*** ./vue/components/Requisition/StockRequest/RequestProfile.vue ***!
   \********************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RequestProfile_vue_vue_type_template_id_30d60cfb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RequestProfile.vue?vue&type=template&id=30d60cfb& */ "./vue/components/Requisition/StockRequest/RequestProfile.vue?vue&type=template&id=30d60cfb&");
 /* harmony import */ var _RequestProfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RequestProfile.vue?vue&type=script&lang=js& */ "./vue/components/Requisition/StockRequest/RequestProfile.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _RequestProfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _RequestProfile_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -84978,7 +85029,7 @@ component.options.__file = "vue/components/Requisition/StockRequest/RequestProfi
 /*!*********************************************************************************************!*\
   !*** ./vue/components/Requisition/StockRequest/RequestProfile.vue?vue&type=script&lang=js& ***!
   \*********************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

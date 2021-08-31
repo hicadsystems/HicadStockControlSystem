@@ -77,9 +77,9 @@
                 v-model="postBody.phone"
                 v-bind:class="{
                   'form-control': true,
-                  'is-invalid': !PhoneNoIsvalid && phoneNoblur
+                  'is-invalid': !PhoneNoIsvalid && phoneNoblur,
                 }"
-                v-on:blur="phoneNoblur=true"
+                v-on:blur="phoneNoblur = true"
               />
               <div class="invalid-feedback">
                 <span class="text-danger h5">Phone No. is required</span>
@@ -169,14 +169,16 @@
                 class="form-control"
                 id="processYear"
                 v-model="postBody.processYear"
-                v-bind:class="{
+                
+              />
+              <!--validation code inside input-->
+                <!--v-bind:class="{
                   'form-control': true,
                   'is-invalid': !processYearIsValid,
-                }"
-              />
-              <div class="invalid-feedback">
+                }"-->
+              <!--<div class="invalid-feedback">
                 <span class="text-danger h5">invalid Year</span>
-              </div>
+              </div>-->
             </div>
 
             <div class="col-6">
@@ -186,11 +188,12 @@
                 class="form-control"
                 id="processMonth"
                 v-model="postBody.processMonth"
-                v-bind:class="{
+              />
+              <!--validation code inside input-->
+                <!--v-bind:class="{
                   'form-control': true,
                   'is-invalid': !processMonthIsValid,
-                }"
-              />
+                }"-->
               <div class="invalid-feedback">
                 <span class="text-danger h5">invalid Month</span>
               </div>
@@ -339,7 +342,7 @@ export default {
       maxDay: 7,
       errors: null,
       responseMessage: "",
-      submitorUpdate: "Submit",
+      submitorUpdate: "Update",
       canProcess: true,
       stateList: null,
       writeoffLocList: null,
@@ -347,6 +350,7 @@ export default {
       GLCodeList: null,
       CreditorCodeList: null,
       ExpenseCodeList: null,
+       companylist:null,
       isCrCode: false,
       isGLCode: false,
       isExpenseCode: false,
@@ -359,7 +363,7 @@ export default {
         stateName: "",
         city: "",
         // datepicker
-        installDate: new Date(),
+        installDate: "",
         glCode: "",
         serialNumber: "",
         processYear: 0,
@@ -384,41 +388,44 @@ export default {
     this.getWriteOffLoc();
     this.getBusinessLine();
     this.getAccChart();
+    this.getSystemDetails();
     // this.getCreditorCode();
     // this.getExpenseCode();
     // this.getGLCode();
   },
-  watch: {
-    "$store.state.objectToUpdate": function(newVal, oldVal) {
-      (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),
-        (this.postBody.companyName = this.$store.state.objectToUpdate.companyName),
-        (this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress),
-        (this.postBody.phone = this.$store.state.objectToUpdate.phone);
-      this.postBody.email = this.$store.state.objectToUpdate.email;
-      this.postBody.stateName = this.$store.state.objectToUpdate.stateName;
-      this.postBody.city = this.$store.state.objectToUpdate.city;
-      this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
-      this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
-      this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
-      this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
-      this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
-      this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
-      this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
-      this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
-      this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
-      this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
-      this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
-      this.submitorUpdate = "Update";
-    },
-  },
+  // watch: {
+  //   "$store.state.objectToUpdate": function(newVal, oldVal) {
+  //     (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),
+  //       (this.postBody.companyName = this.$store.state.objectToUpdate.companyName),
+  //       (this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress),
+  //       (this.postBody.phone = this.$store.state.objectToUpdate.phone);
+  //     this.postBody.email = this.$store.state.objectToUpdate.email;
+  //     this.postBody.stateName = this.$store.state.objectToUpdate.stateName;
+  //     this.postBody.city = this.$store.state.objectToUpdate.city;
+  //     this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
+  //     this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
+  //     this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
+  //     this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
+  //     this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
+  //     this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
+  //     this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
+  //     this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
+  //     this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
+  //     this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
+  //     this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
+  //     this.submitorUpdate = "Update";
+  //   },
+  // },
   methods: {
     checkForm: function(e) {
       this.validate();
       if (this.valid) {
+        this.$confirm("Submit Form").then(() => {
+          this.canProcess = false;
+          // this.$alert("Submit Form", "Ok", "info");
+          this.postPost();
+        });
         // e.preventDefault();
-        this.canProcess = false;
-        this.$alert("Submit Form", "Ok", "info");
-        this.postPost();
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -451,7 +458,6 @@ export default {
               this.postBody.approvedDay = "";
               this.$store.stateName.objectToUpdate = "create";
             }
-            
           })
           .catch((e) => {
             this.errors.push(e);
@@ -464,7 +470,7 @@ export default {
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
-            if (response.data.responseCode == "200") {
+             if (response.data.responseCode == "200") {
               this.submitorUpdate = "Submit";
               this.postBody.companyCode = "";
               this.postBody.companyName = "";
@@ -522,6 +528,34 @@ export default {
       });
     },
 
+    getSystemDetails() {
+      axios.get(`/api/st_stksystem/`).then((response) => {
+        this.companylist=response.data.response
+        console.log(this.companylist)
+        console.log(this.companylist.companyCode)
+        this.postBody.companyCode = this.companylist.companyCode;
+        alert(this.postBody.companyCode)
+        this.postBody.companyName = this.companylist.companyName;
+        this.postBody.companyAddress = this.companylist.companyAddress;
+        this.postBody.phone = this.companylist.phone;
+        this.postBody.email = this.companylist.email;
+        this.postBody.stateName = this.companylist.stateName;
+        this.postBody.city = this.companylist.city;
+        this.postBody.installDate = this.companylist.installDate;
+        this.postBody.glCode = this.companylist.glCode;
+        this.postBody.processYear = this.companylist.processYear;
+        this.postBody.processMonth = this.companylist.processMonth;
+        this.postBody.expenseCode = this.companylist.expenseCode;
+        this.postBody.writeoffLoc = this.companylist.writeoffLoc;
+        this.postBody.creditorsCode = this.companylist.creditorsCode;
+        this.postBody.busLine = this.companylist.busLine;
+        this.postBody.holdDays = this.companylist.holdDays;
+        this.postBody.approvedDay = this.companylist.approvedDay;
+        this.submitorUpdate == "Update";
+        alert(this.submitorUpdate)
+      });
+    },
+
     //validation functions
     validate() {
       this.codeblur = true;
@@ -570,21 +604,21 @@ export default {
         this.postBody.companyAddress.length <= 60
       );
     },
-    processYearIsValid() {
-      return (
-        this.postBody.processYear == "" ||
-        (this.postBody.processYear.length == this.numLength &&
-          parseInt(this.postBody.processYear) >= this.minYear)
-      );
-    },
-    processMonthIsValid() {
-      return (
-        this.postBody.processMonth == "" ||
-        (this.postBody.processMonth.length >= 1 &&
-          parseInt(this.postBody.processMonth) >= this.minMonth &&
-          parseInt(this.postBody.processMonth) <= this.maxMonth)
-      );
-    },
+    // processYearIsValid() {
+    //   return (
+    //     this.postBody.processYear == "" ||
+    //     (this.postBody.processYear.length == this.numLength &&
+    //       parseInt(this.postBody.processYear) >= this.minYear)
+    //   );
+    // },
+    // processMonthIsValid() {
+    //   return (
+    //     this.postBody.processMonth == "" ||
+    //     (this.postBody.processMonth.length >= 1 &&
+    //       parseInt(this.postBody.processMonth) >= this.minMonth &&
+    //       parseInt(this.postBody.processMonth) <= this.maxMonth)
+    //   );
+    // },
     holdDaysIsValid() {
       return (
         this.postBody.holdDays == "" ||

@@ -124,20 +124,23 @@ export default {
       // alert(this.postBody);
       console.log(this.postBody);
       // console.log(this.postBody.locationCode);
-      axios
-        .post(`/api/stockhistory/receiptreversal`, this.postBody)
-        .then((response) => {
-          this.responseMessage = response.data.responseDescription;
-          this.canProcess = true;
-          if (response.data.responseCode == "200") {
-            this.postBody.docNo = "";
-            this.postBody.itemCode = "";
-          }
-          //   window.location.reload();
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+      this.$confirm("Confirm Reversal").then(() => {
+        axios
+          .post(`/api/stockhistory/receiptreversal`, this.postBody)
+          .then((response) => {
+            this.responseMessage = response.data.responseDescription;
+            this.canProcess = true;
+            if (response.data.responseCode == "200") {
+              this.postBody.docNo = "";
+              this.postBody.itemCode = "";
+            }
+            //   window.location.reload();
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+      });
+
       // window.location.reload();
     },
 

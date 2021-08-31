@@ -2,7 +2,6 @@
   <div>
     <div class="card">
       <div class="card-body">
-      
         <div class="p-5" id="vertical-form">
           <div class="preview">
             <div class="row">
@@ -117,7 +116,7 @@
                     </td>
                     <td>
                       <input
-                      type="number"
+                        type="number"
                         class="form-control"
                         v-model="item.quantity"
                         name="approvedQty"
@@ -141,7 +140,8 @@
                         :value="item.unit"
                       />
                     </td>
-                   <!-- <td>
+
+                    <!--<td>
                       <button
                         class="btn btn-submit btn-danger"
                         @click="dismissItem(item.itemcode)"
@@ -167,9 +167,7 @@
             <br />
           </div>
         </div>
-      
       </div>
-      
     </div>
   </div>
 </template>
@@ -227,22 +225,23 @@ export default {
     checkForm() {
       this.validate();
       if (this.valid) {
-        // e.preventDefault();
-        axios
-          .patch(`/api/requisition/RequisitionApproval`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              this.postBody.requisitionNo = "";
-              this.postBody.itemLists = [];
-            }
-            window.location.reload();
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
-        this.$alert("Submit Form", "Ok", "info");
+        this.$confirm("Confirm Approval").then(() => {
+          axios
+            .patch(`/api/requisition/RequisitionApproval`, this.postBody)
+            .then((response) => {
+              this.responseMessage = response.data.responseDescription;
+              this.canProcess = true;
+              if (response.data.responseCode == "200") {
+                this.postBody.requisitionNo = "";
+                this.postBody.itemLists = [];
+              }
+              window.location.reload();
+            })
+            .catch((e) => {
+              this.errors.push(e);
+            });
+          this.$alert("Submit Form", "Ok", "info");
+        });
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -269,7 +268,6 @@ export default {
         });
     },
 
-    
     getRequisition() {
       axios.get(`/api/requisition/`).then((response) => {
         this.RequisitionList = response.data;
@@ -337,7 +335,6 @@ export default {
         );
       });
     },
-  
   },
 };
 </script>

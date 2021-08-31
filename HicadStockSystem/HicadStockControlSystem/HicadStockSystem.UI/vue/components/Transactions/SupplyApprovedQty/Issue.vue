@@ -111,9 +111,7 @@
                       class="form-control"
                       v-model="item.quantity"
                       name="approvedQty"
-                      :class="{ 'is-invalid':
-                            item.quantity >
-                            item.requested }"
+                      :class="{ 'is-invalid': item.quantity > item.requested }"
                     />
                     <div class="invalid-feedback">
                       <span class="text-danger h5">Invalid Entry</span>
@@ -196,27 +194,31 @@ export default {
     checkForm() {
       this.validate();
       if (this.valid) {
-        // e.preventDefault();
-        axios
-          .post(`/api/requisition/issue/`, this.postBody)
-          .then((response) => {
-            this.responseMessage = response.data.responseDescription;
-            this.canProcess = true;
-            if (response.data.responseCode == "200") {
-              window.open(`/ResponseErrorUI/Index/${response.data}`, "_blank")
-              // this.postBody.requisitionNo = "";
-              // this.postBody.ItemLists=[];
-            }else if(response.data.responseCode != "200"){
-              console.log(response.data)
-              window.open(`/ResponseErrorUI/Index/${response.data}`, "_blank")
-            }
-            // window.location.reload();
-          })
-          .catch((e) => {
-            this.errors.push(e);
-            //  window.open(`/MonthEndBookClosure/BookClosure/${response.data}`, "_blank")
-          });
-        this.$alert("Submit Form", "Ok", "info");
+        this.$confirm("Confirm Supply").then(() => {
+          axios
+            .post(`/api/requisition/issue/`, this.postBody)
+            .then((response) => {
+              this.responseMessage = response.data.responseDescription;
+              this.canProcess = true;
+              if (response.data.responseCode == "200") {
+                window.open(
+                  `/ResponseErrorUI/Index/${response.data}`,
+                  "_blank"
+                );
+                // this.postBody.requisitionNo = "";
+                // this.postBody.ItemLists=[];
+              } else if (response.data.responseCode != "200") {
+                console.log(response.data);
+                window.open(`/ResponseErrorUI/Index/${response.data}`,"_blank");
+              }
+              // window.location.reload();
+            })
+            .catch((e) => {
+              this.errors.push(e);
+              //  window.open(`/MonthEndBookClosure/BookClosure/${response.data}`, "_blank")
+            });
+          this.$alert("Submit Form", "Ok", "info");
+        });
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -225,8 +227,6 @@ export default {
     },
 
     getRequisitionApproval() {
-      // this.postBody.itemCode="1234"
-      // alert(this.postBody.requisitionNo);
       axios
         .get(
           `/api/requisition/RequisitionApproval/${this.postBody.requisitionNo}`
@@ -238,12 +238,8 @@ export default {
           this.postBody.department = response.data.department;
           this.postBody.requisitionDate = response.data.dateAndTime;
           this.postBody.requisitionNo = response.data.requisitionNo;
-          // this.postBody.itemCode = response.data.itemCode;
-          // this.postBody.description = response.data.itemDescription;
-          // this.postBody.quantity = response.data.requested;
           this.postBody.createdOn = response.data.dateCreated;
           this.postBody.locationCode = response.data.costLocCode;
-          // this.postBody.unit = response.data.unit;
           this.postBody.itemLists = response.data.itemLists;
         });
     },

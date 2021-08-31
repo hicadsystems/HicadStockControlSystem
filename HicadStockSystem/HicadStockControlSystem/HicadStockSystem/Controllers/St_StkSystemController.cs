@@ -29,8 +29,9 @@ namespace HicadStockSystem.Controllers
         public async Task<IActionResult> GetStkSystem()
         {
             //_systemRepo.GetAllState();
-            var stkSystem = await _systemRepo.GetAll();
-            return Ok(stkSystem);
+            //var stkSystem = await _systemRepo.GetAll();
+            var stkSystem =  _systemRepo.GetSingle();
+            return Ok(new { response = stkSystem });
         }
 
         [HttpPost]

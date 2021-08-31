@@ -10,7 +10,7 @@
               <div class="col-3">
                 <label for="supplierCode" class="mb-1">Supplier Code</label>
                 <input
-                ref="supplierCode"
+                  ref="supplierCode"
                   class="form-control"
                   name="supplierCode"
                   v-model="postBody.supplierCode"
@@ -31,7 +31,7 @@
               <div class="col-6 offset-3">
                 <label for="name" class="mb-1">Supplier Name</label>
                 <input
-                ref="supplierCode"
+                  ref="supplierCode"
                   class="form-control"
                   name="name"
                   v-model="postBody.name"
@@ -54,7 +54,7 @@
               <div class="col-6">
                 <label for="address" class="mb-1">Supplier Address</label>
                 <input
-                ref="address"
+                  ref="address"
                   class="form-control"
                   name="address"
                   v-model="postBody.address"
@@ -74,7 +74,7 @@
               <div class="col-6">
                 <label for="contact" class="mb-1">Contact</label>
                 <input
-                ref="contact"
+                  ref="contact"
                   class="form-control"
                   name="contact "
                   v-model="postBody.contact"
@@ -96,7 +96,7 @@
               <div class="col-6">
                 <label for="email" class="mb-1">Email</label>
                 <input
-                ref="email"
+                  ref="email"
                   class="form-control"
                   name="email"
                   v-model="postBody.email"
@@ -112,7 +112,7 @@
               <div class="col-6">
                 <label for="phone" class="mb-1">Phone No.</label>
                 <input
-                ref="phone"
+                  ref="phone"
                   class="form-control"
                   v-model="postBody.phone"
                   v-bind:class="{
@@ -266,7 +266,7 @@ export default {
   },
   methods: {
     processRetrieve: function(Status) {
-      alert(Status.supplierCode);
+      // alert(Status.supplierCode);
       this.$store.state.objectToUpdate = Status;
       this.isFormVisible = true;
       this.isEdit = true;
@@ -275,18 +275,22 @@ export default {
       // }
     },
     processDelete: function(supplierCode) {
-      alert(supplierCode);
-      axios
-        .patch(`/api/supplier/${supplierCode}`)
-        .then((response) => {
-          if (response.data.responseCode == "200") {
-            alert("Supplier successfully deleted");
-            // this.getAllSuppliers();
-          }
-        })
-        .catch((e) => {
-          this.errors.push(e);
-        });
+      // alert(supplierCode);
+      this.$confirm("Are you sure?").then(() => {
+        axios
+          .patch(`/api/supplier/${supplierCode}`)
+          .then((response) => {
+            if (response.data.responseCode == "200") {
+              alert("Supplier successfully deleted");
+              // this.getAllSuppliers();
+            }
+            this.getAllSuppliers();
+            // window.location.reload();
+          })
+          .catch((e) => {
+            this.errors.push(e);
+          });
+      });
     },
     getAllSuppliers: function() {
       axios
@@ -304,13 +308,13 @@ export default {
     checkForm: function(e) {
       this.validate();
       if (this.valid) {
-        // e.preventDefault();
-        this.canProcess = false;
-        this.postPost();
-        // this.$alert("Submit Form", "Ok", "info");
-        this.isFormVisible = false;
-        // window.location.reload()
-        // this.$refs.supplierForm.reset();
+        this.$confirm("Are you sure?").then(() => {
+          this.canProcess = false;
+          this.postPost();
+          this.isFormVisible = false;
+          // window.location.reload()
+          // this.$refs.supplierForm.reset();
+        });
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -367,7 +371,6 @@ export default {
             this.getAllSuppliers();
             // this.$refs.supplierForm.reset();
             window.location.reload();
-            
           })
           .catch((e) => {
             this.errors.push(e);
@@ -444,7 +447,7 @@ export default {
         // this.postBody.phone.match(phoneno))
       );
     },
-   
+
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
       alert("setter");
