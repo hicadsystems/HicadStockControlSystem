@@ -1,0 +1,51 @@
+﻿@model  HicadStockSystem.Core.Utilities.ReportVM
+@using Microsoft.AspNetCore.Http;
+@{
+	ViewBag.Title = "PrintBuyerGuide";
+}
+@{
+	Layout = null;
+
+}
+<!DOCTYPE html>
+<html>
+<body>
+	 <h1 style="text-align:center" class="text-center display-4">@Model.StkSystems.CompanyName</h1>
+	 <h3 style="text-align:center">@Model.StkSystems.CompanyAddress</h3>
+
+	 <br />
+	@*<h3 style="text-align:center">REPORTS</h3>
+		<h4 style="text-align:center">Stock Position</h4>*@
+
+	 <h3>Buyer's Guide Report: Produce On @DateTime.Now</h3>
+	<table border="2" cellpadding="2" cellspacing="0" width="100%">
+							  <tr  style="text-align:center">
+							 
+							  </tr>
+						   @foreach (var b in Model.BuyersGuide2)
+							{
+								<tr>
+									<td><span><b>Item Code:</b></span> @b.ItemCode</td>
+									<td><span><b>Description:</b></span> @b.ItemDesc</td>
+									
+								</tr>
+								
+								<tr>	
+								   <th>Supplier Code</th>
+								   <th>Supplier Name</th>
+								</tr>
+
+								@foreach (var a in Model.BuyersGuide.Where(x=>x.ItemCode==b.ItemCode))
+								{
+								<tr style="text-align:center">
+								   <td> @a.SupplierCode</td>
+								   <td> @a.SupplierName </td>
+								  </tr>
+							     }							
+							    
+							 }
+						 </table> <br />
+
+	@*<h6 style="text-align:center">RETRICTED</h6>*@
+</body>
+</html>

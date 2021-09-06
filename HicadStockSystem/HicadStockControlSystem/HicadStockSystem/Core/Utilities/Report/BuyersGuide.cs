@@ -10,7 +10,9 @@ namespace HicadStockSystem.Core.Utilities.Report
     {
         public string ItemCode { get; set; }
         public string ItemDesc { get; set; }
-        
+        public string SupplierCode { get; set; }
+        public string SupplierName { get; set; }
+
         public SuppliersByCode Suppliers { get; set; }
        
     }

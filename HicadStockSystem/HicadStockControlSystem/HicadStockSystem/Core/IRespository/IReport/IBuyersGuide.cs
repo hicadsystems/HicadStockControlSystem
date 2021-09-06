@@ -11,14 +11,10 @@ namespace HicadStockSystem.Core.IRespository.IReport
 {
     public interface IBuyersGuide
     {
-        IEnumerable<BuyersGuide> GetAllItems();
-        //IEnumerable<BuyersGuide> GetSupplierByItemCode(string itemCode);
-        BuyersGuide GetSupplierByItemCode(string itemCode);
-        IEnumerable<SelectListItem> GetItems();
-        //List<St_Supplier> GetItemSuppliers(string supplierCode, string supplier1, string supplier2);
-        //List<SuppliersByCode> GetSupplier(string itemCode);
-        SuppliersByCode GetSupplier(string itemCode);
-        List<Suppliers> GetSuppliersByItemCode(string itemCode);
+      
+        IEnumerable<BuyersGuide> BuyersGuides();
+        IEnumerable<BuyersGuide> GroupByItemCode();
+        IEnumerable<BuyersGuide> GroupByDistinctItemCode();
 
     }
 }

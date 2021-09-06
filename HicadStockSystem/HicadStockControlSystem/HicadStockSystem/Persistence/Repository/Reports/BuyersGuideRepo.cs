@@ -4,7 +4,10 @@ using HicadStockSystem.Core.Utilities;
 using HicadStockSystem.Core.Utilities.Report;
 using HicadStockSystem.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,121 +18,85 @@ namespace HicadStockSystem.Persistence.Repository.Reports
     public class BuyersGuideRepo : IBuyersGuide
     {
         private readonly StockControlDBContext _context;
+        private readonly string connectionString;
 
-        public BuyersGuideRepo(StockControlDBContext context)
+        public BuyersGuideRepo(StockControlDBContext context, IConfiguration configuration)
         {
             _context = context;
+            connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-        public IEnumerable<BuyersGuide> GetAllItems()
+       
+        public IEnumerable<BuyersGuide> BuyersGuides()
         {
-            var item =  _context.St_ItemMasters.Where(x => x.IsDeleted == false)
-                .Select(y => new BuyersGuide
+            var guide = new List<BuyersGuide>();
+
+            using (SqlConnection sqlcon = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_buyersguide", sqlcon))
                 {
-                    ItemCode = y.ItemCode,
-                    ItemDesc = y.ItemDesc
-                }).ToList();
+                    cmd.CommandTimeout = 1200;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            return item;
+                    sqlcon.Open();
+
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            guide.Add(new BuyersGuide
+                            {
+                                ItemCode = sdr["ItemCode"].ToString(),
+                                ItemDesc = sdr["ItemDesc"].ToString(),
+                                SupplierCode = sdr["SupplierCode"].ToString(),
+                                SupplierName = sdr["SupplierName"].ToString(),
+                            });
+                        }
+                    }
+                }
+            }
+
+            return guide;
         }
+        
 
-        public BuyersGuide GetSupplierByItemCode(string itemCode)
+        public IEnumerable<BuyersGuide> GroupByItemCode()
         {
-            //var suppliers = GetSupplier(itemCode);
-            var result = new BuyersGuide
+            var guide = new List<BuyersGuide>();
+            var group = BuyersGuides().GroupBy(x => x.ItemCode).ToList();
+
+            foreach (var g in group)
             {
-                ItemCode = itemCode,
-                ItemDesc = GetItemDesc(itemCode),
-                Suppliers = GetSupplier(itemCode)
-            };
-
-            //var result =  _context.St_ItemMasters.Where(x => x.IsDeleted == false && x.ItemCode == itemCode)
-            //    .Select(y => new BuyersGuide
-            //    {
-            //        Suppliers = GetSupplier(itemCode),
-            //        ItemCode = y.ItemCode,
-            //        ItemDesc = y.ItemDesc,
-            //    }).FirstOrDefault();
-            return result;
-        }
-
-        public  IEnumerable<SelectListItem> GetItems()
-        {
-            return GetAllItems().Select(item => new SelectListItem
-            {
-                Value = item.ItemCode,
-                Text = item.ItemDesc
-            });
-        }
-
-
-        //public List<SuppliersByCode> GetSupplier(string itemCode)
-        public SuppliersByCode GetSupplier(string itemCode)
-        {
-            
-            var supplierCodes = GetSuppliersByItemCode(itemCode);
-
-            var supplier = supplierCodes.Select(y => new SuppliersByCode
-            {
-                Supplier1 = GetItemSuppliers(y.SuppliersCode1),
-                Supplier2 = GetItemSuppliers(y.SuppliersCode2),
-                Supplier3 = GetItemSuppliers(y.SuppliersCode3),
-                Supplier4 = GetItemSuppliers(y.SuppliersCode4),
-                Supplier5 = GetItemSuppliers(y.SuppliersCode5),
-            }).FirstOrDefault();
-
-           
-
-            return supplier;
-        }
-
-        public List<Suppliers> GetSuppliersByItemCode(string itemCode)
-        {
-            var result = _context.St_ItemMasters.Where(x => x.IsDeleted == false && x.ItemCode == itemCode)
-                .Select(y => new Suppliers
+                foreach (var item in g)
                 {
-                    SuppliersCode1 = y.Supplier1,
-                    SuppliersCode2 = y.Supplier2,
-                    SuppliersCode3 = y.Supplier3,
-                    SuppliersCode4 = y.Supplier4,
-                    SuppliersCode5 = y.Supplier5
-                }).ToList();
-            return result;
-        }
-        public St_Supplier GetItemSuppliers(string supplierCode)
-        {
-            var supplier = _context.St_Suppliers.Where(y => y.IsDeleted == false && y.SupplierCode == supplierCode).FirstOrDefault();
-            return supplier;
-        }
+                    guide.Add(new BuyersGuide
+                    {
+                        ItemCode = item.ItemCode,
+                        ItemDesc = item.ItemDesc,
+                        SupplierCode = item.SupplierCode,
+                        SupplierName = item.SupplierName
+                    });
+                }
+            }
 
-        public string GetItemCode(string itemCode)
-        {
-            var supplier = _context.St_ItemMasters.Where(y => y.IsDeleted == false && y.ItemCode == itemCode).Select(y => y.ItemCode).FirstOrDefault();
-            return supplier;
+            return guide;
         }
-        public string GetItemDesc(string itemCode)
+        public IEnumerable<BuyersGuide> GroupByDistinctItemCode()
         {
-            var supplier = _context.St_ItemMasters.Where(y => y.IsDeleted == false && y.ItemCode == itemCode).Select(y => y.ItemDesc).FirstOrDefault();
-            return supplier;
+            var guide = new List<BuyersGuide>();
+            var group = BuyersGuides().DistinctBy(x => x.ItemCode).ToList();
+
+            foreach (var g in group)
+            {
+                guide.Add(new BuyersGuide
+                {
+                    ItemCode = g.ItemCode,
+                    ItemDesc = g.ItemDesc,
+                    SupplierCode = g.SupplierCode,
+                    SupplierName = g.SupplierName
+                });
+            }
+
+            return guide;
         }
-        //public  string GetSupplierName(string supplierCode)
-        //{
-        //    var supplierName = _context.St_Suppliers.Where(x => x.IsDeleted == false && x.SupplierCode == supplierCode)
-        //        .Select(y => y.SupplierCode).FirstOrDefault();
-        //    return supplierName;
-        //}
-
-        //public string GetSupplierContact(string supplierCode)
-        //{
-        //    var contact = _context.St_Suppliers.Where(x => x.IsDeleted == false && x.SupplierCode == supplierCode)
-        //        .Select(y => y.Contact).FirstOrDefault();
-        //    return contact;
-        //}
-
-        //public string GetSupplierPhone(string supplierCode)
-        //{
-        //    var phone = _context.St_Suppliers.Where(x => x.IsDeleted == false && x.SupplierCode == supplierCode)
-        //        .Select(y => y.Phone).FirstOrDefault();
-        //    return phone;
-        //}
     }
 }

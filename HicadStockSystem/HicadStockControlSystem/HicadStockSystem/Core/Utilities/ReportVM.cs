@@ -26,6 +26,7 @@ namespace HicadStockSystem.Core.Utilities
         public IssuesToDepartment IssuesToDept { get; set; }
         public IEnumerable<StockConsumption> Consumptions { get; set; }
         public IEnumerable<BuyersGuide> BuyersGuide { get; set; }
+        public IEnumerable<BuyersGuide> BuyersGuide2 { get; set; }
         public BuyersGuide Guide { get; set; }
         public IEnumerable<SelectListItem> SelectLists { get; set; }
         public IEnumerable<SlowMovingItemsVM> SlowMovingItems { get; set; }
@@ -39,6 +40,7 @@ namespace HicadStockSystem.Core.Utilities
         public IEnumerable<PhysicalCountSheetVM>  PhysicalCountSheets { get; set; }
         public IEnumerable<VarianceAnalysisVM> VarianceAnalyses { get; set; }
         public RequesitionVM Requesition { get; set; }
+
 
     }
 }

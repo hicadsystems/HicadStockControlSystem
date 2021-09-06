@@ -510,3 +510,4 @@ E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netstandard2.0\System.Data.SqlClient.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Data.SqlClient.dll
 E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\ResponseErrorUI\Index.cshtml.g.cs
+E:\ProjectsTom\HicadStockControlSystem\HicadStockControlSystem\HicadStockSystem\HicadStockControlSystem\HicadStockSystem.UI\obj\Debug\netcoreapp3.1\Razor\Views\BuyersGuide\PrintBuyerGuide.cshtml.g.cs

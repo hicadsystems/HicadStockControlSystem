@@ -3,7 +3,6 @@ using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.IRespository.IMonthEndProcessing;
 using HicadStockSystem.Core.IRespository.IReport;
 using HicadStockSystem.Core.Models;
-using HicadStockSystem.Core.Utilities.PdfConverter;
 using HicadStockSystem.Data;
 using HicadStockSystem.Mapping;
 using HicadStockSystem.Persistence;

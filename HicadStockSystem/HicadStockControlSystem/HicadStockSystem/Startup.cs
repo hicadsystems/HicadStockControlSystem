@@ -30,7 +30,6 @@ using HicadStockSystem.Persistence.Repository.Reports;
 using HicadStockSystem.Core.IRespository.IMonthEndProcessing;
 using HicadStockSystem.Persistence.Repository.MonthEndProcess;
 using System.IO;
-using HicadStockSystem.Core.Utilities.PdfConverter;
 
 namespace HicadStockSystem
 {

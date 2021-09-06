@@ -12,7 +12,7 @@
           <h3 style="text-align:center">REPORTS</h3>
           <h4 style="text-align:center">Buyers Guide</h4>
           <br /><br />
-          <div class="row">
+         <!-- <div class="row">
             <div class="col-md-4">
               <label for="unit" class="mb-1">Select Item</label>
               <select
@@ -31,8 +31,8 @@
                   {{ item.itemDesc }}
                 </option>
               </select>
-            </div>
-            <br><br>
+            </div>-->
+            <!--<br><br>-->
             <div role="group">
               <button
                 class="btn btn-submit btn-primary"
@@ -93,8 +93,12 @@ export default {
       });
     },
   
+    // generateReport(){
+    //    window.open(`/BuyersGuide/GetGuide/${this.postBody.itemCode}/`, "_blank")
+    // }
+
     generateReport(){
-       window.open(`/BuyersGuide/GetGuide/${this.postBody.itemCode}/`, "_blank")
+       window.open(`/BuyersGuide/PrintBuyerGuide/`, "_blank")
     }
 
    

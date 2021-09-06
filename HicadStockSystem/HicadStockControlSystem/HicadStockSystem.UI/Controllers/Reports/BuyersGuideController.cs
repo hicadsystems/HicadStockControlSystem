@@ -25,25 +25,37 @@ namespace HicadStockSystem.UI.Controllers.Reports
 
         public IActionResult Index()
         {
-            ViewBag.buyersGuide = _guide.GetItems();
+           
             var model = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                SelectLists = _guide.GetItems()
             };
             return View(model);
         }
 
       
-        [Route("BuyersGuide/GetGuide/{itemCode}")]
-        public async Task<IActionResult> GetGuide(string itemCode)
+        [Route("BuyersGuide/PrintBuyerGuide/{itemCode}")]
+        public async Task<IActionResult> PrintBuyerGuide(string itemCode)
         {
             var model = new ReportVM
             {
                 StkSystems = _system.GetSingle(),
-                Guide = _guide.GetSupplierByItemCode(itemCode)
+                //Guide = _guide.GetSupplierByItemCode(itemCode)
             };
-            return await _generatePdf.GetPdf("Views/BuyersGuide/GetGuide.cshtml", model);
+            return await _generatePdf.GetPdf("Views/BuyersGuide/PrintBuyerGuide.cshtml", model);
+            //return View("Views/BuyersGuide/GetGuide.cshtml", model);
+        }
+
+        [Route("BuyersGuide/PrintBuyerGuide")]
+        public async Task<IActionResult> PrintBuyerGuide()
+        {
+            var model = new ReportVM
+            {
+                StkSystems = _system.GetSingle(),
+                BuyersGuide = _guide.GroupByItemCode().ToList(),
+                BuyersGuide2 = _guide.GroupByDistinctItemCode().ToList()
+            };
+            return await _generatePdf.GetPdf("Views/BuyersGuide/PrintBuyerGuide.cshtml", model);
             //return View("Views/BuyersGuide/GetGuide.cshtml", model);
         }
     }
