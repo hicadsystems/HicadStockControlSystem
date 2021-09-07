@@ -12,7 +12,7 @@ namespace HicadStockSystem.Models
         public string Name { get; set; }
         public string Controller { get; set; }
         public string Action { get; set; }
-        public GroupMenu groupMenu { get; set; }
+        public GroupMenu GroupMenu { get; set; }
         public int GroupMenuId { get; set; }
         [JsonIgnore]
         public List<RoleMenu> RoleMenus { get; set; }

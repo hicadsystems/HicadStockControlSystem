@@ -8,5 +8,6 @@ namespace HicadStockSystem.Core
     public interface IUnitOfWork
     {
         Task CompleteAsync();
+        Task<bool> DoneAsync();
     }
 }

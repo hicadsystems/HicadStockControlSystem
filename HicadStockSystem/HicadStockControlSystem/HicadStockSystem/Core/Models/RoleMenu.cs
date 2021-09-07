@@ -16,5 +16,6 @@ namespace HicadStockSystem.Models
         public int RoleId { get; set; }
         public bool IsActive { get; set; }
         public DateTime DateCreated { get; set; }
+        
     }
 }

@@ -19,5 +19,10 @@ namespace HicadStockSystem.Persistence
         {
             await _dbContext.SaveChangesAsync();
         }
+        public async Task<bool> DoneAsync()
+        {
+           return  await _dbContext.SaveChangesAsync()>0;
+        }
+
     }
 }
