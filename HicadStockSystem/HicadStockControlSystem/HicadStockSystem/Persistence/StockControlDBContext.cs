@@ -14,9 +14,9 @@ namespace HicadStockSystem.Data
         public StockControlDBContext(DbContextOptions<StockControlDBContext>options):base(options)
         {
         }
-        DbSet<GroupMenu> GroupMenus { get; set; }
-        DbSet<RoleMenu> RoleMenus { get; set; }
-        DbSet<Menu> Menus { get; set; }
+        public DbSet<GroupMenu> GroupMenus { get; set; }
+        public DbSet<RoleMenu> RoleMenus { get; set; }
+        public DbSet<Menu> Menus { get; set; }
         public DbSet<St_StkSystem> St_StkSystems { get; set; }
         public DbSet<StateList> StateLists { get; set; }
         public DbSet<St_StockMaster> St_StockMasters { get; set; }

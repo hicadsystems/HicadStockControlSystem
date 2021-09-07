@@ -36,6 +36,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Utilities\" />
+	  <Folder Include="Views\Menu\" />
 	</ItemGroup>
 
 </Project>
