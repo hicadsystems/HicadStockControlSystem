@@ -41,7 +41,7 @@ namespace HicadStockSystem.Controllers
 
                 await _supplier.CreateAsync(newSupplier);
 
-                return Ok(newSupplier);
+                return Ok(new { Response="Create Successfully"});
             }
 
             return BadRequest();

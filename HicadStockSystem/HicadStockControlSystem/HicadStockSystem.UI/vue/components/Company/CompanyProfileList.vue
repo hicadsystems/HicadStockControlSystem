@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     processRetrieve: function(Status) {
-      // alert(Status)
+      alert(Status)
       this.$store.state.objectToUpdate = Status;
     },
     // processRetrieve: function(Status) {

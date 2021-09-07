@@ -192,7 +192,7 @@ export default {
         e.preventDefault();
         this.canProcess = false;
         this.postPost();
-        this.$alert("Submit Form", "Ok", "info");
+        
       } else {
         this.$alert("Please Fill Highlighted Fields", "missing", "error");
         this.errors = [];
@@ -218,6 +218,8 @@ export default {
               this.postBody.sup_Last_Num = "";
               this.$store.stateName.objectToUpdate = "create";
             }
+            alert(this.responseMessage);
+            this.$alert("Successful", "Ok", "info");
           })
           .catch((e) => {
             this.errors.push(e);

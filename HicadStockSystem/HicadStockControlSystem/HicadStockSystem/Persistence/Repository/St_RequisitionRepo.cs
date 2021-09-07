@@ -34,17 +34,7 @@ namespace HicadStockSystem.Persistence.Repository
             _system = system;
             connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-        /*V1*/
-        //public float? CheckCurrentBal(St_Requisition requisition)
-        //{
-        //    var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
-        //                              where stockmaster.ItemCode == requisition.ItemCode
-        //                              select stockmaster).FirstOrDefault();
-        //    var currentBal = (updateQtyInTransit.OpenBalance + updateQtyInTransit.Receipts - updateQtyInTransit.Issues) - updateQtyInTransit.QtyInTransaction;
-
-        //    return currentBal;
-        //}
-
+       
         public float? CheckCurrentBal(string itemcode)
         {
             var currentBal = _dbContext.St_StockMasters.Where(x => x.IsDeleted == false && x.ItemCode == itemcode)
@@ -91,9 +81,6 @@ namespace HicadStockSystem.Persistence.Repository
 
         public IEnumerable<string> GetApproved()
         {
-            //return await _dbContext.St_Requisitions.Where(sr => sr.IsDeleted == false && sr.IsApproved == true && sr.IsSupplied==false).Distinct().ToListAsync();
-            //return await(from req in _dbContext.St_Requisitions where req.IsApproved == true && req.IsDeleted == false && req.IsSupplied==false select req.RequisitionNo).Distinct().ToListAsync();
-
             var reqNos = _dbContext.St_Requisitions
                 .Where(req => req.IsApproved == true && req.IsDeleted == false && req.IsSupplied == false)
                 .Select(y => y.RequisitionNo)
@@ -120,58 +107,6 @@ namespace HicadStockSystem.Persistence.Repository
             return _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted == false).ToList();
         }
 
-        public async Task UpdateAsync(UpdateSt_RequisitionVM requisition)
-        {
-            try
-            {
-                //var reqNo = new SqlParameter("@reqNo", requisition.RequisitionNo);
-                //var itemcode = new SqlParameter("@itemcode", requisition.ItemCode);
-                //var qty = new SqlParameter("@qty", requisition.Quantity);
-                //var supplyqty = new SqlParameter("@supplyqty", requisition.SupplyQty);
-                //var supplyby = new SqlParameter("@supplyby", requisition.SupplyBy);
-                //var supplydate = new SqlParameter("@supplydate", requisition.SupplyDate);
-                //var issupplied = new SqlParameter("@issupplied", requisition.IsSupplied);
-
-                //await _dbContext.Database.ExecuteSqlRawAsync(@"exec sp_UpdateRequisitionIssued @reqNo,@itemcode,@qty,
-                //                                               @supplyqty,@supplyby,@supplydate,@issupplied",
-                //                                                reqNo, itemcode, qty, supplyqty, supplyby
-                //                                                , supplydate, issupplied);
-
-                /*foreach (var item in requisition.ItemLists)
-                {
-                    requisition.ItemCode = item.ItemCode;
-
-                    //swapping supplyqty to quantity and approved qty to supplyqty column
-                    requisition.SupplyQty = (decimal?)item.Requested;
-                    requisition.Quantity = (float?)item.Quantity;
-
-                    requisition.UpdatedOn = DateTime.Now;
-
-                    requisition.IsSupplied = true;
-                    requisition.SupplyBy = "HICAD90";
-                    requisition.SupplyDate = DateTime.Now;
-
-
-                   
-                    //await _uow.CompleteAsync();
-                }
-
-                var reqNo2 = new SqlParameter("@requisitionno", requisition.RequisitionNo);
-                var user = new SqlParameter("@user", requisition.SupplyBy);
-
-                await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_supply_requisition @requisitionno, @user", reqNo2, user);*/
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            //_dbContext.Update(requisition);
-            //_uow.CompleteAsync();
-
-
-
-        }
 
         public async Task RequisitioApprovalAsync(St_Requisition requisition)
         {
@@ -209,10 +144,7 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-        //public St_Requisition GetItem(string reqNo, string itemcode)
-        //{
-        //    return _dbContext.St_Requisitions.Where(sr => sr.RequisitionNo == reqNo && sr.IsDeleted == false).FirstOrDefault();
-        //}
+      
         public async Task DeleteItemAsync(string reqNo, string itemcode)
         {
             var requisitionInDb = GetByReqNo(reqNo);
@@ -349,18 +281,6 @@ namespace HicadStockSystem.Persistence.Repository
 
             return result;
 
-            /*return  (from requisition in _dbContext.St_Requisitions
-                     join stock in _dbContext.St_StockMasters on requisition.ItemCode equals stock.ItemCode
-                          where requisition.RequisitionNo == reqNo && requisition.IsDeleted==false
-                          select new ItemListVM
-                          {
-                              ItemCode = requisition.ItemCode,
-                              ItemDescription = requisition.Description,
-                              Requested = requisition.Quantity,
-                              Unit = requisition.Unit,
-                              Quantity = requisition.SupplyQty,
-                              currentBalance = (stock.OpenBalance + stock.Receipts - stock.Issues) - stock.QtyInTransaction
-                          }).ToList();*/
 
         }
 
@@ -383,117 +303,6 @@ namespace HicadStockSystem.Persistence.Repository
             }
         }
 
-        //public async Task<int> SupplyRequisition(UpdateSt_RequisitionVM requisition)
-        //{
-        //    //var reqNo = new SqlParameter("@requisitionno", requisition.RequisitionNo);
-        //    //var user = new SqlParameter("@user", requisition.SupplyBy);
-
-        //    //var result = await _dbContext.Database.ExecuteSqlRawAsync(@"exec st_supply_requisition @requisitionno, @user", reqNo, user);
-        //    //return result;
-        //}
-
-        public Task<string> GetReqNo()
-        {
-            throw new NotImplementedException();
-        }
-
-        //public Task ProcessRequest()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
       
-
-        public string GetHTMLString(string reqno)
-        {
-            var requisition = RequesitionsVM(reqno);
-            var system = _system.GetSingle();
-
-            var sb = new StringBuilder();
-
-            sb.Append(@"
-                <html>
-                    <head></head>
-                    <body>
-                      
-                        <table border='2' cellpadding='2' cellspacing='0' width='100%'>
-                            <tr>
-                                <th>Item Code</th>
-                                <th>Description</th>
-                                <th>unit</th>
-                                <th>Quantity</th>
-                ");
-            sb.AppendFormat(@"<div class='header' style='margin-top:30px;'>
-                                <h1 style='text-align:center;'>{0}</h1>
-                                <h2 style='text-align:center;'>{1}</h2>
-                              </div>",
-                              system.CompanyName, system.CompanyAddress);
-            sb.AppendFormat(@"
-                           <div>
-                            <h3>Requisition No.: {0}</h3>
-                            <h3>Requisition Date: {1}</h3>
-                            <h3>Requistioned by: {2}</h3>
-                            <h3>Department: {3}</h3>
-                           </div>", reqno, requisition.DateAndTime, requisition.RequisitionBy, requisition.Department);
-            foreach (var item in requisition.ItemLists)
-            {
-                sb.AppendFormat(@"<tr>
-                                    <td>{0}</td>
-                                    <td>{1}</td>
-                                    <td>{2}</td>
-                                    <td>{3}</td>
-                                  </tr>", item.ItemCode, item.ItemDescription, item.Unit, item.Quantity);
-            }
-            sb.Append(@"
-                        </table>
-                       </body>
-                    </html>");
-            return sb.ToString();
-        }
-        //public string ProcessRequest(string locationcode, IEnumerable<ItemListViewModel> processRequisition)
-        //{
-        //    var reqNo = GenerateRequisitionNo();
-        //    var location = locationcode;
-
-        //    foreach (var item in processRequisition)
-        //    {
-        //        var description = GetDescription(item.Itemcode);
-
-        //        var stockprice = (from stockmaster in _dbContext.St_StockMasters
-        //                          where stockmaster.ItemCode == item.Itemcode
-        //                          select stockmaster.StockPrice).First();
-
-        //        var updateQtyInTransit = (from stockmaster in _dbContext.St_StockMasters
-        //                                  where stockmaster.ItemCode == item.Itemcode
-        //                                  select stockmaster).FirstOrDefault();
-
-        //        var qtyintrans = updateQtyInTransit.QtyInTransaction += item.Quantity;
-
-
-        //        using (SqlConnection sqlcon = new SqlConnection(connectionString))
-        //        {
-        //            using (SqlCommand cmd = new SqlCommand("sp_stockrequest", sqlcon))
-        //            {
-        //                cmd.CommandTimeout = 1200;
-        //                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-        //                cmd.Parameters.Add(new SqlParameter("@requisitionNo", reqNo));
-        //                cmd.Parameters.Add(new SqlParameter("@itemCode", item.Itemcode));
-        //                cmd.Parameters.Add(new SqlParameter("@description", description));
-        //                cmd.Parameters.Add(new SqlParameter("@locationCode", location));
-        //                cmd.Parameters.Add(new SqlParameter("@quantity", item.Quantity));
-        //                cmd.Parameters.Add(new SqlParameter("@requisitionDate", DateTime.Now));
-        //                cmd.Parameters.Add(new SqlParameter("@unit", item.Unit));
-        //                cmd.Parameters.Add(new SqlParameter("@price", stockprice));
-        //                cmd.Parameters.Add(new SqlParameter("@userId", "HICAD"));
-        //                cmd.Parameters.Add(new SqlParameter("@isApproved", false));
-        //                cmd.Parameters.Add(new SqlParameter("@isDeleted", false));
-        //                cmd.Parameters.Add(new SqlParameter("@isSupplied", false));
-        //                cmd.Parameters.Add(new SqlParameter("@qtyIntransit", qtyintrans));
-        //            }
-        //        }
-        //    }
-
-        //    return reqNo;
-        //}
     }
 }

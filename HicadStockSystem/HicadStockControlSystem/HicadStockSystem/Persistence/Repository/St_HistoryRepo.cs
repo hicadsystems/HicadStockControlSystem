@@ -218,30 +218,6 @@ namespace HicadStockSystem.Persistence.Repository
             await _uow.CompleteAsync();
         }
 
-       
-
-      
-       
-       /* public decimal? getStockPrice(string doctType,decimal? price,int transqty, decimal? currentQty)
-        {
-            //currentQty = 0m;
-            //decimal? value = 0;
-            decimal? result = 0M;
-            if (doctType == "GR" || doctType == "RT")
-            {
-              result= currentQty += (price * transqty) / transqty;
-               
-            }
-            else if (doctType.Equals("IS"))
-            {
-                result = currentQty -= (price * transqty) / transqty;
-            }
-            return result;
-        }*/
-        
-        
-       
-      
 
         private  IEnumerable<St_History> Stocks()
         {

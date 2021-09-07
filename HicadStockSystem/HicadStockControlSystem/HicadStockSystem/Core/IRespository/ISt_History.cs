@@ -16,13 +16,10 @@ namespace HicadStockSystem.Core.IRespository
         Task UpdateAsync(string itemCode);
         Task<IEnumerable<St_History>> GetAll();
         Task<string> GenerateDocNo();
-        //IQueryable<St_History> GetAll();
         Task DeleteAsync(string itemCode);
-        //string GenerateDocNo();
         string ReturnNo();
         int GetRemarkId(string remark);
         Task<IEnumerable<St_History>> GetAllReceipt();
-        //St_History GetDocNo(string docNo);
         IEnumerable<string> GetAllReceiptNo();
         IEnumerable<St_History> GetItemByReceiptNo(string receiptNo);
         St_History ReverseByItemCode(string docNo, string itemcode);

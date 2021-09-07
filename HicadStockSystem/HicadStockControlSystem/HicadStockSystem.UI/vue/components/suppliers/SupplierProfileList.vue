@@ -327,7 +327,7 @@ export default {
         axios
           .post(`/api/supplier/`, this.postBody)
           .then((response) => {
-            this.responseMessage = response.data.responseDescription;
+            this.responseMessage = response.data.response;
             this.canProcess = true;
             if (response.data.responseCode == "200") {
               this.postBody.supplierCode = "";
@@ -341,7 +341,8 @@ export default {
               this.$store.stateName.objectToUpdate = "create";
             }
             this.getAllSuppliers();
-            window.location.reload();
+             alert(this.responseMessage)
+            // window.location.reload();
             // this.resetForm();
             // this.$refs.supplierForm.reset();
           })
@@ -369,8 +370,9 @@ export default {
               this.$store.state.objectToUpdate = "update";
             }
             this.getAllSuppliers();
+            alert(this.responseMessage)
             // this.$refs.supplierForm.reset();
-            window.location.reload();
+            // window.location.reload();
           })
           .catch((e) => {
             this.errors.push(e);

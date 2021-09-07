@@ -138,17 +138,12 @@ namespace HicadStockSystem.Controllers
         {
             if (file == null || file.Length <= 0)
             {
-                //TempData["message"] = "No File Uploaded";
-                //return BadRequest("File not an Excel Format");
-                //return View();
                 return BadRequest("No File Uploaded");
             }
 
             if (!Path.GetExtension(file.FileName).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
             {
-                //TempData["message"] = "File not an Excel Format";
                 return BadRequest("File not an Excel Format");
-                //return View();
             }
 
             var listapplication = new List<PhysicalCountSheetVM>();
@@ -225,12 +220,6 @@ namespace HicadStockSystem.Controllers
                     }
 
                     await _stockMaster.UpdateWithExcelFile(listapplication);
-                    //string userp = User.Identity.Name;
-
-                    //ProcesUpload procesUpload2 = new ProcesUpload(listapplication, unitOfWorks, userp);
-                    //await procesUpload2.processUploadInThread();
-                    //TempData["message"] = "Uploaded Successfully";
-
 
                 }
 
@@ -249,7 +238,6 @@ namespace HicadStockSystem.Controllers
                 stream.Position = 0;
                 string excelName = $"UserList-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xlsx";
 
-                //return File(stream, "application/octet-stream", excelName);  
                 return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
             }
             return Ok();

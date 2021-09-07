@@ -13,7 +13,6 @@ namespace HicadStockSystem.Core.IRespository
         Task UpdateAsync(St_ItemMaster itemMaster);
         Task UpdateAsync(string code);
         Task<IEnumerable<St_ItemMaster>> GetAll();
-        //IQueryable<St_ItemMaster> GetAll();
         Task DeleteAsync(string itemCode);
         Task<IEnumerable<string>> GetStockClass();
        Task<IEnumerable<string>> GetBusinessLine();

@@ -1,325 +1,338 @@
 <template>
   <div>
     <form @submit.prevent="checkForm" method="post">
-      <div id="vertical-form">
-        <div class="preview">
-          <div class="row">
-            <div class="col-3">
-              <label class="mb-1" for="companyCode">Company Code</label>
+     <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div id="vertical-form">
+            <div class="preview">
+              <div class="row">
+                <div class="col-3">
+                  <label class="mb-1" for="companyCode">Company Code</label>
+                  <br />
+                  <input
+                    class="form-control"
+                    name="companyCode"
+                    v-model="postBody.companyCode"
+                    v-bind:class="{
+                      'form-control': true,
+                      'is-invalid': !companyCodeIsValid && codeblur,
+                    }"
+                    v-on:blur="codeblur = true"
+                  />
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5"
+                      >company code is required not more than 10
+                      characters.</span
+                    >
+                  </div>
+                </div>
+                <div class="col-6 offset-3">
+                  <label class="mb-1" for="companyName">Company Name</label>
+                  <br />
+                  <input
+                    class="form-control"
+                    name="companyName "
+                    v-model="postBody.companyName"
+                    v-bind:class="{
+                      'form-control': true,
+                      'is-invalid': !companyNameIsValid && nameblur,
+                    }"
+                    v-on:blur="nameblur = true"
+                  />
+                  <div class="invalid-feedback text-danger h5">
+                    <span class="text-danger h5"
+                      >company name is required not more than 50
+                      characters.</span
+                    >
+                  </div>
+                </div>
+              </div>
               <br />
-              <input
-                class="form-control"
-                name="companyCode"
-                v-model="postBody.companyCode"
-                v-bind:class="{
-                  'form-control': true,
-                  'is-invalid': !companyCodeIsValid && codeblur,
-                }"
-                v-on:blur="codeblur = true"
-              />
-              <div class="invalid-feedback">
-                <span class="text-danger h5"
-                  >company code is required not more than 10 characters.</span
-                >
+              <div class="row">
+                <div class="col-6">
+                  <label class="mb-1" for="companyAddress"
+                    >Company Address</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="companyAddress"
+                    v-model="postBody.companyAddress"
+                    v-bind:class="{
+                      'form-control': true,
+                      'is-invalid': !companyAddressIsValid && addressblur,
+                    }"
+                    v-on:blur="addressblur = true"
+                    rows="5"
+                    required
+                  >
+                  </textarea>
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5"
+                      >Please enter company address not more than 60
+                      characters.</span
+                    >
+                  </div>
+                </div>
+                <div class="col-6">
+                  <label class="mb-1" for="companyTelephone"
+                    >Telephone Number</label
+                  >
+                  <input
+                    class="form-control"
+                    name="companyTelephone "
+                    v-model="postBody.phone"
+                    v-bind:class="{
+                      'form-control': true,
+                      'is-invalid': !PhoneNoIsvalid && phoneNoblur,
+                    }"
+                    v-on:blur="phoneNoblur = true"
+                  />
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5">Phone No. is required</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="col-6 offset-3">
-              <label class="mb-1" for="companyName">Company Name</label>
               <br />
-              <input
-                class="form-control"
-                name="companyName "
-                v-model="postBody.companyName"
-                v-bind:class="{
-                  'form-control': true,
-                  'is-invalid': !companyNameIsValid && nameblur,
-                }"
-                v-on:blur="nameblur = true"
-              />
-              <div class="invalid-feedback text-danger h5">
-                <span class="text-danger h5"
-                  >company name is required not more than 50 characters.</span
-                >
+              <div class="row">
+                <div class="col-6">
+                  <label class="mb-1" for="email">Company Email</label>
+                  <input
+                    class="form-control"
+                    id="email"
+                    v-model="postBody.email"
+                    v-bind:class="{
+                      'form-control': true,
+                      'is-invalid': !EmailIsValid,
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5">invalid Email</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <label class="mb-1" for="stateName">State</label>
+                  <select
+                    class="form-control"
+                    id="stateName"
+                    v-model="postBody.stateName"
+                  >
+                    <option
+                      v-for="state in stateList"
+                      v-bind:value="state.stateName"
+                      v-bind:key="state.id"
+                    >
+                      {{ state.stateName }}
+                    </option>
+                  </select>
+                </div>
               </div>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-6">
-              <label class="mb-1" for="companyAddress">Company Address</label>
-              <textarea
-                class="form-control"
-                id="companyAddress"
-                v-model="postBody.companyAddress"
-                v-bind:class="{
-                  'form-control': true,
-                  'is-invalid': !companyAddressIsValid && addressblur,
-                }"
-                v-on:blur="addressblur = true"
-                rows="5"
-                required
-              >
-              </textarea>
-              <div class="invalid-feedback">
-                <span class="text-danger h5"
-                  >Please enter company address not more than 60
-                  characters.</span
-                >
+              <br />
+              <div class="row">
+                <div class="col-6">
+                  <label class="mb-1" for="city">City</label>
+                  <input
+                    class="form-control"
+                    id="city"
+                    v-model="postBody.city"
+                  />
+                </div>
+                <div class="col-6">
+                  <label class="mb-1" for="city">Install Date</label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    id="installDate "
+                    v-model="postBody.installDate"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="col-6">
-              <label class="mb-1" for="companyTelephone"
-                >Telephone Number</label
-              >
-              <input
-                class="form-control"
-                name="companyTelephone "
-                v-model="postBody.phone"
-                v-bind:class="{
-                  'form-control': true,
-                  'is-invalid': !PhoneNoIsvalid && phoneNoblur,
-                }"
-                v-on:blur="phoneNoblur = true"
-              />
-              <div class="invalid-feedback">
-                <span class="text-danger h5">Phone No. is required</span>
-              </div>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-6">
-              <label class="mb-1" for="email">Company Email</label>
-              <input
-                class="form-control"
-                id="email"
-                v-model="postBody.email"
-                v-bind:class="{
-                  'form-control': true,
-                  'is-invalid': !EmailIsValid,
-                }"
-              />
-              <div class="invalid-feedback">
-                <span class="text-danger h5">invalid Email</span>
-              </div>
-            </div>
-            <div class="col-6">
-              <label class="mb-1" for="stateName">State</label>
-              <select
-                class="form-control"
-                id="stateName"
-                v-model="postBody.stateName"
-              >
-                <option
-                  v-for="state in stateList"
-                  v-bind:value="state.stateName"
-                  v-bind:key="state.id"
-                >
-                  {{ state.stateName }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-6">
-              <label class="mb-1" for="city">City</label>
-              <input class="form-control" id="city" v-model="postBody.city" />
-            </div>
-            <div class="col-6">
-              <label class="mb-1" for="city">Install Date</label>
-              <input
-                class="form-control"
-                type="date"
-                id="installDate "
-                v-model="postBody.installDate"
-              />
-            </div>
-          </div>
 
-          <br />
-          <div class="row">
-            <div class="col-6">
-              <label class="mb-1">Serial Number</label>
-              <input
-                class="form-control"
-                id="serialNumber"
-                v-model="postBody.serialNumber"
-              />
-            </div>
-            <div class="col-6">
-              <label class="mb-1">GL Code</label>
-              <select class="form-control" v-model="postBody.glCode">
-                <option
-                  v-for="gLCode in GLCodeList"
-                  v-bind:value="gLCode.acctNumber"
-                  v-bind:key="gLCode.acctNumber"
-                >
-                  {{ gLCode.description }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-6">
-              <label class="mb-1" for="processYear">Process Year</label>
-              <input
-                type="number"
-                class="form-control"
-                id="processYear"
-                v-model="postBody.processYear"
-                
-              />
-              <!--validation code inside input-->
-                <!--v-bind:class="{
+              <br />
+              <div class="row">
+                <div class="col-6">
+                  <label class="mb-1">Serial Number</label>
+                  <input
+                    class="form-control"
+                    id="serialNumber"
+                    v-model="postBody.serialNumber"
+                  />
+                </div>
+                <div class="col-6">
+                  <label class="mb-1">GL Code</label>
+                  <select class="form-control" v-model="postBody.glCode">
+                    <option
+                      v-for="gLCode in GLCodeList"
+                      v-bind:value="gLCode.acctNumber"
+                      v-bind:key="gLCode.acctNumber"
+                    >
+                      {{ gLCode.description }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-6">
+                  <label class="mb-1" for="processYear">Process Year</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="processYear"
+                    v-model="postBody.processYear"
+                  />
+                  <!--validation code inside input-->
+                  <!--v-bind:class="{
                   'form-control': true,
                   'is-invalid': !processYearIsValid,
                 }"-->
-              <!--<div class="invalid-feedback">
+                  <!--<div class="invalid-feedback">
                 <span class="text-danger h5">invalid Year</span>
               </div>-->
-            </div>
+                </div>
 
-            <div class="col-6">
-              <label class="mb-1" for="processMonth">Process Month</label>
-              <input
-                type="number"
-                class="form-control"
-                id="processMonth"
-                v-model="postBody.processMonth"
-              />
-              <!--validation code inside input-->
-                <!--v-bind:class="{
+                <div class="col-6">
+                  <label class="mb-1" for="processMonth">Process Month</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="processMonth"
+                    v-model="postBody.processMonth"
+                  />
+                  <!--validation code inside input-->
+                  <!--v-bind:class="{
                   'form-control': true,
                   'is-invalid': !processMonthIsValid,
                 }"-->
-              <div class="invalid-feedback">
-                <span class="text-danger h5">invalid Month</span>
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5">invalid Month</span>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-6">
+                  <label class="mb-1" for="expenseCode">Expense Code</label>
+                  <select class="form-control" v-model="postBody.expenseCode">
+                    <option
+                      v-for="expCode in ExpenseCodeList"
+                      v-bind:value="expCode.acctNumber"
+                      v-bind:key="expCode.acctNumber"
+                    >
+                      {{ expCode.description }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label class="mb-1">Write Off Location</label>
+                  <select class="form-control" v-model="postBody.writeoffLoc">
+                    <option
+                      v-for="writeOff in writeoffLocList"
+                      v-bind:value="writeOff.unitCode"
+                      v-bind:key="writeOff.unitCode"
+                    >
+                      {{ writeOff.unitDesc }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-6">
+                  <label class="mb-1" for="creditorsCode">Creditors Code</label>
+                  <select
+                    class="form-control"
+                    v-model="postBody.creditorsCode"
+                    id="creditorsCode"
+                  >
+                    <option
+                      v-for="crCode in CreditorCodeList"
+                      v-bind:value="crCode.acctNumber"
+                      v-bind:key="crCode.acctNumber"
+                    >
+                      {{ crCode.description }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label class="mb-1" for="busLine"
+                    >Business Line That Fund The Stocks</label
+                  >
+                  <select
+                    class="form-control"
+                    v-model="postBody.busLine"
+                    id="busLine"
+                  >
+                    <option
+                      v-for="businessLine in BusinessLineList"
+                      v-bind:value="businessLine.businessLine"
+                      v-bind:key="businessLine.businessLine"
+                    >
+                      {{ businessLine.businessDesc }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-3">
+                  <label for="busLine">Hold Un-Approved Request For</label>
+                </div>
+                <div class="col-1">
+                  <input
+                    class="form-control"
+                    name="holdDays "
+                    v-model="postBody.holdDays"
+                    placeholder="0"
+                    v-bind:class="{
+                      'form-control': true,
+                      'is-invalid': !holdDaysIsValid,
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5">Invalid</span>
+                  </div>
+                </div>
+                <div class="col-1 ml-0">
+                  <label for="busLine">Days</label>
+                </div>
+                <div class="col-1">
+                  <label for="busLine">Approved</label>
+                </div>
+                <div class="col-1">
+                  <input
+                    class="form-control"
+                    name="approvedDay"
+                    v-model="postBody.approvedDay"
+                    placeholder="0"
+                    v-bind:class="{
+                      'form-control': true,
+                      'is-invalid': !approvedDayIsValid,
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span class="text-danger h5">Invalid</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <label for="busLine">Days</label>
+                </div>
+              </div>
+              <br />
+              <div v-if="canProcess" role="group">
+                <button
+                  class="btn btn-submit btn-primary float-right"
+                  v-on:click="checkForm"
+                  type="submit"
+                >
+                  {{ submitorUpdate }}
+                </button>
               </div>
             </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-6">
-              <label class="mb-1" for="expenseCode">Expense Code</label>
-              <select class="form-control" v-model="postBody.expenseCode">
-                <option
-                  v-for="expCode in ExpenseCodeList"
-                  v-bind:value="expCode.acctNumber"
-                  v-bind:key="expCode.acctNumber"
-                >
-                  {{ expCode.description }}
-                </option>
-              </select>
-            </div>
-            <div class="col-6">
-              <label class="mb-1">Write Off Location</label>
-              <select class="form-control" v-model="postBody.writeoffLoc">
-                <option
-                  v-for="writeOff in writeoffLocList"
-                  v-bind:value="writeOff.unitCode"
-                  v-bind:key="writeOff.unitCode"
-                >
-                  {{ writeOff.unitDesc }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-6">
-              <label class="mb-1" for="creditorsCode">Creditors Code</label>
-              <select
-                class="form-control"
-                v-model="postBody.creditorsCode"
-                id="creditorsCode"
-              >
-                <option
-                  v-for="crCode in CreditorCodeList"
-                  v-bind:value="crCode.acctNumber"
-                  v-bind:key="crCode.acctNumber"
-                >
-                  {{ crCode.description }}
-                </option>
-              </select>
-            </div>
-            <div class="col-6">
-              <label class="mb-1" for="busLine"
-                >Business Line That Fund The Stocks</label
-              >
-              <select
-                class="form-control"
-                v-model="postBody.busLine"
-                id="busLine"
-              >
-                <option
-                  v-for="businessLine in BusinessLineList"
-                  v-bind:value="businessLine.businessLine"
-                  v-bind:key="businessLine.businessLine"
-                >
-                  {{ businessLine.businessDesc }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="col-3">
-              <label for="busLine">Hold Un-Approved Request For</label>
-            </div>
-            <div class="col-1">
-              <input
-                class="form-control"
-                name="holdDays "
-                v-model="postBody.holdDays"
-                placeholder="0"
-                v-bind:class="{
-                  'form-control': true,
-                  'is-invalid': !holdDaysIsValid,
-                }"
-              />
-              <div class="invalid-feedback">
-                <span class="text-danger h5">Invalid</span>
-              </div>
-            </div>
-            <div class="col-1 ml-0">
-              <label for="busLine">Days</label>
-            </div>
-            <div class="col-1">
-              <label for="busLine">Approved</label>
-            </div>
-            <div class="col-1">
-              <input
-                class="form-control"
-                name="approvedDay"
-                v-model="postBody.approvedDay"
-                placeholder="0"
-                v-bind:class="{
-                  'form-control': true,
-                  'is-invalid': !approvedDayIsValid,
-                }"
-              />
-              <div class="invalid-feedback">
-                <span class="text-danger h5">Invalid</span>
-              </div>
-            </div>
-            <div class="col-1">
-              <label for="busLine">Days</label>
-            </div>
-          </div>
-          <br />
-          <div v-if="canProcess" role="group">
-            <button
-              class="btn btn-submit btn-primary float-right"
-              v-on:click="checkForm"
-              type="submit"
-            >
-              {{ submitorUpdate }}
-            </button>
           </div>
         </div>
       </div>
+     </div>
     </form>
   </div>
 </template>
@@ -350,7 +363,7 @@ export default {
       GLCodeList: null,
       CreditorCodeList: null,
       ExpenseCodeList: null,
-       companylist:null,
+      companylist: null,
       isCrCode: false,
       isGLCode: false,
       isExpenseCode: false,
@@ -470,7 +483,7 @@ export default {
           .then((response) => {
             this.responseMessage = response.data.responseDescription;
             this.canProcess = true;
-             if (response.data.responseCode == "200") {
+            if (response.data.responseCode == "200") {
               this.submitorUpdate = "Submit";
               this.postBody.companyCode = "";
               this.postBody.companyName = "";
@@ -530,11 +543,11 @@ export default {
 
     getSystemDetails() {
       axios.get(`/api/st_stksystem/`).then((response) => {
-        this.companylist=response.data.response
-        console.log(this.companylist)
-        console.log(this.companylist.companyCode)
+        this.companylist = response.data.response;
+        console.log(this.companylist);
+        console.log(this.companylist.companyCode);
         this.postBody.companyCode = this.companylist.companyCode;
-        alert(this.postBody.companyCode)
+        alert(this.postBody.companyCode);
         this.postBody.companyName = this.companylist.companyName;
         this.postBody.companyAddress = this.companylist.companyAddress;
         this.postBody.phone = this.companylist.phone;
@@ -552,7 +565,7 @@ export default {
         this.postBody.holdDays = this.companylist.holdDays;
         this.postBody.approvedDay = this.companylist.approvedDay;
         this.submitorUpdate == "Update";
-        alert(this.submitorUpdate)
+        alert(this.submitorUpdate);
       });
     },
 

@@ -52,8 +52,6 @@ namespace HicadStockSystem.Controllers
 
                 var requisitionNumberInDb = _requisition.GetByReqNo(reqNo);
 
-                /*var checkCurrentBal = _mapper.Map<CreateSt_RequisitionVM, CreateSt_RequisitionVM>(requisitionVM);
-                var currentBal = _requisition.CheckCurrentBal(checkCurrentBal);*/
                 //check to avoid duplicate number
                 if (requisitionNumberInDb == null)
                 {
@@ -227,8 +225,6 @@ namespace HicadStockSystem.Controllers
                 _mapper.Map(requisitionVM, requisitioInDb);
                 requisitioInDb.ItemCode = _itemMaster.GetItemCodeByDesc(item.ItemCode);
                 requisitioInDb.Quantity = 0;
-                //requisitioInDb.Description = requisitionVM.Description = item.ItemDescription;
-                //requisitioInDb.Unit = requisitionVM.Unit = item.Unit;
                 requisitioInDb.IsDeleted = true;
                 requisitioInDb.UpdatedOn = DateTime.Now;
 
@@ -345,7 +341,6 @@ namespace HicadStockSystem.Controllers
         [Route("GetUnissuedReq")]
         public IActionResult GetUnissuedReq()
         {
-            //var items =  _requisition.ItemLists(reqNo);
             var req = _requisition.GetAllRequisition();
             return Ok(req);
         }

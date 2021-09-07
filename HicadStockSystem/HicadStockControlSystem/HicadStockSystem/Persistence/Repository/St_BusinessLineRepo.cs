@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HicadStockSystem.Persistence.Repository
 {
-    public class St_BusinessLineRepo :  ISt_BusinessLine
+    public class St_BusinessLineRepo : ISt_BusinessLine
     {
         private readonly StockControlDBContext _dbContext;
         private readonly IUnitOfWork _uow;

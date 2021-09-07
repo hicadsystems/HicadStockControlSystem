@@ -29,12 +29,7 @@ namespace HicadStockSystem.Controllers
             return Ok(itemMaster);
         }
 
-        //[HttpGet]
-        //public IActionResult GetAllItemMaster()
-        //{
-        //    var itemMaster = _itemMaster.GetAll();
-        //    return Ok(itemMaster);
-        //}
+       
         [HttpPost]
         public async Task<IActionResult> CreateItemMaster([FromBody] CreateSt_ItemMasterVM itemMasterVM)
         {
