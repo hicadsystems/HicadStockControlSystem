@@ -4848,54 +4848,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4910,12 +4862,11 @@ __webpack_require__.r(__webpack_exports__);
       submitorUpdate: "Submit",
       canProcess: true,
       selectDate: false,
+      selectAll: false,
       selectRequisition: false,
       reqblur: false,
       RequisitionList: null,
       ReqList: null,
-      // lineItems: [],
-      // locationCode: "",
       currentBal: "",
       postBody: {
         requisitionNo: "",
@@ -4925,26 +4876,13 @@ __webpack_require__.r(__webpack_exports__);
       newItem: {
         quantity: 0,
         itemCode: "",
-        unit: "" // itemDesc:""
-
+        unit: ""
       }
     };
   },
   mounted: function mounted() {
-    this.getUnissuedReq(); // this.getUnissuedReqs();
-    // this.getItemCode();
+    this.getUnissuedReq();
   },
-  // watch: {
-  //   "$store.state.objectToUpdate": function(newVal, oldVal) {
-  //     (this.postBody.locationCode = this.$store.state.objectToUpdate.locationCode),
-  //       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemCode),
-  //       (this.postBody.itemCode = this.$store.state.objectToUpdate.itemDesc),
-  //       (this.postBody.qtyInTransaction = this.$store.state.objectToUpdate.qtyInTransaction),
-  //       (this.postBody.quantity = this.$store.state.objectToUpdate.quantity);
-  //     this.postBody.unit = this.$store.state.objectToUpdate.unit;
-  //     this.submitorUpdate = "Update";
-  //   },
-  // },
   methods: {
     checkForm: function checkForm() {
       var _this = this;
@@ -4975,55 +4913,29 @@ __webpack_require__.r(__webpack_exports__);
         this.errors.push("Supply all the required field");
       }
     },
-    // postPost() {
-    //   if (this.submitorUpdate == "Submit") {
-    //     axios
-    //       .post(`/api/requisition/`, this.postBody)
-    //       .then((response) => {
-    //         this.responseMessage = response.data.responseDescription;
-    //         this.canProcess = true;
-    //         if (response.data.responseCode == "200") {
-    //           // this.postBody.locationCode = "";
-    //           // this.postBody.itemCode = "";
-    //           // this.postBody.itemDesc = "";
-    //           // this.postBody.quantity = "";
-    //           // this.postBody.unit = "";
-    //           // this.$store.stateName.objectToUpdate = "create";
-    //           location = this.locationCode;
-    //           this.lineItems = [];
-    //         }
-    //         // this.document.getElementById('#requestForm').value = "";
-    //         // this.$refs.requestForm.reset();
-    //         // window.location.reload();
-    //       })
-    //       .catch((e) => {
-    //         if (e) this.errors.push(e);
-    //       });
-    //   }
-    //   if (this.submitorUpdate == "Update") {
-    //     alert("Ready to Update");
-    //     axios
-    //       .put(`/api/requisition/`, this.postBody)
-    //       .then((response) => {
-    //         this.responseMessage = response.data.responseDescription;
-    //         this.canProcess = true;
-    //         if (response.data.responseCode == "200") {
-    //           this.submitorUpdate = "Submit";
-    //           this.postBody.locationCode = "";
-    //           this.postBody.itemCode = "";
-    //           this.postBody.itemDesc = "";
-    //           this.postBody.quantity = 0;
-    //           this.postBody.unit = "";
-    //           this.$store.state.objectToUpdate = "update";
-    //         }
-    //         window.location.reload();
-    //       })
-    //       .catch((e) => {
-    //         this.errors.push(e);
-    //       });
-    //   }
-    // },
-    //gets the unit, currentBal of item
+    setDate: function setDate() {
+      this.selectDate = true;
+      this.selectRequisition = false;
+      this.selectAll = false;
+      this.postBody.requisitionNo = "";
+      this.postBody.RequisitionList = null;
+      this.postBody.requisitionAge = this.postBody.requisitionAge;
+    },
+    setRequisition: function setRequisition() {
+      this.selectDate = false;
+      this.selectAll = false;
+      this.selectRequisition = true;
+      this.postBody.requisitionAge = null;
+      this.postBody.RequisitionList = null;
+    },
+    setAll: function setAll() {
+      this.selectDate = false;
+      this.selectRequisition = false;
+      this.selectAll = true;
+      this.postBody.requisitionAge = "";
+      this.postBody.requisitionNo = "";
+      this.postBody.RequisitionList = this.RequisitionList;
+    },
     getUnissuedReq: function getUnissuedReq() {
       var _this2 = this;
 
@@ -5033,13 +4945,6 @@ __webpack_require__.r(__webpack_exports__);
         _this2.postBody.RequisitionList = response.data;
       });
     },
-    // getUnissuedReqs() {
-    //   axios.get(`/api/requisition/GetUnissuedReq`).then((response) => {
-    //     this.ReqList = response.data.result.observer;
-    //     console.log(this.ReqList)
-    //     // this.postBody.ReqList = response.data;
-    //   });
-    // },
     validate: function validate() {
       this.reqblur = true;
 
@@ -28517,6 +28422,9 @@ var render = function() {
             },
             domProps: { checked: _vm._q(_vm.RequisitionList, "option1") },
             on: {
+              click: function($event) {
+                return _vm.setAll()
+              },
               change: function($event) {
                 _vm.RequisitionList = "option1"
               }
@@ -28555,7 +28463,7 @@ var render = function() {
             },
             on: {
               click: function($event) {
-                _vm.selectDate = true
+                return _vm.setDate()
               },
               change: function($event) {
                 return _vm.$set(_vm.postBody, "requisitionAge", "option2")
@@ -28612,7 +28520,7 @@ var render = function() {
             },
             on: {
               click: function($event) {
-                _vm.selectRequisition = true
+                return _vm.setRequisition()
               }
             }
           }),
