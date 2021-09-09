@@ -1,11 +1,14 @@
-﻿using HicadStockSystem.Core.Models;
+﻿using HicadStockSystem.Controllers.ResourcesVM.St_StkSystem;
+using HicadStockSystem.Core.Models;
 using HicadStockSystem.Data;
 using HicadStockSystem.Models;
 using HicadStockSystem.Persistence.Repository;
 using HicadStockSystem.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,10 +17,12 @@ namespace HicadStockSystem.Persistence
     public class St_StkSystemRepo :  ISt_StkSystem
     {
         private readonly StockControlDBContext _dbContext;
+        private  readonly string connectionString;
 
-        public St_StkSystemRepo(StockControlDBContext dbContext)
+        public St_StkSystemRepo(StockControlDBContext dbContext, IConfiguration configuration)
         {
             _dbContext = dbContext;
+            connectionString = configuration.GetConnectionString("DefaultConnection");
         }
         public async Task CreateAsync(St_StkSystem stkSystem)
         {
@@ -27,6 +32,59 @@ namespace HicadStockSystem.Persistence
         public async Task<IEnumerable<St_StkSystem>> GetAll()
         {
             return await _dbContext.St_StkSystems.Where(stk=>stk.IsDeleted==false).ToListAsync();
+
+        }
+        public  GetSt_System GetSystem()
+        {
+            var system = new GetSt_System();
+            using (SqlConnection sqlcon = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("st_getsystem", sqlcon))
+                {
+                    cmd.CommandTimeout = 1200;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlcon.Open();
+
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            system.CompanyCode = sdr["CompanyCode"].ToString();
+                            system.CompanyName = sdr["CompanyName"].ToString();
+                            system.CompanyAddress = sdr["CompanyAddress"].ToString();
+                            system.Email = sdr["Email"].ToString();
+                            system.Phone = sdr["Phone"].ToString();
+                            system.Town_City = sdr["Town_City"].ToString();
+                            system.SerialNumber = sdr["SerialNumber"].ToString();
+                            if (sdr["ProcessMonth"] != DBNull.Value)
+                            {
+                                system.ProcessMonth = Convert.ToInt32(sdr["ProcessMonth"]);
+                            }
+                            if (sdr["ProcessYear"] != DBNull.Value)
+                            {
+                                system.ProcessYear = Convert.ToInt32(sdr["ProcessYear"]);
+                            }
+                            if (sdr["InstallDate"] != DBNull.Value)
+                            {
+                                system.InstallDate = Convert.ToDateTime(sdr["InstallDate"]);
+                            }
+                            system.State = sdr["State"].ToString();
+                            system.ApprovedDay = sdr["ApprovedDay"].ToString();
+                            system.HoldDays = sdr["HoldDays"].ToString();
+                            system.GLCode = sdr["GLCode"].ToString();
+                            system.ExpenseCode = sdr["ExpenseCode"].ToString();
+                            system.CreditorsCode = sdr["CreditorsCode"].ToString();
+                            system.WriteoffLoc = sdr["WriteoffLoc"].ToString();
+                            system.BusLine = sdr["BusLine"].ToString();
+                            
+                        }
+                    }
+                }
+            }
+
+            return system;
+            
 
         }
 

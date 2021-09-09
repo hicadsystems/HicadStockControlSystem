@@ -29,7 +29,7 @@ namespace HicadStockSystem.Models
         [StringLength(40)]
         public string Town_City { get; set; }
         [Column(TypeName = "smalldatetime")]
-        public DateTime InstallDate { get; set; }
+        public DateTime? InstallDate { get; set; }
         [StringLength(30)]
         public string SerialNumber { get; set; }
         [StringLength(15)]
@@ -48,7 +48,7 @@ namespace HicadStockSystem.Models
         public string HoldDays { get; set; }
         [StringLength(3)]
         public string ApprovedDay { get; set; }
-        public DateTime? CreatedOn { get; set; } 
+        public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public bool IsDeleted { get; set; }
 

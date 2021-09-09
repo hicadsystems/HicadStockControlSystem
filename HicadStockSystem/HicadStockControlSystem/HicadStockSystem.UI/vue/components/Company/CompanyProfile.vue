@@ -115,7 +115,7 @@
                   <select
                     class="form-control"
                     id="stateName"
-                    v-model="postBody.stateName"
+                    v-model="postBody.state"
                   >
                     <option
                       v-for="state in stateList"
@@ -180,15 +180,16 @@
                     class="form-control"
                     id="processYear"
                     v-model="postBody.processYear"
-                  />
-                  <!--validation code inside input-->
-                  <!--v-bind:class="{
+                      v-bind:class="{
                   'form-control': true,
                   'is-invalid': !processYearIsValid,
-                }"-->
-                  <!--<div class="invalid-feedback">
+                }"
+                  />
+                  <!--validation code inside input-->
+                
+              <div class="invalid-feedback">
                 <span class="text-danger h5">invalid Year</span>
-              </div>-->
+              </div>
                 </div>
 
                 <div class="col-6">
@@ -198,12 +199,13 @@
                     class="form-control"
                     id="processMonth"
                     v-model="postBody.processMonth"
-                  />
-                  <!--validation code inside input-->
-                  <!--v-bind:class="{
+                      v-bind:class="{
                   'form-control': true,
                   'is-invalid': !processMonthIsValid,
-                }"-->
+                }"
+                  />
+                  <!--validation code inside input-->
+                
                   <div class="invalid-feedback">
                     <span class="text-danger h5">invalid Month</span>
                   </div>
@@ -355,7 +357,7 @@ export default {
       maxDay: 7,
       errors: null,
       responseMessage: "",
-      submitorUpdate: "Update",
+      submitorUpdate: "Submit",
       canProcess: true,
       stateList: null,
       writeoffLocList: null,
@@ -373,7 +375,7 @@ export default {
         companyAddress: "",
         phone: "",
         email: "",
-        stateName: "",
+        state: "",
         city: "",
         // datepicker
         installDate: "",
@@ -401,37 +403,38 @@ export default {
     this.getWriteOffLoc();
     this.getBusinessLine();
     this.getAccChart();
-    this.getSystemDetails();
+    // this.getSystemDetails();
     // this.getCreditorCode();
     // this.getExpenseCode();
     // this.getGLCode();
   },
-  // watch: {
-  //   "$store.state.objectToUpdate": function(newVal, oldVal) {
-  //     (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),
-  //       (this.postBody.companyName = this.$store.state.objectToUpdate.companyName),
-  //       (this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress),
-  //       (this.postBody.phone = this.$store.state.objectToUpdate.phone);
-  //     this.postBody.email = this.$store.state.objectToUpdate.email;
-  //     this.postBody.stateName = this.$store.state.objectToUpdate.stateName;
-  //     this.postBody.city = this.$store.state.objectToUpdate.city;
-  //     this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
-  //     this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
-  //     this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
-  //     this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
-  //     this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
-  //     this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
-  //     this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
-  //     this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
-  //     this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
-  //     this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
-  //     this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
-  //     this.submitorUpdate = "Update";
-  //   },
-  // },
+  watch: {
+    "$store.state.objectToUpdate": function(newVal, oldVal) {
+      (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),
+        (this.postBody.companyName = this.$store.state.objectToUpdate.companyName),
+        (this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress),
+        (this.postBody.phone = this.$store.state.objectToUpdate.phone);
+      this.postBody.email = this.$store.state.objectToUpdate.email;
+      this.postBody.state = this.$store.state.objectToUpdate.state;
+      this.postBody.city = this.$store.state.objectToUpdate.city;
+      this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
+      this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
+      this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
+      this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
+      this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
+      this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
+      this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
+      this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
+      this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
+      this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
+      this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
+      this.submitorUpdate = "Update";
+    },
+  },
   methods: {
     checkForm: function(e) {
       this.validate();
+
       if (this.valid) {
         this.$confirm("Submit Form").then(() => {
           this.canProcess = false;
@@ -458,7 +461,7 @@ export default {
               this.postBody.companyAddress = "";
               this.postBody.phone = "";
               this.postBody.email = "";
-              this.postBody.stateName = "";
+              this.postBody.state = "";
               this.postBody.city = "";
               this.postBody.installDate = new Date();
               (this.postBody.glCode = ""), (this.postBody.processYear = "");
@@ -477,7 +480,7 @@ export default {
           });
       }
       if (this.submitorUpdate == "Update") {
-        alert("Raedy to Update");
+        alert("Ready to Update");
         axios
           .put(`/api/st_stksystem/`, this.postBody)
           .then((response) => {
@@ -490,7 +493,7 @@ export default {
               this.postBody.companyAddress = "";
               this.postBody.phone = "";
               this.postBody.email = "";
-              this.postBody.stateName = "";
+              this.postBody.state = "";
               this.postBody.city = "";
               this.postBody.installDate = "";
               this.postBody.glCode = "";
@@ -541,33 +544,33 @@ export default {
       });
     },
 
-    getSystemDetails() {
-      axios.get(`/api/st_stksystem/`).then((response) => {
-        this.companylist = response.data.response;
-        console.log(this.companylist);
-        console.log(this.companylist.companyCode);
-        this.postBody.companyCode = this.companylist.companyCode;
-        alert(this.postBody.companyCode);
-        this.postBody.companyName = this.companylist.companyName;
-        this.postBody.companyAddress = this.companylist.companyAddress;
-        this.postBody.phone = this.companylist.phone;
-        this.postBody.email = this.companylist.email;
-        this.postBody.stateName = this.companylist.stateName;
-        this.postBody.city = this.companylist.city;
-        this.postBody.installDate = this.companylist.installDate;
-        this.postBody.glCode = this.companylist.glCode;
-        this.postBody.processYear = this.companylist.processYear;
-        this.postBody.processMonth = this.companylist.processMonth;
-        this.postBody.expenseCode = this.companylist.expenseCode;
-        this.postBody.writeoffLoc = this.companylist.writeoffLoc;
-        this.postBody.creditorsCode = this.companylist.creditorsCode;
-        this.postBody.busLine = this.companylist.busLine;
-        this.postBody.holdDays = this.companylist.holdDays;
-        this.postBody.approvedDay = this.companylist.approvedDay;
-        this.submitorUpdate == "Update";
-        alert(this.submitorUpdate);
-      });
-    },
+    // getSystemDetails() {
+    //   axios.get(`/api/st_stksystem/`).then((response) => {
+    //     this.companylist = response.data.response;
+    //     console.log(this.companylist);
+    //     console.log(this.companylist.companyCode);
+    //     this.postBody.companyCode = this.companylist.companyCode;
+    //     alert(this.postBody.companyCode);
+    //     this.postBody.companyName = this.companylist.companyName;
+    //     this.postBody.companyAddress = this.companylist.companyAddress;
+    //     this.postBody.phone = this.companylist.phone;
+    //     this.postBody.email = this.companylist.email;
+    //     this.postBody.stateName = this.companylist.stateName;
+    //     this.postBody.city = this.companylist.city;
+    //     this.postBody.installDate = this.companylist.installDate;
+    //     this.postBody.glCode = this.companylist.glCode;
+    //     this.postBody.processYear = this.companylist.processYear;
+    //     this.postBody.processMonth = this.companylist.processMonth;
+    //     this.postBody.expenseCode = this.companylist.expenseCode;
+    //     this.postBody.writeoffLoc = this.companylist.writeoffLoc;
+    //     this.postBody.creditorsCode = this.companylist.creditorsCode;
+    //     this.postBody.busLine = this.companylist.busLine;
+    //     this.postBody.holdDays = this.companylist.holdDays;
+    //     this.postBody.approvedDay = this.companylist.approvedDay;
+    //     this.submitorUpdate == "Update";
+    //     alert(this.submitorUpdate);
+    //   });
+    // },
 
     //validation functions
     validate() {
@@ -617,21 +620,23 @@ export default {
         this.postBody.companyAddress.length <= 60
       );
     },
-    // processYearIsValid() {
-    //   return (
-    //     this.postBody.processYear == "" ||
-    //     (this.postBody.processYear.length == this.numLength &&
-    //       parseInt(this.postBody.processYear) >= this.minYear)
-    //   );
-    // },
-    // processMonthIsValid() {
-    //   return (
-    //     this.postBody.processMonth == "" ||
-    //     (this.postBody.processMonth.length >= 1 &&
-    //       parseInt(this.postBody.processMonth) >= this.minMonth &&
-    //       parseInt(this.postBody.processMonth) <= this.maxMonth)
-    //   );
-    // },
+    processYearIsValid() {
+      return (
+        this.postBody.processYear == "" ||
+        (this.postBody.processYear.length == this.numLength &&
+          parseInt(this.postBody.processYear) >= this.minYear)
+      );
+    },
+
+    processMonthIsValid() {
+      return (
+        this.postBody.processMonth == "" ||
+        (this.postBody.processMonth.length >= 1 &&
+          parseInt(this.postBody.processMonth) >= this.minMonth &&
+          parseInt(this.postBody.processMonth) <= this.maxMonth)
+      );
+    },
+
     holdDaysIsValid() {
       return (
         this.postBody.holdDays == "" ||
@@ -669,13 +674,14 @@ export default {
 
     setter() {
       let objecttoedit = this.$store.state.objectToUpdate;
+      alert("setter");
       if (objecttoedit.companyCode) {
         this.postBody.companyCode = objecttoedit.companyCode;
         this.postBody.companyName = objecttoedit.companyName;
         this.postBody.companyAddress = objecttoedit.companyAddress;
         this.postBody.phone = objecttoedit.phone;
         this.postBody.email = objecttoedit.email;
-        this.postBody.stateName = objecttoedit.stateName;
+        this.postBody.stateName = objecttoedit.state;
         this.postBody.city = objecttoedit.city;
         this.postBody.installDate = objecttoedit.installDate;
         this.postBody.glCode = objecttoedit.glCode;

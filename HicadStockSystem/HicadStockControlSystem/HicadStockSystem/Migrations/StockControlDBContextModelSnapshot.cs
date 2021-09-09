@@ -980,193 +980,6 @@ namespace HicadStockSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StateLists");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = (byte)1,
-                            StateName = "Abia"
-                        },
-                        new
-                        {
-                            Id = (byte)2,
-                            StateName = "Adamawa"
-                        },
-                        new
-                        {
-                            Id = (byte)3,
-                            StateName = "Akwa Ibom"
-                        },
-                        new
-                        {
-                            Id = (byte)4,
-                            StateName = "Anambra"
-                        },
-                        new
-                        {
-                            Id = (byte)5,
-                            StateName = "Bauchi"
-                        },
-                        new
-                        {
-                            Id = (byte)6,
-                            StateName = "Bayelsa"
-                        },
-                        new
-                        {
-                            Id = (byte)7,
-                            StateName = "Benue"
-                        },
-                        new
-                        {
-                            Id = (byte)8,
-                            StateName = "Borno"
-                        },
-                        new
-                        {
-                            Id = (byte)9,
-                            StateName = "Cross River"
-                        },
-                        new
-                        {
-                            Id = (byte)10,
-                            StateName = "Delta"
-                        },
-                        new
-                        {
-                            Id = (byte)11,
-                            StateName = "Ebonyi"
-                        },
-                        new
-                        {
-                            Id = (byte)12,
-                            StateName = "Edo"
-                        },
-                        new
-                        {
-                            Id = (byte)13,
-                            StateName = "Ekiti"
-                        },
-                        new
-                        {
-                            Id = (byte)14,
-                            StateName = "Enugu"
-                        },
-                        new
-                        {
-                            Id = (byte)15,
-                            StateName = "FCT - Abuja"
-                        },
-                        new
-                        {
-                            Id = (byte)16,
-                            StateName = "Gombe"
-                        },
-                        new
-                        {
-                            Id = (byte)17,
-                            StateName = "Imo"
-                        },
-                        new
-                        {
-                            Id = (byte)18,
-                            StateName = "Jigawa"
-                        },
-                        new
-                        {
-                            Id = (byte)19,
-                            StateName = "Kaduna"
-                        },
-                        new
-                        {
-                            Id = (byte)20,
-                            StateName = "Kano"
-                        },
-                        new
-                        {
-                            Id = (byte)21,
-                            StateName = "Katsina"
-                        },
-                        new
-                        {
-                            Id = (byte)22,
-                            StateName = "Kebbi"
-                        },
-                        new
-                        {
-                            Id = (byte)23,
-                            StateName = "Kogi"
-                        },
-                        new
-                        {
-                            Id = (byte)24,
-                            StateName = "Kwara"
-                        },
-                        new
-                        {
-                            Id = (byte)25,
-                            StateName = "Lagos"
-                        },
-                        new
-                        {
-                            Id = (byte)26,
-                            StateName = "Nasarawa"
-                        },
-                        new
-                        {
-                            Id = (byte)27,
-                            StateName = "Niger"
-                        },
-                        new
-                        {
-                            Id = (byte)28,
-                            StateName = "Ogun"
-                        },
-                        new
-                        {
-                            Id = (byte)29,
-                            StateName = "Ondo"
-                        },
-                        new
-                        {
-                            Id = (byte)30,
-                            StateName = "Osun"
-                        },
-                        new
-                        {
-                            Id = (byte)31,
-                            StateName = "Oyo"
-                        },
-                        new
-                        {
-                            Id = (byte)32,
-                            StateName = "Plateau"
-                        },
-                        new
-                        {
-                            Id = (byte)33,
-                            StateName = "Rivers"
-                        },
-                        new
-                        {
-                            Id = (byte)34,
-                            StateName = "Sokoto"
-                        },
-                        new
-                        {
-                            Id = (byte)35,
-                            StateName = "Taraba"
-                        },
-                        new
-                        {
-                            Id = (byte)36,
-                            StateName = "Yobe"
-                        },
-                        new
-                        {
-                            Id = (byte)37,
-                            StateName = "Zamfara"
-                        });
                 });
 
             modelBuilder.Entity("HicadStockSystem.Models.GroupMenu", b =>
@@ -1599,13 +1412,13 @@ namespace HicadStockSystem.Migrations
 
             modelBuilder.Entity("HicadStockSystem.Models.Menu", b =>
                 {
-                    b.HasOne("HicadStockSystem.Models.GroupMenu", "groupMenu")
+                    b.HasOne("HicadStockSystem.Models.GroupMenu", "GroupMenu")
                         .WithMany("Menus")
                         .HasForeignKey("GroupMenuId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("groupMenu");
+                    b.Navigation("GroupMenu");
                 });
 
             modelBuilder.Entity("HicadStockSystem.Models.RoleMenu", b =>

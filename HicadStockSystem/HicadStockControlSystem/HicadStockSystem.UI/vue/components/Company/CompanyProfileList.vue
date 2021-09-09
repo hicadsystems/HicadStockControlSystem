@@ -22,7 +22,7 @@
             <button
               type="button"
               class="btn btn-submit btn-primary"
-              @click="processRetrieve(status.supplierCode)"
+              @click="processRetrieve(status)"
             >
               Edit
             </button>
@@ -54,8 +54,8 @@ export default {
   },
   watch: {
     "$store.state.objectToUpdate": function(newVal, oldVal) {
-      this.getAllCompany();
-      this.processDelete();
+      // this.getAllCompany();
+      // this.processDelete();
       // this.processRetrieve();
     },
   },
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     processRetrieve: function(Status) {
-      alert(Status)
+      alert(Status.companyCode)
       this.$store.state.objectToUpdate = Status;
     },
     // processRetrieve: function(Status) {
@@ -87,8 +87,11 @@ export default {
     },
     getAllCompany: function() {
       axios
-        .get("/api/st_stksystem/")
-        .then((response) => (this.statusList = response.data));
+        .get("/api/st_stksystem/systemdetail/")
+        .then((response) => {
+          // console.log(response.data.companyCode)
+          this.statusList = response.data
+        });
     },
   },
 };

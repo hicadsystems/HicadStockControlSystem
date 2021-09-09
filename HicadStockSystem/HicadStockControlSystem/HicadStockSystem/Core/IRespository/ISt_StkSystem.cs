@@ -1,4 +1,5 @@
-﻿using HicadStockSystem.Core.IRespository;
+﻿using HicadStockSystem.Controllers.ResourcesVM.St_StkSystem;
+using HicadStockSystem.Core.IRespository;
 using HicadStockSystem.Core.Models;
 using HicadStockSystem.Models;
 using System;
@@ -24,6 +25,7 @@ namespace HicadStockSystem.Repository.IRepository
         Task<IEnumerable<AccChart>> GetGLCode();
         Task<IEnumerable<AccChart>> GetExpenseCode();
         St_StkSystem GetSingle();
+        GetSt_System GetSystem();
 
     }
 }

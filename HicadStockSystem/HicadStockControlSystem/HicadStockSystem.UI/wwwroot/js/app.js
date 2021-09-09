@@ -2515,6 +2515,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2532,7 +2534,7 @@ __webpack_require__.r(__webpack_exports__);
       maxDay: 7,
       errors: null,
       responseMessage: "",
-      submitorUpdate: "Update",
+      submitorUpdate: "Submit",
       canProcess: true,
       stateList: null,
       writeoffLocList: null,
@@ -2550,7 +2552,7 @@ __webpack_require__.r(__webpack_exports__);
         companyAddress: "",
         phone: "",
         email: "",
-        stateName: "",
+        state: "",
         city: "",
         // datepicker
         installDate: "",
@@ -2576,34 +2578,31 @@ __webpack_require__.r(__webpack_exports__);
     this.getStates();
     this.getWriteOffLoc();
     this.getBusinessLine();
-    this.getAccChart();
-    this.getSystemDetails(); // this.getCreditorCode();
+    this.getAccChart(); // this.getSystemDetails();
+    // this.getCreditorCode();
     // this.getExpenseCode();
     // this.getGLCode();
   },
-  // watch: {
-  //   "$store.state.objectToUpdate": function(newVal, oldVal) {
-  //     (this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode),
-  //       (this.postBody.companyName = this.$store.state.objectToUpdate.companyName),
-  //       (this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress),
-  //       (this.postBody.phone = this.$store.state.objectToUpdate.phone);
-  //     this.postBody.email = this.$store.state.objectToUpdate.email;
-  //     this.postBody.stateName = this.$store.state.objectToUpdate.stateName;
-  //     this.postBody.city = this.$store.state.objectToUpdate.city;
-  //     this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
-  //     this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
-  //     this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
-  //     this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
-  //     this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
-  //     this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
-  //     this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
-  //     this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
-  //     this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
-  //     this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
-  //     this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
-  //     this.submitorUpdate = "Update";
-  //   },
-  // },
+  watch: {
+    "$store.state.objectToUpdate": function $storeStateObjectToUpdate(newVal, oldVal) {
+      this.postBody.companyCode = this.$store.state.objectToUpdate.companyCode, this.postBody.companyName = this.$store.state.objectToUpdate.companyName, this.postBody.companyAddress = this.$store.state.objectToUpdate.companyAddress, this.postBody.phone = this.$store.state.objectToUpdate.phone;
+      this.postBody.email = this.$store.state.objectToUpdate.email;
+      this.postBody.state = this.$store.state.objectToUpdate.state;
+      this.postBody.city = this.$store.state.objectToUpdate.city;
+      this.postBody.installDate = this.$store.state.objectToUpdate.installDate;
+      this.postBody.glCode = this.$store.state.objectToUpdate.glCode;
+      this.postBody.serialNumber = this.$store.state.objectToUpdate.serialNumber;
+      this.postBody.processYear = this.$store.state.objectToUpdate.processYear;
+      this.postBody.processMonth = this.$store.state.objectToUpdate.processMonth;
+      this.postBody.expenseCode = this.$store.state.objectToUpdate.expenseCode;
+      this.postBody.writeoffLoc = this.$store.state.objectToUpdate.writeoffLoc;
+      this.postBody.creditorsCode = this.$store.state.objectToUpdate.creditorsCode;
+      this.postBody.busLine = this.$store.state.objectToUpdate.busLine;
+      this.postBody.holdDays = this.$store.state.objectToUpdate.holdDays;
+      this.postBody.approvedDay = this.$store.state.objectToUpdate.approvedDay;
+      this.submitorUpdate = "Update";
+    }
+  },
   methods: {
     checkForm: function checkForm(e) {
       var _this = this;
@@ -2636,7 +2635,7 @@ __webpack_require__.r(__webpack_exports__);
             _this2.postBody.companyAddress = "";
             _this2.postBody.phone = "";
             _this2.postBody.email = "";
-            _this2.postBody.stateName = "";
+            _this2.postBody.state = "";
             _this2.postBody.city = "";
             _this2.postBody.installDate = new Date();
             _this2.postBody.glCode = "", _this2.postBody.processYear = "";
@@ -2655,7 +2654,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.submitorUpdate == "Update") {
-        alert("Raedy to Update");
+        alert("Ready to Update");
         axios.put("/api/st_stksystem/", this.postBody).then(function (response) {
           _this2.responseMessage = response.data.responseDescription;
           _this2.canProcess = true;
@@ -2667,7 +2666,7 @@ __webpack_require__.r(__webpack_exports__);
             _this2.postBody.companyAddress = "";
             _this2.postBody.phone = "";
             _this2.postBody.email = "";
-            _this2.postBody.stateName = "";
+            _this2.postBody.state = "";
             _this2.postBody.city = "";
             _this2.postBody.installDate = "";
             _this2.postBody.glCode = "";
@@ -2720,35 +2719,33 @@ __webpack_require__.r(__webpack_exports__);
         _this6.ExpenseCodeList = response.data;
       });
     },
-    getSystemDetails: function getSystemDetails() {
-      var _this7 = this;
-
-      axios.get("/api/st_stksystem/").then(function (response) {
-        _this7.companylist = response.data.response;
-        console.log(_this7.companylist);
-        console.log(_this7.companylist.companyCode);
-        _this7.postBody.companyCode = _this7.companylist.companyCode;
-        alert(_this7.postBody.companyCode);
-        _this7.postBody.companyName = _this7.companylist.companyName;
-        _this7.postBody.companyAddress = _this7.companylist.companyAddress;
-        _this7.postBody.phone = _this7.companylist.phone;
-        _this7.postBody.email = _this7.companylist.email;
-        _this7.postBody.stateName = _this7.companylist.stateName;
-        _this7.postBody.city = _this7.companylist.city;
-        _this7.postBody.installDate = _this7.companylist.installDate;
-        _this7.postBody.glCode = _this7.companylist.glCode;
-        _this7.postBody.processYear = _this7.companylist.processYear;
-        _this7.postBody.processMonth = _this7.companylist.processMonth;
-        _this7.postBody.expenseCode = _this7.companylist.expenseCode;
-        _this7.postBody.writeoffLoc = _this7.companylist.writeoffLoc;
-        _this7.postBody.creditorsCode = _this7.companylist.creditorsCode;
-        _this7.postBody.busLine = _this7.companylist.busLine;
-        _this7.postBody.holdDays = _this7.companylist.holdDays;
-        _this7.postBody.approvedDay = _this7.companylist.approvedDay;
-        _this7.submitorUpdate == "Update";
-        alert(_this7.submitorUpdate);
-      });
-    },
+    // getSystemDetails() {
+    //   axios.get(`/api/st_stksystem/`).then((response) => {
+    //     this.companylist = response.data.response;
+    //     console.log(this.companylist);
+    //     console.log(this.companylist.companyCode);
+    //     this.postBody.companyCode = this.companylist.companyCode;
+    //     alert(this.postBody.companyCode);
+    //     this.postBody.companyName = this.companylist.companyName;
+    //     this.postBody.companyAddress = this.companylist.companyAddress;
+    //     this.postBody.phone = this.companylist.phone;
+    //     this.postBody.email = this.companylist.email;
+    //     this.postBody.stateName = this.companylist.stateName;
+    //     this.postBody.city = this.companylist.city;
+    //     this.postBody.installDate = this.companylist.installDate;
+    //     this.postBody.glCode = this.companylist.glCode;
+    //     this.postBody.processYear = this.companylist.processYear;
+    //     this.postBody.processMonth = this.companylist.processMonth;
+    //     this.postBody.expenseCode = this.companylist.expenseCode;
+    //     this.postBody.writeoffLoc = this.companylist.writeoffLoc;
+    //     this.postBody.creditorsCode = this.companylist.creditorsCode;
+    //     this.postBody.busLine = this.companylist.busLine;
+    //     this.postBody.holdDays = this.companylist.holdDays;
+    //     this.postBody.approvedDay = this.companylist.approvedDay;
+    //     this.submitorUpdate == "Update";
+    //     alert(this.submitorUpdate);
+    //   });
+    // },
     //validation functions
     validate: function validate() {
       this.codeblur = true;
@@ -2774,21 +2771,12 @@ __webpack_require__.r(__webpack_exports__);
     companyAddressIsValid: function companyAddressIsValid() {
       return this.postBody.companyAddress != "" && this.postBody.companyAddress.length >= 1 && this.postBody.companyAddress.length <= 60;
     },
-    // processYearIsValid() {
-    //   return (
-    //     this.postBody.processYear == "" ||
-    //     (this.postBody.processYear.length == this.numLength &&
-    //       parseInt(this.postBody.processYear) >= this.minYear)
-    //   );
-    // },
-    // processMonthIsValid() {
-    //   return (
-    //     this.postBody.processMonth == "" ||
-    //     (this.postBody.processMonth.length >= 1 &&
-    //       parseInt(this.postBody.processMonth) >= this.minMonth &&
-    //       parseInt(this.postBody.processMonth) <= this.maxMonth)
-    //   );
-    // },
+    processYearIsValid: function processYearIsValid() {
+      return this.postBody.processYear == "" || this.postBody.processYear.length == this.numLength && parseInt(this.postBody.processYear) >= this.minYear;
+    },
+    processMonthIsValid: function processMonthIsValid() {
+      return this.postBody.processMonth == "" || this.postBody.processMonth.length >= 1 && parseInt(this.postBody.processMonth) >= this.minMonth && parseInt(this.postBody.processMonth) <= this.maxMonth;
+    },
     holdDaysIsValid: function holdDaysIsValid() {
       return this.postBody.holdDays == "" || this.postBody.holdDays.length >= 1 && this.postBody.holdDays.length <= 2 && parseInt(this.postBody.holdDays) >= this.minDay && parseInt(this.postBody.holdDays) <= this.maxDay;
     },
@@ -2808,6 +2796,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     setter: function setter() {
       var objecttoedit = this.$store.state.objectToUpdate;
+      alert("setter");
 
       if (objecttoedit.companyCode) {
         this.postBody.companyCode = objecttoedit.companyCode;
@@ -2815,7 +2804,7 @@ __webpack_require__.r(__webpack_exports__);
         this.postBody.companyAddress = objecttoedit.companyAddress;
         this.postBody.phone = objecttoedit.phone;
         this.postBody.email = objecttoedit.email;
-        this.postBody.stateName = objecttoedit.stateName;
+        this.postBody.stateName = objecttoedit.state;
         this.postBody.city = objecttoedit.city;
         this.postBody.installDate = objecttoedit.installDate;
         this.postBody.glCode = objecttoedit.glCode;
@@ -2895,9 +2884,9 @@ __webpack_require__.r(__webpack_exports__);
     this.$store.state.objectToUpdate = null;
   },
   watch: {
-    "$store.state.objectToUpdate": function $storeStateObjectToUpdate(newVal, oldVal) {
-      this.getAllCompany();
-      this.processDelete(); // this.processRetrieve();
+    "$store.state.objectToUpdate": function $storeStateObjectToUpdate(newVal, oldVal) {// this.getAllCompany();
+      // this.processDelete();
+      // this.processRetrieve();
     }
   },
   mounted: function mounted() {
@@ -2905,7 +2894,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     processRetrieve: function processRetrieve(Status) {
-      alert(Status);
+      alert(Status.companyCode);
       this.$store.state.objectToUpdate = Status;
     },
     // processRetrieve: function(Status) {
@@ -2929,8 +2918,9 @@ __webpack_require__.r(__webpack_exports__);
     getAllCompany: function getAllCompany() {
       var _this2 = this;
 
-      axios.get("/api/st_stksystem/").then(function (response) {
-        return _this2.statusList = response.data;
+      axios.get("/api/st_stksystem/systemdetail/").then(function (response) {
+        // console.log(response.data.companyCode)
+        _this2.statusList = response.data;
       });
     }
   }
@@ -9711,7 +9701,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       isFormVisible: false,
       isEdit: false,
       errors: null
-    }, _defineProperty(_ref, "responseMessage", ""), _defineProperty(_ref, "submitorUpdate", "Submit"), _defineProperty(_ref, "canProcess", true), _defineProperty(_ref, "stateList", null), _defineProperty(_ref, "postBody", _defineProperty({
+    }, _defineProperty(_ref, "responseMessage", ""), _defineProperty(_ref, "submitorUpdate", "Update"), _defineProperty(_ref, "canProcess", true), _defineProperty(_ref, "stateList", null), _defineProperty(_ref, "postBody", _defineProperty({
       supplierCode: "",
       name: "",
       address: "",
@@ -9851,12 +9841,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             _this4.postBody.sup_Last_Num = "";
             _this4.postBody.sup_Last_Num = "";
             _this4.$store.state.objectToUpdate = "update";
-          }
-
-          _this4.getAllSuppliers();
-
-          alert(_this4.responseMessage); // this.$refs.supplierForm.reset();
+          } // this.getAllSuppliers();
+          // alert(this.responseMessage)
+          // this.$refs.supplierForm.reset();
           // window.location.reload();
+
         })["catch"](function (e) {
           _this4.errors.push(e);
         });
@@ -25459,8 +25448,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.postBody.stateName,
-                              expression: "postBody.stateName"
+                              value: _vm.postBody.state,
+                              expression: "postBody.state"
                             }
                           ],
                           staticClass: "form-control",
@@ -25477,7 +25466,7 @@ var render = function() {
                                 })
                               _vm.$set(
                                 _vm.postBody,
-                                "stateName",
+                                "state",
                                 $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
@@ -25685,6 +25674,10 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
+                        class: {
+                          "form-control": true,
+                          "is-invalid": !_vm.processYearIsValid
+                        },
                         attrs: { type: "number", id: "processYear" },
                         domProps: { value: _vm.postBody.processYear },
                         on: {
@@ -25699,7 +25692,9 @@ var render = function() {
                             )
                           }
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _vm._m(5)
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-6" }, [
@@ -25719,6 +25714,10 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
+                        class: {
+                          "form-control": true,
+                          "is-invalid": !_vm.processMonthIsValid
+                        },
                         attrs: { type: "number", id: "processMonth" },
                         domProps: { value: _vm.postBody.processMonth },
                         on: {
@@ -25735,7 +25734,7 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm._m(5)
+                      _vm._m(6)
                     ])
                   ]),
                   _vm._v(" "),
@@ -25989,7 +25988,7 @@ var render = function() {
                   _c("br"),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
-                    _vm._m(6),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-1" }, [
                       _c("input", {
@@ -26022,12 +26021,12 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm._m(7)
+                      _vm._m(8)
                     ]),
                     _vm._v(" "),
-                    _vm._m(8),
-                    _vm._v(" "),
                     _vm._m(9),
+                    _vm._v(" "),
+                    _vm._m(10),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-1" }, [
                       _c("input", {
@@ -26060,10 +26059,10 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm._m(10)
+                      _vm._m(11)
                     ]),
                     _vm._v(" "),
-                    _vm._m(11)
+                    _vm._m(12)
                   ]),
                   _vm._v(" "),
                   _c("br"),
@@ -26150,6 +26149,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "invalid-feedback" }, [
       _c("span", { staticClass: "text-danger h5" }, [_vm._v("invalid Email")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "invalid-feedback" }, [
+      _c("span", { staticClass: "text-danger h5" }, [_vm._v("invalid Year")])
     ])
   },
   function() {
@@ -26259,7 +26266,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.processRetrieve(status.supplierCode)
+                        return _vm.processRetrieve(status)
                       }
                     }
                   },

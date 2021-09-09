@@ -217,7 +217,8 @@ export default {
       isEdit: false,
       errors: null,
       responseMessage: "",
-      submitorUpdate: "Submit",
+      // submitorUpdate: "Submit",
+      submitorUpdate: "Update",
       canProcess: true,
       stateList: null,
       postBody: {
@@ -369,8 +370,8 @@ export default {
               this.postBody.sup_Last_Num = "";
               this.$store.state.objectToUpdate = "update";
             }
-            this.getAllSuppliers();
-            alert(this.responseMessage)
+            // this.getAllSuppliers();
+            // alert(this.responseMessage)
             // this.$refs.supplierForm.reset();
             // window.location.reload();
           })

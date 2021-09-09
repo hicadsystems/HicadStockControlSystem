@@ -41,7 +41,10 @@ namespace HicadStockSystem.Controllers
             {
                 var st_stkSytem = _mapper.Map<CreateSt_StkSystemVM, St_StkSystem>(stkSystemVM);
                 st_stkSytem.CreatedOn = DateTime.Now;
-                st_stkSytem.InstallDate = DateTime.Now;
+                if (stkSystemVM.InstallDate == null)
+                {
+                    st_stkSytem.InstallDate = DateTime.Now;
+                }
                 await _systemRepo.CreateAsync(st_stkSytem);
                 await _uow.CompleteAsync();
                 return CreatedAtAction("GetStkSystem", new { st_stkSytem.CompanyName, st_stkSytem.CompanyCode }, st_stkSytem);
@@ -151,6 +154,14 @@ namespace HicadStockSystem.Controllers
         public IActionResult GetSystem()
         {
             var system = _systemRepo.GetSingle();
+            return Ok(system);
+        }
+
+        [HttpGet]
+        [Route("systemdetail")]
+        public IActionResult GetSystemDetail()
+        {
+            var system = _systemRepo.GetSystem();
             return Ok(system);
         }
     }
