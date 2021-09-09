@@ -20,6 +20,7 @@
       <NuGetPackageId>MongoDB.Driver.Core</NuGetPackageId>
       <NuGetPackageVersion>2.13.1</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
+      <Pack>false</Pack>
       <Private>False</Private>
       <Link>Core\Compression\Snappy\lib\win\snappy32.dll</Link>
     </Content>
@@ -27,6 +28,7 @@
       <NuGetPackageId>MongoDB.Driver.Core</NuGetPackageId>
       <NuGetPackageVersion>2.13.1</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
+      <Pack>false</Pack>
       <Private>False</Private>
       <Link>Core\Compression\Snappy\lib\win\snappy64.dll</Link>
     </Content>
@@ -34,6 +36,7 @@
       <NuGetPackageId>MongoDB.Driver.Core</NuGetPackageId>
       <NuGetPackageVersion>2.13.1</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
+      <Pack>false</Pack>
       <Private>False</Private>
       <Link>Core\Compression\Zstandard\lib\win\libzstd.dll</Link>
     </Content>
