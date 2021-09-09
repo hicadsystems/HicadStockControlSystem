@@ -1,5 +1,7 @@
 ﻿using HicadStockSystem.Core;
+using HicadStockSystem.Core.IRespository.IAccount;
 using HicadStockSystem.Data;
+using HicadStockSystem.Persistence.Repository.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,9 @@ namespace HicadStockSystem.Persistence
         public UnitOfWork(StockControlDBContext dbContext)
         {
             _dbContext = dbContext;
+            users = new UserRepo(dbContext);
         }
+        public IUserServices users { get; private set; }
         public async Task CompleteAsync()
         {
             await _dbContext.SaveChangesAsync();

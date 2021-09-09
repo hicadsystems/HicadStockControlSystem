@@ -28,8 +28,12 @@ namespace HicadStockSystem.UI.Controllers.Account
             this.unitOfWork = unitOfWork;
             this._dbcontext = context;
         }
-
-        // GET: Authentication
+        public IActionResult Login()
+        {
+            return View();
+        }
+            // GET: Authentication
+            [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel login)
         {
             var auth = await authenticationService.SignInUserAsync(login.UserName, login.Password, "false");

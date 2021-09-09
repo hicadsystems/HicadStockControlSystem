@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace NavyAccountWeb.Services
+namespace HicadStockSystem.Persistence.Repository.Account
 {
     public class RoleRepo : IRoleRepo
     {

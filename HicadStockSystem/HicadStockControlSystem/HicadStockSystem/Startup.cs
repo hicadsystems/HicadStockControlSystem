@@ -30,6 +30,8 @@ using HicadStockSystem.Persistence.Repository.Reports;
 using HicadStockSystem.Core.IRespository.IMonthEndProcessing;
 using HicadStockSystem.Persistence.Repository.MonthEndProcess;
 using System.IO;
+using HicadStockSystem.Core.IRespository.IAccount;
+using HicadStockSystem.Persistence.Repository.Account;
 
 namespace HicadStockSystem
 {
@@ -92,6 +94,12 @@ namespace HicadStockSystem
             services.AddScoped<IPhysicalCountSheet, PhysicalCountSheetRepo>();
             services.AddScoped<IVarianceAnalysis, VarianceAnalysisRepo>();
             services.AddScoped<IOverwriteStockBook, OverwriteStockBookRepo>();
+
+            services.AddScoped<IAuthenticationRepo, AuthenticationRepo>();
+            services.AddScoped<IMenuGroupRepo, MenuGroupRepo>();
+            services.AddScoped<IMenuRepo, MenuRepo>();
+            services.AddScoped<IRoleRepo, RoleRepo>();
+            services.AddScoped<IUserRepo, UserService>();
 
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
