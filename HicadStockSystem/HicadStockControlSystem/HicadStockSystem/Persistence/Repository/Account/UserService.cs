@@ -17,8 +17,8 @@ namespace HicadStockSystem.Persistence.Repository.Account
         private readonly StockControlDBContext _dbcontext;
         private readonly UserManager<User> userManager;
         private readonly IUnitOfWork unitOfWork;
-        private readonly UserRepo _userRepo;
-        public UserService(UserManager<User> userManager, IUnitOfWork unitOfWork, StockControlDBContext dbcontext, UserRepo userRepo)
+        private readonly IUserServices _userRepo;
+        public UserService(UserManager<User> userManager, IUnitOfWork unitOfWork, StockControlDBContext dbcontext, IUserServices userRepo)
         {
             this.userManager = userManager;
             this.unitOfWork = unitOfWork;
@@ -102,12 +102,12 @@ namespace HicadStockSystem.Persistence.Repository.Account
 
         public async Task<User> GetUserWithRoles(int id)
         {
-            return await _userRepo.UserWithRoles(x => x.Id == id);
+            return await unitOfWork.users.UserWithRoles(x => x.Id == id);
         }
 
         public async Task<User> GetUserWithRolesAndMenus(int id)
         {
-            return await _userRepo.UserWithRolesandMenus(x => x.Id == id);
+            return await unitOfWork.users.UserWithRolesandMenus(x => x.Id == id);
         }
         public IEnumerable<User> GetUsers()
         {
@@ -117,7 +117,7 @@ namespace HicadStockSystem.Persistence.Repository.Account
 
         public async Task<User> GetUserRolesDevices(int id)
         {
-            return await _userRepo.User(x => x.Id == id);
+            return await unitOfWork.users.User(x => x.Id == id);
         }
 
         public async Task<User> GetUserByResetCode(string resetcode)

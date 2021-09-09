@@ -14,6 +14,8 @@ namespace HicadStockSystem.Models
         [JsonIgnore]
         public virtual User User { get; set; }
         [NotMapped]
+        //[ForeignKey(nameof(RoleId))]
+        //[InverseProperty("UserRoles")]
         public virtual Role Role { get; set; }
         public bool IsActive { get; set; }
         public DateTime DateCreated { get; set; }

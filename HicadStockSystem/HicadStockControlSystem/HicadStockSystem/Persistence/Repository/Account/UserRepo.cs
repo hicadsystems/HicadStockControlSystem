@@ -1,4 +1,5 @@
 ﻿using HicadStockSystem.Core;
+using HicadStockSystem.Core.IRespository.IAccount;
 using HicadStockSystem.Data;
 using HicadStockSystem.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace HicadStockSystem.Persistence.Repository.Account
 {
-    public class UserRepo
+    public class UserRepo: IUserServices
     {
     private readonly StockControlDBContext _dbcontext;
    // private readonly UserManager<User> userManager;
-    private readonly IUnitOfWork unitOfWork;
+   // private readonly IUnitOfWork unitOfWork;
 
-    public UserRepo( IUnitOfWork unitOfWork, StockControlDBContext dbcontext)
+    public UserRepo(StockControlDBContext dbcontext)
     {
-                this.unitOfWork = unitOfWork;
+                //this.unitOfWork = unitOfWork;
                 _dbcontext = dbcontext;
      }
         public async Task<User> User(Expression<Func<User, bool>> predicate)
@@ -43,9 +44,18 @@ namespace HicadStockSystem.Persistence.Repository.Account
 
         public async Task<User> UserWithRoles(Expression<Func<User, bool>> predicate)
         {
-            return await _dbcontext.Users
+            try
+            {
+                var pp = await _dbcontext.Users
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role).FirstOrDefaultAsync(predicate);
+                return pp;
+            }
+            catch (Exception ex)
+            {
+            
+            }
+            return null;
         }
     }
 }

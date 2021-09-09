@@ -5,7 +5,6 @@ using HicadStockSystem.Core.IRespository.IAccount;
 using HicadStockSystem.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NavyAccountWeb.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
